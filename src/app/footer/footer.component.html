@@ -1,24 +1,20 @@
 <footer>
   
-  <section *ngIf="show_footer && user" class="footer-content">
-    <!-- Informações do usuário (esquerda) -->
-    <div class="footer-left">
-      <span class="user-info">
-        {{ user.email }}{{ configuracoes.is_admin ? ' - ADMIN' : '' }}
+<mat-toolbar color="primary" class="footer-toolbar">
+      <span class="footer-content">
+        <span class="footer-text">
+          Dentistas.com.br - ver 4.2 (06/2025)
+        </span>
+
+        <span class="footer-actions">
+
+          <button mat-button (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Sair
+          </button>
+
+        </span>
       </span>
-    </div>
-
-    <!-- Botão SAIR (centro) -->
-    <div class="footer-center">
-      <button mat-raised-button color="warn" class="logout-btn" (click)="logout()">
-        <span>SAIR</span>
-      </button>
-    </div>
-
-    <!-- Versão/Ambiente (direita) -->
-    <div class="footer-right">
-      <span class="version-info">{{ ambiente }}</span>
-    </div>
-  </section>
+    </mat-toolbar>
 
 </footer>
