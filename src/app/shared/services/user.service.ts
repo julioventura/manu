@@ -292,7 +292,8 @@ export class UserService {
         }
         return of(null);
       }),
-      tap(profile => {
+      map((profile: UserProfile | null | undefined): UserProfile | null => profile ?? null),
+      tap((profile: UserProfile | null) => {  // LINHA 295 - corrigir tipo aqui
         if (profile) {
           this.userProfile = profile;
         }
@@ -308,7 +309,10 @@ export class UserService {
     return this.firestore.collection<UserProfile>('usuarios/dentistascombr/users', ref => 
       ref.where('username', '==', username)
     ).valueChanges().pipe(
-      tap(profiles => {
+      map((profiles: (UserProfile | undefined)[]): UserProfile[] => 
+        profiles.filter((profile): profile is UserProfile => profile !== undefined)
+      ), // ADICIONAR esta linha para filtrar undefined
+      tap((profiles: UserProfile[]) => {  // CORRIGIR tipo aqui
         if (profiles && profiles.length > 0) {
           this.userProfile = profiles[0];
         }

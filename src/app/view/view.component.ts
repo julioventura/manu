@@ -553,4 +553,18 @@ export class ViewComponent implements OnInit {
     
     return String(value);
   }
+
+  // ADICIONAR: método para KeyValuePair
+  getKeyValueString(item: KeyValuePair): string {
+    if (item.value && typeof item.value === 'object') {
+      const obj = item.value as Record<string, unknown>;
+      if ('nome' in obj && obj['nome']) {
+        return this.safeString(obj['nome']);
+      }
+      if ('label' in obj && obj['label']) {
+        return this.safeString(obj['label']);
+      }
+    }
+    return this.safeString(item.value);
+  }
 }

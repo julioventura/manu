@@ -52,7 +52,7 @@
       <div id="01" *ngFor="let campo of campos; trackBy: trackByCampo">
         <!-- CORRIGIDO: usar helpers seguros -->
         <div
-          *ngIf="campo.nome === 'nome' || (hasRegistroProperty(campo.nome) && isNotEmpty(getRegistroProperty(campo.nome)))"
+          *ngIf="campo.nome === 'nome' || (hasRegistroPropertyByKey(campo.nome) && isNotEmpty(getRegistroPropertyByKey(campo.nome)))"
           class="detail-container">
           <label [for]="campo.nome" class="detail-label">{{ campo.label }}</label>
 
@@ -60,8 +60,8 @@
             <!-- URL: campo clicável -->
             <ng-container *ngSwitchCase="'url'">
               <!-- CORRIGIDO: usar helper seguro -->
-              <div (click)="openUrl(getRegistroString(campo.nome))" style="cursor:pointer;">
-                <input type="url" [value]="getRegistroString(campo.nome)" class="detail-value url" readonly>
+              <div (click)="openUrl(getFieldString(campo))" style="cursor:pointer;">
+                <input type="url" [value]="getFieldString(campo)" class="detail-value url" readonly>
               </div>
             </ng-container>
 
@@ -75,10 +75,10 @@
             <!-- text -->
             <ng-container *ngSwitchCase="'text'">
               <!-- CORRIGIDO: usar helper seguro -->
-              <ng-container *ngIf="campo.nome === 'nome' && !isNotEmpty(getRegistroProperty(campo.nome))">
+              <ng-container *ngIf="campo.nome === 'nome' && !isNotEmptyField(campo.nome)">
                 <input [type]="campo.tipo" [id]="campo.nome" value="(vazio)" class="detail-value" readonly>
               </ng-container>
-              <ng-container *ngIf="!(campo.nome === 'nome' && !isNotEmpty(getRegistroProperty(campo.nome)))">
+              <ng-container *ngIf="!(campo.nome === 'nome' && !isNotEmptyField(campo.nome))">
                 <input *ngIf="fichaForm.get(campo.nome)" [type]="campo.tipo" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value"
                   readonly>
               </ng-container>
@@ -105,8 +105,8 @@
               <!-- URL -->
               <ng-container *ngSwitchCase="'url'">
                 <!-- CORRIGIDO: usar helper seguro -->
-                <div (click)="openUrl(getRegistroString(campo.nome))" style="cursor:pointer;">
-                  <input type="url" [value]="getRegistroString(campo.nome)" class="detail-value url" readonly>
+                <div (click)="openUrl(getFieldString(campo))" style="cursor:pointer;">
+                  <input type="url" [value]="getFieldString(campo)" class="detail-value url" readonly>
                 </div>
               </ng-container>
 
@@ -162,8 +162,9 @@
                     <ng-container *ngIf="campo && typeof campo === 'object' && campo['nome']">
                       <div class="detail-container">
                         <label [for]="safeString(campo['nome'])" class="detail-label">{{ safeString(campo['label']) }}</label>
+                        <!-- CORRIGIR: usar campo como objeto Campo, não string -->
                         <input [type]="safeString(campo['tipo'])" [id]="safeString(campo['nome'])" 
-                               [value]="safeString(campo['valor'])" class="detail-value" readonly>
+                               [value]="getKeyValueString(campo)" class="detail-value" readonly>
                       </div>
                     </ng-container>
                   </div>
