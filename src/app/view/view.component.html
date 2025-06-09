@@ -1,237 +1,168 @@
-<div class="container container_principal" [@fadeAnimation]>
+<div class="container container_principal">
 
   <!-- HEADER -->
   <div class="header">
     <div class="left">
-      <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="util.voltar()">
+      <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
       <img src="https://dentistas.com.br/assets/home.png" class="navegacao" (click)="util.goHome()">
     </div>
     <h1 class="title">{{ titulo_da_pagina }}</h1>
     <div class="right">
       <img src="https://dentistas.com.br/assets/editar.png" class="navegacao_direita" (click)="editar()">
-      <!-- CORRIGIDO: usar canShareRecord em vez de canShare() -->
-      <img 
-        *ngIf="canShareRecord" 
-        src="https://dentistas.com.br/assets/compartilhar.png" 
-        class="navegacao_direita" 
-        (click)="openSharingModal()"
-        title="Compartilhar com grupo">
       <img src="https://dentistas.com.br/assets/lixo.png" class="navegacao_direita" (click)="excluir()">
     </div>
   </div>
+
   <div class="record-header">
     {{ subtitulo_da_pagina }}
   </div>
   <!-- HEADER / -->
-
-  <!-- Slider flutuante (sticky) para subcollection -->
-  <div class="sticky-slider">
-    <div class="width-control">
-      <div class="slider-wrapper">
-        <label for="labelWidthRange"></label>
-        <!-- CORRIGIDO: usar updateCustomLabelWidth com parâmetro -->
-        <input type="range" id="labelWidthRange" min="100" max="500" [(ngModel)]="customLabelWidthValue"
-          [ngModelOptions]="{standalone: true}" (input)="updateCustomLabelWidth(customLabelWidthValue)">
-        <span class="small">{{ customLabelWidthValue }}px</span>
-      </div>
-    </div>
-  </div>
 
   <!-- Botões das fichas internas -->
   <div *ngIf="show_menu">
     <app-menu [collection]="collection" [id]="id"></app-menu>
   </div>
 
-  <!-- CONTEUDO PRINCIPAL -->
-  <div id='00' class="dynamic-form-container" *ngIf="fichaForm && campos && campos.length > 0">
+  <!-- Detalhes -->
+  <div class="dynamic-form-container" *ngIf="FormService.fichaForm && FormService.campos.length > 0">
 
-    <!-- Container 1:collections -->
-    <form *ngIf="!isLoading && !subcollection" [formGroup]="fichaForm" class="record-details"
-      [style.--label-width]="customLabelWidth">
+    <div *ngIf="FormService.isLoading" class="aviso">
+      Carregando...
+    </div>
 
-      <div id="01" *ngFor="let campo of campos; trackBy: trackByCampo">
-        <!-- CORRIGIDO: usar helpers seguros -->
-        <div
-          *ngIf="campo.nome === 'nome' || (hasRegistroPropertyByKey(campo.nome) && isNotEmpty(getRegistroPropertyByKey(campo.nome)))"
-          class="detail-container">
+    <!-- Container 1: Exibe todos os campos PREENCHIDOS de collections -->
+    <form *ngIf="!FormService.isLoading && !subcollection" [formGroup]="FormService.fichaForm" class="record-details borda_reta_topo">
+      <div *ngFor="let campo of FormService.campos">
+        <!-- Só exibe se estiver preenchido -->
+        <div *ngIf="FormService.registro[campo.nome] && FormService.registro[campo.nome].length > 0" class="detail-container">
           <label [for]="campo.nome" class="detail-label">{{ campo.label }}</label>
-
           <ng-container [ngSwitch]="campo.tipo">
-            <!-- URL: campo clicável -->
+            <!-- Para URL, exibe clicável abrindo em nova janela -->
             <ng-container *ngSwitchCase="'url'">
-              <!-- CORRIGIDO: usar helper seguro -->
-              <div (click)="openUrl(getFieldString(campo))" style="cursor:pointer;">
-                <input type="url" [value]="getFieldString(campo)" class="detail-value url" readonly>
+              <div (click)="openUrl(FormService.registro[campo.nome])" style="cursor:pointer;">
+                <input
+                  type="url"
+                  [value]="FormService.registro[campo.nome]"
+                  class="detail-value url"
+                  readonly>
               </div>
             </ng-container>
-
-            <!-- textarea -->
-            <ng-container *ngSwitchCase="'textarea'">
-              <!-- CORRIGIDO: verificar se formControl existe -->
-              <textarea *ngIf="fichaForm.get(campo.nome)" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value" rows="2"
-                readonly></textarea>
-            </ng-container>
-
-            <!-- text -->
-            <ng-container *ngSwitchCase="'text'">
-              <!-- CORRIGIDO: usar helper seguro -->
-              <ng-container *ngIf="campo.nome === 'nome' && !isNotEmptyField(campo.nome)">
-                <input [type]="campo.tipo" [id]="campo.nome" value="(vazio)" class="detail-value" readonly>
-              </ng-container>
-              <ng-container *ngIf="!(campo.nome === 'nome' && !isNotEmptyField(campo.nome))">
-                <input *ngIf="fichaForm.get(campo.nome)" [type]="campo.tipo" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value"
-                  readonly>
-              </ng-container>
-            </ng-container>
-
+            <!-- Textarea -->
+            <textarea
+              *ngSwitchCase="'textarea'"
+              [formControlName]="campo.nome"
+              [id]="campo.nome"
+              class="detail-value"
+              rows="5"
+              placeholder="Digite o conteúdo"
+            ></textarea>
             <!-- Demais tipos -->
-            <ng-container *ngSwitchDefault>
-              <input *ngIf="fichaForm.get(campo.nome)" [type]="campo.tipo" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value" readonly>
-            </ng-container>
+            <input
+              *ngSwitchDefault
+              [type]="campo.tipo"
+              [formControlName]="campo.nome"
+              [id]="campo.nome"
+              class="detail-value"
+            >
           </ng-container>
         </div>
       </div>
     </form>
 
-    <!-- Para subcollections -->
-    <div id="02" *ngIf="!isLoading && subcollection">
-      <form [formGroup]="fichaForm" [style.--label-width]="customLabelWidth">
-        <!-- Campos fixos (sem grupo) -->
-        <div *ngFor="let campo of fixedFields; trackBy: trackByCampo">
-          <div class="detail-container">
-            <label [for]="campo.nome" class="detail-label">{{ campo.label }}</label>
-            <ng-container [ngSwitch]="campo.tipo">
-
-              <!-- URL -->
-              <ng-container *ngSwitchCase="'url'">
-                <!-- CORRIGIDO: usar helper seguro -->
-                <div (click)="openUrl(getFieldString(campo))" style="cursor:pointer;">
-                  <input type="url" [value]="getFieldString(campo)" class="detail-value url" readonly>
-                </div>
-              </ng-container>
-
-              <!-- Textarea -->
-              <ng-container *ngSwitchCase="'textarea'">
-                <textarea *ngIf="fichaForm.get(campo.nome)" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value" rows="2"
-                  readonly></textarea>
-              </ng-container>
-
-              <!-- Checkbox -->
-              <ng-container *ngSwitchCase="'checkbox'">
-                <input *ngIf="fichaForm.get(campo.nome)" type="checkbox" [formControlName]="campo.nome" [id]="campo.nome" readonly>
-              </ng-container>
-
-              <!-- Boolean -->
-              <ng-container *ngSwitchCase="'boolean'">
-                <input *ngIf="fichaForm.get(campo.nome)" type="checkbox" [formControlName]="campo.nome" [id]="campo.nome" readonly>
-              </ng-container>
-
-              <!-- Demais tipos -->
-              <ng-container *ngSwitchDefault>
-                <input *ngIf="fichaForm.get(campo.nome)" [type]="campo.tipo" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value"
-                  readonly>
-              </ng-container>
-            </ng-container>
+<!-- Container 1: Campos fixos (largura fixa) de subcollections -->
+<form *ngIf="!FormService.isLoading && subcollection" [formGroup]="FormService.fichaForm" class="record-details borda_reta_topo">
+  <div *ngFor="let campo of fixedFields">
+    <div class="detail-container">
+      <label [for]="campo.nome" class="detail-label">{{ campo.label }}</label>
+      <ng-container [ngSwitch]="campo.tipo">
+        <!-- Para campos do tipo 'url', utiliza o input com readonly e click para abrir a URL -->
+        <ng-container *ngSwitchCase="'url'">
+          <div (click)="openUrl(FormService.registro[campo.nome])" style="cursor:pointer;">
+            <input
+              type="url"
+              [value]="FormService.registro[campo.nome]"
+              class="detail-value url"
+              readonly>
           </div>
-        </div>
+        </ng-container>
+        <textarea *ngSwitchCase="'textarea'" [formControlName]="campo.nome" [id]="campo.nome" class="detail-value"
+          rows="3"></textarea>
+        <input *ngSwitchDefault [type]="campo.tipo" [formControlName]="campo.nome" [id]="campo.nome"
+          class="detail-value">
+      </ng-container>
+    </div>
+  </div>
+</form>
 
-        <!-- Grupo de campos ajustáveis -->
-        <div class="full-width-container">
-          <div class="record-details" [style.--label-width]="customLabelWidth">
-            
-            <!-- CORRIGIDO: usar keyValueSortFn e trackByKeyValue -->
-            <div *ngFor="let grupo of groupByGrupo(adjustableFields) | keyvalue: keyValueSortFn; trackBy: trackByKeyValue">
+        
+    <br *ngIf="subcollection && adjustableFields.length > 0">
 
-              <!-- CORRIGIDO: usar safeCastArray -->
-              <ng-container *ngIf="hasNonEmptyField(safeCastArray(grupo.value))">
-                <div *ngIf="grupo.key" class="grupo-titulo">
-                  {{ grupo.key }}
+    <!-- Só mostra o slider e container 2 se for subcollection E se tiver campos para exibir -->
+    <div class="width-control" *ngIf="subcollection && adjustableFields.length > 0">
+      <div class="slider-wrapper">
+        <label for="labelWidthRange"></label>
+        <input
+          type="range"
+          id="labelWidthRange"
+          min="100"
+          max="500"
+          [(ngModel)]="customLabelWidthValue"
+          (input)="updateCustomLabelWidth()"
+        >
+        <span class="small">{{ customLabelWidthValue }}px</span>
+      </div>
+    </div>
+
+
+
+    <!-- Container 2: campos extras para a subcollection -->
+    <div class="width-control" *ngIf="subcollection && adjustableFields.length > 0">
+      <div class="record-details" [style.--label-width]="customLabelWidth">
+        <ng-container *ngFor="let campo of adjustableFields">
+          
+          <div class="detail-container" 
+           *ngIf="FormService.registro[campo.nome] !== null 
+                   && FormService.registro[campo.nome] !== undefined 
+                   && FormService.registro[campo.nome] !== '' 
+                   && FormService.registro[campo.nome] !== false">
+            <label [for]="campo.nome" class="detail-label">{{ campo.label }}:</label>
+            <div class="detail-value">
+              <!-- Se for checkbox/boolean -->
+              <ng-container *ngIf="campo.tipo === 'checkbox' || campo.tipo === 'boolean'">
+                {{ FormService.registro[campo.nome] ? 'Sim' : 'Não' }}
+              </ng-container>
+              <!-- Se for URL, exibe clicável abrindo em nova janela -->
+              <ng-container *ngIf="campo.tipo === 'url'">
+                <div (click)="openUrl(FormService.registro[campo.nome])" style="cursor:pointer;">
+                  <input
+                    type="url"
+                    [value]="FormService.registro[campo.nome]"
+                    class="detail-value url"
+                    readonly>
                 </div>
-
-                <!-- CORRIGIDO: usar safeCastArray para subgrupos -->
-                <ng-container
-                  *ngFor="let subgrupoObj of groupBySubgrupo(safeCastArray(grupo.value)) | keyvalue: keyValueSortFn; trackBy: trackByKeyValue">
-                  <!-- Mostrar título do subgrupo apenas se não for vazio e contiver campos não vazios -->
-                  <div *ngIf="hasNonEmptyField(safeCastArray(subgrupoObj.value))" class="subgrupo-titulo">
-                    {{ subgrupoObj.key }}
-                  </div>
-                  
-                  <!-- CORRIGIDO: iterar sobre campos com segurança -->
-                  <div *ngFor="let campo of makeIterable(subgrupoObj.value); trackBy: trackByUnknown" class="campo-container">
-                    <!-- CORRIGIDO: verificar se objeto é CampoData válido -->
-                    <ng-container *ngIf="isObjectWithNome(campo)">
-                      <div class="detail-container">
-                        <label [for]="getFieldValueFromKeyValue(campo, 'nome')" class="detail-label">
-                          {{ getFieldValueFromKeyValue(campo, 'label') }}
-                        </label>
-                        <input 
-                          [type]="getFieldValueFromKeyValue(campo, 'tipo')" 
-                          [id]="getFieldValueFromKeyValue(campo, 'nome')" 
-                          [value]="getKeyValueString(campo)" 
-                          class="detail-value" 
-                          readonly>
-                      </div>
-                    </ng-container>
-                  </div>
-                </ng-container>
+              </ng-container>
+              <!-- Demais tipos -->
+              <ng-container *ngIf="campo.tipo !== 'checkbox' && campo.tipo !== 'boolean' && campo.tipo !== 'url'">
+                {{ FormService.registro[campo.nome] }}
               </ng-container>
             </div>
           </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Formulário dinâmico para exibir apenas os campos adicionais (opcional) -->
+    <!-- <div *ngIf="!FormService.isLoading && menu_exame" class="extra-fields-container">
+      <div class="espacador_vertical"></div>
+      <form [formGroup]="FormService.fichaForm" class="record-details">
+        <div *ngFor="let campoNome of getDynamicFields()">
+          <div *ngIf="campoNome !== 'id'" class="detail-container">
+            <label [for]="campoNome" class="detail-label">{{ campoNome | titlecase }}</label>
+            <input type="text" [formControlName]="campoNome" [id]="campoNome" class="detail-value" readonly>
+          </div>
         </div>
       </form>
-    </div>
-  </div>
+    </div> -->
 
-  <!-- For the group-sharing section -->
-  <!-- CORRIGIDO: usar helper seguro para groupId -->
-  <div class="group-sharing-container" *ngIf="registro">
-    <h3 class="section-title">Compartilhamento</h3>
-    <app-group-sharing 
-      [recordGroupId]="safeGetGroupId()" 
-      [collection]="collection" 
-      [recordId]="id"
-      (groupIdChange)="onGroupIdChanged()">
-    </app-group-sharing>
-    <!-- Botão para salvar alterações de compartilhamento -->
-    <div class="group-save-actions" *ngIf="groupChanged">
-      <button mat-raised-button color="primary" (click)="saveGroupChange()">
-        <mat-icon>save</mat-icon>
-        Salvar alterações de compartilhamento
-      </button>
-    </div>
   </div>
-
-  <!-- CORRIGIDO: usar helper seguro para histórico -->
-  <div class="sharing-history-section" *ngIf="sharingHistory && sharingHistory.length > 0">
-    <h3>Histórico de Compartilhamento</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let entry of sharingHistory">
-        <mat-icon mat-list-icon [ngClass]="{
-          'share-icon': !safeString(entry.previousGroupId) && safeString(entry.groupId),
-          'unshare-icon': safeString(entry.previousGroupId) && !safeString(entry.groupId),
-          'change-icon': safeString(entry.previousGroupId) && safeString(entry.groupId)
-        }">
-          {{ !safeString(entry.previousGroupId) && safeString(entry.groupId) ? 'share' :
-          (safeString(entry.previousGroupId) && !safeString(entry.groupId) ? 'link_off' : 'swap_horiz') }}
-        </mat-icon>
-        <div mat-line>
-          <!-- CORRIGIDO: usar helpers seguros -->
-          <ng-container *ngIf="!safeString(entry.previousGroupId) && safeString(entry.groupId)">
-            Compartilhado com <strong>{{ getGroupName(safeString(entry.groupId)) }}</strong>
-          </ng-container>
-          <ng-container *ngIf="safeString(entry.previousGroupId) && !safeString(entry.groupId)">
-            Removido compartilhamento com <strong>{{ getGroupName(safeString(entry.previousGroupId)) }}</strong>
-          </ng-container>
-          <ng-container *ngIf="safeString(entry.previousGroupId) && safeString(entry.groupId)">
-            Alterado compartilhamento de <strong>{{ getGroupName(safeString(entry.previousGroupId)) }}</strong>
-            para <strong>{{ getGroupName(safeString(entry.groupId)) }}</strong>
-          </ng-container>
-        </div>
-        <div mat-line class="history-metadata">
-          {{ formatDate(entry.timestamp) }} por {{ safeString(entry.userName) || safeString(entry.userId) || 'Usuário desconhecido' }}
-        </div>
-      </mat-list-item>
-    </mat-list>
-  </div>
-
 </div>

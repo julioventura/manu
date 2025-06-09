@@ -2,14 +2,12 @@
 
 input {
   border: 0;
-  margin-bottom: 0px;
 }
 
-
-
-.record-details-top {
-  border-bottom: 1px solid $primary-color;
-  height: 2px;
+.detail-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .detail-label {
@@ -22,73 +20,10 @@ input {
   flex: 1;
 }
 
-.record-details {
-  margin-top: 16px;
-  padding-top: 16px;
-}
-
-.record-details .detail-container {
-  margin: 0;
-  padding: 0;
-  padding-left: 5px;
-  border: 0;
-
-  display: flex;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  align-items: center;
-
-  // display: flex;
-  align-items: center;
-  gap: 10px;
-  
-    input {
-      box-shadow: unset;
-    }
-
-  .detail-label {
-    padding-left: 10px;
-    padding-right: 10px;
-    flex-shrink: 0;
-    width: var(--label-width);
-  }
-
-  .detail-value {
-    margin: 5px;
-    border-bottom: 1px solid $primary-color;
-    flex-grow: 1;
-    font-size: 16px;
-
-    .url {
-      color: white;
-      font-size: 12px;
-      font-weight: 500;
-      width: 100%;
-      min-width: 0;
-      max-width: unset;
-      display: block;
-      box-sizing: border-box;
-      transition: background-color 0.3s ease;
-      margin: 0;
-      margin-top: 1em;
-      margin-bottom: 1em;
-      padding: 0.5em;
-      background-color: $primary-color;
-      border: 0;
-      border-radius: 14px;
-      text-align: center;
-      cursor: pointer;
-    }
-  }
-}
-
-
 .slider-wrapper {
   display: flex;
-  align-items: center;
-  /* alinha todos os filhos ao centro verticalmente */
-  gap: 10px;
-  /* espaço entre slider e texto */
+  align-items: center; /* alinha todos os filhos ao centro verticalmente */
+  gap: 10px; /* espaço entre slider e texto */
 
   /* Caso o texto esteja "baixo" em relação ao knob do slider, você pode:
      1) aumentar o line-height do texto
@@ -96,145 +31,12 @@ input {
      3) usar um pequeno transform para subir o texto */
 
   .small {
-    line-height: 1.2;
+    line-height: 1.2; 
     /* ou */
     /* transform: translateY(-1px); */
   }
 }
 
-
-.sticky-slider {
-  position: sticky;
-  z-index: 100;
-  top: 0;
-  padding: 10px 0;
-  margin-bottom: 4px;
-  background-color: unset;
-  margin-left: 0px;
-}
-
-
-.full-width-container {
-  width: 100%;
-}
-
-// Novo estilo para o container do slider
-.width-control {
-  display: inline-block;
-  border: 1px solid $primary-color; // Borda de 1px
-  border-radius: 6px; // Border-radius de 6px
-  background-color: #fff; // Fundo branco opaco
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
-  padding: 3px;
-  padding-right: 12px;
-  padding-left: 0px;
-}
-
-
-// Estilo para o título dos grupos
-.grupo-titulo {
-  font-size: 0.9em;
-  font-weight: 500;
-  line-height: 1.5em;
-  text-align: left;
-
-  margin-bottom: 15px;
-  margin-top: 15px;
-
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 10px;
-
-  background-color: $primary-color;
-  color: #fff;
-  border-radius: 5px;
-
-}
-
-// Add this CSS for styling the subgroup titles
-
-.subgrupo-titulo {
-  font-size: 0.8em;
-  font-weight: 500;
-  line-height: 1.4em;
-  text-align: left;
-  color: #2A7AC3;
-  background-color: #daecff;
-  margin-top: 15px;
-  margin-bottom: 0px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 15px;
-  border: 1px solid $primary-color;
-  border: 1px solid #badbff;
-  border-radius: 5px;
-}
-
-textarea {
-  color: $primary-color;
-  font-size: 14px;
-
-}
-
-.sharing-history-section {
-  margin-top: 24px;
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  
-  h3 {
-    margin-bottom: 16px;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  .history-metadata {
-    color: rgba(0,0,0,0.6);
-    font-size: 12px;
-  }
-  
-  mat-list-item {
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    margin-bottom: 8px;
-  }
-  
-  mat-icon {
-    color: #2196F3;
-    
-    &.share-icon {
-      color: #4CAF50;
-    }
-    
-    &.unshare-icon {
-      color: #F44336;
-    }
-    
-    &.change-icon {
-      color: #FF9800;
-    }
-  }
-}
-
-// Adicionar no final do arquivo
-.group-sharing-container {
-  margin-top: 24px;
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  
-  .section-title {
-    margin-bottom: 16px;
-    color: #333;
-    font-weight: 500;
-    font-size: 18px;
-  }
-  
-  .group-save-actions {
-    margin-top: 16px;
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
+.record-details .detail-container .detail-value, .dynamic-form-container .detail-container .detail-value {
+  border: 0px;
 }

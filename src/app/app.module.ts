@@ -25,6 +25,7 @@ import { CamposRegistroComponent } from './camposRegistro/camposRegistro.compone
 import { ListComponent } from './list/list.component';
 import { EditComponent } from './edit/edit.component';
 import { FichasComponent } from './fichas/fichas.component';
+import { ViewComponent } from './view/view.component'; // ADICIONAR
 
 // Componentes standalone que queremos usar globalmente
 import { FooterComponent } from './footer/footer.component';
@@ -50,7 +51,8 @@ import { LoggingService } from './shared/services/logging.service';
     CamposRegistroComponent,
     ListComponent,
     EditComponent,
-    FichasComponent
+    FichasComponent,
+    ViewComponent // ADICIONAR
     // REMOVIDOS: HomepageComponent, TutfopComponent, FooterComponent (são standalone)
   ],
   imports: [
