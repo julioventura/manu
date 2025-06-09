@@ -59,12 +59,8 @@ export class GroupService {
   getAllUserGroups(): Observable<Group[]> {
     console.log('GroupService.getAllUserGroups: Starting, userId:', this.userId);
     
-    if (!this.userId) {
-      console.warn('GroupService.getAllUserGroups: No userId available');
-      return of([]);
-    }
-
-    return this.afAuth.user.pipe(
+    // CORRIGIR: aguardar userId estar disponível em vez de retornar vazio
+    return this.afAuth.authState.pipe(
       filter((user): user is firebase.User => !!user && !!user.uid),
       take(1),
       tap(user => {
@@ -72,6 +68,10 @@ export class GroupService {
           uid: user.uid,
           email: user.email
         });
+        // ADICIONAR: atualizar userId se não estiver definido
+        if (!this.userId) {
+          this.userId = user.uid;
+        }
       }),
       switchMap(user => {
         const userEmail = user.email;
@@ -83,7 +83,7 @@ export class GroupService {
         }
 
         console.log('GroupService: Searching groups for:', { uid, userEmail });
-
+        
         return this.firestore
           .collection<Group>('groups')
           .valueChanges({ idField: 'id' })
@@ -528,23 +528,18 @@ export class GroupService {
     );
   }
 
-  testFirestoreConnection(): Observable<Group[]> {
+  testFirestoreConnection(): Observable<boolean> {
     console.log('Testing Firestore connection...');
-    
-    return this.firestore.collection<Group>('groups', ref => ref.limit(1))
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        tap(result => {
-          console.log('Firestore test result:', result);
-        }),
-        catchError(error => {
-          console.error('Firestore test error:', error);
-          if (error.code === 'permission-denied') {
-            console.error('Permission denied - check Firestore rules');
-          }
-          return of([]);
-        })
-      );
+    return this.firestore.collection('groups').doc('test').get().pipe(
+      map(() => {
+        console.log('Firestore connection successful');
+        return true;
+      }),
+      catchError(error => {
+        console.error('Firestore connection failed:', error);
+        return of(false);
+      })
+    );
   }
 
   // Métodos privados helper

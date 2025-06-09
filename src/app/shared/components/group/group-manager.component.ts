@@ -129,11 +129,12 @@ export class GroupManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.groupService.testFirestoreConnection().subscribe();
-    this.loadGroups();
-    this.loadJoinRequests();
+    // CORRIGIR: aguardar autenticação antes de carregar grupos
     this.loadCurrentUser();
-    this.createTestGroupIfNeeded();
+    // Remover chamadas imediatas que dependem de autenticação
+    // this.loadGroups(); // REMOVER
+    // this.loadJoinRequests(); // REMOVER
+    // this.createTestGroupIfNeeded(); // REMOVER
   }
 
   // MÉTODO TEMPORÁRIO PARA DEBUG - REMOVER DEPOIS
@@ -168,25 +169,37 @@ export class GroupManagerComponent implements OnInit {
     }, 2000); // Aguardar 2 segundos para garantir que a autenticação foi completada
   }
 
-  // ADD missing loadGroups method
+  // CORRIGIR: método loadGroups no GroupManagerComponent
   loadGroups(): void {
+    if (!this.userId) {
+      console.warn('[GroupManager] Cannot load groups: user not authenticated');
+      return;
+    }
+
+    console.log('[GroupManager] Loading groups for user:', this.userId);
     this.isLoading = true;
-    this.groupService.getAllUserGroups()
-      .pipe(finalize(() => {
-        this.isLoading = false;
-      }))
-      .subscribe({
-        next: groups => {
-          this.groups = groups;
-          if (this.groups.length === 0) {
-            console.warn('[GroupManager] No groups were loaded for the current user.');
-          }
-        },
-        error: error => {
-          console.error('[GroupManager] Error loading groups:', error);
-          this.groups = []; // Ensure groups is an empty array on error
+    
+    // CORRIGIR: adicionar subscription correta
+    this.groupService.getAllUserGroups().subscribe({
+      next: (groups) => {
+        console.log('[GroupManager] Groups loaded successfully:', groups);
+        this.groups = groups;
+        this.isLoading = false; // IMPORTANTE: definir loading como false
+        
+        if (this.groups.length === 0) {
+          console.warn('[GroupManager] No groups were loaded for the current user.');
         }
-      });
+      },
+      error: (error) => {
+        console.error('[GroupManager] Error loading groups:', error);
+        this.groups = [];
+        this.isLoading = false; // IMPORTANTE: definir loading como false mesmo em erro
+      },
+      complete: () => {
+        console.log('[GroupManager] Groups loading completed');
+        this.isLoading = false; // GARANTIR que loading seja false
+      }
+    });
   }
 
   // ADICIONAR métodos faltantes
@@ -199,18 +212,24 @@ export class GroupManagerComponent implements OnInit {
     this.loadJoinRequests();
   }
 
-  // CORRIGIR método loadCurrentUser para tratar Observable corretamente
+  // CORRIGIR: método loadCurrentUser para aguardar autenticação
   loadCurrentUser(): void {
-    // Se getCurrentUser não existir no service, usar afAuth diretamente
     this.groupService.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
         this.userEmail = user.email;
         this.isAdmin = false;
+        
+        // ADICIONAR: carregar dados após autenticação
+        console.log('GroupManager: User authenticated, loading groups...');
+        this.loadGroups();
+        this.loadJoinRequests();
+        this.createTestGroupIfNeeded();
       } else {
         this.userId = null;
         this.userEmail = null;
         this.isAdmin = false;
+        this.groups = []; // Limpar grupos se não autenticado
       }
     });
   }
