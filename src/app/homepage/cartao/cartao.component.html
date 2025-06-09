@@ -4,18 +4,18 @@
   </div>
 
   <div class="card-body">
-    <div class="cartao-virtual" [ngClass]="{'dark-theme': userService.userProfile?.temaCartao === 'dark'}">
+    <div class="cartao-virtual" [ngClass]="{'dark-theme': userService.userProfile?.['temaCartao'] === 'dark'}">
 
       <div class="cartao-header">
 
-        <!-- <div class="cartao-logo" *ngIf="userService.userProfile?.logo">
-          <img [src]="userService.userProfile.logo" alt="Logo">
+        <!-- <div class="cartao-logo" *ngIf="userService.userProfile?.['logo']">
+          <img [src]="userService.userProfile?.['logo']" alt="Logo">
         </div> -->
 
         <div class="cartao-nome">
-          <h4>{{ userService.userProfile.nome || 'Nome do Profissional' }}</h4>
-          <p>{{ userService.userProfile.  titulo_profissional || 'Titulo Profissional' }}</p>
-          <p>{{ userService.userProfile?.especialidade || 'Especialidades' }}</p>
+          <h4>{{ userService.userProfile?.['nome'] || 'Nome do Profissional' }}</h4>
+          <p>{{ userService.userProfile?.['titulo_profissional'] || 'Titulo Profissional' }}</p>
+          <p>{{ userService.userProfile?.['especialidade'] || 'Especialidades' }}</p>
         </div>
 
       </div>
@@ -26,30 +26,30 @@
       <div class="cartao-content">
         <div class="cartao-info">
 
-          <!-- <div class="info-item" *ngIf="userService.userProfile?.cro">
+          <!-- <div class="info-item" *ngIf="userService.userProfile?.['cro']">
             <i class="fas fa-id-card"></i>
-            <span>CRO: {{ userService.userProfile.cro }}</span>
+            <span>CRO: {{ userService.userProfile?.['cro'] }}</span>
           </div> -->
           &nbsp;<br>
 
-          <div class="info-item" *ngIf="userService.userProfile?.whatsapp">
+          <div class="info-item" *ngIf="userService.userProfile?.['whatsapp']">
             <i class="fab fa-whatsapp"></i>
-            <span>{{ userService.userProfile.whatsapp }}</span>
+            <span>{{ userService.userProfile?.['whatsapp'] }}</span>
           </div>
 
-          <div class="info-item" *ngIf="userService.userProfile?.telefone">
+          <div class="info-item" *ngIf="userService.userProfile?.['telefone']">
             <i class="fas fa-phone-alt"></i>
-            <span>{{ userService.userProfile.telefone }}</span>
+            <span>{{ userService.userProfile?.['telefone'] }}</span>
           </div>
 
-          <div class="info-item" *ngIf="userService.userProfile?.email">
+          <div class="info-item" *ngIf="userService.userProfile?.['email']">
             <i class="fas fa-envelope"></i>
-            <span>{{ userService.userProfile.email }}</span>
+            <span>{{ userService.userProfile?.['email'] }}</span>
           </div>
 
-          <div class="info-item" *ngIf="userService.userProfile?.site">
+          <div class="info-item" *ngIf="userService.userProfile?.['site']">
             <i class="fas fa-globe"></i>
-            <span>{{ userService.userProfile.site}}</span>
+            <span>{{ userService.userProfile?.['site'] }}</span>
           </div>
 
         </div>

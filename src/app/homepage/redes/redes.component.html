@@ -6,8 +6,8 @@
   <div class="card-body">
     <div class="redes-lista" *ngIf="hasRedesSociais(); else semRedes">
       <!-- Instagram -->
-      <a *ngIf="userService.userProfile?.instagram" 
-         [href]="formatUrl(userService.userProfile.instagram, 'instagram')" 
+      <a *ngIf="userService.userProfile?.['instagram']" 
+         [href]="formatUrl(userService.userProfile?.['instagram'], 'instagram')" 
          target="_blank" rel="noopener"
          class="rede-item instagram">
         <i class="fab fa-instagram fb-icon-margin"></i>
@@ -15,8 +15,8 @@
       </a>
       
       <!-- Facebook -->
-      <a *ngIf="userService.userProfile?.facebook" 
-         [href]="formatUrl(userService.userProfile.facebook, 'facebook')" 
+      <a *ngIf="userService.userProfile?.['facebook']" 
+         [href]="formatUrl(userService.userProfile?.['facebook'], 'facebook')" 
          target="_blank" rel="noopener"
          class="rede-item facebook">
         <i class="fab fa-facebook-f fb-icon-margin"></i>
@@ -24,8 +24,8 @@
       </a>
       
       <!-- LinkedIn -->
-      <a *ngIf="userService.userProfile?.linkedin" 
-         [href]="formatUrl(userService.userProfile.linkedin, 'linkedin')" 
+      <a *ngIf="userService.userProfile?.['linkedin']" 
+         [href]="formatUrl(userService.userProfile?.['linkedin'], 'linkedin')" 
          target="_blank" rel="noopener"
          class="rede-item linkedin">
         <i class="fab fa-linkedin-in fb-icon-margin"></i>
@@ -33,8 +33,8 @@
       </a>
       
       <!-- YouTube -->
-      <a *ngIf="userService.userProfile?.youtube" 
-         [href]="formatUrl(userService.userProfile.youtube, 'youtube')" 
+      <a *ngIf="userService.userProfile?.['youtube']" 
+         [href]="formatUrl(userService.userProfile?.['youtube'], 'youtube')" 
          target="_blank" rel="noopener"
          class="rede-item youtube">
         <i class="fab fa-youtube fb-icon-margin"></i>
@@ -42,8 +42,8 @@
       </a>
       
       <!-- Twitter -->
-      <a *ngIf="userService.userProfile?.twitter" 
-         [href]="formatUrl(userService.userProfile.twitter, 'twitter')" 
+      <a *ngIf="userService.userProfile?.['twitter']"
+         [href]="formatUrl(userService.userProfile?.['twitter'], 'twitter')" 
          target="_blank" rel="noopener"
          class="rede-item twitter">
         <i class="fab fa-twitter fb-icon-margin"></i>
@@ -51,8 +51,8 @@
       </a>
       
       <!-- TikTok -->
-      <a *ngIf="userService.userProfile?.tiktok" 
-         [href]="formatUrl(userService.userProfile.tiktok, 'tiktok')" 
+      <a *ngIf="userService.userProfile?.['tiktok']"
+         [href]="formatUrl(userService.userProfile?.['tiktok'], 'tiktok')" 
          target="_blank" rel="noopener"
          class="rede-item tiktok">
         <i class="fab fa-tiktok fb-icon-margin"></i>
@@ -60,8 +60,8 @@
       </a>
       
       <!-- Pinterest -->
-      <a *ngIf="userService.userProfile?.pinterest" 
-         [href]="formatUrl(userService.userProfile.pinterest, 'pinterest')" 
+      <a *ngIf="userService.userProfile?.['pinterest']"
+         [href]="formatUrl(userService.userProfile?.['pinterest'], 'pinterest')" 
          target="_blank" rel="noopener"
          class="rede-item pinterest">
         <i class="fab fa-pinterest-p fb-icon-margin"></i>

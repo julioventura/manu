@@ -24,15 +24,22 @@ interface FirebaseTimestamp {
   toDate(): Date;
 }
 
+// ADICIONAR: Interface para KeyValuePair
+interface KeyValuePair {
+  key: string;
+  value: unknown;
+}
+
+// ADICIONAR: Interface para Campo
 interface Campo {
-  id: string;
+  id: string;  // MUDANÇA: era unknown, agora é string
   nome: string;
   label?: string;
-  tipo: string;
-  grupo?: string;
-  subgrupo?: string;
-  obrigatorio?: boolean;
-  url?: boolean;
+  tipo?: string;
+  grupo?: string;  // ADICIONAR
+  subgrupo?: string;  // ADICIONAR
+  obrigatorio?: boolean;  // ADICIONAR
+  [key: string]: unknown;
 }
 
 interface SharingHistoryEntry {
@@ -48,12 +55,7 @@ interface SharingHistoryEntry {
 }
 
 interface FormControls {
-  [key: string]: string[];
-}
-
-interface KeyValuePair {
-  key: string;
-  value: unknown;
+  [key: string]: unknown[];  // CORRIGIDO: era string[], agora é unknown[]
 }
 
 type ViewData = Record<string, unknown> | unknown[] | string | number | boolean | null;
@@ -186,8 +188,8 @@ export class ViewComponent implements OnInit {
       this.campos = Object.keys(record)
         .filter(key => key !== 'id')
         .map(key => ({
-          id: key,
-          nome: this.formatFieldName(key),
+          id: key,  // CORRIGIDO: key é string
+          nome: key,  // CORRIGIDO: usar key diretamente
           label: this.formatFieldName(key),
           tipo: this.inferFieldType(record[key]),
           obrigatorio: key === 'nome' || key === 'name'
@@ -196,14 +198,14 @@ export class ViewComponent implements OnInit {
       this.campos = [
         { 
           id: 'nome', 
-          nome: 'Nome', 
+          nome: 'nome',  // CORRIGIDO
           label: 'Nome',
           tipo: 'text', 
           obrigatorio: true 
         },
         { 
           id: 'id', 
-          nome: 'ID', 
+          nome: 'id',  // CORRIGIDO
           label: 'ID',
           tipo: 'text', 
           obrigatorio: false 
@@ -240,7 +242,7 @@ export class ViewComponent implements OnInit {
   buildForm(): void {
     const formControls: FormControls = {};
     this.campos.forEach(campo => {
-      formControls[campo.id] = [''];
+      formControls[campo.id] = [''];  // CORRIGIDO: campo.id agora é string
     });
     this.fichaForm = this.formBuilder.group(formControls);
     
@@ -328,13 +330,13 @@ export class ViewComponent implements OnInit {
   hasRegistroProperty(campo: Campo): boolean {
     if (!this.registro || typeof this.registro !== 'object') return false;
     const record = this.registro as Record<string, unknown>;
-    return campo.id in record;
+    return campo.nome in record;  // CORRIGIDO: usar campo.nome em vez de campo.id
   }
 
   getRegistroProperty(campo: Campo): unknown {
     if (!this.registro || typeof this.registro !== 'object') return null;
     const record = this.registro as Record<string, unknown>;
-    return record[campo.id];
+    return record[campo.nome];  // CORRIGIDO: usar campo.nome
   }
 
   getRegistroString(campo: Campo): string {
@@ -391,7 +393,7 @@ export class ViewComponent implements OnInit {
   }
 
   trackByCampo(index: number, campo: Campo): string {
-    return campo.id;
+    return campo.id;  // CORRIGIDO: campo.id agora é string garantido
   }
 
   groupByGrupo(campos: Campo[]): { [key: string]: Campo[] } {
@@ -423,20 +425,31 @@ export class ViewComponent implements OnInit {
   }
 
   hasNonEmptyField(campos: Campo[]): boolean {
-    return campos.some(campo => this.isNotEmpty(this.getRegistroProperty(campo)));
+    return campos.some(campo => {
+      const value = this.getRegistroProperty(campo);
+      return this.isNotEmpty(value);
+    });
   }
 
   makeIterable(obj: unknown): KeyValuePair[] {
     if (!obj || typeof obj !== 'object') return [];
-    return Object.keys(obj as Record<string, unknown>).map(key => ({ 
+    const record = obj as Record<string, unknown>;
+    return Object.keys(record).map(key => ({ 
       key, 
-      value: (obj as Record<string, unknown>)[key] 
+      value: record[key] 
     }));
   }
 
   safeString(value: unknown): string {
     if (value === null || value === undefined) return '';
-    return String(value);
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number') return value.toString();
+    if (typeof value === 'boolean') return value.toString();
+    try {
+      return String(value);
+    } catch {
+      return '';
+    }
   }
 
   keyValueSortFn = (a: KeyValuePair, b: KeyValuePair): number => {
@@ -506,20 +519,8 @@ export class ViewComponent implements OnInit {
     return null;
   }
 
-  trackByUnknown(index: number, item: unknown): string {
-    if (item && typeof item === 'object') {
-      const obj = item as Record<string, unknown>;
-      if ('nome' in obj && obj['nome']) {
-        return String(obj['nome']);
-      }
-      if ('key' in obj && obj['key']) {
-        return String(obj['key']);
-      }
-      if ('id' in obj && obj['id']) {
-        return String(obj['id']);
-      }
-    }
-    return String(index);
+  trackByUnknown(index: number, item: unknown): unknown {
+    return item || index;
   }
 
   trackByKey(index: number, key: string): string {
@@ -566,5 +567,36 @@ export class ViewComponent implements OnInit {
       }
     }
     return this.safeString(item.value);
+  }
+
+  // ADICIONAR: função para verificar tipo
+  isObjectWithNome(campo: unknown): campo is Record<string, unknown> & { nome: string } {
+    return campo !== null && 
+           campo !== undefined && 
+           typeof campo === 'object' && 
+           'nome' in campo && 
+           typeof (campo as Record<string, unknown>)['nome'] === 'string' &&
+           !!(campo as Record<string, unknown>)['nome'];  // CORRIGIDO: garantir boolean
+  }
+
+  // ADICIONAR: função para obter valor seguro de KeyValuePair
+  getFieldValueFromKeyValue(item: unknown, key: string): string {
+    if (!item || typeof item !== 'object') return '';
+    
+    const obj = item as Record<string, unknown>;
+    
+    // CORRIGIDO: usar notação de índice
+    if ('value' in obj && obj['value'] && typeof obj['value'] === 'object') {
+      const valueObj = obj['value'] as Record<string, unknown>;
+      return this.safeString(valueObj[key]);
+    }
+    
+    // Se é objeto direto
+    return this.safeString(obj[key]);
+  }
+
+  // ADICIONAR método para verificar se campo tem propriedade específica
+  hasFieldProperty(campo: Campo, property: string): boolean {
+    return property in campo && campo[property] !== undefined && campo[property] !== null;
   }
 }

@@ -50,7 +50,7 @@ export class TutfopComponent implements OnInit, OnDestroy {
   private webhookURL = this.webhookURLprod;
   
   // private readonly webhookURLteste = 'https://marte.cirurgia.com.br/webhook-test/TutFOP3';
-//   private webhookURL = this.webhookURLprod;
+  // private webhookURL = this.webhookURLprod;
 
   constructor(
     private userService: UserService,
@@ -67,9 +67,11 @@ export class TutfopComponent implements OnInit, OnDestroy {
         if (user) {
           this.userUid = user.uid;
           this.userEmail = user.email || '';
-          this.userNome = user.displayName || this.userService.userProfile?.nome || '';
+          // CORRIGIDO: garantir que o retorno seja string
+          this.userNome = user.displayName || 
+                         (this.userService.userProfile?.['nome'] as string) || 
+                         '';
           this.isUserAuthenticated = true;
-          
           
           // Inicializar o TutFOP após obter os dados do usuário
           this.initializeTutfop();
@@ -128,8 +130,6 @@ export class TutfopComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // LOG: Clique no botão Enviar - início do envio da mensagem
-
     // Adicionar mensagem do usuário
     const userMessage = `<div class="user-message"><strong>Você:</strong> ${message}</div>`;
     chatLog.innerHTML += userMessage;
@@ -151,12 +151,6 @@ export class TutfopComponent implements OnInit, OnDestroy {
       uid: this.userUid
     };
 
-    // LOG: Fase 1 - Preparação dos dados para envio ao webhook
-    Object.keys(data).forEach((campo) => {
-    });
-
-    // LOG: Fase 2 - Envio da requisição para o webhook
-
     try {
       const response = await fetch(this.webhookURL, {
         method: 'POST',
@@ -166,28 +160,20 @@ export class TutfopComponent implements OnInit, OnDestroy {
         body: JSON.stringify(data)
       });
 
-      // LOG: Fase 3 - Resposta recebida do webhook
-
-      let responseData: any = null;
+      // CORRIGIR LINHA 171 - tipo any
+      let responseData: { response?: string } | null = null;
       const contentType = response.headers.get('content-type');
       const responseText = await response.text();
 
-      // LOG: Fase 3 - Conteúdo bruto recebido
-
       if (contentType && contentType.includes('application/json') && responseText) {
         try {
-          responseData = JSON.parse(responseText);
-          // LOG: Fase 3 - JSON parse OK
+          responseData = JSON.parse(responseText) as { response?: string };
         } catch (e) {
-          // LOG: Fase 3 - Erro ao fazer parse do JSON
           console.error('[TutFOP][Webhook][FASE 3][ERRO] Falha ao fazer parse do JSON:', e, responseText);
         }
       } else {
-        // LOG: Fase 3 - Resposta não é JSON ou está vazia
         console.warn('[TutFOP][Webhook][FASE 3][AVISO] Resposta não é JSON ou está vazia.', { contentType, responseText });
       }
-
-      // LOG: Fase 4 - Conferência dos campos esperados na resposta
 
       if (responseData && responseData.response) {
         let formattedResponse = responseData.response.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
@@ -197,11 +183,9 @@ export class TutfopComponent implements OnInit, OnDestroy {
         chatLog.scrollTop = chatLog.scrollHeight;
       } else {
         alert('Erro ao processar mensagem. Tente novamente.');
-        // LOG: Fase 4 - Erro de campos não recebidos
         console.error('[TutFOP][Webhook][FASE 4][ERRO] Campo "response" não recebido do webhook.', responseData);
       }
     } catch (error) {
-      // LOG: Fase 5 - Erro na conexão ou processamento
       console.error('[TutFOP][Webhook][FASE 5][ERRO] Falha na conexão ou processamento do webhook:', error);
       alert('Erro ao enviar mensagem. Tente novamente.');
     } finally {

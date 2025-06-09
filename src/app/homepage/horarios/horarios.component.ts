@@ -20,12 +20,12 @@ export class HorariosComponent {
   constructor(public userService: UserService) {}  
   
   getHorarios(): Horario[] {
-    if (!this.userService.userProfile?.horarios) return [];
+    if (!this.userService.userProfile?.['horarios']) return [];
 
     // Se for string (formato antigo), tenta converter
-    if (typeof this.userService.userProfile.horarios === 'string') {
+    if (typeof this.userService.userProfile?.['horarios'] === 'string') {
       try {
-        return JSON.parse(this.userService.userProfile.horarios);
+        return JSON.parse(this.userService.userProfile?.['horarios']);
       } catch (e) {
         console.error('Erro ao converter horários', e);
         return [];
@@ -33,8 +33,8 @@ export class HorariosComponent {
     }
 
     // Se já for array
-    if (Array.isArray(this.userService.userProfile.horarios)) {
-      return this.userService.userProfile.horarios;
+    if (Array.isArray(this.userService.userProfile?.['horarios'])) {
+      return this.userService.userProfile?.['horarios'];
     }
 
     return [];

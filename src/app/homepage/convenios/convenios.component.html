@@ -1,33 +1,37 @@
-<div class="profile-card convenios-card">
+<div class="profile-card component-card">
   <div class="card-header">
     <h3>Convênios</h3>
   </div>
   
-  <div class="card-body">
-    <div class="convenios-info" *ngIf="temConvenios(); else semConvenios">
+  <div class="card-body component-content">
+    <!-- CORRIGIDO: usar temConvenios() em vez de hasConvenios() -->
+    <div class="convenios-lista" *ngIf="temConvenios(); else semConvenios">
       
-      <!-- <div class="convenios-lista">
-        <div class="convenio-item" *ngIf="getConvenios()">
-          <i class="fas fa-check-circle"></i>
-          <span>{{ userService.userProfile.convenios }}</span>
-        </div>
-      </div> -->
-
-      <div class="convenios-lista">
-        <div class="convenio-item" *ngFor="let convenio of getConvenios()">
-          <i class="fas fa-check-circle"></i>
-          <span>{{ convenio.nomeConvenio }}</span>
+      <div class="convenios-grid">
+        <!-- CORRIGIDO: trackBy sem parâmetro item -->
+        <div *ngFor="let convenio of getConvenios(); trackBy: trackByIndex; let i = index" 
+             class="convenio-item">
+          
+          <div class="convenio-info">
+            <h4>{{ convenio.nome }}</h4>
+            <p *ngIf="convenio.descricao">{{ convenio.descricao }}</p>
+            
+            <!-- Status do convênio -->
+            <span class="status" 
+                  [ngClass]="{'ativo': convenio.ativo, 'inativo': !convenio.ativo}">
+              {{ convenio.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
         </div>
       </div>
-    
     </div>
     
+    <!-- Template para quando não há convênios -->
     <ng-template #semConvenios>
-      <div class="no-convenios">
+      <div class="empty-message">
         <i class="fas fa-info-circle"></i>
-        <p>Informações sobre convênios não disponíveis. Entre em contato para mais detalhes.</p>
+        <p>Nenhum convênio cadastrado</p>
       </div>
     </ng-template>
-    
   </div>
 </div>

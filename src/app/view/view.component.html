@@ -159,12 +159,17 @@
                   <!-- CORRIGIDO: iterar sobre campos com segurança -->
                   <div *ngFor="let campo of makeIterable(subgrupoObj.value); trackBy: trackByUnknown" class="campo-container">
                     <!-- CORRIGIDO: verificar se objeto é CampoData válido -->
-                    <ng-container *ngIf="campo && typeof campo === 'object' && campo['nome']">
+                    <ng-container *ngIf="isObjectWithNome(campo)">
                       <div class="detail-container">
-                        <label [for]="safeString(campo['nome'])" class="detail-label">{{ safeString(campo['label']) }}</label>
-                        <!-- CORRIGIR: usar campo como objeto Campo, não string -->
-                        <input [type]="safeString(campo['tipo'])" [id]="safeString(campo['nome'])" 
-                               [value]="getKeyValueString(campo)" class="detail-value" readonly>
+                        <label [for]="getFieldValueFromKeyValue(campo, 'nome')" class="detail-label">
+                          {{ getFieldValueFromKeyValue(campo, 'label') }}
+                        </label>
+                        <input 
+                          [type]="getFieldValueFromKeyValue(campo, 'tipo')" 
+                          [id]="getFieldValueFromKeyValue(campo, 'nome')" 
+                          [value]="getKeyValueString(campo)" 
+                          class="detail-value" 
+                          readonly>
                       </div>
                     </ng-container>
                   </div>

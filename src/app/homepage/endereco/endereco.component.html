@@ -6,6 +6,9 @@
   <div class="card-body component-content">
     <!-- Lista de endereços -->
     <div class="enderecos-lista" *ngIf="hasEnderecos(); else semEnderecos">
+      
+      <!-- REMOVIDO: bloco duplicado -->
+      <!-- Manter apenas este bloco: -->
       <div *ngFor="let endereco of getEnderecos()" class="enderecos-item">
         <!-- Rua -->
         <div *ngIf="endereco.rua" class="info-line">
@@ -35,7 +38,8 @@
     <!-- Template para quando não há endereços -->
     <ng-template #semEnderecos>
       <div class="empty-message">
-        Nenhum endereço cadastrado
+        <i class="fas fa-info-circle"></i>
+        <p>Nenhum endereço cadastrado</p>
       </div>
     </ng-template>
   </div>

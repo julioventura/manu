@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -41,11 +41,27 @@ interface FirebaseError {
     MatProgressSpinnerModule
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  // ADICIONAR: propriedades faltando
+  selectedTab: number = 0;
+  
+  // Login
   email: string = '';
   password: string = '';
-  isLoading: boolean = false;
   hidePassword: boolean = true;
+  isSubmitting: boolean = false;
+  isLoggingIn: boolean = false;  // ADICIONAR - Linha 84, 102, 116, 144
+  
+  // Signup
+  signupEmail: string = '';
+  signupPassword: string = '';
+  signupName: string = '';
+  hideSignupPassword: boolean = true;
+  isCreatingAccount: boolean = false;
+  
+  // Reset
+  resetEmail: string = '';
+  isResetting: boolean = false;
 
   constructor(
     private afAuth: AngularFireAuth, // FIX: remover @Inject - usar injeção normal
@@ -55,9 +71,18 @@ export class LoginComponent {
     private navegacao: NavegacaoService
   ) {}
 
+  ngOnInit(): void {
+    // ADICIONAR: lógica para redirecionar usuários autenticados
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/']);
+      }
+    });
+  }
+
   async signInWithGoogle(): Promise<void> {
     try {
-      this.isLoading = true;
+      this.isLoggingIn = true;
       const provider = new firebase.auth.GoogleAuthProvider();
       const result = await this.afAuth.signInWithPopup(provider);
       
@@ -75,7 +100,7 @@ export class LoginComponent {
         panelClass: ['error-snackbar']
       });
     } finally {
-      this.isLoading = false;
+      this.isLoggingIn = false;
     }
   }
 
@@ -89,7 +114,7 @@ export class LoginComponent {
     }
 
     try {
-      this.isLoading = true;
+      this.isLoggingIn = true;
       const result = await this.afAuth.signInWithEmailAndPassword(this.email, this.password);
       
       if (result.user) {
@@ -117,13 +142,13 @@ export class LoginComponent {
         panelClass: ['error-snackbar']
       });
     } finally {
-      this.isLoading = false;
+      this.isLoggingIn = false;
     }
   }
 
-  async resetPassword(): Promise<void> {
-    if (!this.email) {
-      this.snackBar.open('Por favor, digite seu email', 'OK', {
+  async onSignup(): Promise<void> {
+    if (!this.signupEmail || !this.signupPassword || !this.signupName) {
+      this.snackBar.open('Por favor, preencha todos os campos', 'OK', {
         duration: 3000,
         panelClass: ['warning-snackbar']
       });
@@ -131,9 +156,48 @@ export class LoginComponent {
     }
 
     try {
-      await this.afAuth.sendPasswordResetEmail(this.email);
-      this.snackBar.open('Email de recuperação enviado!', 'OK', {
-        duration: 3000,
+      this.isCreatingAccount = true;
+      const result = await this.afAuth.createUserWithEmailAndPassword(this.signupEmail, this.signupPassword);
+      
+      if (result.user) {
+        // ADICIONAR: atualização do perfil do usuário com o nome
+        await result.user.updateProfile({
+          displayName: this.signupName
+        });
+        
+        this.snackBar.open('Conta criada com sucesso!', 'OK', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.router.navigate(['/']);
+      }
+    } catch (error) {
+      console.error('Erro ao criar conta:', error);
+      const firebaseError = error as FirebaseError;
+      
+      let errorMessage = 'Erro ao criar conta';
+      if (firebaseError.code === 'auth/email-already-in-use') {
+        errorMessage = 'Email já está em uso';
+      } else if (firebaseError.code === 'auth/invalid-email') {
+        errorMessage = 'Email inválido';
+      } else if (firebaseError.code === 'auth/weak-password') {
+        errorMessage = 'A senha deve ter pelo menos 6 caracteres';
+      }
+      
+      this.snackBar.open(errorMessage, 'OK', {
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
+    } finally {
+      this.isCreatingAccount = false;
+    }
+  }
+
+  async resetPassword(email: string): Promise<void> {
+    try {
+      await this.afAuth.sendPasswordResetEmail(email);
+      this.snackBar.open('Email de recuperação enviado! Verifique sua caixa de entrada e, se não encontrar, a de SPAM.', 'OK', {
+        duration: 5000,
         panelClass: ['success-snackbar']
       });
     } catch {
@@ -144,8 +208,96 @@ export class LoginComponent {
     }
   }
 
+  // ADICIONAR: método login faltando - Linha 219
+  async login(email: string, password: string): Promise<void> {
+    try {
+      this.isLoggingIn = true;
+      const result = await this.afAuth.signInWithEmailAndPassword(email, password);
+      if (result.user) {
+        console.log('Login realizado com sucesso:', result.user.uid);
+        // Redirecionar para dashboard ou home
+        // this.router.navigate(['/dashboard']);
+      }
+    } catch (error) {
+      console.error('Erro no login:', error);
+      throw error;
+    } finally {
+      this.isLoggingIn = false;
+    }
+  }
+
+  // CORRIGIR: método onLogin para usar o método login
+  async onLogin(): Promise<void> {
+    if (!this.email || !this.password) {
+      alert('Por favor, preencha email e senha.');
+      return;
+    }
+    
+    this.isSubmitting = true;
+    try {
+      // LINHA 219 - USAR o método login
+      await this.login(this.email, this.password);
+    } catch (error) {
+      console.error('Erro no login:', error);
+      alert('Erro ao fazer login. Verifique suas credenciais.');
+    } finally {
+      this.isSubmitting = false;
+    }
+  }
+
+  // ADICIONAR: método para signup
+  async signup(): Promise<void> {
+    if (!this.signupEmail || !this.signupPassword || !this.signupName) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    this.isCreatingAccount = true;
+    try {
+      const result = await this.afAuth.createUserWithEmailAndPassword(
+        this.signupEmail, 
+        this.signupPassword
+      );
+      
+      if (result.user) {
+        // Atualizar profile com o nome
+        await result.user.updateProfile({ displayName: this.signupName });
+        console.log('Conta criada com sucesso:', result.user.uid);
+        // Redirecionar
+        // this.router.navigate(['/dashboard']);
+      }
+    } catch (error) {
+      console.error('Erro ao criar conta:', error);
+      alert('Erro ao criar conta. Tente novamente.');
+    } finally {
+      this.isCreatingAccount = false;
+    }
+  }
+
+  // ADICIONAR: método onResetPassword
+  async onResetPassword(): Promise<void> {
+    if (!this.resetEmail) {
+      alert('Por favor, digite seu email.');
+      return;
+    }
+    
+    this.isResetting = true;
+    try {
+      await this.resetPassword(this.resetEmail);
+    } catch (error) {
+      console.error('Erro ao resetar senha:', error);
+      alert('Erro ao enviar email de reset.');
+    } finally {
+      this.isResetting = false;
+    }
+  }
+
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
+  }
+
+  toggleSignupPasswordVisibility(): void {
+    this.hideSignupPassword = !this.hideSignupPassword;
   }
 
   goToSignup(): void {
