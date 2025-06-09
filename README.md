@@ -29,15 +29,27 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 Run `npm run lint` to check the code for formatting issues and unused variables.
 <!-- Sessao de lint adicionada ao README -->
 
-## Configuração do Ambiente
+## 🔒 Configuração de Ambiente
 
-1. Copie `.env.template` para `.env` na raiz do projeto
-2. Adicione sua chave da API OpenAI **e** as variáveis do Firebase ao arquivo `.env`
-   - `OPENAI_API_KEY`, `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_APP_ID` e `FIREBASE_MEASUREMENT_ID`
-3. Execute `npm run setup` para gerar os arquivos de ambiente
-4. Nunca comite arquivos `.env` ou `environment.ts`
-5. Certifique-se de usar a versão 18 do Node.js conforme definido em `.nvmrc`
-<!-- Adicionada instrução sobre a versão do Node -->
+### IMPORTANTE: Configuração das Chaves de API
+
+1. Copie o arquivo template:
+   ```bash
+   cp src/environments/environment.template.ts src/environments/environment.ts
+   ```
+
+2. Configure suas chaves reais no arquivo copiado
+3. NUNCA commite o arquivo `environment.ts` no Git
+4. Use o arquivo `.env` para desenvolvimento local
+
+### Variáveis de Ambiente Necessárias:
+
+```env
+FIREBASE_API_KEY=sua_chave_aqui
+FIREBASE_AUTH_DOMAIN=seu_projeto.firebaseapp.com
+FIREBASE_PROJECT_ID=seu_projeto_id
+OPENAI_API_KEY=sk-proj-sua_chave_aqui
+```
 
 ## Further help
 

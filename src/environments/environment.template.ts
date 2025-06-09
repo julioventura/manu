@@ -1,20 +1,22 @@
-// MODELO DE CONFIGURAÇÃO - NÃO CONTÉM CHAVES REAIS
+// Template para environment.ts - copie este arquivo e configure suas chaves
+// NUNCA commite o arquivo environment.ts real no Git!
+
 export const environment = {
   production: false,
-  firebaseConfig: {
-    apiKey: "FIREBASE_API_KEY",
-    authDomain: "dentistas-com-br-2025.firebaseapp.com",
-    projectId: "dentistas-com-br-2025", 
-    storageBucket: "dentistas-com-br-2025.appspot.com",
-    messagingSenderId: "62096953183", 
-    appId: "1:62096953183:web:d23421cecbd0caebc2b0ea",
-    measurementId: "G-657HTS1CNX"
+  firebase: {
+    apiKey: 'SUA_FIREBASE_API_KEY_AQUI',
+    authDomain: 'seu-projeto.firebaseapp.com',
+    projectId: 'seu-projeto-id',
+    storageBucket: 'seu-projeto.appspot.com',
+    messagingSenderId: 'seu-sender-id',
+    appId: 'seu-app-id',
+    measurementId: 'seu-measurement-id'
   },
   aiChatApiUrl: 'https://api.dentistas.com.br/ai',
-  get openaiApiKey() {
-    return process.env.OPENAI_API_KEY || '';
-  },
+  openaiApiKey: 'SUA_OPENAI_API_KEY_AQUI',
   openaiApiUrl: 'https://api.openai.com/v1/chat/completions',
-  openaiModel: 'gpt-4o-mini'
+  openaiModel: 'gpt-4.1-nano',
+  ambiente: 'development',
+  apiUrl: 'http://localhost:3000/api'
 };
 // ADICIONADO: quebra de linha final garantida abaixo

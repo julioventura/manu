@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of, from, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 
 // Interface para usuário
@@ -38,10 +38,45 @@ interface ActivityLog {
   timestamp: Date;
 }
 
+// Interface mais flexível
+// CERTIFICAR que está exportada:
+export interface NavigationContext {
+  route?: string;
+  component?: string;
+  params?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
+  timestamp?: Date;
+  currentRecord?: {
+    id?: string;
+    data?: Record<string, unknown>;
+  };
+  [key: string]: unknown;
+}
+
+// Ou ainda mais simples:
+// type NavigationContext = Record<string, unknown>;
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  // ADICIONAR: Observables faltando
+  private chatbotExpandedSubject = new BehaviorSubject<boolean>(false);
+  public chatbotExpanded$ = this.chatbotExpandedSubject.asObservable();
+
+  private navigationContextSubject = new BehaviorSubject<NavigationContext | null>(null);
+  public navigationContext$ = this.navigationContextSubject.asObservable();
+
+  private homepageProfileSubject = new BehaviorSubject<UserProfile | null>(null);
+  public homepageProfile$ = this.homepageProfileSubject.asObservable();
+
+  // ADICIONAR: Propriedade context
+  public context: {
+    dentistName?: string;
+    location?: string;
+    patientName?: string;
+  } = {};
+
   // Adicionar propriedades que estão sendo acessadas
   public userProfile: UserProfile | null = null;
   
@@ -324,8 +359,8 @@ export class UserService {
     );
   }
 
-  setHomepageProfile(profile: UserProfile): void {
-    this.userProfile = profile;
+  setHomepageProfile(profile: UserProfile | null): void {
+    this.homepageProfileSubject.next(profile);
   }
 
   setUserProfile(profile: UserProfile): void {
@@ -343,5 +378,13 @@ export class UserService {
       map(snapshot => !snapshot.empty),
       catchError(() => of(false))
     );
+  }
+
+  setChatbotExpanded(expanded: boolean): void {
+    this.chatbotExpandedSubject.next(expanded);
+  }
+
+  setNavigationContext(context: NavigationContext | null): void {
+    this.navigationContextSubject.next(context);
   }
 }

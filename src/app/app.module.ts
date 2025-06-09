@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { environment } from '../environments/environment'; // Removido .prod
+import { environment } from '../environments/environment';
 import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
@@ -16,7 +16,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
 import { PerfilComponent } from './perfil/perfil.component';
-import { HomepageIntroComponent } from './homepage/homepage-intro/homepage-intro.component';
 import { MenuConfigComponent } from './menu/menu-config/menu-config.component';
 import { HomeConfigComponent } from './home/home-config/home-config.component';
 import { ImportarCadastroComponent } from './shared/utils/importar-cadastro/importar-cadastro.component';
@@ -43,7 +42,6 @@ import { LoggingService } from './shared/services/logging.service';
     HomeComponent,
     MenuComponent,
     PerfilComponent,
-    HomepageIntroComponent,
     MenuConfigComponent,
     HomeConfigComponent,
     ImportarCadastroComponent,
@@ -63,7 +61,7 @@ import { LoggingService } from './shared/services/logging.service';
     RouterModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
     MaterialModule,
