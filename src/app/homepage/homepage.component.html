@@ -1,0 +1,43 @@
+<div class="homepage">
+  <!-- Capa da homepage -->
+  <app-capa></app-capa>
+  
+  <!-- Mensagem de erro -->
+  <div class="error-message" *ngIf="errorMessage">
+    <div class="error-container">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ errorMessage }}</p>
+      <button (click)="voltar()">Voltar</button>
+    </div>
+  </div>
+
+  <!-- Chatbot da Homepage -->
+  <app-chatbot-homepage 
+    [username]="username" 
+    [profileData]="userProfile" 
+    (expansionChange)="onChatbotExpansionChange($event)">
+  </app-chatbot-homepage>
+
+
+
+  <!-- Área de Conteúdo em grid com duas colunas para os componentes internos -->
+  <div id="bottom_block" class="container">
+    <!-- Conteúdo existente -->
+    <div class="content-grid two-columns">
+      <app-enderecos></app-enderecos>
+      <app-horarios></app-horarios>
+    </div>
+
+    <!-- Área de Conteúdo em grid com uma coluna para os componentes internos -->
+    <div class="content-grid one-column">
+      <app-redes></app-redes>
+    </div>
+
+    <div class="content-grid two-columns">
+      <app-convenios></app-convenios>
+      <app-titulacoes></app-titulacoes>
+    </div>
+  </div>
+
+  <app-rodape-homepage></app-rodape-homepage>
+</div>

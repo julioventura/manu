@@ -1,0 +1,63 @@
+@import '../styles.scss';
+
+// Variáveis de cores
+// $text-color: #2f5489;
+
+
+// Estilo Geral
+body {
+    font-family: $font-family;
+    margin: 0;
+    padding: 0;
+    padding-top: 20px;
+    color: $text-color;
+    width: 100%;
+    max-width: $max-width;
+    text-align: center;
+    // background-color: #839DAC;
+  }
+
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+// Estilos gerais do container
+.container {
+  margin: 40px auto;
+  margin-top: 60px;
+
+  padding-top: 40px;
+  padding-bottom: 20px;
+  max-width: $max-width;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: $box-shadow;
+}
+
+/* Estilos para o chatbot flutuante global */
+.global-chatbot-widget {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  max-height: calc(100vh - 60px); /* Limita a altura máxima para não ultrapassar a tela */
+  overflow: visible; /* Permite que o ícone minimizado seja visível */
+}
+
+/* Página de perfil profissional - sem o chatbot global */
+.homepage-active {
+  .global-chatbot-widget {
+    display: none !important;
+  }
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .global-chatbot-widget {
+    right: 15px;
+    bottom: 80px; /* Espaço para evitar conflito com menu móvel */
+  }
+}

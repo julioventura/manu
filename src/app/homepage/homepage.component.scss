@@ -1,0 +1,392 @@
+@import '../../styles.scss';
+
+h1 {
+    color: $primary-color;
+    font-weight: bold;
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px 10px;
+    padding-top: 79px;
+    margin: 0px 0px 5px 0px;
+}
+
+h2 {
+    margin: 30px 0px 16px 0px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: $primary-color;
+    text-align: left;
+    padding: 0 10px;
+    background-color: $background-cinza;
+}
+
+h3 {
+    margin: 0px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: $primary-color-dark;
+    text-align: center;
+    padding: 0px;
+    background-color: $background-cinza;
+    margin-bottom: 0px;
+}
+
+p {
+    font-size: 1.1rem;
+    color: $white;
+    line-height: 1.6;
+    text-align: left;
+    font-weight: 500;
+}
+
+
+.profile-header {
+    margin: 0 20px;
+    text-align: center;
+    background-color: $background-cinza;
+    /* Fundo claro */
+    padding-bottom: 20px;
+
+    .header-bg {
+        position: relative;
+
+        .profile-photo {
+            width: 150px;
+            height: auto;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            position: absolute;
+            top: -75px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    .header-overlay {
+        margin-top: 100px;
+
+        .specialty {
+            font-size: 1.3rem;
+            color: #777;
+            margin-top: 5px;
+        }
+    }
+}
+
+.profile-info {
+    padding: 0px 20px;
+    text-align: left;
+    background-color: $white;
+    /* Cor de fundo clara para destaque */
+
+}
+
+.contact-section {
+    margin-top: 30px;
+    text-align: center;
+
+    .contact-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+
+        .contact-btn {
+            background-color: $primary-color;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+
+            &:hover {
+                background-color: #0056b3;
+                box-shadow: 0 6px 8px rgba(0, 86, 179, 0.3);
+            }
+        }
+    }
+}
+
+.social-media {
+    margin-top: 30px;
+    text-align: center;
+
+    padding: 0px 20px;
+    background-color: #ffffff;
+
+    img {
+        margin: 0 20px;
+    }
+}
+
+.qr-code {
+    margin-top: 20px;
+    text-align: center;
+
+    img {
+        display: inline-block;
+        margin: 10px auto;
+        width: 200px;
+        border: 7px solid #000;
+        border-radius: 20px;
+        padding: 0px;
+        background-color: #fff;
+    }
+
+    p {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 1rem;
+    color: #aaa;
+}
+
+// ======================
+// BLOCOS DOS COMPONENTES
+// ======================
+.block-container {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+.block-title {
+    /* Container */
+    background-color: $primary-color;
+    color: white;
+    font-weight: 500;
+    border: solid 1px $primary-color;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0px 0px 6px $shadow-color;
+    padding: 10px;
+}
+
+.block-info {
+    border-radius: 0 0 8px 8px;
+}
+
+.block-info {
+    >div {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0.8rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        i {
+            margin-right: 10px;
+            color: #3498db;
+            width: 16px;
+            text-align: center;
+            margin-top: 3px;
+        }
+
+        .texto {
+            flex: 1;
+
+            p {
+                margin: 0 0 0.2rem;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &.principal {
+                    font-weight: 500;
+                    color: rgb(5, 95, 6);
+                }
+
+                &.secundario {
+                    color: #0a5307;
+                }
+            }
+        }
+    }
+
+    .endereco {
+        flex-direction: column;
+
+        .telefone,
+        .email {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+
+            i {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .contato {
+        flex-direction: column;
+
+        .telefone,
+        .email {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+
+            i {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .horarios {
+        .dia {
+            font-weight: 500;
+        }
+
+        .hora {
+            color: #7f8c8d;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .block-container {
+        font-size: 0.85rem;
+    }
+}
+
+.homepage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #c8ddf0;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+
+.container {
+    // width: 100%;
+    max-width: 100%;
+    margin: 0px;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 0;
+    // margin-bottom: 2rem;
+
+    // Para telas médias, ajuste para 2 colunas
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Para dispositivos móveis, uma coluna
+    @media (max-width: 767px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    // Nova classe para grid de duas colunas
+    &.two-columns {
+
+        // Para telas maiores, força exatamente 2 colunas em vez de 3
+        @media (min-width: 1200px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    // grid de uma coluna
+    &.one-column {
+        grid-template-columns: unset;
+        width: 100%;
+        padding: 0;
+    }
+}
+
+// Adicione uma classe base para todos os cards da homepage
+:host ::ng-deep .profile-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    height: 100%;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        padding: 0.5rem 0.5rem;
+        background-color: #eee;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+        h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            background-color: #d9d9d9;
+        }
+    }
+
+    .card-body {
+        padding: 12px 1.5rem 1.5rem 1.5rem;
+
+        // grid de uma coluna
+        &.one-column {
+            grid-template-columns: unset;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
+        .list {
+            padding-bottom: 12px;
+        }
+    }
+}
+
+// Força o RodapeHomepageComponent a ter a mesma largura máxima
+:host ::ng-deep app-rodape-homepage {
+    display: block;
+
+    .footer-content {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+}
+
+.left {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &>* {
+        margin-left: 0;
+        margin-right: auto;
+        text-align: left;
+    }
+
+    & p,
+    & h1,
+    & h2,
+    & h3,
+    & div {
+        text-align: left;
+    }
+}

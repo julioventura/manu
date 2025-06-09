@@ -1,0 +1,44 @@
+<div class="reports-container">
+  <h1>Relatórios e Previsões</h1>
+  
+  <div class="chart-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Tendência de Leads (Últimos 6 meses)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ngx-charts-line-chart
+          [results]="timeTrendData"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [gradient]="gradient">
+        </ngx-charts-line-chart>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <div class="chart-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Previsão de Receita (Próximos 3 meses)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ngx-charts-bar-vertical
+          [results]="forecastData[0].series"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [gradient]="gradient"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          xAxisLabel="Mês"
+          yAxisLabel="Valor (R$)">
+        </ngx-charts-bar-vertical>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

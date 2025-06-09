@@ -1,0 +1,24 @@
+<footer>
+  
+  <section *ngIf="show_footer && user" class="footer-content">
+    <!-- Informações do usuário (esquerda) -->
+    <div class="footer-left">
+      <span class="user-info">
+        {{ user.email }}{{ configuracoes.is_admin ? ' - ADMIN' : '' }}
+      </span>
+    </div>
+
+    <!-- Botão SAIR (centro) -->
+    <div class="footer-center">
+      <button mat-raised-button color="warn" class="logout-btn" (click)="logout()">
+        <span>SAIR</span>
+      </button>
+    </div>
+
+    <!-- Versão/Ambiente (direita) -->
+    <div class="footer-right">
+      <span class="version-info">{{ ambiente }}</span>
+    </div>
+  </section>
+
+</footer>

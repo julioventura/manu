@@ -1,0 +1,109 @@
+<div class="pipeline-container">
+  <div class="pipeline-header">
+    <h1>Pipeline de Leads</h1>
+    
+    <div class="pipeline-controls">
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo de Registro</mat-label>
+        <mat-select [(ngModel)]="selectedCollection" (selectionChange)="onCollectionChange()">
+          <mat-option *ngFor="let collection of collections" [value]="collection.id">
+            {{ collection.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <button mat-icon-button matTooltip="Atualizar Pipeline" (click)="loadPipeline()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <div class="pipeline-content" *ngIf="!isLoading">
+    <div class="stage-container" *ngFor="let stageId of stageIds" 
+         [attr.id]="stageId"
+         [cdkDropListConnectedTo]="stageIds" 
+         cdkDropList 
+         [cdkDropListData]="pipeline[stageId]"
+         (cdkDropListDropped)="drop($event)"
+         [ngStyle]="getBackgroundStyle(stageId)">
+      
+      <div class="stage-header">
+        <h3>{{ stageLabels[stageId] }}</h3>
+        <span class="stage-count">{{ pipeline[stageId].length || 0 }}</span>
+      </div>
+      
+      <div class="lead-list-container">
+        <!-- Lista de leads ultra-simplificada -->
+        <mat-list class="minimal-list">
+          <mat-list-item *ngFor="let lead of pipeline[stageId]"
+                       cdkDrag
+                       (click)="viewLeadDetails(lead)"
+                       class="lead-item">
+            <span class="lead-name-only">{{ lead.nome }}</span>
+            <button mat-icon-button class="view-button" (click)="$event.stopPropagation(); viewRegistro(selectedCollection, lead.id)">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+        
+        <!-- Mensagem de estágio vazio -->
+        <div class="empty-stage" *ngIf="!pipeline[stageId]?.length">
+          <mat-icon>inbox</mat-icon>
+          <p>Sem leads neste estágio</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Carregando pipeline...</p>
+  </div>
+</div>
+
+<!-- Template para o dialog de detalhes do lead -->
+<ng-template #leadDetailsDialog let-lead>
+  <h2 mat-dialog-title>{{ lead.nome }}</h2>
+  <mat-dialog-content>
+    <div class="lead-details-grid">
+      <div class="detail-row">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value">{{ lead.email }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Telefone:</span>
+        <span class="detail-value">{{ lead.telefone }}</span>
+      </div>
+      <div class="detail-row" *ngIf="lead.crmData?.leadSource">
+        <span class="detail-label">Origem:</span>
+        <span class="detail-value">{{ lead.crmData.leadSource }}</span>
+      </div>
+      <div class="detail-row" *ngIf="lead.crmData?.valorPotencial">
+        <span class="detail-label">Valor Potencial:</span>
+        <span class="detail-value">{{ lead.crmData.valorPotencial | currency:'BRL' }}</span>
+      </div>
+      <div class="detail-row" *ngIf="lead.crmData?.dataCadastro">
+        <span class="detail-label">Cadastrado em:</span>
+        <span class="detail-value">{{ lead.crmData.dataCadastro.toDate() | date:'dd/MM/yyyy' }}</span>
+      </div>
+      <div class="detail-row" *ngIf="lead.crmData?.observacoes">
+        <span class="detail-label">Observações:</span>
+        <span class="detail-value description">{{ lead.crmData.observacoes }}</span>
+      </div>
+      <div class="detail-row" *ngIf="lead.crmData?.tags?.length">
+        <span class="detail-label">Tags:</span>
+        <div class="detail-value tags">
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of lead.crmData.tags">{{ tag }}</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Fechar</button>
+    <button mat-raised-button color="primary" (click)="viewRegistro(selectedCollection, lead.id)">
+      Ver Detalhes Completos
+    </button>
+  </mat-dialog-actions>
+</ng-template>

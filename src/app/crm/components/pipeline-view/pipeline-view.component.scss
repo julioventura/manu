@@ -1,0 +1,309 @@
+/* filepath: c:\contexto\dentistas\src\app\crm\components\pipeline-view\pipeline-view.component.scss */
+/* Estilos para o pipeline */
+.pipeline-container {
+  padding: 24px;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+
+.pipeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  
+  h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .pipeline-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    mat-form-field {
+      width: 200px;
+    }
+  }
+}
+
+.pipeline-content {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  flex-grow: 1;
+  padding-bottom: 16px;
+}
+
+.stage-container {
+  flex: 0 0 300px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.05);
+  
+  h3 {
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .stage-count {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+.lead-list-container {
+  flex-grow: 1;
+  padding: 0;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+/* Estilos para a visualização de linha única */
+.single-line-list {
+  width: 100%;
+}
+
+.single-line-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 13px;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .lead-main-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 65%;
+    
+    .lead-name {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .lead-contact {
+      color: rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  
+  .lead-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    width: 35%;
+    
+    .lead-value {
+      font-weight: 500;
+      color: #388e3c;
+      white-space: nowrap;
+    }
+    
+    .lead-source {
+      color: rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+    
+    .lead-actions {
+      display: flex;
+      align-items: center;
+    }
+  }
+  
+  .view-details-button {
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+    
+    .mat-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+  }
+}
+
+.empty-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 150px;
+  color: rgba(0, 0, 0, 0.4);
+  
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    margin: 0;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  
+  p {
+    margin-top: 16px;
+  }
+}
+
+// Estilos para o dialog de detalhes do lead
+.lead-details-grid {
+  display: grid;
+  grid-gap: 16px;
+  
+  .detail-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: start;
+    
+    .detail-label {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    
+    .detail-value {
+      &.description {
+        white-space: pre-line;
+      }
+      
+      &.tags {
+        margin-top: -8px;
+      }
+    }
+  }
+}
+
+// Estilos para drag & drop
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  background-color: white;
+  padding: 0 16px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  
+  .lead-main-info {
+    width: 65%;
+  }
+  
+  .lead-meta {
+    width: 35%;
+  }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.stage-container.cdk-drop-list-dragging .single-line-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Adicione estes estilos para a lista minimalista */
+
+.minimal-list {
+  padding: 0;
+}
+
+.lead-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 !important;
+  height: 40px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .lead-name-only {
+    padding: 0 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  
+  .view-button {
+    height: 28px;
+    width: 28px;
+    line-height: 28px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    
+    .mat-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+  }
+  
+  &:hover .view-button {
+    opacity: 1;
+  }
+}
+
+.stage-container.cdk-drop-list-dragging .lead-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

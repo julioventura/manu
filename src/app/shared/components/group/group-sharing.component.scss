@@ -1,0 +1,37 @@
+/* filepath: c:\contexto\dentistas\src\app\shared\components\group\group-sharing.component.scss */
+@import '../../../../styles.scss';
+
+.group-sharing-container {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.group-section-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: $primary-color;
+}
+
+.detail-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.detail-label {
+  min-width: 150px;
+  font-weight: 500;
+}
+
+.group-select {
+  width: 100%;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  margin: 0;
+  padding-bottom: 0;
+}

@@ -1,0 +1,50 @@
+<div class="container container_principal">
+
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="util.goHome()">
+        </div>
+        <h1 class="title">TutFOP - Tutor Virtual de Casos Clínicos</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+        </div>
+    </div>
+
+    <div class="container" style="padding: 0;">
+
+        <!-- Container principal do TutFOP -->
+        <div class="tutfop-container" *ngIf="isUserAuthenticated">
+
+            <!-- Container do Chat -->
+            <div id="tutfop-chat-container" class="tutfop-container-section" style="display: none; padding: 0;">
+
+                <div id="tutfop-chat-log" class="tutfop-chat-log">
+                    <div class="bot-message">
+                        <strong>Tutor Virtual:</strong> 
+                        Olá! Eu sou o <b>TutFOP</b>, seu tutor virtual da <i>Clínica Integral 3</i>.<br />&nbsp;<br />
+                        A equipe de professores da <i>CI3</i> me chamou para te ajudar na construção de um plano de urgência seguro, ético e baseado em evidências para a paciente gestante que procurou nossa clínica-escola por meio da Teleodontologia.<br />
+                        Estou aqui para apoiar você, esclarecendo dúvidas, explorando condutas e estimulando seu raciocínio clínico.<br />&nbsp;<br />
+                        Vamos juntos nessa missão?
+                    </div>
+                    <!-- Aqui entra aconversa do chat -->
+                </div>
+
+                <div class="tutfop-chat-input-container">
+                    <textarea id="tutfop-user-input" placeholder="Digite sua mensagem..." rows="3"
+                        class="tutfop-textarea"></textarea>
+                    <div class="tutfop-button-container">
+                        <button id="tutfop-send-button" (click)="sendTutfopMessage()" class="tutfop-btn-primary">
+                            Enviar
+                        </button>
+                        <button (click)="logoutTutfop()" class="tutfop-btn-primary tutfop-btn-logout">
+                            Limpar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>

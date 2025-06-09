@@ -1,0 +1,253 @@
+/* v 3.44a */
+
+/* Estilo Geral */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff; /* Fundo branco */
+    margin: 0;
+    padding: 0;
+    color: #2f5489;
+}
+
+.container-main {
+    max-width: 800px; /* Largura máxima do container principal */
+    margin: auto; /* Centraliza o container na página */
+}
+
+/* Cabeçalho */
+header {
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    background-color: #2196F3; /* Azul primário */
+    color: #ffffff;
+    box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.3);
+    width: 100%; /* Faz o cabeçalho ocupar toda a largura do container */
+    border-radius: 8px 8px 0px 0px;
+}
+
+/* Títulos */
+h1 {
+    font-size: 2rem; /* Título maior */
+    margin: 0.5rem 0;
+}
+
+h2 {
+    font-size: 1rem; /* Subtítulo */
+}
+
+/* Container principal para login e chat */
+.container {
+    max-width: 800px;
+    margin: 1rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra escura */
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+  
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+textarea {
+    width: calc(100%); /* Ajuste mantido */
+    padding: 20px; /* Aumentado padding para manter a altura */
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.8s; /* Transição para cor da borda */
+    box-sizing: border-box; /* Para incluir padding e border na largura total */
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="password"]:focus {
+    border-color: #2196F3; /* Azul primário ao focar */
+    outline: none;
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+}
+
+/* Container para a senha */
+.password-container {
+    position: relative; /* Permite que o ícone se posicione em relação ao campo */
+}
+  
+.password-toggle {
+    position: absolute;
+    right: 10px; /* Ajuste a posição conforme necessário */
+    top: 50%;
+    transform: translateY(-50%); /* Centraliza verticalmente o ícone */
+    cursor: pointer;
+    color: #bbb; /* Cor alterada para cinza */
+}
+
+/* Estilo do botão de login com animação */
+button.btn-primary-login {
+    width: 100%; /* Largura total */
+    padding: 12px; /* Aumentando o padding para melhorar a aparência */
+    margin-top: 20px; /* Aumentando a margem superior do botão */
+    background-color: #4CAF50; /* Verde primário */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem; /* Tamanho do botão ajustado */
+    cursor: pointer;
+    transition: background 0.8s, transform 0.8s; /* Adicionando transição de transformação */
+}
+
+button.btn-primary-login:disabled {
+    background-color: #bbb; /* Cor cinza quando desativado */
+    cursor: not-allowed; /* Mudança de cursor quando desativado */
+}
+
+/* Estilo dos botões do chat */
+.button-container {
+    display: flex; /* Mantém os botões lado a lado */
+    margin-top: 10px; /* Espaçamento acima dos botões */
+}
+
+button.btn-primary {
+    width: auto; /* Alterar para auto para ajustar o tamanho */
+    min-width: 80px; /* Largura mínima para o botão */
+    padding: 10px; /* Diminuindo o tamanho do botão */
+    margin-right: 10px; /* Margem à direita */
+    background-color: #4CAF50; /* Verde para o botão de enviar */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem; /* Tamanho do botão reduzido */
+    cursor: pointer;
+    transition: background 0.8s;
+    height: 40px; /* Define uma altura fixa */
+}
+  
+button.btn-primary:hover {
+    background-color: #1d4f1e; /* Verde escuro para o hover */
+}
+
+/* Estilo para o botão Sair */
+button.btn-logout {
+    background-color: #f44336; /* Vermelho */
+    color: white; /* Texto em branco */
+    border: none; /* Remove a borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    padding: 10px; /* Padding para melhorar a aparência */
+    height: 40px; /* Define uma altura fixa */
+}
+  
+button.btn-logout:hover {
+    background-color: #a9001c; /* Vermelho mais escuro ao passar o mouse */
+}
+
+/* Estilo do login */
+#login-container {
+    max-width: 800px;
+    margin: 1rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra escura */
+}
+#login-container-interno {
+    max-width: 400px; /* Largura máxima do chat */
+    margin: 1rem auto;
+}
+
+/* Estilo do chat */
+#chat-container {
+    max-width: 800px; /* Largura máxima do chat */
+    margin: 1rem auto;
+}
+
+.chat-log {
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Sombra mais escura */
+    display: flex;
+    flex-direction: column; /* Para empilhar as mensagens */
+}
+
+.user-message {
+    background-color: rgb(189 248 189); /* Cor verde clara */
+    padding: 10px;
+    border-radius: 15px;
+    margin: 5px 0;
+    align-self: flex-end; /* Alinha a mensagem do usuário à direita */
+    max-width: 70%; /* Largura máxima da mensagem do usuário */
+}
+
+.bot-message {
+    background-color: #cdeffd; /* Cor azul clara */
+    padding: 10px;
+    border-radius: 15px;
+    margin: 5px 0;
+    align-self: flex-start; /* Alinha a mensagem do bot à esquerda */
+    max-width: 90%; /* Largura máxima da mensagem do bot */
+}
+
+.chat-input-container {
+    display: flex;
+    margin-top: 1rem;
+    padding-top: 10px; /* Espaçamento superior */
+    width: 100%; /* Ocupa a largura total do container */
+}
+
+#user-input {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    margin-right: 10px; /* Espaçamento à direita do campo de input */
+    resize: vertical; /* Permite que o usuário redimensione verticalmente */
+    background-color: #90ee904a;
+    color: darkgreen;
+}
+
+/* Rodapé */
+footer {
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #2196F3;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+    color: #ffffff;
+    box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    border-radius: 0px 0px 8px 8px;
+}
+
+/* Responsividade */
+@media (max-width: 800px) {
+    /* Estilo para telas menores que 800px */
+    .chat-input-container {
+        flex-direction: column; /* Muda a direção para coluna */
+        align-items: flex-start; /* Alinha os itens à esquerda */
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        max-width: 90%;
+        padding: 1rem;
+    }
+  
+    h1 {
+        font-size: 2rem; /* Título menor em telas pequenas */
+    }
+  
+    h2 {
+        font-size: 1.25rem; /* Subtítulo menor em telas pequenas */
+    }
+}

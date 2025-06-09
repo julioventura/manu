@@ -1,0 +1,35 @@
+<div class="profile-card horarios-card">
+  <div class="card-header">
+    <h3>Horários de Atendimento</h3>
+  </div>
+
+  <div class="card-body">
+    <div class="horarios-lista" *ngIf="hasHorarios(); else semHorarios">
+      <div class="horario-item" *ngFor="let horario of getHorarios()">
+
+        <div class="card-body list">
+
+          <div class="dia">
+            <i class="fas fa-calendar-day"></i>
+            <span> {{ horario.dia }}</span>
+          </div>
+
+          <div class="hora">
+            <i class="fas fa-clock"></i>
+            <span> {{ horario.horario }}</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Template para quando não há endereços -->
+    <ng-template #semHorarios>
+      <div class="empty-message">
+        Nenhum horário cadastrado
+      </div>
+    </ng-template>
+
+  </div>
+</div>

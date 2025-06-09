@@ -1,0 +1,65 @@
+<div class="container container_principal">
+    <!-- Header -->
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+        </div>
+        <h1 class="title">Erupções Dentárias Previstas</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/lista_checked.png" class="navegacao" (click)="mostrarTabelaReferencia()">
+        </div>
+    </div>
+
+
+    <div class="faixa-de-meses">
+        <img src="https://dentistas.com.br/assets/menos.png" alt="Diminuir" (click)="diminuirFaixaMeses()" class="control-icon" />
+        <span class="faixa-display">{{ faixaDeMesesTexto }}</span>
+        <img src="https://dentistas.com.br/assets/mais.png" alt="Aumentar" (click)="aumentarFaixaMeses()" class="control-icon" />
+    </div>
+    
+
+
+    <!-- Mensagem de carregamento ou nenhum paciente encontrado -->
+    <div *ngIf="isLoading" class="aviso">
+        <p>Carregando...</p>
+    </div>
+    <!-- <div *ngIf="!isLoading && pacientesComErupcao.length === 0" class="aviso">
+        <p>Nenhum paciente tem dentes erupcionando este mês.</p>
+    </div> -->
+
+    <!-- Tabela de resultados -->
+    <div *ngIf="!isLoading && pacientesComErupcao.length > 0" class="registros-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th> <!-- Número da linha -->
+                    <th>Nome</th>
+                    <th>Nascimento</th>
+                    <th>Idade</th>
+                    <th>Erupcionando</th>
+                    <th>Zap</th> <!-- Coluna de contato -->
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let paciente of pacientesComErupcao; index as i" (click)="abrirPopup(paciente)">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ paciente.nome }}</td>
+                    <td>{{ paciente.nascimento }}</td>
+                    <td>{{ DateUtils.idade(paciente.nascimento) }}</td>
+                    <td>{{ paciente.dentesEmErupcao?.join(', ') || 'Nenhum dente erupcionando' }}</td>
+                    <td>
+                        <img src="https://dentistas.com.br/assets/whatsapp.png" alt="WhatsApp" class="enviar_zap" (click)="enviar_whatsapp(paciente.nome,paciente.telefone)">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="footer-actions">
+        <div *ngIf="!isLoading && pacientesComErupcao.length > 0" class="pagination_total">
+            <span>{{ pacientesComErupcao.length }} registros</span>
+        </div>
+    </div>
+</div>

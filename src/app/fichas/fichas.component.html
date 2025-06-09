@@ -1,0 +1,118 @@
+<div class="container container_principal">
+
+  <div class="header">
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+      <img src="https://dentistas.com.br/assets/home.png" class="navegacao" (click)="util.goHome()">
+    </div>
+    <h1 class="title">CAMPOS DAS FICHAS</h1>
+    <!-- Removido botão salvar, pois não há edição -->
+  </div>
+
+  <div class="record-header">
+    Visualizando a configuração da coleção:
+    {{ colecaoSelecionada === 'padrao' ? 'Padrão' : colecaoSelecionada }}
+  </div>
+
+  <div class="container">
+    <!-- Seletor de Coleções (fixo) -->
+    <div class="section">
+      <label for="colecao">Selecionar Coleção:</label>
+      <select id="colecao" [(ngModel)]="colecaoSelecionada" (change)="carregarCampos()">
+        <option *ngFor="let colecao of colecoes" [value]="colecao">
+          {{ colecao === 'padrao' ? 'Padrão' : colecao }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Exibição dos Campos (somente leitura) -->
+    <div class="fields-section">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Tipo</th>
+            <th>Label</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let campo of campos">
+            <td>{{ campo.nome }}</td>
+            <td>{{ campo.tipo }}</td>
+            <td>{{ campo.label }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .container_principal {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .header .actions img {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .record-header {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .section {
+    margin-bottom: 20px;
+  }
+
+  .fields-section {
+    margin-top: 20px;
+  }
+
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  .styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 12px 15px;
+  }
+
+  .styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+
+  .styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+  }
+</style>

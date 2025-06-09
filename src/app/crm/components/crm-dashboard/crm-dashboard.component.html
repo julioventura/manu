@@ -1,0 +1,243 @@
+<div class="container container_principal">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+        </div>
+        <h1 class="title">CRM - Gestão de Relacionamentos</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+        </div>
+    </div>
+    <!-- /HEADER -->
+
+
+    <div class="container">
+
+
+        <!-- Carregamento -->
+        <div *ngIf="isLoading" class="loading-container">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Carregando métricas...</p>
+        </div>
+
+        <!-- Métricas em 3 colunas fixas -->
+        <div *ngIf="!isLoading" class="metrics-cards three-column-grid">
+            <!-- Coluna 1: Total de Leads -->
+            <div class="metrics-column">
+                <mat-card class="metric-card">
+                    <mat-card-content>
+                        <div class="metric-value">{{ metricas.total || 0 }}</div>
+                        <div class="metric-label">Total de Leads</div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="metric-card" *ngIf="'novo' | slice:0:1 as status">
+                    <mat-card-content (click)="abrirLeadsPorStatus('novo')" class="clickable">
+                        <div class="metric-value">{{ (metricas.byStatus && metricas.byStatus['novo']) || 0 }}</div>
+                        <div class="metric-label">Novos Leads</div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <!-- Coluna 2: Leads intermediários -->
+            <div class="metrics-column">
+                <mat-card class="metric-card">
+                    <mat-card-content (click)="abrirLeadsPorStatus('qualificado')" class="clickable">
+                        <div class="metric-value">{{ (metricas.byStatus && metricas.byStatus['qualificado']) || 0 }}
+                        </div>
+                        <div class="metric-label">Qualificados</div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="metric-card">
+                    <mat-card-content (click)="abrirLeadsPorStatus('em_atendimento')" class="clickable">
+                        <div class="metric-value">{{ (metricas.byStatus && metricas.byStatus['em_atendimento']) || 0 }}
+                        </div>
+                        <div class="metric-label">Em Atendimento</div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <!-- Coluna 3: Follow-up e Valor Potencial -->
+            <div class="metrics-column">
+                <mat-card class="metric-card">
+                    <mat-card-content (click)="abrirLeadsPorStatus('follow_up')" class="clickable">
+                        <div class="metric-value">{{ (metricas.byStatus && metricas.byStatus['follow_up']) || 0 }}</div>
+                        <div class="metric-label">Follow-up</div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="metric-card valor">
+                    <mat-card-content>
+                        <div class="metric-value">{{ metricas.valorPotencialTotal | currency:'BRL' }}</div>
+                        <div class="metric-label">Valor Potencial</div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+        <!-- Adicionar ao template do CRM Dashboard -->
+        <div class="charts-section">
+            <div class="chart-container">
+                <h3>Leads por Status</h3>
+                <ngx-charts-pie-chart [results]="statusChartData" [gradient]="true" [legend]="true"
+                    [legendPosition]="legendPosition" [labels]="true" [doughnut]="false">
+                </ngx-charts-pie-chart>
+            </div>
+
+            <div class="chart-container">
+                <h3>Leads por Origem</h3>
+                <ngx-charts-bar-vertical [results]="sourceChartData" [gradient]="false" [xAxis]="true" [yAxis]="true"
+                    [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true" xAxisLabel="Origem"
+                    yAxisLabel="Quantidade">
+                </ngx-charts-bar-vertical>
+            </div>
+        </div>
+
+        <!-- Substituir a seção "Acessar Contatos" para ter exatamente 4 colunas -->
+        <div class="collections-section">
+            <h2>Acessar Contatos</h2>
+            <div class="four-columns-container">
+                <!-- Coluna 1 -->
+                <div class="column">
+                    <div class="collection-card" *ngIf="colecoes && colecoes.length > 0"
+                        (click)="irParaColecao(colecoes[0].id)">
+                        <mat-icon>{{ colecoes[0].icone }}</mat-icon>
+                        <div>{{ colecoes[0].label }}</div>
+                    </div>
+                </div>
+
+                <!-- Coluna 2 -->
+                <div class="column">
+                    <div class="collection-card" *ngIf="colecoes && colecoes.length > 1"
+                        (click)="irParaColecao(colecoes[1].id)">
+                        <mat-icon>{{ colecoes[1].icone }}</mat-icon>
+                        <div>{{ colecoes[1].label }}</div>
+                    </div>
+                </div>
+
+                <!-- Coluna 3 -->
+                <div class="column">
+                    <div class="collection-card" *ngIf="colecoes && colecoes.length > 2"
+                        (click)="irParaColecao(colecoes[2].id)">
+                        <mat-icon>{{ colecoes[2].icone }}</mat-icon>
+                        <div>{{ colecoes[2].label }}</div>
+                    </div>
+                </div>
+
+                <!-- Coluna 4 -->
+                <div class="column">
+                    <div class="collection-card" *ngIf="colecoes && colecoes.length > 3"
+                        (click)="irParaColecao(colecoes[3].id)">
+                        <mat-icon>{{ colecoes[3].icone }}</mat-icon>
+                        <div>{{ colecoes[3].label }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Substituindo a parte final do arquivo para colocar os blocos lado a lado em duas colunas -->
+
+        <!-- Lembretes e Ações - Layout em duas colunas -->
+        <div class="two-columns-grid">
+            <!-- Coluna 1: Lembretes -->
+            <div class="column-half">
+                <div class="reminders-section">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>
+                                <mat-icon class="reminder-header-icon">notifications</mat-icon>
+                                Lembretes Pendentes
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-list>
+                                <ng-container *ngIf="(lembretesPendentes$ | async) as pendentes">
+                                    <div class="empty-list" *ngIf="pendentes.length === 0">Nenhum lembrete pendente</div>
+
+                                    <mat-list-item *ngFor="let lembrete of pendentes">
+                                        <div class="reminder-item">
+                                            <div class="reminder-content">
+                                                <div class="reminder-title">{{ lembrete.titulo }}</div>
+                                                <div class="reminder-date">{{ lembrete.data?.toDate() | date:'dd/MM/yyyy' }}</div>
+                                                <div class="reminder-description" *ngIf="lembrete.descricao">{{ lembrete.descricao }}</div>
+                                            </div>
+                                            <div class="reminder-actions">
+                                                <button mat-icon-button color="primary" (click)="marcarLembreteComoConcluido(lembrete)">
+                                                    <mat-icon>check_circle</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-list-item>
+                                </ng-container>
+                            </mat-list>
+
+                            <ng-container *ngIf="lembretesAtrasados$ | async as atrasados">
+                                <mat-divider *ngIf="atrasados.length > 0"></mat-divider>
+
+                                <div *ngIf="atrasados.length > 0" class="overdue-reminders">
+                                    <h3>Lembretes Atrasados</h3>
+                                    <mat-list>
+                                        <mat-list-item *ngFor="let lembrete of atrasados" class="overdue-item">
+                                            <div class="reminder-item">
+                                                <div class="reminder-content">
+                                                    <div class="reminder-title">{{ lembrete.titulo }}</div>
+                                                    <div class="reminder-date overdue">{{ lembrete.data?.toDate() | date:'dd/MM/yyyy' }}</div>
+                                                    <div class="reminder-description" *ngIf="lembrete.descricao">{{ lembrete.descricao }}</div>
+                                                </div>
+                                                <div class="reminder-actions">
+                                                    <button mat-icon-button color="warn" (click)="marcarLembreteComoConcluido(lembrete)">
+                                                        <mat-icon>check_circle</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </ng-container>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+
+            <!-- Coluna 2: Ações do Dashboard -->
+            <div class="column-half">
+                <div class="dashboard-actions-container">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>
+                                <mat-icon class="action-header-icon">rocket_launch</mat-icon>
+                                Ações Rápidas
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="dashboard-actions-content">
+                                <button mat-raised-button color="primary" (click)="abrirPipeline()" class="action-button">
+                                    <mat-icon>view_kanban</mat-icon>
+                                    Pipeline de Vendas
+                                </button>
+                                
+                                <button mat-raised-button color="accent" (click)="generateTestData()" class="action-button" [disabled]="isGenerating">
+                                    <mat-icon>data_array</mat-icon>
+                                    {{ isGenerating ? 'Gerando dados...' : 'Gerar Dados de Teste' }}
+                                </button>
+                                
+                                <button mat-raised-button color="primary" [routerLink]="['/crm/reports']" class="action-button">
+                                    <mat-icon>insights</mat-icon>
+                                    Relatórios
+                                </button>
+                                
+                                <button mat-raised-button color="primary" [routerLink]="['/crm/tags']" class="action-button">
+                                    <mat-icon>label</mat-icon>
+                                    Gerenciar Tags
+                                </button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

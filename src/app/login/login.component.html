@@ -1,0 +1,102 @@
+<div class="login-tabs-container">
+  <!-- Tela de Login -->
+  <div *ngIf="selectedTab === 0" class="login-container">
+    <h2>Login</h2>
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" id="email" name="email" [(ngModel)]="email" required #emailInput="ngModel" />
+        <mat-error *ngIf="emailInput.invalid && emailInput.touched">
+          O email é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" id="password" name="password" [(ngModel)]="password"
+          required #passwordInput="ngModel" />
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
+          A senha é obrigatória.
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isSubmitting">
+        Entrar
+      </button>
+    </form>
+
+    <div class="novaconta">
+      <a (click)="selectedTab = 2" class="forgot-password-link" style="cursor:pointer;">Esqueci minha senha</a>
+    </div>
+    <div class="novaconta">
+      <a (click)="selectedTab = 1" class="forgot-password-link" style="cursor:pointer;">Não tem conta? Criar conta gratuita.</a>
+    </div>
+  </div>
+
+  <!-- Tela Criar Conta -->
+  <div *ngIf="selectedTab === 1" class="login-container">
+    <h2>Criar Conta</h2>
+    <form (ngSubmit)="onSignup()" #signupForm="ngForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" id="signup-email" name="signupEmail" [(ngModel)]="signupEmail" required
+          #signupEmailInput="ngModel" />
+        <mat-error *ngIf="signupEmailInput.invalid && signupEmailInput.touched">
+          O email é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput [type]="hideSignupPassword ? 'password' : 'text'" id="signup-password" name="signupPassword"
+          [(ngModel)]="signupPassword" required #signupPasswordInput="ngModel" />
+        <button mat-icon-button matSuffix (click)="hideSignupPassword = !hideSignupPassword" type="button">
+          <mat-icon>{{ hideSignupPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="signupPasswordInput.invalid && signupPasswordInput.touched">
+          A senha é obrigatória.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input matInput type="text" id="signup-name" name="signupName" [(ngModel)]="signupName" required
+          #signupNameInput="ngModel" />
+        <mat-error *ngIf="signupNameInput.invalid && signupNameInput.touched">
+          O nome é necessário.
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid || isCreatingAccount">
+        Criar Conta
+      </button>
+    </form>
+    <div style="margin-top:16px;">
+      <a (click)="selectedTab = 0" style="cursor:pointer;">Já tem conta? Fazer login</a>
+    </div>
+  </div>
+
+  <!-- Tela Esqueci Senha -->
+  <div *ngIf="selectedTab === 2" class="login-container">
+    <h2>Redefinir Senha</h2>
+    <form (ngSubmit)="onResetPassword()" #resetForm="ngForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Digite seu email:</mat-label>
+        <input matInput type="email" id="reset-email" name="resetEmail" [(ngModel)]="resetEmail" required
+          #resetEmailInput="ngModel" />
+        <mat-error *ngIf="resetEmailInput.invalid && resetEmailInput.touched">
+          O email é obrigatório.
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="resetForm.invalid || isResetting">
+        Enviar email para redefinir senha
+      </button>
+    </form>
+    <div style="margin-top:16px;">
+      <a (click)="selectedTab = 0" style="cursor:pointer;">Voltar ao Login</a>
+    </div>
+  </div>
+</div>

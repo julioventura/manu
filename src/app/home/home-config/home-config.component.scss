@@ -1,0 +1,58 @@
+@import '../../../styles.scss';
+
+input, select{
+    padding: 3px;
+    margin: 8px 2px 0px 10px;
+    /* margin-right: 2pt; */
+    border: 1px solid #2A7AC3;
+    border-radius: 4px;
+    color: #153d75;
+    font-size: 12px;
+    /* background-color: #fff; */
+}
+
+input,
+select {
+    padding: 3px;
+    margin: 0;
+    margin-right: 2pt;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+label {
+    font-size: 12px;
+    margin-right: 1em;
+}
+
+.colecao-buttons button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: $primary-color;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.colecao-buttons button:hover {
+    background-color: $primary-color-dark;
+}
+
+.colecao-buttons button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.subcolecoes-list {
+padding: 40px;
+font-weight: bold;
+}
+
+input, select {
+    margin-right: 8pt;
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-weight: bold;
+}

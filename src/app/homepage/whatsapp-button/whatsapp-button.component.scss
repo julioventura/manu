@@ -1,0 +1,45 @@
+@import '../../../styles.scss';
+
+.whatsapp-button {
+  position: fixed;
+  top: 70px;
+  right: 22px;
+  z-index: 999;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0);
+  }
+  
+  .button-content {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0ac00a; // WhatsApp green color
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+    
+    i {
+      font-size: 30px;
+      color: white;
+    }
+  }
+}
+
+// Responsividade para dispositivos móveis
+@media (max-width: 768px) {
+  .whatsapp-button {
+    bottom: 90px; // Keep the mobile positioning
+  }
+}

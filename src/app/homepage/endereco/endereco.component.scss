@@ -1,0 +1,113 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+/* filepath: /c:/contexto/dentistas/src/app/homepage/endereco/endereco.component.scss */
+.endereco-card {
+  i {
+    color: #3498db;
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+    margin-right: 12px;
+  }
+  
+  .endereco-principal {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+    
+    .texto {
+      flex: 1;
+      
+      .principal {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.4;
+      }
+      
+      .secundario {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin: 0.25rem 0 0 0;
+        line-height: 1.4;
+      }
+    }
+  }
+  
+  .contato-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    
+    .item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      
+      span {
+        font-size: 0.95rem;
+      }
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.component-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  padding-top: 0px;
+  margin-bottom: 20px;
+  height: 100%;
+  
+  .component-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    
+    i {
+      color: $primary-color;
+      font-size: 20px;
+      margin-right: 10px;
+    }
+    
+    h2 {
+      font-size: 18px;
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+  
+  .enderecos-item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .info-line {
+      margin-bottom: 5px;
+      line-height: 1.5;
+      
+      strong {
+        color: $secondary-color;
+      }
+    }
+  }
+  
+  .empty-message {
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+  }
+}
+

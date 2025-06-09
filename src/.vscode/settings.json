@@ -1,0 +1,6 @@
+{
+    "github.copilot.chat.codesearch.enabled": true,
+    "editor.codeLens": false,
+    "editor.columnSelection": false,
+    "editor.defaultFormatter": null
+}

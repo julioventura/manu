@@ -1,0 +1,71 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+/* filepath: /c:/contexto/dentistas/src/app/homepage/contato/contato.component.scss */
+.contato-card {
+  .card-body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contato-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+    
+    i {
+      color: #3498db;
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+      margin-right: 12px;
+      margin-top: 3px;
+    }
+    
+    .texto {
+      flex: 1;
+      
+      .label {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin: 0;
+      }
+      
+      .valor {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0.2rem 0 0;
+      }
+    }
+  }
+  
+  .btn-contato {
+    margin-top: 0.5rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    i {
+      margin-right: 8px;
+    }
+    
+    &:hover {
+      background-color: #2980b9;
+    }
+  }
+}
+
+.valor {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0.2rem 0 0;
+  color: $primary-color;
+}

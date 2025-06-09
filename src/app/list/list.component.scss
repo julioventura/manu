@@ -1,0 +1,100 @@
+@import '../../styles.scss';
+
+// Paginação com botões
+.pagination {
+    display: flex;
+        justify-content: center ;
+        align-items: center;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        background-color: #ffffff;
+        height: 32px;
+        padding-top: 2px;
+
+    img {
+        padding: 10px;
+            padding-top: 7px;
+            padding-bottom: 5px;
+            cursor: pointer;
+            width: 25px;
+            height: 25px;
+        &:hover {
+            background-color: $primary-hover;
+        }
+
+        &:disabled {
+            background-color: $gray;
+            cursor: not-allowed;
+        }
+    }
+
+}
+
+// Paginação - total de registros
+.pagination_total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: $font-family;
+    font-size: $font-size;
+    color: $white;
+    background-color: $primary-color;
+    border-radius: 0 0 10px 10px;
+    height: 1.7rem;
+}
+
+// Barra de pesquisa da listagem
+.search-bar {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+        color: $primary-color;
+
+    input {
+        width: 100%;
+        max-width: 200px;
+        padding: 4px 10px;
+        border: 2px solid $primary-color;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        color: $primary-color;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            outline: 0;
+        }
+    }
+}
+
+.btn-sort {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: background-color 0.3s ease;
+  
+  .sort-icon {
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+  }
+}
+
+.btn-sort:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.rodape {
+    padding-top: 10px;
+    text-align: center;
+}
+
+.header {
+    margin: 0;
+}

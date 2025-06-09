@@ -1,0 +1,52 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+/* filepath: /c:/contexto/dentistas/src/app/homepage/titulacoes/titulacoes.component.scss */
+
+p {
+  color: $primary-color;
+}
+
+.titulacoes-card {
+  .titulacao-grupo {
+    margin-bottom: 1.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    h4 {
+      font-size: 1.05rem;
+      margin: 0 0 1rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      
+      i {
+        color: #3498db;
+        margin-right: 10px;
+        font-size: 1.1rem;
+      }
+    }
+  }
+  
+  .titulacao-item {
+    margin-bottom: 1rem;
+    padding-left: 10px;
+    border-left: 2px solid rgba(52, 152, 219, 0.3);
+    color: $primary-color;
+    font-size: small;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  
+  }
+  
+  .titulacao-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
+  }
+}

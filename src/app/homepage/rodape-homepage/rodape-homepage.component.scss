@@ -1,0 +1,26 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+.footer {
+  color: #000000;
+  padding: 0;
+  height: 1rem;
+  margin: 0;
+
+     
+
+  // Add a general rule for any links in the footer
+  a {
+    color: #000000 !important;
+    text-decoration: none;
+    color: $primary-color !important;
+    padding: 0 1rem;
+    font: 0.8em sans-serif;
+    
+    &:hover, &:active, &:visited, &:focus {
+      color: #000000 !important;
+    }
+  }
+
+
+}

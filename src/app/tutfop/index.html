@@ -1,0 +1,107 @@
+<!-- 
+Arquivo: index.html
+Funcionalidade: Página principal do TutFOP - Tutor Virtual de Casos Clínicos, contendo a interface de login e chat.
+Funções internas:
+- login(): Realiza o login do usuário e inicializa a sessão.
+- sendMessage(): Envia a mensagem do usuário ao tutor virtual e exibe a resposta.
+- logout(): Realiza o logout do usuário e encerra a sessão.
+- togglePassword(): Alterna a visualização da senha no campo de login.
+-->
+
+
+<div class="container container_principal">
+
+  <div class="header">
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="util.goHome()">
+    </div>
+    <h1 class="title">Backup de Dados</h1>
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+    </div>
+  </div>
+
+  <div class="container">
+     
+    <div id="Tutfop" class="container margin0">
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store"> <!-- Desabilitar Cache -->
+    <title>TutFOP - Tutor Virtual de Casos Clínicos</title>
+    <link rel="stylesheet" href="styles.css?v=3.44a"> 
+    <!-- <script defer src="scripts.js?v=3.44a"></script>  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container-main"> <!-- Novo container principal -->
+        <header>
+            <h1>TutFOP</h1>
+            <h2>Tutor Virtual de Casos Clínicos</h2>
+        </header>
+
+        <!-- 
+        login(): Realiza o login do usuário e inicializa a sessão.
+        -->
+        <main>
+            <div id="login-container" class="container">
+                <div id="login-container-interno" class="container">
+                    <form id="loginForm" onsubmit="event.preventDefault(); login();" autocomplete="off">
+                        <div class="form-group">
+                            <input type="text" id="nome" required placeholder="Nome">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" required placeholder="E-mail" autocomplete="off">
+                        </div>
+                        <div class="form-group password-container">
+                            <input type="password" id="senha" required placeholder="Senha" autocomplete="new-password">
+                            <span id="togglePassword" class="password-toggle" onclick="togglePassword()">
+                                <i id="password-icon" class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="test-mode-container" id="testModeContainer" style="display: none;">
+                            <input type="checkbox" id="testMode">
+                            <label for="testMode">Modo de Teste</label>
+                        </div>
+                        <button type="submit" class="btn-primary-login" id="confirmButton">Continuar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 
+            sendMessage(): Envia a mensagem do usuário ao tutor virtual e exibe a resposta.
+            logout(): Realiza o logout do usuário e encerra a sessão.
+            -->
+            <div id="chat-container" class="container" style="display: none;">
+                <div id="chat-log" class="chat-log"></div>
+                <div class="chat-input-container">
+                    <textarea id="user-input" placeholder="Digite sua mensagem..." autofocus rows="3"></textarea>
+                    <div class="button-container">
+                        <button onclick="sendMessage()" class="btn-primary">Enviar</button>
+                        <button onclick="logout()" class="btn-primary btn-logout">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div id="user-info" style="font-weight: bold;">Identifique-se para entrar...</div>
+            <spacer>&nbsp;</spacer>
+            <div>&copy; 2024 Dentistas.com.br - v 3.44a - 22/09/2024</div> 
+        </footer>
+    </div>
+</body>
+</html>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+

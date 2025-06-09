@@ -1,0 +1,14 @@
+RewriteOptions inherit
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # EXCEÇÃO: Não reescreva nada que comece com /fastbot
+  RewriteCond %{REQUEST_URI} ^/fastbot/ [NC]
+  RewriteRule ^ - [L]
+
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

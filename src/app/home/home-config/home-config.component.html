@@ -1,0 +1,24 @@
+<div class="container container_principal">
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+        </div>
+        <h1 class="title">MENU DA PÁGINA INICIAL</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/salvar.png" class="navegacao" (click)="salvarConfiguracoes()">
+        </div>
+    </div>
+
+    <div class="container" style="padding: 20px 40px;">
+
+        <div class="container" style="padding: 20px 40px;">
+            <!-- Lista de Checkboxes para Selecionar Ícones -->
+            <div class="subcolecoes-list">
+                <div *ngFor="let icon of icons">
+                    <input type="checkbox" [(ngModel)]="visibleIcons[icon.key]" />
+                    <label>{{ icon.label }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

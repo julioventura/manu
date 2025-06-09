@@ -1,0 +1,332 @@
+<div class="container container_principal">
+  <div class="sticky-header" [ngClass]="{'view-mode': !isEditing, 'edit-mode': isEditing}">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="actions">
+        <img *ngIf="isEditing" src="https://dentistas.com.br/assets/voltar_red.png" class="navegacao"
+          (click)="voltar()">
+        <img *ngIf="!isEditing" src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+      </div>
+      <h1 class="title" [ngClass]="setClass('')">Meu Perfil</h1>
+      <div class="actions">
+        <img *ngIf="isEditing" src="https://dentistas.com.br/assets/salvar_red.png" class="navegacao"
+          (click)="salvar()">
+        <img *ngIf="!isEditing" src="https://dentistas.com.br/assets/editar.png" class="navegacao" (click)="editar()">
+      </div>
+    </div>
+    <!-- /HEADER -->
+  </div>
+
+  <!-- Slider para ajustar largura dos labels (sempre visível) -->
+  <div class="sticky-slider view-mode">
+    <div [ngClass]="setClass('width-control')">
+      <div class="slider-wrapper">
+        <label for="labelWidthRange"></label>
+        <input type="range" id="labelWidthRange" min="50" max="300" [(ngModel)]="customLabelWidthValue"
+          [ngModelOptions]="{standalone: true}" (input)="updateCustomLabelWidth()" value="150">
+        <span class="small">{{ customLabelWidthValue }}px</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner-container">
+        <div class="spinner" [ngClass]="{'view-mode': !isEditing, 'edit-mode': isEditing}"></div>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div id="profile-form" *ngIf="!isLoading && !errorMessage" [ngClass]="setClass('profile-form')"
+      [style.--label-width]="customLabelWidth">
+
+      <form [formGroup]="profileForm" (ngSubmit)="salvar()">
+
+        <!-- Percorre os grupos de campos -->
+        <div *ngFor="let group of groupedFields | keyvalue" [ngClass]="{'field-group view-mode': !isEditing, 'field-group edit-mode': isEditing}">
+          <h3 [ngClass]="setClass('grupo-titulo')">{{ group.key }}</h3>
+
+          <!-- Percorre os campos de cada grupo -->
+          <div *ngFor="let field of group.value" [ngClass]="setClass('detail-container')">
+            <label [for]="field.controlName" [ngClass]="setClass('detail-label')" [style.width]="customLabelWidth">
+              {{ field.label }}:
+            </label>
+
+            <!-- Container do campo com input e possíveis mensagens de erro -->
+            <div class="field-input-container">
+              <!-- Renderiza o tipo apropriado de campo -->
+              <ng-container [ngSwitch]="field.type">
+
+                <!-- Textarea para campos de texto longo -->
+
+                <ng-container *ngSwitchCase="'textarea'">
+                  <textarea [formControlName]="field.controlName" [id]="field.controlName"
+                    [placeholder]="field.placeholder && isEditing || ''"
+                    [ngClass]="{'detail-value view-mode': !isEditing, 'detail-value edit-mode': isEditing}"
+                    [attr.disabled]="!isEditing ? '' : null" [class.error]="isFieldInvalid(field.controlName)"
+                    (blur)="onFieldBlur(field.controlName)" (change)="onFieldChange($event, field.controlName)"
+                    rows="2">
+                  </textarea>
+                </ng-container>
+
+                <!-- Input padrão para os demais campos -->
+                <ng-container *ngSwitchDefault>
+                  <input [type]="field.type || 'text'" [formControlName]="field.controlName" [id]="field.controlName"
+                    [placeholder]="field.placeholder && isEditing || ''"
+                    [ngClass]="{'detail-value view-mode': !isEditing, 'detail-value edit-mode': isEditing}"
+                    [attr.disabled]="!isEditing ? '' : null" [class.error]="isFieldInvalid(field.controlName)"
+                    (blur)="onFieldBlur(field.controlName)" (change)="onFieldChange($event, field.controlName)">
+                </ng-container>
+
+              </ng-container>
+
+              <!-- Mensagem de erro para validação -->
+              <div *ngIf="isFieldInvalid(field.controlName)" class="validation-message">
+                {{ getErrorMessage(field.controlName) }}
+              </div>
+
+              <!-- Mensagem de erro específica para o campo username -->
+              <div *ngIf="field.controlName === 'username' && usernameError" class="validation-message">
+                {{ usernameError }}
+              </div>
+            </div>
+          </div>
+
+          <div [ngClass]="setClass('bottom-line')"> </div>
+                
+        </div>
+
+        <!-- HORARIOS (ARRAY SEPARADA DO FORM ACIMA) -->
+        <h3 [ngClass]="setClass('grupo-titulo')">{{ '05. Horários de Atendimento' }}</h3>
+        <!-- Editor de horários de atendimento -->
+        <div class="form-field perfil-editor">
+          <label for="horarios" [ngClass]="setClass('detail-label')" [style.width]="customLabelWidth">
+          </label>
+
+          <div class="perfil-container">
+            <!-- Lista de horários em modo visualização -->
+            <div *ngIf="!isEditing && horarios.length > 0" class="perfil-list view-mode">
+              <div *ngFor="let horario of horarios" class="perfil-item">
+                <div class="perfil-content">
+                  <strong>{{ horario.dia }}:</strong> {{ horario.horario }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista de horários em modo edição (com botões de remover) -->
+            <div *ngIf="isEditing && horarios.length > 0" class="perfil-list edit-mode">
+              <div *ngFor="let horario of horarios; let i = index" class="perfil-item">
+                <div class="perfil-content">
+                  <strong>{{ horario.dia }}:</strong> {{ horario.horario }}
+                </div>
+                <button type="button" class="btn-remove" (click)="removeHorario(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulário para adicionar novo horário (apenas em modo edição) -->
+            <div *ngIf="isEditing" class="add-perfil-form">
+              <div class="input-group">
+                <div class="input-field">
+                  <label for="novoDia" class="input-label">Dias:</label>
+                  <input type="text" id="novoDia" class="detail-value edit-mode" placeholder="Segunda a Sexta"
+                    [(ngModel)]="novoDia" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="input-field">
+                  <label for="novoHorario" class="input-label">Horário:</label>
+                  <input type="text" id="novoHorario" class="detail-value edit-mode" placeholder="08:00 - 18:00"
+                    [(ngModel)]="novoHorario" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+
+              <!-- Botão de adicionar -->
+              <div class="button-container">
+                <button type="button" class="btn-add" [disabled]="!novoDia || !novoHorario" (click)="addHorario()">
+                  <i class="fas fa-plus"></i> Adicionar
+                </button>
+              </div>
+
+            </div>
+
+
+
+            <!-- Mensagem quando não há horários cadastrados -->
+            <div *ngIf="horarios.length === 0" class="empty-message">
+              <span class="help-text {{isEditing ? 'edit-mode' : 'view-mode'}}">Nenhum horário cadastrado.</span>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- ENDERECOS (ARRAY SEPARADA DO FORM ACIMA) -->
+        <h3 [ngClass]="setClass('grupo-titulo')">{{ '06. Endereços' }}</h3>
+        <!-- Editor de endereços alternativos -->
+        <div class="form-field perfil-editor">
+          <label [ngClass]="setClass('detail-label')"></label>
+
+          <div class="perfil-container">
+            <!-- Lista de endereços em modo visualização -->
+            <div *ngIf="!isEditing && enderecos.length > 0" class="perfil-list view-mode">
+              <div *ngFor="let endereco of enderecos" class="perfil-item">
+                <div class="perfil-content">
+                  <strong>{{ endereco.rua }}</strong>
+                  <div class="perfil-details">
+                    {{ endereco.bairro ? endereco.bairro + ', ' : '' }}{{ endereco.cidade }}/{{ endereco.estado }}
+                    <span *ngIf="endereco.cep">, CEP: {{ endereco.cep }}</span>
+                    <span *ngIf="endereco.telefone">, Tel: {{ endereco.telefone }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista de endereços em modo edição (com botões de remover) -->
+            <div *ngIf="isEditing && enderecos.length > 0" class="perfil-list edit-mode">
+              <div *ngFor="let endereco of enderecos; let i = index" class="perfil-item">
+                <div class="perfil-content">
+                  <strong>{{ endereco.rua }}</strong>
+                  <div class="perfil-details">
+                    {{ endereco.bairro ? endereco.bairro + ', ' : '' }}{{ endereco.cidade }}/{{ endereco.estado }}
+                    <span *ngIf="endereco.cep">, CEP: {{ endereco.cep }}</span>
+                    <span *ngIf="endereco.telefone">, Tel: {{ endereco.telefone }}</span>
+                  </div>
+                </div>
+                <button type="button" class="btn-remove" (click)="removeEndereco(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulário para adicionar novo endereço (apenas em modo edição) -->
+            <div *ngIf="isEditing" class="add-perfil-form">
+              <div class="input-fields-grid">
+                <!-- Rua -->
+                <div class="input-field">
+                  <label for="novaRua" class="input-label edit-mode">Rua/Nº:</label>
+                  <input type="text" id="novaRua" class="detail-value edit-mode" placeholder="Rua e número"
+                    [(ngModel)]="novoEndereco.rua" [ngModelOptions]="{standalone: true}">
+                </div>
+
+                <!-- Bairro -->
+                <div class="input-field">
+                  <label for="novoBairro" class="input-label edit-mode">Bairro:</label>
+                  <input type="text" id="novoBairro" class="detail-value edit-mode" placeholder="Bairro"
+                    [(ngModel)]="novoEndereco.bairro" [ngModelOptions]="{standalone: true}">
+                </div>
+
+                <!-- Cidade -->
+                <div class="input-field">
+                  <label for="novaCidade" class="input-label edit-mode">Cidade:</label>
+                  <input type="text" id="novaCidade" class="detail-value edit-mode" placeholder="Cidade"
+                    [(ngModel)]="novoEndereco.cidade" [ngModelOptions]="{standalone: true}">
+                </div>
+
+                <!-- Estado -->
+                <div class="input-field">
+                  <label for="novoEstado" class="input-label edit-mode">Estado:</label>
+                  <input type="text" id="novoEstado" class="detail-value edit-mode" placeholder="UF"
+                    [(ngModel)]="novoEndereco.estado" [ngModelOptions]="{standalone: true}">
+                </div>
+
+                <!-- CEP -->
+                <div class="input-field">
+                  <label for="novoCEP" class="input-label edit-mode">CEP:</label>
+                  <input type="text" id="novoCEP" class="detail-value edit-mode" placeholder="00000-000"
+                    [(ngModel)]="novoEndereco.cep" [ngModelOptions]="{standalone: true}">
+                </div>
+
+                <!-- Telefone -->
+                <div class="input-field">
+                  <label for="novoTelefone" class="input-label edit-mode">Telefone:</label>
+                  <input type="text" id="novoTelefone" class="detail-value edit-mode" placeholder="(00) 0000-0000"
+                    [(ngModel)]="novoEndereco.telefone" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+
+              <!-- Botão de adicionar -->
+              <div class="button-container">
+                <button type="button" class="btn-add" [disabled]="!novoEndereco.rua" (click)="addEndereco()">
+                  <i class="fas fa-plus"></i> Adicionar
+                </button>
+              </div>
+            </div>
+
+            <!-- Mensagem quando não há endereços cadastrados -->
+            <div *ngIf="enderecos.length === 0" class="empty-message"
+              [ngClass]="{'view-mode': !isEditing, 'edit-mode': isEditing}">
+              <span *ngIf="!isEditing">Nenhum endereço adicional cadastrado.</span>
+              <span *ngIf="isEditing">Nenhum endereço adicional cadastrado. Adicione endereços acima.</span>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- CONVENIOS (ARRAY SEPARADA DO FORM ACIMA) -->
+        <h3 [ngClass]="setClass('grupo-titulo')">{{ '07. Convênios' }}</h3>
+        <!-- Editor de convenios -->
+        <div class="form-field perfil-editor">
+          <label for="convenios" [ngClass]="setClass('detail-label')" [style.width]="customLabelWidth">
+          </label>
+
+          <div class="perfil-container">
+            <!-- Lista de convenios em modo visualização -->
+            <div *ngIf="!isEditing && convenios.length > 0" class="perfil-list view-mode">
+              <div *ngFor="let convenio of convenios" class="perfil-item">
+                <div class="perfil-content">
+                  <strong>{{ convenio.nomeConvenio }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista de convenios em modo edição (com botões de remover) -->
+            <div *ngIf="isEditing && convenios.length > 0" class="perfil-list edit-mode">
+              <div *ngFor="let convenio of convenios; let i = index" class="perfil-item">
+                <div class="perfil-content">
+                  <strong>{{ convenio.nomeConvenio }}</strong>
+                </div>
+                <button type="button" class="btn-remove" (click)="removeConvenio(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulário para adicionar novo convenio (apenas em modo edição) -->
+            <div *ngIf="isEditing" class="add-perfil-form">
+              <div class="input-group">
+
+                <div class="input-field">
+                  <label for="nomeConvenio" class="input-label">Convênios:</label>
+                  <input type="text" id="nomeConvenio" class="detail-value edit-mode" placeholder=""
+                    [(ngModel)]="nomeConvenio" [ngModelOptions]="{standalone: true}">
+                </div>
+
+              </div>
+
+              <!-- Botão de adicionar -->
+              <div class="button-container">
+                <button type="button" class="btn-add" [disabled]="!nomeConvenio" (click)="addConvenio()">
+                  <i class="fas fa-plus"></i> Adicionar
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Mensagem quando não há horários cadastrados -->
+            <div *ngIf="convenios.length === 0" class="empty-message">
+              <span class="help-text {{isEditing ? 'edit-mode' : 'view-mode'}}">Nenhum convênio cadastrado.</span>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+
+      </form>
+    </div>
+  </div>
+</div>

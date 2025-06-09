@@ -1,0 +1,145 @@
+@import '../../styles.scss';
+
+
+// .container {
+//     padding: 20px 10px 20px 10px;
+// }
+
+// Header com título e botões de ação
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        color: $primary-color;
+        text-align: center;
+        flex-grow: 1;
+    }
+}
+
+// Linha com o nome da coleção
+.record-header {
+    background-color: $primary-color;
+    color: $white;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    padding: 0px;
+}
+
+// Botões gerais
+button {
+    background-color: #2A7AC3;
+    border: 0px solid #fff;
+    border-radius: 6px;
+    padding: 6px 6px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    font-size: 8pt;
+    font-weight: 500;
+    text-align: center;
+    margin: 5px 0px 5px 5px;
+    width: 120px;
+}
+
+
+.mat-body-large,
+.mat-typography .mat-body-large,
+.mat-typography {
+    font: 400 1rem / 1.5rem Roboto, sans-serif;
+    letter-spacing: unset;
+}
+
+
+button:hover {
+    background-color: lighten($primary-color, 15%);
+}
+
+// Formulário e inputs
+.form-container {
+    padding: 15px;
+    background-color: $white;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.fields-section {
+    margin-bottom: 20px;
+
+    .field-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 6px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 5px;
+
+        // Faz com que os inputs e selects ocupem o espaço disponível
+        input,
+        select {
+            flex: 1; // Faz os inputs e selects ocuparem o espaço restante
+            min-width: 0; // Garante que os inputs não se expandam muito
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0px; // Espaçamento entre os botões
+
+            button {
+                flex: 0 0 auto; // Os botões mantêm seu tamanho normal, mas podem encolher
+                width: 30px; // Define uma largura mínima para os botões
+                cursor: pointer;
+
+                &:hover {
+                    background-color: lighten($primary-color, 25%);
+                }
+
+                font-size: 10px;
+            }
+
+            .remove-button {
+                background-color: $red-dark;
+                color: $white;
+                width: 30px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: lighten($red, 25%);
+                }
+            }
+        }
+    }
+}
+
+// Ajustes para responsividade em telas pequenas
+@media screen and (max-width: $medium-width) {
+    .fields-section {
+        .field-row {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .button-group {
+                display: flex;
+                justify-content: flex-start;
+                gap: 0px;
+                margin-top: 5px;
+
+                button {
+                    width: 30px; // Tamanho padrão dos botões em telas pequenas
+                }
+            }
+        }
+    }    
+}

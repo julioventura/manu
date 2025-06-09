@@ -1,0 +1,223 @@
+/* TutFOP Integrado - Estilos adaptados */
+
+.tutfop-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tutfop-container-main {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Main content */
+.tutfop-main {
+  padding: 20px;
+}
+
+.tutfop-container-section {
+  padding: 1rem;
+}
+
+/* Chat */
+.tutfop-chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espaço vertical entre balões */
+  background: #d7e8ff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid #6b86a5;
+  min-height: 400px;
+  max-height: 60vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+/* Balão do usuário: alinhado à direita, afastado da borda direita */
+:host ::ng-deep .user-message,
+:host ::ng-deep div.user-message,
+.user-message {
+  background-color: #e6f9e6 !important;
+  color: #333333 !important;
+  padding: 15px 20px !important;
+  border-radius: 20px !important;
+  margin: 4px 0 !important;
+  align-self: flex-end !important;
+  max-width: 350px !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+  display: block !important;
+  text-align: left !important;
+}
+
+/* Balão do bot: alinhado à esquerda, afastado da borda esquerda */
+:host ::ng-deep .bot-message,
+:host ::ng-deep div.bot-message,
+.bot-message {
+  background-color: #bae6fd !important;
+  color: #333333 !important;
+  padding: 15px 20px !important;
+  border-radius: 20px !important;
+  margin: 4px 0 !important;
+  align-self: flex-start !important;
+  max-width: 650px !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+  display: block !important;
+  text-align: left !important;
+}
+
+/* Título em negrito */
+:host ::ng-deep .user-message strong,
+:host ::ng-deep div.user-message strong,
+.user-message strong,
+:host ::ng-deep .bot-message strong,
+:host ::ng-deep div.bot-message strong,
+.bot-message strong {
+  display: inline !important;
+  margin-bottom: 0 !important;
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+}
+
+.tutfop-chat-input-container {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.tutfop-textarea {
+  flex: 1;
+  padding: 16px;
+  border: 1px solid #9fcc9f;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  resize: vertical;
+  min-height: 60px;
+  background-color: #e6f9e6; /* Verde claro similar à imagem */
+  font-family: inherit;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: #4CAF50;
+  }
+
+  &::placeholder {
+    color: #666;
+  }
+}
+
+.tutfop-button-container {
+  display: flex;
+  gap: 10px;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
+}
+
+.tutfop-btn-primary {
+  padding: 12px 24px;
+  background: #4CAF50; /* Verde do botão Enviar da imagem */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #3d8b40;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+  }
+}
+
+.tutfop-btn-logout {
+  background: #f44336; /* Vermelho do botão Sair da imagem */
+
+  &:hover:not(:disabled) {
+    background: #d32f2f;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .tutfop-container {
+    padding: 10px;
+  }
+
+  .tutfop-container-section {
+    padding: 1rem;
+  }
+
+  .tutfop-chat-log {
+    max-height: 50vh;
+    min-height: 300px;
+    padding: 1rem;
+  }
+
+  :host ::ng-deep .user-message {
+    max-width: 80%;
+  }
+
+  :host ::ng-deep .bot-message {
+    max-width: 90%;
+  }
+}
+
+/* Estilos aplicados diretamente para sobrescrever qualquer outro estilo */
+body .user-message {
+  background-color: #e6f9e6 !important;
+  padding: 10px;
+  border: 1pt solid rgb(12, 163, 12);
+  border-radius: 10px;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body .bot-message {
+  background-color: #c2e8fd !important;
+  padding: 10px;
+  border: 1pt solid dodgerblue;
+  border-radius: 10px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+
+}

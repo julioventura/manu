@@ -1,0 +1,104 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+/* filepath: /c:/contexto/dentistas/src/app/homepage/convenios/convenios.component.scss */
+.convenios-card {
+  color: #3498db;
+
+  .convenios-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    
+    .convenio-item {
+      display: flex;
+      align-items: center;
+      background-color: rgba(52, 152, 219, 0.1);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      
+      i {
+        color: #3498db;
+        margin-right: 8px;
+        font-size: 0.85rem;
+      }
+    }
+  }
+  
+  .info-particular {
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    
+    i {
+      color: #27ae60;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+  }
+  
+  .no-convenios {
+    display: flex;
+    align-items: center;
+    color: red;
+    
+    i {
+      font-size: 1.25rem;
+      color: #f39c12;
+      margin-right: 10px;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: $primary-color;
+    }
+  }
+  
+  .sem-convenios {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+    
+    i {
+      color: red;
+      margin-right: 10px;
+      margin-top: 2px;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  }
+  
+  .observacao {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: flex-start;
+    
+    i {
+      color: #3498db;
+      margin-right: 10px;
+      margin-top: 2px;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  }
+}

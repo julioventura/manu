@@ -1,0 +1,36 @@
+@import '../../styles.scss';
+
+
+.services-section.icon-grid {
+  display: flex;
+  flex-direction: column; /* Alinha os itens em uma coluna */
+  gap: 15px; /* Espaçamento entre os itens */
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: row; /* Alinha o ícone e o texto horizontalmente */
+  align-items: center; /* Centraliza verticalmente o texto em relação ao ícone */
+  cursor: pointer;
+}
+
+.icon-item img {
+  width: 50px; /* Tamanho do ícone */
+  height: auto;
+  margin-right: 15px; /* Espaço entre o ícone e o texto */
+}
+
+.icon-item p {
+  margin: 0;
+  font-weight: bold; /* Deixa o texto em negrito */
+  font-size: 1rem; /* Tamanho normal do texto */
+  color: $primary-color; /* Cor do texto (ajuste conforme necessário) */
+}
+
+.container-red-border {
+  border: 2px solid $red-dark; /* Borda vermelha */
+  border-radius: 8px; /* Borda arredondada */
+  padding: 10px; /* Espaçamento interno */
+  margin-top: 20px; /* Espaçamento superior */
+  background-color: #ffe2e2; /* Cor de fundo */
+}

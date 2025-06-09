@@ -1,0 +1,60 @@
+<div class="chatbot-container" 
+     [ngClass]="{'minimized': isMinimized, 'maximized': isMaximized}" 
+     (click)="isMinimized ? toggleChat() : null">
+  <div class="chatbot-header">
+    <!-- Botão de maximizar (no lado esquerdo) - visível apenas quando não minimizado -->
+    <div class="chatbot-maximize" *ngIf="!isMinimized">
+      <button class="maximize-button" (click)="$event.stopPropagation(); toggleMaximize()">
+        <i class="fas" [ngClass]="isMaximized ? 'fa-compress' : 'fa-expand'"></i>
+      </button>
+    </div>
+
+    <!-- Título (centralizado) -->
+    <div class="chatbot-title">
+      <i class="fas fa-robot"></i>
+      <span>Assistente Virtual</span>
+    </div>
+    
+    <!-- Controles (lado direito) - visível apenas quando não minimizado -->
+    <div class="chatbot-controls" *ngIf="!isMinimized">
+      <button class="minimize-button" (click)="$event.stopPropagation(); toggleChat()">
+        <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="chatbot-body" *ngIf="!isMinimized">
+    <!-- Área de mensagens -->
+    <div class="messages" #messagesContainer>
+      <div class="message-item" *ngFor="let message of conversation" [ngClass]="{'user': message.sender === 'user', 'bot': message.sender === 'bot'}">
+        <div class="message-content">
+          {{ message.content }}
+        </div>
+        <div class="timestamp">{{ message.timestamp | date:'HH:mm' }}</div>
+      </div>
+      
+      <!-- Indicador de digitação -->
+      <div class="message-item bot typing-indicator" *ngIf="isLoading">
+        <div class="message-content">
+          <div class="typing">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área de entrada de mensagem -->
+    <div class="message-input">
+      <input type="text" 
+             [(ngModel)]="userInput" 
+             placeholder="Digite sua pergunta..." 
+             (keyup.enter)="sendMessage()"
+             [disabled]="isLoading">
+      <button class="send-button" [disabled]="!userInput.trim() || isLoading" (click)="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="profile-card convenios-card">
+  <div class="card-header">
+    <h3>Convênios</h3>
+  </div>
+  
+  <div class="card-body">
+    <div class="convenios-info" *ngIf="temConvenios(); else semConvenios">
+      
+      <!-- <div class="convenios-lista">
+        <div class="convenio-item" *ngIf="getConvenios()">
+          <i class="fas fa-check-circle"></i>
+          <span>{{ userService.userProfile.convenios }}</span>
+        </div>
+      </div> -->
+
+      <div class="convenios-lista">
+        <div class="convenio-item" *ngFor="let convenio of getConvenios()">
+          <i class="fas fa-check-circle"></i>
+          <span>{{ convenio.nomeConvenio }}</span>
+        </div>
+      </div>
+    
+    </div>
+    
+    <ng-template #semConvenios>
+      <div class="no-convenios">
+        <i class="fas fa-info-circle"></i>
+        <p>Informações sobre convênios não disponíveis. Entre em contato para mais detalhes.</p>
+      </div>
+    </ng-template>
+    
+  </div>
+</div>

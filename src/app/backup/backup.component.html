@@ -1,0 +1,43 @@
+<div class="container container_principal">
+
+  <div class="header">
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="util.goHome()">
+    </div>
+    <h1 class="title">Backup de Dados</h1>
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Seção de backup onde o usuário pode gerar backups em formato JSON ou XLS -->
+    <div id="Backup" class="container margin0">
+      <section class="services-section icon-grid largo">
+
+      <!-- formato JSON ou XLS -->
+      <div class="icon-item" (click)="gerarBackup('json')">
+        <img src="https://dentistas.com.br/assets/backup.png" class="navegacao" alt="Gerar Backup">
+        <p>BACKUP EM JSON</p>
+      </div>
+
+      <!-- formato XLS -->
+      <!-- <div class="icon-item" (click)="gerarBackup('xls')"> -->
+      <div class="icon-item" >
+        <img src="https://dentistas.com.br/assets/backup.png" class="navegacao semitransparent" alt="Gerar Backup">
+        <p>XLS (em teste)</p>
+      </div>
+
+      </section>
+    </div>
+
+    <div class="espacador_vertical"></div>
+
+    <!-- <div *ngIf="loading" class="center">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div> -->
+
+    <p *ngIf="message">{{ message }}</p>
+  </div>
+
+</div>

@@ -1,0 +1,147 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+/* filepath: /c:/contexto/dentistas/src/app/homepage/redes/redes.component.scss */
+.redes-card {
+  .redes-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+
+  .rede-item {
+    align-items: left;
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    font-weight: 500;
+
+    i {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    span {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    &.instagram {
+      background-color: rgba(225, 48, 108, 0.1);
+      color: #E1306C;
+
+      &:hover {
+        background-color: rgba(225, 48, 108, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.facebook {
+      background-color: rgba(59, 89, 152, 0.1);
+      color: #3B5998;
+
+      &:hover {
+        background-color: rgba(59, 89, 152, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.linkedin {
+      background-color: rgba(0, 119, 181, 0.1);
+      color: #0077B5;
+
+      &:hover {
+        background-color: rgba(0, 119, 181, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.youtube {
+      background-color: rgba(255, 0, 0, 0.1);
+      color: #FF0000;
+
+      &:hover {
+        background-color: rgba(255, 0, 0, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.twitter {
+      background-color: rgba(29, 161, 242, 0.1);
+      color: #1DA1F2;
+
+      &:hover {
+        background-color: rgba(29, 161, 242, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.tiktok {
+      background-color: rgba(0, 0, 0, 0.1);
+      color: #000000;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.pinterest {
+      background-color: rgba(230, 0, 35, 0.1);
+      color: #E60023;
+
+      &:hover {
+        background-color: rgba(230, 0, 35, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+
+    &.website {
+      background-color: rgba(52, 152, 219, 0.1);
+      color: #3498db;
+
+      &:hover {
+        background-color: rgba(52, 152, 219, 0.2);
+        transform: translateY(-3px);
+      }
+    }
+  }
+
+  .sem-redes {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+
+    i {
+      color: #7f8c8d;
+      margin-right: 10px;
+      margin-top: 2px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  }
+}
+
+.loading-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #777;
+
+  i {
+    margin-right: 10px;
+  }
+}
+
+.fb-icon-margin {
+  margin-right: 6px;
+}

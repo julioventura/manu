@@ -1,0 +1,37 @@
+<div class="signup-container">
+  <div class="signup-header">
+    <mat-icon class="header-icon">person_add</mat-icon>
+    <h2 mat-dialog-title>Cadastro de Novo Usuário</h2>
+  </div>
+  
+  <div mat-dialog-content class="signup-content">
+    <div class="info-section">
+      <p class="email-notice">O email <strong>{{ data.email }}</strong> não está registrado.</p>
+      <p class="signup-question">Crie uma conta:</p>
+    </div>
+    
+    <div class="form-section">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome completo</mat-label>
+        <input matInput [(ngModel)]="name" required placeholder="">
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-hint>Seu nome completo para nosso cadastro</mat-hint>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Apelido para sua homepage</mat-label>
+        <input matInput [(ngModel)]="username" required placeholder="">
+        <mat-icon matSuffix>language</mat-icon>
+        <mat-hint>Sua homepage profissional: Dentistas.com.br/[apelido]</mat-hint>
+      </mat-form-field>
+    </div>
+    
+  </div>
+  
+  <div mat-dialog-actions class="signup-actions">
+    <button mat-stroked-button (click)="onCancel()">CANCELAR</button>
+    <button mat-raised-button color="primary" [disabled]="!name || !username" (click)="onConfirm()">
+      CRIAR CONTA
+    </button>
+  </div>
+</div>

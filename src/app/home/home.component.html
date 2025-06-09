@@ -1,0 +1,180 @@
+<div class="container container_principal">
+
+  <!-- Header - Cabeçalho da página -->
+  <div id="header">
+    <img id="header_left" src="https://dentistas.com.br/assets/dentistas1000.png?v=2" alt="Header Left"
+      class="header-image left" />
+    <img id="header_right" src="https://dentistas.com.br/assets/header_03.png?v=6" alt="Header Right"
+      class="header-image right" />
+  </div>
+
+  <!-- Conteúdo principal -->
+
+
+  <section class="services-section icon-grid largo">
+
+    <!-- Conteúdo principal -->
+    <div id="Services" class="container margin-bottom-8">
+      <section class="services-section icon-grid largo">
+
+        <!-- Ícones Condicionais -->
+
+        <div class="icon-item" *ngIf="visibleIcons['agenda']" (click)="util.go_url(url_agenda)">
+          <img src="https://dentistas.com.br/assets/agenda.png" alt="Agenda">
+          <p>AGENDA</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['pacientes']" (click)="go('list/pacientes')">
+          <img src="https://dentistas.com.br/assets/pacientes.png" alt="Pacientes">
+          <p>PACIENTES</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['alunos']" (click)="go('list/alunos')">
+          <img src="https://dentistas.com.br/assets/alunos.png" alt="Alunos">
+          <p>ALUNOS</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['professores']" (click)="go('list/professores')">
+          <img src="https://dentistas.com.br/assets/professores.png" alt="Professores">
+          <p>PROFESSORES</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['dentistas']" (click)="go('list/dentistas')">
+          <img src="https://dentistas.com.br/assets/clinica.png" alt="Dentistas">
+          <p>DENTISTAS</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['equipe']" (click)="go('list/equipe')">
+          <img src="https://dentistas.com.br/assets/equipe.png" alt="Equipe">
+          <p>EQUIPE</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['proteticos']" (click)="go('list/proteticos')">
+          <img src="https://dentistas.com.br/assets/proteticos.png" alt="Protéticos">
+          <p>PROTÉTICOS</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['indicador']" (click)="go('list/indicador')">
+          <img src="https://dentistas.com.br/assets/indicador.png" alt="Indicador">
+          <p>INDICADOR</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['dentais']" (click)="go('list/dentais')">
+          <img src="https://dentistas.com.br/assets/carrinho.png" alt="Dentais">
+          <p>DENTAIS</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['empresas']" (click)="go('list/empresas')">
+          <img src="https://dentistas.com.br/assets/empresas.png" alt="Empresas">
+          <p>EMPRESAS</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['fornecedores']" (click)="go('list/fornecedores')">
+          <img src="https://dentistas.com.br/assets/fornecedores.png" alt="Fornecedores">
+          <p>FORNECEDORES</p>
+        </div>
+
+        <div class="icon-item" (click)="go('perfil')">
+          <img src="https://dentistas.com.br/assets/perfil.png" alt="Seu Perfil">
+          <p>PERFIL PROFISSIONAL</p>
+        </div>
+
+        <div class="icon-item" (click)="go('homepage-intro')">
+          <img src="https://dentistas.com.br/assets/global.png" alt="Sua Homepage">
+          <p>SUA HOMEPAGE</p>
+        </div>
+
+        <div class="icon-item" (click)="go('config')">
+          <img src="https://dentistas.com.br/assets/config.png" alt="Configurar">
+          <p>CONFIGURAR </p>
+        </div>
+
+        <div class="icon-item" (click)="go('backup')">
+          <img src="https://dentistas.com.br/assets/backup.png" alt="Backup">
+          <p>BACKUP </p>
+        </div>
+
+        <div class="icon-item" *ngIf="configuracoes.is_admin" (click)="go('crm')">
+          <img src="https://dentistas.com.br/assets/crm.png" alt="CRM" class="home-icon">
+          <p>CRM </p>
+        </div>
+
+        <div class="icon-item" *ngIf="configuracoes.is_admin" (click)="go('list/equipe')">
+          <img src="https://dentistas.com.br/assets/usuarios.png" alt="Equipe">
+          <p>USUÁRIOS</p>
+        </div>
+
+        <div class="icon-item" (click)="go('tutfop')">
+          <img src="https://dentistas.com.br/assets/chatbot.png" alt="TUTFOP">
+          <p>TUTFOP </p>
+        </div>
+
+      </section>
+    </div>
+
+  </section>
+
+
+
+  <!-- <div class="boxvazio"> -->
+
+  <!-- Coluna 1 -->
+  <!-- <div class="column column-left">
+      <app-chatbot></app-chatbot>
+    </div> -->
+
+  <!-- Coluna 2 -->
+  <!-- <div class="column column-right">
+
+      <section class="chatbots-section box">
+
+
+        <div class="IAOdonto">I.A. na Odontologia</div>
+
+        <section class="services-section icon-grid">
+
+          
+        <div class="icon-item" *ngIf="visibleIcons['associados']" (click)="go('list/associados')">
+          <img src="https://dentistas.com.br/assets/associados.png" alt="Associados">
+          <p>ASSOCIADOS</p>
+        </div>
+
+          <div class="icon-item" (click)="go('list/videos')">
+            <img src="https://dentistas.com.br/assets/cursos.png" alt="Dicas de I.A.">
+            <p>VIDEOS</p>
+          </div>
+
+          <div class="icon-item" (click)="go('list/cursos')">
+            <img src="https://dentistas.com.br/assets/sala.png" alt="Cursos">
+            <p>CURSOS</p>
+          </div>
+
+          <div class="icon-item">
+            <img src="https://dentistas.com.br/assets/chat.png" alt="Seu Chatbot">
+            <p>SEU CHATBOT</p>
+          </div>
+
+        </section>
+
+        <section class="pills-section largo">
+          <div class="pill-group">
+            <a class="pill" href="https://dentistas.com.br/tutfop" target="_blank" rel="noopener">
+              <span>Assistentes de I.A. para a clínica</span>
+            </a>
+            <a class="pill" href="https://dentistas.com.br/tutfop" target="_blank" rel="noopener">
+              <span>Assistentes de I.A. para professores</span>
+            </a>
+            <a class="pill" href="https://dentistas.com.br/tutfop" target="_blank" rel="noopener">
+              <span>Assistente de I.A. para auxílio clínico</span>
+            </a>
+          </div>
+        </section>
+
+
+      </section>
+
+    </div> -->
+
+  <!-- </div> -->
+
+</div>

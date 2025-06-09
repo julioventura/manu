@@ -1,0 +1,19 @@
+<div class="container">
+  <h4>{{ data?.nome }}</h4>
+  <div>
+    <p><strong>Nascimento:</strong> {{ data?.nascimento }}<br>
+      <strong>Idade:</strong> {{ idade }}<br>    
+    </p>
+
+    <p> &nbsp; </p>
+    <p><strong>Telefone:</strong> {{ data?.telefone }}<br>
+    </p>
+
+    <p> &nbsp; </p>
+    <p><strong>Chamada inicial:</strong> {{ data?.dataChamadaInicial }}</p>
+    <p><strong>Última chamada:</strong> {{ data?.dataUltimaChamada }}</p>
+    <p><strong>Respondeu em:</strong> {{ data?.dataResposta }}</p>
+    <p><strong>Retornou em:</strong> {{ data?.dataComparecimento }}</p>
+  </div>
+  <button (click)="fechar()" class="menu-button">Fechar</button>
+</div>

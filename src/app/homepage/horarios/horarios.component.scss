@@ -1,0 +1,108 @@
+@import '../../../styles.scss';
+@import '../homepage.component.scss';
+
+/* filepath: /c:/contexto/dentistas/src/app/homepage/horarios/horarios.component.scss */
+.perfil-card {
+  .perfil-lista {
+    margin-bottom: 1.25rem;
+    
+    .horario-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      
+      &:first-child {
+        padding-top: 0;
+      }
+      
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      
+      .dia {
+        display: flex;
+        align-items: center;
+        
+        i {
+          color: #3498db;
+          margin-right: 8px;
+        }
+        
+        span {
+          font-weight: 500;
+        }
+      }
+      
+      .hora {
+        font-weight: 500;
+        color: #3498db;
+      }
+    }
+  }
+  
+  .observacao {
+    display: flex;
+    background-color: rgba(52, 152, 219, 0.1);
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    
+    i {
+      color: #3498db;
+      font-size: 1.1rem;
+      margin-right: 10px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  }
+  
+  .btn-agendar {
+    width: 100%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    i {
+      margin-right: 8px;
+    }
+    
+    &:hover {
+      background-color: #2980b9;
+    }
+  }
+  
+  .agendamento-info {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    
+    i {
+      color: #9b59b6;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+  }
+}
