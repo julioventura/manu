@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
     <mat-toolbar color="primary" class="footer-toolbar">
       <span class="footer-content">
         <span class="footer-text">
-          © 2024 Clínica Dentária - Todos os direitos reservados
+          © 2024 Dentistas.com.br - ver 4.2 (junho/2025)
         </span>
         <span class="footer-actions">
           <button mat-button (click)="goHome()">

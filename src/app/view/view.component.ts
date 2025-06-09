@@ -1,7 +1,8 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,53 +20,70 @@ import { GroupService } from '../shared/components/group/group.service';
 import { GroupSharingModalComponent } from '../shared/components/group/group-sharing-modal.component';
 import { UtilService } from '../shared/utils/util.service';
 
-// ADICIONAR: interface para Firebase Timestamp
-interface FirebaseTimestamp {
-  toDate(): Date;
+// CORRIGIR: Definir todas as interfaces necessárias
+interface ViewData {
+  id?: string;
+  [key: string]: unknown;
 }
 
-// ADICIONAR: Interface para KeyValuePair
+interface Campo {
+  id: string;
+  nome: string;
+  label: string;
+  tipo: string;
+  obrigatorio: boolean;
+  grupo?: string;
+  subgrupo?: string;
+  [key: string]: unknown;
+}
+
+// CORRIGIR: Expandir interface SharingHistoryEntry com todas as propriedades necessárias
+interface SharingHistoryEntry {
+  id: string;
+  sharedWith: string;
+  sharedAt: Date;
+  permissions: string[];
+  // ADICIONAR: propriedades que estão sendo usadas no template
+  previousGroupId?: string;
+  groupId?: string;
+  timestamp?: Date | FirebaseTimestamp;
+  userName?: string;
+  userId?: string;
+  action?: string;
+  details?: string;
+  [key: string]: unknown; // Para flexibilidade adicional
+}
+
 interface KeyValuePair {
   key: string;
   value: unknown;
 }
 
-// ADICIONAR: Interface para Campo
-interface Campo {
-  id: string;  // MUDANÇA: era unknown, agora é string
-  nome: string;
-  label?: string;
-  tipo?: string;
-  grupo?: string;  // ADICIONAR
-  subgrupo?: string;  // ADICIONAR
-  obrigatorio?: boolean;  // ADICIONAR
-  [key: string]: unknown;
-}
-
-interface SharingHistoryEntry {
-  groupId: string;
-  groupName: string;
-  previousGroupId?: string;
-  sharedAt: FirebaseTimestamp | Date | string;
-  timestamp?: FirebaseTimestamp | Date | string;
-  sharedBy: string;
-  userName?: string;
-  userId?: string;
-  action: string;
+interface FirebaseTimestamp {
+  toDate(): Date;
 }
 
 interface FormControls {
-  [key: string]: unknown[];  // CORRIGIDO: era string[], agora é unknown[]
+  [key: string]: FormControl | FormGroup | unknown[];
 }
-
-type ViewData = Record<string, unknown> | unknown[] | string | number | boolean | null;
 
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss'],
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // ADICIONADO: para permitir elementos customizados
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-in', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-out', style({ opacity: 0 }))
+      ])
+    ])
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -87,7 +105,7 @@ export class ViewComponent implements OnInit {
   id: string = '';
   collection: string = '';
   subcollection: string = '';
-  registro: ViewData = null;
+  registro: ViewData | null = null;
   isLoading: boolean = true;
   recordTitle: string = '';
   currentGroupId: string | null = null;
@@ -136,37 +154,56 @@ export class ViewComponent implements OnInit {
   loadRecord(): void {
     this.isLoading = true;
     
-    this.userService.getUserData(this.collection).subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) {
-          const record = data.find((item: unknown) => {
-            if (item && typeof item === 'object') {
-              const obj = item as Record<string, unknown>;
-              return obj['id'] === this.id;
+    if (this.collection && this.id) {
+      this.userService.getUser().subscribe(user => {
+        if (user) {
+          const docPath = `users/${user.uid}/${this.collection}`;
+          
+          this.configService.getDocumento(docPath, this.id).subscribe({
+            next: (data) => {
+              // CORRIGIR: conversão segura para ViewData
+              this.registro = data ? {
+                id: this.id,
+                ...(data as Record<string, unknown>)
+              } : null;
+              
+              if (this.registro) {
+                this.recordTitle = this.getRecordTitle(this.registro);
+                this.currentGroupId = this.getRecordGroupId();
+                this.titulo_da_pagina = `Visualizar ${this.collection}`;
+                this.subtitulo_da_pagina = this.recordTitle;
+                
+                this.loadFields();
+                console.log('Record loaded:', this.registro);
+              } else {
+                this.snackBar.open('Registro não encontrado', 'OK', { duration: 3000 });
+              }
+              
+              this.isLoading = false;
+            },
+            error: (error) => {
+              console.error('Error loading record:', error);
+              
+              if (error.code === 'permission-denied') {
+                this.snackBar.open('Acesso negado. Verifique suas permissões.', 'OK', { duration: 5000 });
+              } else {
+                this.snackBar.open('Erro ao carregar registro', 'OK', { duration: 3000 });
+              }
+              
+              this.isLoading = false;
+              this.router.navigate(['/']);
             }
-            return false;
           });
-          this.registro = record || null;
         } else {
-          this.registro = data;
+          this.snackBar.open('Usuário não autenticado', 'OK', { duration: 3000 });
+          this.router.navigate(['/login']);
+          this.isLoading = false;
         }
-        
-        this.recordTitle = this.getRecordTitle(this.registro);
-        this.currentGroupId = this.getRecordGroupId();
-        this.titulo_da_pagina = `Visualizar ${this.collection}`;
-        this.subtitulo_da_pagina = this.recordTitle;
-        this.isLoading = false;
-        
-        this.loadFields();
-        
-        console.log('Record loaded:', this.registro);
-      },
-      error: (error) => {
-        console.error('Error loading record:', error);
-        this.snackBar.open('Erro ao carregar registro', 'OK', { duration: 3000 });
-        this.isLoading = false;
-      }
-    });
+      });
+    } else {
+      this.snackBar.open('Parâmetros inválidos', 'OK', { duration: 3000 });
+      this.isLoading = false;
+    }
   }
 
   loadFields(): void {
@@ -188,8 +225,8 @@ export class ViewComponent implements OnInit {
       this.campos = Object.keys(record)
         .filter(key => key !== 'id')
         .map(key => ({
-          id: key,  // CORRIGIDO: key é string
-          nome: key,  // CORRIGIDO: usar key diretamente
+          id: key,
+          nome: key,
           label: this.formatFieldName(key),
           tipo: this.inferFieldType(record[key]),
           obrigatorio: key === 'nome' || key === 'name'
@@ -198,14 +235,14 @@ export class ViewComponent implements OnInit {
       this.campos = [
         { 
           id: 'nome', 
-          nome: 'nome',  // CORRIGIDO
+          nome: 'nome',
           label: 'Nome',
           tipo: 'text', 
           obrigatorio: true 
         },
         { 
           id: 'id', 
-          nome: 'id',  // CORRIGIDO
+          nome: 'id',
           label: 'ID',
           tipo: 'text', 
           obrigatorio: false 
@@ -242,7 +279,7 @@ export class ViewComponent implements OnInit {
   buildForm(): void {
     const formControls: FormControls = {};
     this.campos.forEach(campo => {
-      formControls[campo.id] = [''];  // CORRIGIDO: campo.id agora é string
+      formControls[campo.id] = [''];
     });
     this.fichaForm = this.formBuilder.group(formControls);
     
@@ -251,21 +288,24 @@ export class ViewComponent implements OnInit {
     }
   }
 
-  private getRecordTitle(data: ViewData): string {
-    if (typeof data === 'object' && data !== null) {
-      const record = data as Record<string, unknown>;
-      return String(record['nome'] || record['title'] || record['name'] || `ID: ${this.id}`);
+  private getRecordTitle(record: ViewData): string {
+    const titleFields = ['nome', 'name', 'title', 'titulo', 'descricao', 'description'];
+    
+    for (const field of titleFields) {
+      const value = record[field];
+      if (value && typeof value === 'string') {
+        return value;
+      }
     }
-    return `ID: ${this.id}`;
+    
+    return 'Registro sem título';
   }
 
-  private getRecordGroupId(): string | null {
-    if (this.registro && typeof this.registro === 'object') {
-      const record = this.registro as Record<string, unknown>;
-      const groupId = record['groupId'];
-      return groupId ? String(groupId) : null;
-    }
-    return null;
+  private getRecordGroupId(): string {
+    if (!this.registro) return '';
+    
+    const groupIdValue = this.registro['groupId'] || this.registro['grupo'] || this.registro['category'];
+    return typeof groupIdValue === 'string' ? groupIdValue : '';
   }
 
   canShareRecord(): boolean {
@@ -316,7 +356,6 @@ export class ViewComponent implements OnInit {
     }
   }
 
-  // CORRIGIDO: aceitar tanto Event quanto chamada direta
   updateCustomLabelWidth(eventOrValue?: Event | number): void {
     if (typeof eventOrValue === 'number') {
       this.customLabelWidthValue = eventOrValue;
@@ -330,13 +369,13 @@ export class ViewComponent implements OnInit {
   hasRegistroProperty(campo: Campo): boolean {
     if (!this.registro || typeof this.registro !== 'object') return false;
     const record = this.registro as Record<string, unknown>;
-    return campo.nome in record;  // CORRIGIDO: usar campo.nome em vez de campo.id
+    return campo.nome in record;
   }
 
   getRegistroProperty(campo: Campo): unknown {
     if (!this.registro || typeof this.registro !== 'object') return null;
     const record = this.registro as Record<string, unknown>;
-    return record[campo.nome];  // CORRIGIDO: usar campo.nome
+    return record[campo.nome];
   }
 
   getRegistroString(campo: Campo): string {
@@ -344,7 +383,6 @@ export class ViewComponent implements OnInit {
     return this.safeString(value);
   }
 
-  // ADICIONADO: métodos sobrecarregados para aceitar string ou Campo
   hasRegistroPropertyByKey(key: string): boolean {
     if (!this.registro || typeof this.registro !== 'object') return false;
     const record = this.registro as Record<string, unknown>;
@@ -362,7 +400,6 @@ export class ViewComponent implements OnInit {
     return this.safeString(value);
   }
 
-  // ADICIONADO: métodos helper para template que aceitem tanto Campo quanto string
   isNotEmptyField(fieldOrKey: Campo | string): boolean {
     const value = typeof fieldOrKey === 'string' 
       ? this.getRegistroPropertyByKey(fieldOrKey) 
@@ -393,7 +430,7 @@ export class ViewComponent implements OnInit {
   }
 
   trackByCampo(index: number, campo: Campo): string {
-    return campo.id;  // CORRIGIDO: campo.id agora é string garantido
+    return campo.id;
   }
 
   groupByGrupo(campos: Campo[]): { [key: string]: Campo[] } {
@@ -464,7 +501,6 @@ export class ViewComponent implements OnInit {
     return this.currentGroupId || '';
   }
 
-  // CORRIGIDO: aceitar parâmetro obrigatório com valor padrão
   onGroupIdChanged(newGroupId: string = ''): void {
     this.currentGroupId = newGroupId;
     this.groupChanged = true;
@@ -491,7 +527,6 @@ export class ViewComponent implements OnInit {
     return String(date);
   }
 
-  // Métodos existentes mantidos
   isObject(value: unknown): boolean {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
@@ -555,7 +590,6 @@ export class ViewComponent implements OnInit {
     return String(value);
   }
 
-  // ADICIONAR: método para KeyValuePair
   getKeyValueString(item: KeyValuePair): string {
     if (item.value && typeof item.value === 'object') {
       const obj = item.value as Record<string, unknown>;
@@ -569,34 +603,147 @@ export class ViewComponent implements OnInit {
     return this.safeString(item.value);
   }
 
-  // ADICIONAR: função para verificar tipo
   isObjectWithNome(campo: unknown): campo is Record<string, unknown> & { nome: string } {
     return campo !== null && 
            campo !== undefined && 
            typeof campo === 'object' && 
            'nome' in campo && 
            typeof (campo as Record<string, unknown>)['nome'] === 'string' &&
-           !!(campo as Record<string, unknown>)['nome'];  // CORRIGIDO: garantir boolean
+           !!(campo as Record<string, unknown>)['nome'];
   }
 
-  // ADICIONAR: função para obter valor seguro de KeyValuePair
   getFieldValueFromKeyValue(item: unknown, key: string): string {
     if (!item || typeof item !== 'object') return '';
     
     const obj = item as Record<string, unknown>;
     
-    // CORRIGIDO: usar notação de índice
     if ('value' in obj && obj['value'] && typeof obj['value'] === 'object') {
       const valueObj = obj['value'] as Record<string, unknown>;
       return this.safeString(valueObj[key]);
     }
     
-    // Se é objeto direto
     return this.safeString(obj[key]);
   }
 
-  // ADICIONAR método para verificar se campo tem propriedade específica
   hasFieldProperty(campo: Campo, property: string): boolean {
     return property in campo && campo[property] !== undefined && campo[property] !== null;
   }
+
+  // ADICIONAR: métodos para acessar propriedades do SharingHistoryEntry de forma segura
+  getSharingHistoryProperty(entry: SharingHistoryEntry, property: string): unknown {
+    return entry[property] || null;
+  }
+
+  getSharingHistoryString(entry: SharingHistoryEntry, property: string): string {
+    const value = this.getSharingHistoryProperty(entry, property);
+    return this.safeString(value);
+  }
+
+  hasSharingHistoryProperty(entry: SharingHistoryEntry, property: string): boolean {
+    return property in entry && entry[property] !== undefined && entry[property] !== null;
+  }
+
+  // ADICIONAR: métodos específicos para o histórico de compartilhamento
+  getGroupChangeDescription(entry: SharingHistoryEntry): string {
+    const previousGroup = entry.previousGroupId;
+    const currentGroup = entry.groupId;
+    
+    if (previousGroup && currentGroup) {
+      return `Movido do grupo "${this.getGroupName(previousGroup)}" para "${this.getGroupName(currentGroup)}"`;
+    } else if (!previousGroup && currentGroup) {
+      return `Adicionado ao grupo "${this.getGroupName(currentGroup)}"`;
+    } else if (previousGroup && !currentGroup) {
+      return `Removido do grupo "${this.getGroupName(previousGroup)}"`;
+    }
+    
+    return 'Alteração de grupo';
+  }
+
+  formatSharingTimestamp(entry: SharingHistoryEntry): string {
+    const timestamp = entry.timestamp || entry.sharedAt;
+    if (!timestamp) return '';
+    
+    if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp) {
+      return (timestamp as FirebaseTimestamp).toDate().toLocaleString('pt-BR');
+    }
+    
+    if (timestamp instanceof Date) {
+      return timestamp.toLocaleString('pt-BR');
+    }
+    
+    return String(timestamp);
+  }
+
+  getSharingUserDisplay(entry: SharingHistoryEntry): string {
+    if (entry.userName) {
+      return entry.userName;
+    }
+    
+    if (entry.userId) {
+      return entry.userId;
+    }
+    
+    if (entry.sharedWith) {
+      return entry.sharedWith;
+    }
+    
+    return 'Usuário desconhecido';
+  }
+
+  // ADICIONAR: método para verificar se é uma mudança de grupo
+  isGroupChange(entry: SharingHistoryEntry): boolean {
+    return !!(entry.previousGroupId || entry.groupId);
+  }
+
+  // ADICIONAR: método para verificar se é compartilhamento
+  isSharing(entry: SharingHistoryEntry): boolean {
+    return !!entry.sharedWith && !this.isGroupChange(entry);
+  }
+
+  // ADICIONAR: método para obter o tipo de ação
+  getActionType(entry: SharingHistoryEntry): string {
+    if (this.isGroupChange(entry)) {
+      return 'group-change';
+    }
+    
+    if (this.isSharing(entry)) {
+      return 'sharing';
+    }
+    
+    return entry.action || 'unknown';
+  }
+
+  // ADICIONAR: método para obter ícone da ação
+  getActionIcon(entry: SharingHistoryEntry): string {
+    const actionType = this.getActionType(entry);
+    
+    switch (actionType) {
+      case 'group-change':
+        return 'swap_horiz';
+      case 'sharing':
+        return 'share';
+      case 'permission':
+        return 'security';
+      default:
+        return 'history';
+    }
+  }
+
+  // ADICIONAR: método para obter cor da ação
+  getActionColor(entry: SharingHistoryEntry): string {
+    const actionType = this.getActionType(entry);
+    
+    switch (actionType) {
+      case 'group-change':
+        return 'accent';
+      case 'sharing':
+        return 'primary';
+      case 'permission':
+        return 'warn';
+      default:
+        return '';
+    }
+  }
+
+  // ...existing methods...
 }
