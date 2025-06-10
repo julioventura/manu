@@ -1,12 +1,12 @@
 // Alteração: remoção de logs de depuração (console.log)
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router'; // CORRIGIDO: removido Event as RouterEvent
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UserService } from './shared/services/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { filter, take, switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -22,23 +22,25 @@ import { EMPTY } from 'rxjs';
     ])
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   showFooter = true;
   isChatbotExpanded = false;
   isHomepageRoute = false;
+  isHomepagePage = false;
+  private routerSubscription: Subscription = new Subscription();
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private afAuth: AngularFireAuth // Adicionar AngularFireAuth
+    private afAuth: AngularFireAuth
   ) {
     this.router.events.subscribe({
-      next: (event: RouterEvent) => {
-        // Alteração: tipagem explícita do parâmetro event
+      next: () => {
+        // CORRIGIDO: removido parâmetro 'event' não utilizado
         // Your navigation handling code
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Router event error:', err);
       }
     });
@@ -112,13 +114,50 @@ export class AppComponent implements OnInit {
         }
       });
 
+      // Escutar mudanças de rota
+      this.routerSubscription = this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event: NavigationEnd) => {
+          // CORRIGIR: no app.component.ts, linha 122-123, substituir por:
+          this.isHomepagePage = this.isUsernameRoute(event.url) || 
+                               this.isUsernameRoute(event.urlAfterRedirects || '');
+        });
+
       // Alteração: removido log de depuração
     } catch (error) {
       console.error('Error initializing AppComponent:', error);
     }
   }
 
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
+  }
+
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
+  }
+
+  // ADICIONAR: método auxiliar no app.component.ts
+  private isUsernameRoute(url: string): boolean {
+    // Rotas do tipo /clinica/<apelido>
+    if (url.includes('/clinica/')) {
+      return true;
+    }
+    
+    // Rotas diretas /<apelido> (páginas personalizadas)
+    const systemRoutes = [
+      '/home', '/login', '/config', '/perfil', '/backup', 
+      '/list', '/crm', '/tutfop', '/homepage-intro', '/grupos'
+    ];
+    
+    const pathSegments = url.split('/').filter(segment => segment);
+    
+    // URL com apenas um segmento que não é rota do sistema
+    if (pathSegments.length === 1) {
+      const route = '/' + pathSegments[0];
+      return !systemRoutes.some(sysRoute => route.startsWith(sysRoute));
+    }
+    
+    return false;
   }
 }
