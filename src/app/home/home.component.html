@@ -14,19 +14,40 @@
   <section class="services-section icon-grid largo">
 
     <!-- Conteúdo principal -->
+
+
     <div id="Services" class="container margin-bottom-8">
       <section class="services-section icon-grid largo">
 
-        <!-- Ícones Condicionais -->
 
-        <div class="icon-item" *ngIf="visibleIcons['agenda']" (click)="util.go_url(url_agenda)">
-          <img src="https://dentistas.com.br/assets/agenda.png" alt="Agenda">
-          <p>AGENDA</p>
+        <!-- Icones permanentes -->
+
+        <!-- ATUALIZAR: home.component.html - linha 25-28 -->
+        <div class="icon-item" (click)="util.go_url(url_agenda)">
+          <img src="https://dentistas.com.br/assets/google-calendar.png" alt="Agenda Google">
+          <p>AGENDA GOOGLE</p>
         </div>
+
+        <div class="icon-item" (click)="util.go_url(url_gmail)">
+          <img src="https://dentistas.com.br/assets/google-gmail.png" alt="Gmail">
+          <p>GMAIL</p>
+        </div>
+
+        <!-- Icones opcionais -->
 
         <div class="icon-item" *ngIf="visibleIcons['pacientes']" (click)="go('list/pacientes')">
           <img src="https://dentistas.com.br/assets/pacientes.png" alt="Pacientes">
           <p>PACIENTES</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['agenda']" (click)="util.go_url(url_agenda)">
+          <img src="https://dentistas.com.br/assets/agenda.png" alt="Agenda Google">
+          <p>AGENDA GOOGLE</p>
+        </div>
+
+        <div class="icon-item" *ngIf="visibleIcons['agenda']" (click)="util.go_url(url_gmail)">
+          <img src="https://dentistas.com.br/assets/mail.png" alt="Emails do Gmail">
+          <p>GMAIL</p>
         </div>
 
         <div class="icon-item" *ngIf="visibleIcons['alunos']" (click)="go('list/alunos')">

@@ -1,0 +1,30 @@
+// ATUALIZAR: angular.json - projects.dentistas-clinica.architect.build.configurations.production.budgets
+"budgets": [
+  {
+    "type": "initial",
+    "maximumWarning": "3mb",  // ERA: 2mb
+    "maximumError": "5mb"     // ERA: 4mb
+  },
+  {
+    "type": "anyComponentStyle",
+    "maximumWarning": "15kb", // ERA: 6kb
+    "maximumError": "25kb"    // ERA: 10kb
+  }
+]
+
+<svg width="82" height="82" viewBox="0 0 82 82" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background com bordas arredondadas -->
+  <rect x="6" y="6" width="70" height="70" rx="16" ry="16" fill="#EA4335"/>
+  
+  <!-- Envelope base -->
+  <rect x="16" y="26" width="50" height="36" rx="4" ry="4" fill="white"/>
+  
+  <!-- Aba do envelope (parte de trás) -->
+  <path d="M16 30 L41 45 L66 30 L66 26 L16 26 Z" fill="#FBBC04"/>
+  
+  <!-- Aba do envelope (parte da frente) -->
+  <path d="M16 30 L41 45 L66 30 L41 35 Z" fill="#34A853"/>
+  
+  <!-- Sombra interna -->
+  <path d="M16 30 L41 45 L66 30 L66 58 L16 58 Z" fill="none" stroke="#E8E8E8" stroke-width="0.5" opacity="0.3"/>
+</svg>

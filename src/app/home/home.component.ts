@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit {
   username: string | null = null;  // Armazena o username do usuário logado
   new_window: boolean = false;  // Controla se a navegação ocorrerá em nova janela
   url_agenda: string = 'https://dentistas.com.br/agenda/';
+  url_gmail: string = 'https://dentistas.com.br/gmail/';
+
   // Lista de ícones visíveis inicial
   visibleIcons: { [key: string]: boolean } = {
     agenda: true,

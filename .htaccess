@@ -1,14 +1,14 @@
 RewriteOptions inherit
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
+  RewriteBase /clinica/
 
-  # EXCEÇÃO: Não reescreva nada que comece com /fastbot
-  RewriteCond %{REQUEST_URI} ^/fastbot/ [NC]
-  RewriteRule ^ - [L]
-
-  RewriteRule ^index\.html$ - [L]
+  # Handle Angular Router - CORRIGIDO para evitar 404 no refresh
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteCond %{REQUEST_URI} !^/clinica/assets/
+  RewriteRule . index.html [L]
+
+  # Handle direct access to index.html
+  RewriteRule ^index\.html$ - [L]
 </IfModule>
