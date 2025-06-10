@@ -40,7 +40,7 @@ export class UtilService {
   ) { }
 
   // Regex para validação de email
-  public EMAIL_REGEXP = /^[^@]+@([^@\.]+\.)+[^@\.]+$/;
+  public EMAIL_REGEXP = /^[^@]+@([^@.]+\.)+[^@.]+$/;
 
   public ALFABETO: string = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
 
@@ -145,21 +145,21 @@ export class UtilService {
 
 
   // Funções auxiliares
-  public pad(num: any, size: number): string {
+  public pad(num: string | number, size: number): string {
     return num.toString().padStart(size, '0');
   }
 
-  public isNumeric(n: any): boolean {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+  public isNumeric(n: string | number): boolean {
+    return !isNaN(parseFloat(n.toString())) && isFinite(Number(n));
   }
 
   // Função para clonar um objeto
-  public clone(object: any): any {
+  public clone<T>(object: T): T {
     return JSON.parse(JSON.stringify(object));
   }
 
-  public formata_valor(x: any, decimais: number = 2): string {
-    const numero = parseFloat(x).toFixed(decimais).toString();
+  public formata_valor(x: string | number, decimais: number = 2): string {
+    const numero = parseFloat(x.toString()).toFixed(decimais).toString();
     return numero.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
@@ -216,7 +216,7 @@ export class UtilService {
     try {
       new URL(url);
       return true;
-    } catch (_) {
+    } catch {
       return false;
     }
   }
@@ -227,7 +227,7 @@ export class UtilService {
       const parsedUrl = new URL(url);
       const extension = parsedUrl.pathname.split('.').pop();
       return imageExtensions.includes(extension!.toLowerCase());
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -238,145 +238,141 @@ export class UtilService {
     url = url.trim();
 
     // Se não tiver '@', verifica se tem protocolo http:// ou https://
-    // caso contrário, mantém a URL original (será tratada abaixo)
     if (!url.includes('@')) {
       url = /^https?:\/\//i.test(url) ? url : `https://${url}`;
     }
     if (url.startsWith('http')) return url;
 
     switch (type) {
-      case 'instagram':
-        return `https://www.instagram.com/${url}`;
-      case 'facebook':
-        return `https://www.facebook.com/${url}`;
-      case 'linkedin':
-        return `https://www.linkedin.com/in/${url}`;
-      case 'youtube':
-        return `https://www.youtube.com/channel/${url}`;
-      case 'twitter':
-        return `https://twitter.com/${url}`;
-      case 'tiktok':
-        return `https://www.tiktok.com/@${url}`;
-      case 'pinterest':
-        return `https://www.pinterest.com/${url}`;
-      default:
-        // Se não for um tipo conhecido, ou vazio, adiciona https:// se não tiver
-        return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+    case 'instagram':
+      return `https://www.instagram.com/${url}`;
+    case 'facebook':
+      return `https://www.facebook.com/${url}`;
+    case 'linkedin':
+      return `https://www.linkedin.com/in/${url}`;
+    case 'youtube':
+      return `https://www.youtube.com/channel/${url}`;
+    case 'twitter':
+      return `https://twitter.com/${url}`;
+    case 'tiktok':
+      return `https://www.tiktok.com/@${url}`;
+    case 'pinterest':
+      return `https://www.pinterest.com/${url}`;
+    default:
+      // Se não for um tipo conhecido, ou vazio, adiciona https:// se não tiver
+      return /^https?:\/\//i.test(url) ? url : `https://${url}`;
     }
   }
 
-  titulo_ajuste_plural(titulo: string) {
+  titulo_ajuste_plural(titulo: string): string {
     switch (titulo) {
-      case 'usuarios':
-        return 'Usuários';
-      case 'associados':
-        return 'Associados';
-      case 'professores':
-        return 'Professores';
-      case 'alunos':
-        return 'Alunos';
-      case 'pacientes':
-        return 'Pacientes';
-      case 'proteticos':
-        return 'Protéticos';
-      case 'equipe':
-        return 'Equipe';
-      case 'dentistas':
-        return 'Dentistas';
-      case 'dentais':
-        return 'Dentais';
-      case 'empresas':
-        return 'Empresas';
-      case 'fornecedores':
-        return 'Fornecedores';
-      case 'exames':
-        return 'Exames';
-      case 'documentos':
-        return 'Documentos';
-      case 'planos':
-        return 'Planos';
-      case 'atendimentos':
-        return 'Atendimentos';
-      case 'consultas':
-        return 'Consultas';
-      case 'pagamentos':
-        return 'Pagamentos';
-      case 'dentes':
-        return 'Dentes';
-      case 'dentesendo':
-        return 'Endodontia'; // Correção: removido ponto e vírgula duplicado
-      case 'dentesperio':
-        return 'Periodontia';
-      case 'anamnese':
-        return 'Anamneses';
-      case 'diagnosticos':
-        return 'Diagnósticos';
-      case 'risco':
-        return 'Riscos de Cárie';
-      case 'erupcoes':
-        return 'Erupções Dentárias';
-
-      default:
-        return 'Registros';
+    case 'usuarios':
+      return 'Usuários';
+    case 'associados':
+      return 'Associados';
+    case 'professores':
+      return 'Professores';
+    case 'alunos':
+      return 'Alunos';
+    case 'pacientes':
+      return 'Pacientes';
+    case 'proteticos':
+      return 'Protéticos';
+    case 'equipe':
+      return 'Equipe';
+    case 'dentistas':
+      return 'Dentistas';
+    case 'dentais':
+      return 'Dentais';
+    case 'empresas':
+      return 'Empresas';
+    case 'fornecedores':
+      return 'Fornecedores';
+    case 'exames':
+      return 'Exames';
+    case 'documentos':
+      return 'Documentos';
+    case 'planos':
+      return 'Planos';
+    case 'atendimentos':
+      return 'Atendimentos';
+    case 'consultas':
+      return 'Consultas';
+    case 'pagamentos':
+      return 'Pagamentos';
+    case 'dentes':
+      return 'Dentes';
+    case 'dentesendo':
+      return 'Endodontia';
+    case 'dentesperio':
+      return 'Periodontia';
+    case 'anamnese':
+      return 'Anamneses';
+    case 'diagnosticos':
+      return 'Diagnósticos';
+    case 'risco':
+      return 'Riscos de Cárie';
+    case 'erupcoes':
+      return 'Erupções Dentárias';
+    default:
+      return 'Registros';
     }
   }
 
-  titulo_ajuste_singular(titulo: string) {
+  titulo_ajuste_singular(titulo: string): string {
     switch (titulo) {
-      case 'usuarios':
-        return 'Usuário';
-      case 'associados':
-        return 'Associado';
-      case 'professores':
-        return 'Professor';
-      case 'alunos':
-        return 'Aluno';
-      case 'pacientes':
-        return 'Paciente';
-      case 'proteticos':
-        return 'Protético';
-      case 'equipe':
-        return 'Equipe';
-      case 'dentistas':
-        return 'Dentista';
-      case 'dentais':
-        return 'Dental';
-      case 'empresas':
-        return 'Empresa';
-      case 'fornecedores':
-        return 'Fornecedor';
-      case 'notas':
-        return 'Anotação';
-
-      case 'exames':
-        return 'Exame';
-      case 'documentos':
-        return 'Documento';
-      case 'planos':
-        return 'Plano';
-      case 'atendimentos':
-        return 'Atendimento';
-      case 'consultas':
-        return 'Consultas';        
-      case 'pagamentos':
-        return 'Pagamento';
-      case 'dentes':
-        return 'Dente';
-      case 'dentesendo':
-        return 'Endodontia'; // Correção: removido ponto e vírgula duplicado
-      case 'dentesperio':
-        return 'Periodontia';
-      case 'anamnese':
-        return 'Anamnese';
-      case 'diagnosticos':
-        return 'Diagnóstico';
-      case 'risco':
-        return 'Risco de Cárie';
-      case 'erupcoes':
-        return 'Erupção Dentária';
-
-      default:
-        return 'Registros';
+    case 'usuarios':
+      return 'Usuário';
+    case 'associados':
+      return 'Associado';
+    case 'professores':
+      return 'Professor';
+    case 'alunos':
+      return 'Aluno';
+    case 'pacientes':
+      return 'Paciente';
+    case 'proteticos':
+      return 'Protético';
+    case 'equipe':
+      return 'Equipe';
+    case 'dentistas':
+      return 'Dentista';
+    case 'dentais':
+      return 'Dental';
+    case 'empresas':
+      return 'Empresa';
+    case 'fornecedores':
+      return 'Fornecedor';
+    case 'notas':
+      return 'Anotação';
+    case 'exames':
+      return 'Exame';
+    case 'documentos':
+      return 'Documento';
+    case 'planos':
+      return 'Plano';
+    case 'atendimentos':
+      return 'Atendimento';
+    case 'consultas':
+      return 'Consultas';
+    case 'pagamentos':
+      return 'Pagamento';
+    case 'dentes':
+      return 'Dente';
+    case 'dentesendo':
+      return 'Endodontia';
+    case 'dentesperio':
+      return 'Periodontia';
+    case 'anamnese':
+      return 'Anamnese';
+    case 'diagnosticos':
+      return 'Diagnóstico';
+    case 'risco':
+      return 'Risco de Cárie';
+    case 'erupcoes':
+      return 'Erupção Dentária';
+    default:
+      return 'Registros';
     }
   }
 
@@ -394,8 +390,7 @@ export class UtilService {
     this.router.navigate(['/' + route]);
   }
 
-  go_url(url: string) {
-
+  go_url(url: string): void {
     // Garantir que a URL tem o protocolo correto
     if (url && url.trim() !== '') {
       // Se a URL não começar com http:// ou https://, adicionar https://

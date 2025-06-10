@@ -20,6 +20,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
 import { Group, GroupJoinRequest } from './group.model';
 import { GroupService } from './group.service';
+import { UtilService } from '../../utils/util.service';
 
 // Interface para PatientRecord
 interface PatientRecord {
@@ -104,7 +105,8 @@ export class GroupManagerComponent implements OnInit {
     private groupService: GroupService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public util: UtilService,
   ) {
     this.initializeForm(); // Manter como estava
   }
@@ -229,7 +231,7 @@ export class GroupManagerComponent implements OnInit {
   // CORRIGIR: métodos básicos (remover duplicatas)
   voltar(): void {
     console.log('Voltando...');
-    this.router.navigate(['/']);
+    this.util.voltar();
   }
 
   recarregar(event?: Event): void {
