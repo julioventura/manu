@@ -1,12 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, from } from 'rxjs';
-import { map, switchMap, catchError, tap, take, filter } from 'rxjs/operators';
-import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
+import { map, switchMap, take, filter, tap, catchError } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Group, GroupJoinRequest, SharingHistoryItem } from './group.model';
 import firebase from 'firebase/compat/app';
 
-// Interface para dados de solicitação de entrada
+import { Group, GroupJoinRequest } from './group.model';
+
+// ADICIONAR: interfaces necessárias
+interface SharingHistoryItem {
+  id?: string;
+  action: string;
+  userId: string;
+  groupId: string;
+  timestamp: firebase.firestore.Timestamp | Date;
+  details?: string;
+}
+
 interface JoinRequestData {
   groupId: string;
   userId: string;
@@ -21,7 +31,7 @@ interface JoinRequestData {
 })
 export class GroupService {
   userId: string | null = null;
-  // ADICIONAR: propriedade debug que estava faltando
+  userEmail: string | null = null; // ADICIONAR: propriedade necessária
   private debug: boolean = false;
 
   constructor(
@@ -30,6 +40,7 @@ export class GroupService {
   ) {
     this.afAuth.authState.subscribe(user => {
       this.userId = user ? user.uid : null;
+      this.userEmail = user ? user.email : null; // CORRIGIR: atualizar userEmail
       console.log('GroupService: Auth state changed, userId:', this.userId ? 'authenticated' : 'not authenticated');
       if (user) {
         console.log('GroupService: User details:', {
@@ -191,19 +202,21 @@ export class GroupService {
   /**
    * Cria um novo grupo
    */
-  createGroup(groupData: Omit<Group, 'id'>): Observable<DocumentReference<firebase.firestore.DocumentData>> {
+  createGroup(groupData: Omit<Group, 'id'>): Observable<void> {
     return this.getCurrentUserId().pipe(
       switchMap(userId => {
         const group: Group = {
           ...groupData,
-          adminIds: [userId],
-          memberIds: [userId],
+          adminIds: groupData.adminIds || [userId],
+          memberIds: groupData.memberIds || [userId],
           createdAt: firebase.firestore.FieldValue.serverTimestamp() as firebase.firestore.Timestamp,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp() as firebase.firestore.Timestamp,
           createdBy: userId
         };
 
-        return from(this.firestore.collection('groups').add(group) as Promise<DocumentReference<firebase.firestore.DocumentData>>);
+        return from(this.firestore.collection('groups').add(group)).pipe(
+          map(() => void 0) // Converter para Observable<void>
+        );
       })
     );
   }
@@ -211,7 +224,20 @@ export class GroupService {
   /**
    * Atualiza um grupo existente
    */
-  updateGroup(groupId: string, groupData: Partial<Group>): Promise<void> {
+  updateGroup(groupId: string, groupData: Partial<Group>): Observable<void> {
+    return from(
+      this.firestore.collection('groups').doc(groupId).update({
+        ...groupData,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedBy: this.userId
+      })
+    );
+  }
+
+  /**
+   * Atualiza um grupo existente (método original, para compatibilidade)
+   */
+  updateGroupPromise(groupId: string, groupData: Partial<Group>): Promise<void> {
     return this.firestore.collection('groups').doc(groupId).update({
       ...groupData,
       updatedAt: new Date(),
@@ -242,7 +268,14 @@ export class GroupService {
   /**
    * Exclui um grupo
    */
-  deleteGroup(groupId: string): Promise<void> {
+  deleteGroup(groupId: string): Observable<void> {
+    return from(this.firestore.collection('groups').doc(groupId).delete());
+  }
+
+  /**
+   * Exclui um grupo (método original, para compatibilidade)
+   */
+  deleteGroupPromise(groupId: string): Promise<void> {
     return this.firestore.collection('groups').doc(groupId).delete();
   }
 
@@ -354,6 +387,7 @@ export class GroupService {
     });
   }
 
+  // CORRIGIR: método getSharingHistory com interface definida
   getSharingHistory(collection: string, id: string): Observable<SharingHistoryItem[]> {
     if (!collection || !id) {
       return of([]);
@@ -423,93 +457,167 @@ export class GroupService {
       });
   }
 
-  getPendingJoinRequests(): Observable<GroupJoinRequest[]> {
-    return this.afAuth.user.pipe(
-      filter((user): user is firebase.User => !!user && !!user.uid),
+  // ADICIONAR: método requestToJoinGroup que retorna Observable
+  requestToJoinGroup(groupId: string, message?: string): Observable<void> {
+    if (!this.userId) {
+      return of().pipe(
+        switchMap(() => {
+          throw new Error('Usuário não autenticado');
+        })
+      );
+    }
+
+    return this.getGroup(groupId).pipe(
+      take(1),
+      switchMap(group => {
+        if (!group) {
+          throw new Error('Grupo não encontrado');
+        }
+
+        if (group.memberIds?.includes(this.userId!) || group.adminIds?.includes(this.userId!)) {
+          throw new Error('Você já é membro deste grupo');
+        }
+
+        return this.afAuth.user.pipe(take(1));
+      }),
       switchMap(user => {
-        if (!user.uid) {
+        if (!user) {
+          throw new Error('Usuário não autenticado');
+        }
+
+        const requestData: JoinRequestData = {
+          groupId: groupId,
+          userId: this.userId!,
+          userEmail: user.email || '',
+          message: message || '',
+          status: 'pending' as const,
+          requestedAt: firebase.firestore.Timestamp.fromDate(new Date())
+        };
+
+        return from(this.firestore.collection('groupJoinRequests').add(requestData));
+      }),
+      map(() => void 0),
+      tap(() => {
+        console.log('GroupService: Solicitação de entrada criada com sucesso');
+      }),
+      catchError(error => {
+        console.error('GroupService: Erro ao criar solicitação de entrada', error);
+        throw error;
+      })
+    );
+  }
+
+  getPendingJoinRequests(): Observable<GroupJoinRequest[]> {
+    if (!this.userId) {
+      console.warn('GroupService: User not authenticated, cannot load join requests');
+      return of([]);
+    }
+
+    return this.getAllUserGroups().pipe(
+      switchMap(userGroups => {
+        // Filtrar apenas grupos onde o usuário é admin
+        const adminGroups = userGroups.filter(group => 
+          group.adminIds?.includes(this.userId!) || 
+          group.adminIds?.includes(this.userEmail || '')
+        );
+        
+        if (adminGroups.length === 0) {
           return of([]);
         }
 
-        return this.firestore.collection('groupJoinRequests', ref =>
-          ref.where('status', '==', 'pending')
-        ).valueChanges({ idField: 'id' }) as Observable<GroupJoinRequest[]>;
+        // Buscar solicitações pendentes para esses grupos
+        const groupIds = adminGroups.map(group => group.id!);
+        
+        return this.firestore.collection<GroupJoinRequest>('groupJoinRequests', ref => 
+          ref.where('groupId', 'in', groupIds)
+            .where('status', '==', 'pending')
+            .orderBy('createdAt', 'desc')
+        ).valueChanges({ idField: 'id' });
       }),
       catchError(error => {
-        console.error('[GroupService] Error loading join requests:', error);
+        console.error('GroupService: Error loading join requests:', error);
         return of([]);
       })
     );
   }
 
-  approveJoinRequest(requestId: string): Promise<void> {
+  // CORRIGIR: approveJoinRequest deve retornar Observable
+  approveJoinRequest(requestId: string): Observable<void> {
     console.log(`GroupService: Aprovando solicitação ${requestId}`);
 
     if (!this.userId) {
-      return Promise.reject('Usuário não autenticado');
+      return of().pipe(
+        switchMap(() => {
+          throw new Error('Usuário não autenticado');
+        })
+      );
     }
 
-    return new Promise<void>((resolve, reject) => {
-      this.firestore.doc(`groupJoinRequests/${requestId}`).get()
-        .pipe(take(1))
-        .toPromise()
-        .then(doc => {
-          if (!doc?.exists) {
-            throw new Error('Solicitação não encontrada');
-          }
-
-          const requestData = doc.data() as GroupJoinRequest;
-          
-          return this.firestore.doc(`groups/${requestData.groupId}`).update({
-            memberIds: firebase.firestore.FieldValue.arrayUnion(requestData.userId)
-          }).then(() => {
-            return this.firestore.doc(`groupJoinRequests/${requestId}`).update({
-              status: 'approved',
-              reviewedAt: firebase.firestore.Timestamp.fromDate(new Date()),
-              reviewedBy: this.userId
-            });
-          });
-        })
-        .then(() => {
-          console.log('GroupService: Solicitação aprovada com sucesso');
-          resolve();
-        })
-        .catch((error: unknown) => {
-          console.error('GroupService: Erro ao aprovar solicitação', error);
-          reject(error);
-        });
-    });
-  }
-
-  rejectJoinRequest(requestId: string, responseMessage?: string): Promise<void> {
-    console.log(`GroupService: Rejeitando solicitação ${requestId}`);
-
-    if (!this.userId) {
-      return Promise.reject('Usuário não autenticado');
-    }
-
-    return this.firestore.doc(`groupJoinRequests/${requestId}`).get()
-      .pipe(take(1))
-      .toPromise()
-      .then(doc => {
+    return this.firestore.doc(`groupJoinRequests/${requestId}`).get().pipe(
+      take(1),
+      switchMap(doc => {
         if (!doc?.exists) {
           throw new Error('Solicitação não encontrada');
         }
 
-        return this.firestore.doc(`groupJoinRequests/${requestId}`).update({
+        const requestData = doc.data() as GroupJoinRequest;
+        
+        return from(this.firestore.doc(`groups/${requestData.groupId}`).update({
+          memberIds: firebase.firestore.FieldValue.arrayUnion(requestData.userId)
+        })).pipe(
+          switchMap(() => {
+            return from(this.firestore.doc(`groupJoinRequests/${requestId}`).update({
+              status: 'approved',
+              reviewedAt: firebase.firestore.Timestamp.fromDate(new Date()),
+              reviewedBy: this.userId
+            }));
+          })
+        );
+      }),
+      tap(() => {
+        console.log('GroupService: Solicitação aprovada com sucesso');
+      }),
+      catchError(error => {
+        console.error('GroupService: Erro ao aprovar solicitação', error);
+        throw error;
+      })
+    );
+  }
+
+  // CORRIGIR: rejectJoinRequest deve retornar Observable
+  rejectJoinRequest(requestId: string, responseMessage?: string): Observable<void> {
+    console.log(`GroupService: Rejeitando solicitação ${requestId}`);
+
+    if (!this.userId) {
+      return of().pipe(
+        switchMap(() => {
+          throw new Error('Usuário não autenticado');
+        })
+      );
+    }
+
+    return this.firestore.doc(`groupJoinRequests/${requestId}`).get().pipe(
+      take(1),
+      switchMap(doc => {
+        if (!doc?.exists) {
+          throw new Error('Solicitação não encontrada');
+        }
+
+        return from(this.firestore.doc(`groupJoinRequests/${requestId}`).update({
           status: 'rejected',
           reviewedAt: firebase.firestore.Timestamp.fromDate(new Date()),
           reviewedBy: this.userId,
           responseMessage: responseMessage || ''
-        });
-      })
-      .then(() => {
+        }));
+      }),
+      tap(() => {
         console.log('GroupService: Solicitação rejeitada com sucesso');
-      })
-      .catch(error => {
+      }),
+      catchError(error => {
         console.error('GroupService: Erro ao rejeitar solicitação', error);
         throw error;
-      });
+      })
+    );
   }
 
   getRegistroById(collection: string, id: string): Observable<Record<string, unknown> | null> {

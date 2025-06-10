@@ -40,13 +40,16 @@ export interface SharingMetadata {
 // Adicione isso ao arquivo group.model.ts existente
 export interface GroupJoinRequest {
   id?: string;
-  groupId: string;
   userId: string;
   userEmail?: string;
+  groupId: string;
   message?: string;
   status: 'pending' | 'approved' | 'rejected';
-  createdAt?: firebase.firestore.Timestamp | Date;
-  updatedAt?: firebase.firestore.Timestamp | Date;
+  createdAt: firebase.firestore.Timestamp | Date;
+  requestedAt?: firebase.firestore.Timestamp | Date;
+  reviewedAt?: firebase.firestore.Timestamp | Date;
+  reviewedBy?: string;
+  responseMessage?: string;
 }
 
 // CORRIGIR: Remover any e usar tipos específicos

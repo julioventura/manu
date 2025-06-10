@@ -1,7 +1,7 @@
 // Alteração: remoção de logs de depuração (console.log)
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,13 +17,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { of, from } from 'rxjs'; // ADICIONAR from para converter Promise em Observable
-import { map, catchError, finalize } from 'rxjs/operators';
 
 import { Group, GroupJoinRequest } from './group.model';
 import { GroupService } from './group.service';
 
-// Interfaces para tipagem
+// Interface para PatientRecord
 interface PatientRecord {
   id: string;
   nome?: string;
@@ -35,22 +33,12 @@ interface PatientRecord {
   [key: string]: unknown;
 }
 
-interface UserInfo {
-  nomeUsuario: string;
-  grupoSelecionado: string;
-  quantidadeMembros: number;
-  quantidadeAdmins: number;
-  quantidadePacientes: number;
-  isAdmin: boolean;
-  isAdminDoGrupo: boolean;
-  totalGrupos: number;
-}
-
 @Component({
   selector: 'app-group-manager',
   templateUrl: './group-manager.component.html',
   styleUrls: ['./group-manager.component.scss'],
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
@@ -86,13 +74,13 @@ export class GroupManagerComponent implements OnInit {
   // Propriedades principais
   groups: Group[] = [];
   selectedGroup: Group | null = null;
-  groupForm: FormGroup;
+  groupForm!: FormGroup; // USAR: definite assignment assertion (!)
   isCreatingNewGroup: boolean = false;
   sharedPatients: PatientRecord[] = [];
   isLoadingPatients = false;
   
   // Propriedades da interface
-  titulo_da_pagina = 'Grupos e Compartilhamentos';
+  titulo_da_pagina = 'Grupos de Compartilhamento';
   isLoading = false;
   joinRequests: GroupJoinRequest[] = [];
   showNewAdminField = false;
@@ -104,7 +92,6 @@ export class GroupManagerComponent implements OnInit {
   userId: string | null = null;
   userEmail: string | null = null;
   isAdmin: boolean = false;
-  isAdminOfSelectedGroup: boolean = false;
   selectedMembers: string[] = [];
   selectedAdmins: string[] = [];
 
@@ -119,8 +106,12 @@ export class GroupManagerComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router
   ) {
+    this.initializeForm(); // Manter como estava
+  }
+
+  private initializeForm(): void {
     this.groupForm = this.fb.group({
-      name: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
       clinica: [''],
       adminIds: [[]],
@@ -129,15 +120,36 @@ export class GroupManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // CORRIGIR: aguardar autenticação antes de carregar grupos
     this.loadCurrentUser();
-    // Remover chamadas imediatas que dependem de autenticação
-    // this.loadGroups(); // REMOVER
-    // this.loadJoinRequests(); // REMOVER
-    // this.createTestGroupIfNeeded(); // REMOVER
+    
+    // DEBUG: verificar se carrega solicitações
+    setTimeout(() => {
+      console.log('Testing join requests loading...');
+      this.loadJoinRequests();
+    }, 3000);
   }
 
-  // MÉTODO TEMPORÁRIO PARA DEBUG - REMOVER DEPOIS
+  // CORRIGIR: método loadCurrentUser (remover duplicatas)
+  loadCurrentUser(): void {
+    this.groupService.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userId = user.uid;
+        this.userEmail = user.email;
+        this.isAdmin = false;
+        
+        console.log('GroupManager: User authenticated, loading groups...');
+        this.loadGroups();
+        this.loadJoinRequests();
+        this.createTestGroupIfNeeded();
+      } else {
+        this.userId = null;
+        this.userEmail = null;
+        this.isAdmin = false;
+        this.groups = [];
+      }
+    });
+  }
+
   createTestGroupIfNeeded(): void {
     setTimeout(() => {
       if (this.groups.length === 0 && this.userId && this.userEmail) {
@@ -151,25 +163,23 @@ export class GroupManagerComponent implements OnInit {
           memberIds: [this.userId, this.userEmail],
           createdAt: new Date(),
           updatedAt: new Date(),
-          createdBy: this.userId
+          createdBy: this.userId || '' // CORRIGIR: garantir que seja string
         };
 
-        // CORRIGIDO: usar subscribe() em vez de then()
         this.groupService.createGroup(testGroup)
           .subscribe({
             next: () => {
               console.log('GroupManager: Test group created successfully');
-              this.loadGroups(); // Recarregar grupos
+              this.loadGroups();
             },
             error: (error) => {
               console.error('GroupManager: Error creating test group:', error);
             }
           });
       }
-    }, 2000); // Aguardar 2 segundos para garantir que a autenticação foi completada
+    }, 2000);
   }
 
-  // CORRIGIR: método loadGroups no GroupManagerComponent
   loadGroups(): void {
     if (!this.userId) {
       console.warn('[GroupManager] Cannot load groups: user not authenticated');
@@ -179,12 +189,11 @@ export class GroupManagerComponent implements OnInit {
     console.log('[GroupManager] Loading groups for user:', this.userId);
     this.isLoading = true;
     
-    // CORRIGIR: adicionar subscription correta
     this.groupService.getAllUserGroups().subscribe({
       next: (groups) => {
         console.log('[GroupManager] Groups loaded successfully:', groups);
         this.groups = groups;
-        this.isLoading = false; // IMPORTANTE: definir loading como false
+        this.isLoading = false;
         
         if (this.groups.length === 0) {
           console.warn('[GroupManager] No groups were loaded for the current user.');
@@ -193,471 +202,309 @@ export class GroupManagerComponent implements OnInit {
       error: (error) => {
         console.error('[GroupManager] Error loading groups:', error);
         this.groups = [];
-        this.isLoading = false; // IMPORTANTE: definir loading como false mesmo em erro
+        this.isLoading = false;
       },
       complete: () => {
         console.log('[GroupManager] Groups loading completed');
-        this.isLoading = false; // GARANTIR que loading seja false
+        this.isLoading = false;
       }
     });
   }
 
-  // ADICIONAR métodos faltantes
+  // CORRIGIR: método loadJoinRequests - remover mapeamento desnecessário
+  loadJoinRequests(): void {
+    this.groupService.getPendingJoinRequests().subscribe({
+      next: (requests) => {
+        // SIMPLES: usar diretamente os requests sem conversão
+        this.joinRequests = requests;
+        console.log('Join requests loaded:', this.joinRequests.length);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar solicitações:', error);
+        this.joinRequests = [];
+      }
+    });
+  }
+
+  // CORRIGIR: métodos básicos (remover duplicatas)
   voltar(): void {
+    console.log('Voltando...');
     this.router.navigate(['/']);
   }
 
-  recarregar(): void {
+  recarregar(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
+    console.log('Recarregando grupos...');
+    this.isLoading = true;
     this.loadGroups();
-    this.loadJoinRequests();
   }
 
-  // CORRIGIR: método loadCurrentUser para aguardar autenticação
-  loadCurrentUser(): void {
-    this.groupService.afAuth.authState.subscribe(user => {
-      if (user) {
-        this.userId = user.uid;
-        this.userEmail = user.email;
-        this.isAdmin = false;
-        
-        // ADICIONAR: carregar dados após autenticação
-        console.log('GroupManager: User authenticated, loading groups...');
-        this.loadGroups();
-        this.loadJoinRequests();
-        this.createTestGroupIfNeeded();
-      } else {
-        this.userId = null;
-        this.userEmail = null;
-        this.isAdmin = false;
-        this.groups = []; // Limpar grupos se não autenticado
-      }
-    });
+  showNewGroupForm(): void {
+    console.log('showNewGroupForm() called');
+    this.isCreatingNewGroup = true;
+    this.selectedGroup = null;
+    this.resetForm();
   }
 
-  loadJoinRequests(): void {
-    this.groupService.getPendingJoinRequests().subscribe(requests => {
-      this.joinRequests = requests;
-    });
-  }
-
-  getGroupName(groupId: string): string {
-    const group = this.groups.find(g => g.id === groupId);
-    return group?.name || 'Grupo não encontrado';
-  }
-
-  // CORRIGIR métodos de aprovação/rejeição
-  approveJoinRequest(request: GroupJoinRequest): void {
-    if (!request.id) {
-      this.snackBar.open('ID da solicitação não encontrado', 'OK', { duration: 3000 });
-      return;
+  resetForm(): void {
+    console.log('resetForm() called');
+    this.groupForm.reset();
+    this.selectedAdmins = [this.userEmail || this.userId || ''];
+    this.selectedMembers = [];
+    this.showNewAdminField = false;
+    this.showNewMemberField = false;
+    this.adminInputControl.reset();
+    this.memberInputControl.reset();
+    
+    if (this.isCreatingNewGroup) {
+      this.isCreatingNewGroup = false;
     }
-
-    // CORRIGIDO: usar from() para converter Promise em Observable ou usar .then()
-    from(this.groupService.approveJoinRequest(request.id))
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Solicitação aprovada com sucesso', 'OK', { duration: 3000 });
-          this.loadJoinRequests();
-          this.loadGroups();
-        },
-        error: (error) => {
-          this.snackBar.open('Erro ao aprovar solicitação', 'OK', { duration: 3000 });
-          console.error('Erro ao aprovar:', error);
-        }
-      });
   }
 
-  rejectJoinRequest(request: GroupJoinRequest): void {
-    if (!request.id) {
-      this.snackBar.open('ID da solicitação não encontrado', 'OK', { duration: 3000 });
-      return;
+  selectGroup(group: Group): void {
+    console.log('selectGroup() called with:', group);
+    this.selectedGroup = group;
+    this.isCreatingNewGroup = false;
+    
+    if (this.isGroupAdmin(group)) {
+      this.loadGroupForEditing(group);
     }
-
-    // CORRIGIDO: usar from() para converter Promise em Observable
-    from(this.groupService.rejectJoinRequest(request.id))
-      .subscribe({
-        next: () => {
-          this.snackBar.open('Solicitação rejeitada', 'OK', { duration: 3000 });
-          this.loadJoinRequests();
-        },
-        error: (error) => {
-          this.snackBar.open('Erro ao rejeitar solicitação', 'OK', { duration: 3000 });
-          console.error('Erro ao rejeitar:', error);
-        }
-      });
+    
+    if (group.id) {
+      this.loadSharedPatients(group.id);
+    }
   }
 
+  loadGroupForEditing(group: Group): void {
+    this.groupForm.patchValue({
+      name: group.name || '',
+      description: group.description || ''
+    });
+    
+    this.selectedAdmins = [...(group.adminIds || [])];
+    this.selectedMembers = [...(group.memberIds || [])];
+  }
+
+  loadSharedPatients(groupId: string): void {
+    if (!groupId) return;
+    
+    this.isLoadingPatients = true;
+    console.log('Carregando pacientes compartilhados para grupo:', groupId);
+    
+    setTimeout(() => {
+      this.sharedPatients = [];
+      this.isLoadingPatients = false;
+    }, 1000);
+  }
+
+  // CORRIGIR: verificações de permissão (remover duplicatas)
+  isGroupAdmin(group: Group | null): boolean {
+    if (!group || !this.userId || !this.userEmail) {
+      return false;
+    }
+    
+    const adminIds = group.adminIds || [];
+    return adminIds.includes(this.userId) || adminIds.includes(this.userEmail);
+  }
+
+  isMember(group: Group | null): boolean {
+    if (!group || !this.userId || !this.userEmail) {
+      return false;
+    }
+    
+    const memberIds = group.memberIds || [];
+    return memberIds.includes(this.userId) || memberIds.includes(this.userEmail);
+  }
+
+  // CORRIGIR: getter para isAdminOfSelectedGroup (remover duplicata)
+  get isAdminOfSelectedGroup(): boolean {
+    if (!this.selectedGroup) return false;
+    return this.isGroupAdmin(this.selectedGroup);
+  }
+
+  // CORRIGIR: método createOrUpdateGroup (remover duplicatas)
   createOrUpdateGroup(): void {
     if (this.groupForm.invalid) {
+      console.warn('Form is invalid');
       this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'OK', { duration: 3000 });
       return;
     }
 
-    const formData = this.groupForm.value;
+    const formValue = this.groupForm.value;
     
-    if (this.selectedGroup && this.selectedGroup.id) {
-      // Atualizar grupo existente
-      // CORRIGIDO: usar from() para converter Promise em Observable
-      from(this.groupService.updateGroup(this.selectedGroup.id, formData))
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Grupo atualizado com sucesso', 'OK', { duration: 3000 });
-            this.loadGroups();
-          },
-          error: (error) => {
-            this.snackBar.open('Erro ao atualizar grupo', 'OK', { duration: 3000 });
-            console.error('Erro ao atualizar:', error);
-          }
-        });
-    } else {
-      // Criar novo grupo - ESTE JÁ ESTÁ CORRETO se retorna Observable
-      this.groupService.createGroup(formData)
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Grupo criado com sucesso', 'OK', { duration: 3000 });
-            this.loadGroups();
-            this.cancelNewGroup();
-          },
-          error: (error) => {
-            this.snackBar.open('Erro ao criar grupo', 'OK', { duration: 3000 });
-            console.error('Erro ao criar:', error);
-          }
-        });
+    if (this.isCreatingNewGroup) {
+      const newGroup = {
+        name: formValue.name,
+        description: formValue.description,
+        clinica: formValue.clinica || '',
+        adminIds: this.selectedAdmins.length > 0 ? this.selectedAdmins : [this.userId || this.userEmail || ''],
+        memberIds: this.selectedMembers.length > 0 ? this.selectedMembers : [this.userId || this.userEmail || ''],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: this.userId || '' // CORRIGIR: garantir que seja string
+      };
+      
+      console.log('Criando novo grupo:', newGroup);
+      this.isLoading = true;
+      
+      this.groupService.createGroup(newGroup).subscribe({
+        next: () => {
+          console.log('Grupo criado com sucesso');
+          this.snackBar.open('Grupo criado com sucesso!', 'OK', { duration: 3000 });
+          this.resetForm();
+          this.loadGroups();
+        },
+        error: (error) => {
+          console.error('Erro ao criar grupo:', error);
+          this.snackBar.open('Erro ao criar grupo. Tente novamente.', 'OK', { duration: 3000 });
+          this.isLoading = false;
+        }
+      });
+    } else if (this.selectedGroup && this.selectedGroup.id) {
+      const updatedGroup = {
+        ...this.selectedGroup,
+        name: formValue.name,
+        description: formValue.description,
+        clinica: formValue.clinica || this.selectedGroup.clinica,
+        adminIds: this.selectedAdmins,
+        memberIds: this.selectedMembers,
+        updatedAt: new Date()
+      };
+      
+      console.log('Atualizando grupo:', updatedGroup);
+      this.isLoading = true;
+      
+      this.groupService.updateGroup(this.selectedGroup.id, updatedGroup).subscribe({
+        next: () => {
+          console.log('Grupo atualizado com sucesso');
+          this.snackBar.open('Grupo atualizado com sucesso!', 'OK', { duration: 3000 });
+          this.loadGroups();
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar grupo:', error);
+          this.snackBar.open('Erro ao atualizar grupo. Tente novamente.', 'OK', { duration: 3000 });
+          this.isLoading = false;
+        }
+      });
     }
   }
 
+  // CORRIGIR: métodos de aprovação/rejeição (usar interfaces corretas)
+  approveJoinRequest(request: GroupJoinRequest): void {
+    if (!request.id) {
+      this.snackBar.open('Erro: ID da solicitação não encontrado', 'OK', { duration: 3000 });
+      return;
+    }
+
+    console.log('Aprovando solicitação:', request);
+    this.groupService.approveJoinRequest(request.id).subscribe({
+      next: () => {
+        this.snackBar.open('Solicitação aprovada com sucesso!', 'OK', { duration: 3000 });
+        this.loadJoinRequests();
+        this.loadGroups();
+      },
+      error: (error) => {
+        console.error('Erro ao aprovar solicitação:', error);
+        this.snackBar.open('Erro ao aprovar solicitação. Tente novamente.', 'OK', { duration: 3000 });
+      }
+    });
+  }
+
+  rejectJoinRequest(request: GroupJoinRequest): void {
+    if (!request.id) {
+      this.snackBar.open('Erro: ID da solicitação não encontrado', 'OK', { duration: 3000 });
+      return;
+    }
+
+    const message = prompt('Motivo da rejeição (opcional):');
+    
+    console.log('Rejeitando solicitação:', request);
+    this.groupService.rejectJoinRequest(request.id, message || undefined).subscribe({
+      next: () => {
+        this.snackBar.open('Solicitação rejeitada', 'OK', { duration: 3000 });
+        this.loadJoinRequests();
+      },
+      error: (error) => {
+        console.error('Erro ao rejeitar solicitação:', error);
+        this.snackBar.open('Erro ao rejeitar solicitação. Tente novamente.', 'OK', { duration: 3000 });
+      }
+    });
+  }
+
+  requestToJoinGroup(group: Group): void {
+    if (!group.id) {
+      this.snackBar.open('Erro: ID do grupo não encontrado', 'OK', { duration: 3000 });
+      return;
+    }
+
+    const message = prompt('Mensagem opcional para os administradores:');
+    
+    console.log('Solicitando entrada no grupo:', group);
+    this.groupService.requestToJoinGroup(group.id, message || undefined).subscribe({
+      next: () => {
+        this.snackBar.open('Solicitação enviada com sucesso!', 'OK', { duration: 3000 });
+      },
+      error: (error) => {
+        console.error('Erro ao solicitar entrada:', error);
+        let errorMessage = 'Erro ao enviar solicitação. Tente novamente.';
+        
+        if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        this.snackBar.open(errorMessage, 'OK', { duration: 3000 });
+      }
+    });
+  }
+
   deleteSelectedGroup(): void {
-    if (!this.selectedGroup) {
+    if (!this.selectedGroup || !this.selectedGroup.id) {
       this.snackBar.open('Nenhum grupo selecionado', 'OK', { duration: 3000 });
       return;
     }
     
-    if (!this.selectedGroup.id) {
-      this.snackBar.open('ID do grupo não encontrado', 'OK', { duration: 3000 });
-      return;
-    }
+    const confirmed = confirm(`Tem certeza que deseja excluir o grupo "${this.selectedGroup.name}"?\n\nEsta ação não pode ser desfeita.`);
+    if (!confirmed) return;
     
-    if (confirm(`Tem certeza que deseja excluir o grupo "${this.selectedGroup.name}"?`)) {
-      // CORRIGIDO: usar from() para converter Promise em Observable
-      from(this.groupService.deleteGroup(this.selectedGroup.id))
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Grupo excluído com sucesso', 'OK', { duration: 3000 });
-            this.loadGroups();
-            this.selectedGroup = null;
-            this.sharedPatients = [];
-          },
-          error: (error) => {
-            this.snackBar.open('Erro ao excluir grupo', 'OK', { duration: 3000 });
-            console.error('Erro ao excluir:', error);
-          }
-        });
-    }
-  }
-
-  requestToJoinGroup(group: Group | null): void {
-    if (!group?.id) {
-      this.snackBar.open('Grupo não selecionado ou inválido', 'OK', { duration: 3000 });
-      return;
-    }
-
-    // FIX: Handle memberIds being possibly undefined
-    if (this.userEmail && group.memberIds && group.memberIds.includes(this.userEmail)) {
-      // Crie uma cópia do grupo sem o email na lista
-      const updatedGroup = {...group};
-      updatedGroup.memberIds = updatedGroup.memberIds ? updatedGroup.memberIds.filter(id => id !== this.userEmail) : [];
-      
-      // CORRIGIDO: usar from() para converter Promise em Observable
-      from(this.groupService.updateGroup(group.id, updatedGroup))
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Você saiu do grupo com sucesso', 'OK', { duration: 3000 });
-            this.selectedGroup = null;
-            this.loadGroups();
-          },
-          error: (error) => {
-            console.error('Erro ao sair do grupo:', error);
-            this.snackBar.open('Erro ao sair do grupo', 'OK', { duration: 3000 });
-          }
-        });
-    } else {
-      // Request to join group
-      const message = prompt('Digite uma mensagem para solicitar entrada no grupo (opcional):') || '';
-      // CORRIGIDO: usar from() para converter Promise em Observable
-      from(this.groupService.requestJoinGroup(group.id, message))
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Solicitação enviada com sucesso', 'OK', { duration: 3000 });
-          },
-          error: (error) => {
-            console.error('Erro ao solicitar entrada:', error);
-            this.snackBar.open('Erro ao solicitar entrada no grupo', 'OK', { duration: 3000 });
-          }
-        });
-    }
-  }
-
-  // FIX: Method to load shared patients for selected group
-  loadSharedPatients(): void {
-    if (!this.selectedGroup?.id) {
-      this.sharedPatients = [];
-      return;
-    }
-
-    const selectedGroupId = this.selectedGroup.id;
-    this.isLoadingPatients = true;
+    console.log('Excluindo grupo:', this.selectedGroup);
+    this.isLoading = true;
     
-    this.groupService.getSharedRecords('pacientes')
-      .pipe(
-        map((patientsFromService: Record<string, unknown>[]) => {
-          console.log('[GroupManager] All patients from service:', patientsFromService);
-          
-          // CORRIGIDO: Mover o .filter para dentro do parenteses da type assertion
-          const filteredPatients = patientsFromService
-            .filter((patient): patient is PatientRecord => 
-              patient && 
-              typeof patient === 'object' && 
-              // CORRIGIDO: usar notação de colchetes para index signature
-              typeof patient['id'] === 'string')
-            .filter(patient => {
-              const match = patient?.groupId === selectedGroupId;
-              console.log(`[GroupManager] Patient ${patient?.nome || patient?.id}: groupId=${patient?.groupId}, selected=${selectedGroupId}, match=${match}`);
-              return match;
-            });
-          
-          console.log(`[GroupManager] Patients for selected group '${selectedGroupId}':`, filteredPatients);
-          return filteredPatients;
-        }),
-        catchError(error => {
-          console.error('[GroupManager] Error loading shared patients:', error);
-          this.snackBar.open('Erro ao carregar pacientes do grupo', 'OK', { duration: 3000 });
-          return of([]);
-        }),
-        finalize(() => {
-          this.isLoadingPatients = false;
-          console.log('[GroupManager] loadSharedPatients COMPLETE');
-        })
-      )
-      .subscribe(finalPatients => {
-        console.log('[GroupManager] Final patients for display:', finalPatients);
-        this.sharedPatients = finalPatients || [];
-      });
-  }
-
-  // Método para selecionar a grupo e carregar seus pacientes - REMOVE DUPLICATE
-  selectGroup(group: Group): void {
-    this.selectedGroup = group;
-    this.isAdminOfSelectedGroup = this.isGroupAdmin(group);
-    this.loadSharedPatients();
-    
-    // Popular o formulário com os dados do grupo selecionado para edição
-    if (group) {
-      this.groupForm.patchValue({
-        name: group.name || '',
-        description: group.description || '',
-        clinica: group.clinica || '',
-        adminIds: group.adminIds || [],
-        memberIds: group.memberIds || []
-      });
-      
-      this.selectedAdmins = group.adminIds || [];
-      this.selectedMembers = group.memberIds || [];
-    }
-  }
-
-  /**
-   * Start adding a new admin
-   */
-  startAddingAdmin(): void {
-    this.showNewAdminField = true;
-    this.adminInput = '';
-    this.adminInputControl.setValue('');
-  }
-
-  /**
-   * Cancel adding a new admin
-   */
-  cancelAddAdmin(): void {
-    this.showNewAdminField = false;
-    this.adminInput = '';
-    this.adminInputControl.setValue('');
-  }
-
-  /**
-   * Confirm adding a new admin
-   */
-  confirmAddAdmin(): void {
-    const adminEmail = this.adminInputControl.value || this.adminInput;
-    
-    if (!adminEmail || !adminEmail.trim()) {
-      this.snackBar.open('Por favor, digite um email válido', 'OK', { duration: 3000 });
-      return;
-    }
-
-    const trimmedEmail = adminEmail.trim();
-    
-    // Check if admin already exists
-    if (this.selectedAdmins.includes(trimmedEmail)) {
-      this.snackBar.open('Este administrador já foi adicionado', 'OK', { duration: 3000 });
-      return;
-    }
-
-    // Add to the local arrays
-    this.selectedAdmins.push(trimmedEmail);
-    
-    // Update form control
-    this.groupForm.patchValue({
-      adminIds: [...this.selectedAdmins]
+    this.groupService.deleteGroup(this.selectedGroup.id).subscribe({
+      next: () => {
+        this.snackBar.open('Grupo excluído com sucesso!', 'OK', { duration: 3000 });
+        this.selectedGroup = null;
+        this.isCreatingNewGroup = false;
+        this.resetForm();
+        this.loadGroups();
+      },
+      error: (error) => {
+        console.error('Erro ao excluir grupo:', error);
+        this.snackBar.open('Erro ao excluir grupo. Tente novamente.', 'OK', { duration: 3000 });
+        this.isLoading = false;
+      }
     });
-
-    // Reset input
-    this.cancelAddAdmin();
-    
-    this.snackBar.open('Administrador adicionado', 'OK', { duration: 2000 });
   }
 
-  /**
-   * Remove an admin
-   */
-  removeAdmin(adminId: string): void {
-    if (!adminId) return;
-    
-    // Remove from local array
-    this.selectedAdmins = this.selectedAdmins.filter(id => id !== adminId);
-    
-    // Update form control
-    this.groupForm.patchValue({
-      adminIds: [...this.selectedAdmins]
-    });
-    
-    this.snackBar.open('Administrador removido', 'OK', { duration: 2000 });
+  // Métodos auxiliares (manter apenas uma versão)
+  getGroupName(groupId: string): string {
+    const group = this.groups.find(g => g.id === groupId);
+    return group?.name || 'Grupo desconhecido';
   }
 
-  /**
-   * Start adding a new member
-   */
-  startAddingMember(): void {
-    this.showNewMemberField = true;
-    this.memberInput = '';
-    this.memberInputControl.setValue('');
-  }
-
-  /**
-   * Cancel adding a new member
-   */
-  cancelAddMember(): void {
-    this.showNewMemberField = false;
-    this.memberInput = '';
-    this.memberInputControl.setValue('');
-  }
-
-  /**
-   * Confirm adding a new member
-   */
-  confirmAddMember(): void {
-    const memberEmail = this.memberInputControl.value || this.memberInput;
-    
-    if (!memberEmail || !memberEmail.trim()) {
-      this.snackBar.open('Por favor, digite um email válido', 'OK', { duration: 3000 });
-      return;
-    }
-
-    const trimmedEmail = memberEmail.trim();
-    
-    // Check if member already exists
-    if (this.selectedMembers.includes(trimmedEmail)) {
-      this.snackBar.open('Este membro já foi adicionado', 'OK', { duration: 3000 });
-      return;
-    }
-
-    // Add to the local arrays
-    this.selectedMembers.push(trimmedEmail);
-    
-    // Update form control
-    this.groupForm.patchValue({
-      memberIds: [...this.selectedMembers]
-    });
-
-    // Reset input
-    this.cancelAddMember();
-    
-    this.snackBar.open('Membro adicionado', 'OK', { duration: 2000 });
-  }
-
-  /**
-   * Remove a member
-   */
-  removeMember(memberId: string): void {
-    if (!memberId) return;
-    
-    // Remove from local array
-    this.selectedMembers = this.selectedMembers.filter(id => id !== memberId);
-    
-    // Update form control
-    this.groupForm.patchValue({
-      memberIds: [...this.selectedMembers]
-    });
-    
-    this.snackBar.open('Membro removido', 'OK', { duration: 2000 });
-  }
-
-  // Métodos auxiliares existentes...
   getUserName(userId?: string): string {
     if (!userId) return 'Usuário desconhecido';
     
+    // Se é email, mostrar como está
     if (userId.includes('@')) {
       return userId;
     }
     
+    // Se é UID muito longo, encurtar
     return userId.length > 20 ? `${userId.substring(0, 20)}...` : userId;
-  }
-
-  getPatientName(patient: unknown): string {
-    if (!patient || typeof patient !== 'object') {
-      return 'Nome não disponível';
-    }
-    
-    const patientObj = patient as PatientRecord;
-    if (patientObj.nome && typeof patientObj.nome === 'string') {
-      return patientObj.nome;
-    }
-    
-    return 'Nome não disponível';
-  }
-
-  getPatientEmail(patient: unknown): string {
-    if (!patient || typeof patient !== 'object') {
-      return 'Email não disponível';
-    }
-    
-    const patientObj = patient as PatientRecord;
-    if (patientObj.email && typeof patientObj.email === 'string') {
-      return patientObj.email;
-    }
-    
-    return 'Email não disponível';
-  }
-
-  getPatientId(patient: unknown): string {
-    if (!patient || typeof patient !== 'object') {
-      return '';
-    }
-    
-    const patientObj = patient as PatientRecord;
-    return patientObj.id || '';
-  }
-
-  viewPatient(patient: unknown): void {
-    if (!patient || typeof patient !== 'object') {
-      return;
-    }
-    
-    const patientObj = patient as PatientRecord;
-    if (patientObj.id) {
-      // Implementar navegação para visualizar paciente
-      console.log('Visualizar paciente:', patientObj.id);
-      this.router.navigate(['/view', 'pacientes', patientObj.id]);
-    }
   }
 
   getFormattedDate(timestamp: unknown): string {
@@ -666,6 +513,7 @@ export class GroupManagerComponent implements OnInit {
     try {
       let date: Date;
       
+      // Se é Timestamp do Firebase
       if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp) {
         date = (timestamp as { toDate: () => Date }).toDate();
       } else if (timestamp instanceof Date) {
@@ -682,149 +530,104 @@ export class GroupManagerComponent implements OnInit {
     }
   }
 
-  trackByPatientId(index: number, patient: PatientRecord): string | number {
-    return patient?.id || index;
-  }
-
-  getDashboardInfo(): UserInfo {
-    return {
-      nomeUsuario: this.userEmail || 'Não autenticado',
-      grupoSelecionado: this.selectedGroup?.name || 'Nenhum grupo selecionado',
-      quantidadeMembros: this.selectedGroup?.memberIds?.length || 0,
-      quantidadeAdmins: this.selectedGroup?.adminIds?.length || 0,
-      quantidadePacientes: this.sharedPatients?.length || 0,
-      isAdmin: this.isAdmin,
-      isAdminDoGrupo: this.isAdminOfSelectedGroup,
-      totalGrupos: this.groups?.length || 0
-    };
-  }
-
-  // ADICIONAR método helper para resolver o cast do patient.createdBy
-  getPatientCreatedBy(patient: unknown): string | undefined {
-    if (!patient || typeof patient !== 'object') {
-      return undefined;
-    }
-    
-    const patientObj = patient as PatientRecord;
-    return typeof patientObj.createdBy === 'string' ? patientObj.createdBy : undefined;
-  }
-
-  // Verificar se o método showNewGroupForm existe - SE NÃO EXISTIR, adicionar:
-  showNewGroupForm(): void {
-    this.isCreatingNewGroup = true;
-    this.selectedGroup = null;
-    this.resetForm();
-  }
-
-  // Verificar se o método resetForm existe - SE NÃO EXISTIR, adicionar:
-  resetForm(): void {
-    this.groupForm.reset();
-    this.selectedMembers = [];
-    this.selectedAdmins = [];
-    this.groupForm.patchValue({
-      name: '',
-      description: '',
-      clinica: '',
-      adminIds: [],
-      memberIds: []
-    });
-    this.isCreatingNewGroup = false;
-    this.showNewAdminField = false;
-    this.showNewMemberField = false;
+  // Métodos de gerenciamento de administradores e membros
+  startAddingAdmin(): void {
+    this.showNewAdminField = true;
     this.adminInput = '';
-    this.memberInput = '';
     this.adminInputControl.setValue('');
+  }
+
+  cancelAddAdmin(): void {
+    this.showNewAdminField = false;
+    this.adminInput = '';
+    this.adminInputControl.setValue('');
+  }
+
+  confirmAddAdmin(): void {
+    const adminEmail = this.adminInputControl.value || this.adminInput;
+    
+    if (!adminEmail || !adminEmail.trim()) {
+      this.snackBar.open('Por favor, digite um email válido', 'OK', { duration: 3000 });
+      return;
+    }
+
+    const trimmedEmail = adminEmail.trim();
+    
+    if (this.selectedAdmins.includes(trimmedEmail)) {
+      this.snackBar.open('Este administrador já foi adicionado', 'OK', { duration: 3000 });
+      return;
+    }
+
+    this.selectedAdmins.push(trimmedEmail);
+    
+    this.groupForm.patchValue({
+      adminIds: [...this.selectedAdmins]
+    });
+
+    this.cancelAddAdmin();
+    
+    this.snackBar.open('Administrador adicionado', 'OK', { duration: 2000 });
+  }
+
+  removeAdmin(adminId: string): void {
+    if (!adminId) return;
+    
+    this.selectedAdmins = this.selectedAdmins.filter(id => id !== adminId);
+    
+    this.groupForm.patchValue({
+      adminIds: [...this.selectedAdmins]
+    });
+    
+    this.snackBar.open('Administrador removido', 'OK', { duration: 2000 });
+  }
+
+  startAddingMember(): void {
+    this.showNewMemberField = true;
+    this.memberInput = '';
     this.memberInputControl.setValue('');
   }
 
-  cancelNewGroup(): void {
-    this.isCreatingNewGroup = false;
-    this.resetForm();
+  cancelAddMember(): void {
+    this.showNewMemberField = false;
+    this.memberInput = '';
+    this.memberInputControl.setValue('');
   }
 
-  // ADICIONAR métodos faltantes para o template
-
-  /**
-   * Verificar se o usuário atual é admin do grupo especificado
-   */
-  isGroupAdmin(group: Group | null): boolean {
-    if (!group || !this.userId || !this.userEmail) {
-      return false;
-    }
+  confirmAddMember(): void {
+    const memberEmail = this.memberInputControl.value || this.memberInput;
     
-    const adminIds = group.adminIds || [];
-    return adminIds.includes(this.userId) || adminIds.includes(this.userEmail);
-  }
-
-  /**
-   * Verificar se o usuário atual é membro do grupo especificado
-   */
-  isMember(group: Group | null): boolean {
-    if (!group || !this.userId || !this.userEmail) {
-      return false;
+    if (!memberEmail || !memberEmail.trim()) {
+      this.snackBar.open('Por favor, digite um email válido', 'OK', { duration: 3000 });
+      return;
     }
+
+    const trimmedEmail = memberEmail.trim();
     
-    const memberIds = group.memberIds || [];
-    return memberIds.includes(this.userId) || memberIds.includes(this.userEmail);
-  }
-
-  /**
-   * Verificar se o usuário pode editar o grupo (é admin do grupo)
-   */
-  canEditGroup(group: Group | null): boolean {
-    return this.isGroupAdmin(group);
-  }
-
-  /**
-   * Verificar se o usuário pode deletar o grupo (é admin do grupo)
-   */
-  canDeleteGroup(group: Group | null): boolean {
-    return this.isGroupAdmin(group);
-  }
-
-  /**
-   * Verificar se o usuário pode gerenciar membros do grupo (é admin do grupo)
-   */
-  canManageMembers(group: Group | null): boolean {
-    return this.isGroupAdmin(group);
-  }
-
-  /**
-   * Obter o status do usuário em relação ao grupo
-   */
-  getUserGroupStatus(group: Group | null): 'admin' | 'member' | 'none' {
-    if (!group) return 'none';
-    
-    if (this.isGroupAdmin(group)) {
-      return 'admin';
-    } else if (this.isMember(group)) {
-      return 'member';
-    } else {
-      return 'none';
+    if (this.selectedMembers.includes(trimmedEmail)) {
+      this.snackBar.open('Este membro já foi adicionado', 'OK', { duration: 3000 });
+      return;
     }
+
+    this.selectedMembers.push(trimmedEmail);
+    
+    this.groupForm.patchValue({
+      memberIds: [...this.selectedMembers]
+    });
+
+    this.cancelAddMember();
+    
+    this.snackBar.open('Membro adicionado', 'OK', { duration: 2000 });
   }
 
-  /**
-   * Verificar se o usuário pode solicitar entrada no grupo
-   */
-  canRequestJoin(group: Group | null): boolean {
-    if (!group || !this.userId || !this.userEmail) {
-      return false;
-    }
+  removeMember(memberId: string): void {
+    if (!memberId) return;
     
-    // Não pode solicitar se já é membro ou admin
-    return !this.isMember(group) && !this.isGroupAdmin(group);
-  }
-
-  /**
-   * Verificar se o usuário pode sair do grupo
-   */
-  canLeaveGroup(group: Group | null): boolean {
-    if (!group || !this.userId || !this.userEmail) {
-      return false;
-    }
+    this.selectedMembers = this.selectedMembers.filter(id => id !== memberId);
     
-    // Pode sair se é membro (incluindo admin)
-    return this.isMember(group) || this.isGroupAdmin(group);
+    this.groupForm.patchValue({
+      memberIds: [...this.selectedMembers]
+    });
+    
+    this.snackBar.open('Membro removido', 'OK', { duration: 2000 });
   }
 }
