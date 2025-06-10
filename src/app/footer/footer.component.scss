@@ -1,10 +1,15 @@
+footer {
+  padding-bottom: 40px; // Espaço inferior global
+}
+
+ 
  .footer-toolbar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-      min-height: 48px;
+      height: 40px;
     }
     
     .footer-content {
@@ -36,13 +41,31 @@
     
     @media (max-width: 768px) {
       .footer-content {
-        flex-direction: column;
+        flex-direction: row;
         gap: 8px;
-        padding: 8px 0;
+        padding: 4px;
       }
       
       .footer-text {
-        font-size: 12px;
+        font-size: 8px;
         text-align: center;
+      }
+    }
+
+    .footer-link {
+      color: white;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+        opacity: 0.8;
+      }
+      
+      &:visited {
+        color: white;
+      }
+      
+      &:active {
+        color: white;
       }
     }

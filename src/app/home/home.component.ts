@@ -19,6 +19,17 @@ import { ConfigService } from '../shared/services/config.service';
 import { UtilService } from '../shared/utils/util.service';
 import { AiChatService } from '../chatbot-widget/ai-chat.service';
 
+// CORRIGIR: interface UserData para incluir id
+interface UserData {
+  id?: string; // ADICIONAR: propriedade id necessária para FirestoreService
+  username?: string;
+  email?: string;
+  nome?: string;
+  displayName?: string;
+  uid?: string;
+  [key: string]: unknown; // Para propriedades adicionais
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -29,7 +40,7 @@ export class HomeComponent implements OnInit {
   nome: string = '';  // Armazena o nome do usuário logado
   username: string | null = null;  // Armazena o username do usuário logado
   new_window: boolean = false;  // Controla se a navegação ocorrerá em nova janela
-  url_agenda: string = 'https://dentistas.com.br/agenda/'
+  url_agenda: string = 'https://dentistas.com.br/agenda/';
   // Lista de ícones visíveis inicial
   visibleIcons: { [key: string]: boolean } = {
     agenda: true,
@@ -57,7 +68,7 @@ export class HomeComponent implements OnInit {
     public configuracoes: ConfigService,
     public util: UtilService,
     private firestore: AngularFirestore, 
-    private firestoreService: FirestoreService<any>, // Usado para buscar o username
+    private firestoreService: FirestoreService<UserData>, // CORRIGIDO: tipo específico
     private aiChatService: AiChatService
   ) { }
 
@@ -118,8 +129,7 @@ export class HomeComponent implements OnInit {
     this.firestore.doc(`/users/${this.userId}/settings/HomeConfig`).get().subscribe(doc => {
       if (doc.exists) {
         this.visibleIcons = doc.data() as { [key: string]: boolean };
-      } else {
-      }
+      } 
     });
   }
 
@@ -144,8 +154,7 @@ export class HomeComponent implements OnInit {
     this.firestoreService.getRegistroById('usuarios/dentistascombr/users', email).subscribe(userData => {
       if (userData && userData.username) {
         this.username = userData.username;
-      } else {
-      }
+      } 
     });
   }
 
