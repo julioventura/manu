@@ -64,18 +64,78 @@ section {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    width: 90px;
+    width: 132px; // Desktop padrão
 
     img {
-      width: 72px;
-      height: 72px;
-      margin: 0px 20px ;
+      width: 82px;
+      height: 82px;
+      margin: 0px 20px;
     }
 
     p {
       font-weight: 500;
       color: $primary-color;
       font-size: 8px;
+    }
+  }
+}
+
+/* ADICIONAR: Media queries para telas pequenas */
+@media screen and (max-width: 768px) {
+  .icon-grid {
+    .icon-item {
+      width: 90px; // Telas médias
+
+      img {
+        width: 60px;
+        height: 60px;
+        margin: 0px 10px;
+      }
+
+      p {
+        font-size: 7px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 549px) {
+  .icon-grid {
+    grid-template-columns: repeat(3, 1fr); // 3 colunas em mobile
+    
+    .icon-item {
+      width: 80px; // MUDANÇA: telas pequenas 40px
+
+      img {
+        width: 50px;
+        height: 50px;
+        margin: 0px 10px;
+      }
+
+      p {
+        font-size: 6px;
+        line-height: 1.1;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .icon-grid {
+    grid-template-columns: repeat(2, 1fr); // 2 colunas em telas muito pequenas
+    
+    .icon-item {
+      width: 40px; // Mantém 40px
+
+      img {
+        width: 30px;
+        height: 30px;
+        margin: 0px 3px;
+      }
+
+      p {
+        font-size: 5px;
+      }
     }
   }
 }

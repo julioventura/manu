@@ -69,3 +69,55 @@ footer {
         color: white;
       }
     }
+
+// ATUALIZAR: gap do grid de ícones
+.services-section.icon-grid.largo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px; // AUMENTAR: era 20px, agora 30px (+10px)
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1000px;
+}
+
+// Para telas grandes - forçar 5 colunas
+@media (min-width: 1300px) {
+  .services-section.icon-grid.largo {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 50px; // AUMENTAR: +10px também aqui
+    max-width: 1200px;
+  }
+}
+
+// Responsivo - manter proporção do gap aumentado
+@media (max-width: 1200px) {
+  .services-section.icon-grid.largo {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px; // Era 15px, agora 25px
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 900px) {
+  .services-section.icon-grid.largo {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px; // Era 15px, agora 25px
+    max-width: 750px;
+  }
+}
+
+@media (max-width: 600px) {
+  .services-section.icon-grid.largo {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px; // Era 10px, agora 20px
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 400px) {
+  .services-section.icon-grid.largo {
+    grid-template-columns: 1fr;
+    gap: 15px; // Era 5px, agora 15px
+    max-width: 300px;
+  }
+}
