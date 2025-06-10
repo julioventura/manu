@@ -1,256 +1,290 @@
-<div class="container container_principal" [@fadeAnimation]>
-  <!-- Header with title -->
-  <div class="sticky-header">
-    <div class="header">
-      <div class="actions">
-        <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
-      </div>
-      <h1 class="title">{{ titulo_da_pagina }}</h1>
-      <div class="actions">
-        <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
-      </div>
-    </div>
-  </div>
-
-  <!-- Loading spinner -->
-  <div class="loading-container" *ngIf="isLoading">
-    <div class="spinner-container">
-      <div class="spinner"></div>
-    </div>
-    <p>Carregando grupos...</p>
-  </div>
-
-  <!-- Main content -->
-  <div class="container mt-10" *ngIf="!isLoading">
-    <!-- Join requests section -->
-    <div class="join-requests-section" *ngIf="(isAdmin || isAdminOfSelectedGroup) && joinRequests.length > 0">
-      <div class="section-card">
-        <div class="section-header">
-          <h2><img src="https://dentistas.com.br/assets/novo.png" class="header-icon"> Pedidos de Entrada Pendentes</h2>
+<div class="pb-10">
+  <div class="container container_principal" [@fadeAnimation]>
+    <!-- Header with title -->
+    <div class="sticky-header">
+      <div class="header">
+        <div class="actions">
+          <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
         </div>
-        <div class="section-content">
-          <div class="requests-list">
-            <div *ngFor="let request of joinRequests" class="request-item">
-              <div class="request-info">
-                <div class="request-user">
-                  <strong>{{ getUserName(request.userId) }}</strong>
-                  solicitou entrada em <strong>{{ getGroupName(request.groupId) }}</strong>
-                </div>
-                <!-- CORRIGIR: usar apenas createdAt em vez de reviewedAt -->
-                <div class="request-date">
-                  <p class="text-gray-600">{{ getFormattedDate(request.createdAt) }}</p>
-                </div>
-                <div *ngIf="request.message" class="request-message">
-                  "{{ request.message }}"
-                </div>
-              </div>
-              <div class="request-actions">
-                <div class="action-button approve-button" title="Aprovar" (click)="approveJoinRequest(request)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#ffffff" />
-                  </svg>
-                </div>
-                <div class="action-button reject-button" title="Rejeitar" (click)="rejectJoinRequest(request)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
-                      fill="#ffffff" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
+        <h1 class="title">{{ titulo_da_pagina }}</h1>
+        <div class="actions">
+          <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
         </div>
       </div>
     </div>
 
-    <!-- Groups management section -->
-    <div class="row">
-      <!-- Groups list column -->
-      <div class="col-md-4">
+    <!-- Loading spinner -->
+    <div class="loading-container" *ngIf="isLoading">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+      <p>Carregando grupos...</p>
+    </div>
+
+    <!-- Main content -->
+    <div class="container mt-10" *ngIf="!isLoading">
+      <!-- Join requests section -->
+      <div class="join-requests-section" *ngIf="(isAdmin || isAdminOfSelectedGroup) && joinRequests.length > 0">
         <div class="section-card">
           <div class="section-header">
-            <h2>Grupos Disponíveis ({{ groups.length }})</h2>
+            <h2><img src="https://dentistas.com.br/assets/novo.png" class="header-icon"> Pedidos de Entrada Pendentes
+            </h2>
           </div>
           <div class="section-content">
-            <!-- Traditional table implementation -->
-            <div class="registros-table" *ngIf="groups.length > 0">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nome do Grupo</th>
-                    <th class="right">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let group of groups" (click)="selectGroup(group)"
-                    [class.selected]="selectedGroup?.id === group.id" style="cursor: pointer;">
-                    <td>
-                      <div>{{ group.name }}</div>
-                    </td>
-                    <td class="right">
-                      <span *ngIf="isGroupAdmin(group)" class="badge admin">Admin</span>
-                      <span *ngIf="isMember(group) && !isGroupAdmin(group)" class="badge member">Membro</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Mensagem quando não há grupos -->
-            <div *ngIf="groups.length === 0 && !isLoading" class="empty-list">
-              <p>Nenhum grupo disponível para este usuário.</p>
-              <p><small>Você precisa ser membro ou administrador de um grupo para vê-lo aqui.</small></p>
-            </div>
-
-            <!-- Buttons: Novo Grupo e Recarregar -->
-            <div class="action-buttons">
-              <div class="action-button primary-button" (click)="showNewGroupForm()">
-                <img src="https://dentistas.com.br/assets/novo.png" alt="Novo Grupo">
-                Novo Grupo
-              </div>
-              <div class="espacador"></div>
-              <div class="action-button secondary-button" (click)="recarregar()">
-                <img src="https://dentistas.com.br/assets/refresh.png" alt="Recarregar">
-                Recarregar
+            <div class="requests-list">
+              <div *ngFor="let request of joinRequests" class="request-item">
+                <div class="request-info">
+                  <div class="request-user">
+                    <strong>{{ getUserName(request.userId) }}</strong>
+                    solicitou entrada em <strong>{{ getGroupName(request.groupId) }}</strong>
+                  </div>
+                  <!-- CORRIGIR: usar apenas createdAt em vez de reviewedAt -->
+                  <div class="request-date">
+                    <p class="text-gray-600">{{ getFormattedDate(request.createdAt) }}</p>
+                  </div>
+                  <div *ngIf="request.message" class="request-message">
+                    "{{ request.message }}"
+                  </div>
+                </div>
+                <div class="request-actions">
+                  <div class="action-button approve-button" title="Aprovar" (click)="approveJoinRequest(request)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#ffffff" />
+                    </svg>
+                  </div>
+                  <div class="action-button reject-button" title="Rejeitar" (click)="rejectJoinRequest(request)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                        fill="#ffffff" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Group form/detail column -->
-      <div class="col-md-8">
-        <!-- ESTADO INICIAL - nenhum grupo selecionado e não criando -->
-        <div class="section-card" *ngIf="!selectedGroup && !isCreatingNewGroup">
-          <div class="section-header">
-            <h2>Gerenciamento de Grupos</h2>
-          </div>
-          <div class="section-content">
+      <!-- Groups management section -->
+      <div class="row">
+        <!-- Groups list column -->
+        <div class="col-md-4">
+          <div class="section-card">
+            <div class="section-header">
+              <h2>Grupos Disponíveis ({{ groups.length }})</h2>
+            </div>
+            <div class="section-content">
+              <!-- Traditional table implementation -->
+              <div class="registros-table" *ngIf="groups.length > 0">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nome do Grupo</th>
+                      <th class="right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of groups" (click)="selectGroup(group)"
+                      [class.selected]="selectedGroup?.id === group.id" style="cursor: pointer;">
+                      <td>
+                        <div>{{ group.name }}</div>
+                      </td>
+                      <td class="right">
+                        <span *ngIf="isGroupAdmin(group)" class="badge admin">Admin</span>
+                        <span *ngIf="isMember(group) && !isGroupAdmin(group)" class="badge member">Membro</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
+              <!-- Mensagem quando não há grupos -->
+              <div *ngIf="groups.length === 0 && !isLoading" class="empty-list">
+                <p>Nenhum grupo disponível para este usuário.</p>
+                <p><small>Você precisa ser membro ou administrador de um grupo para vê-lo aqui.</small></p>
+              </div>
+
+              <!-- Buttons: Novo Grupo e Recarregar -->
+              <div class="action-buttons">
+                <div class="action-button primary-button" (click)="showNewGroupForm()">
+                  <img src="https://dentistas.com.br/assets/novo.png" alt="Novo Grupo">
+                  Novo Grupo
+                </div>
+                <div class="espacador"></div>
+                <div class="action-button secondary-button" (click)="recarregar()">
+                  <img src="https://dentistas.com.br/assets/refresh.png" alt="Recarregar">
+                  Recarregar
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- FORMULÁRIO DE EDIÇÃO - só quando grupo selecionado E usuário é admin -->
-        <div class="section-card" *ngIf="selectedGroup && (isAdminOfSelectedGroup || isAdmin) && !isCreatingNewGroup">
-          <div class="section-header">
-            <h2>Editar Grupo</h2>
-            <div class="admin-subtitle">
-              Você é administrador deste grupo
+        <!-- Group form/detail column -->
+        <div class="col-md-8">
+          <!-- ESTADO INICIAL - nenhum grupo selecionado e não criando -->
+          <div class="section-card" *ngIf="!selectedGroup && !isCreatingNewGroup">
+
+          </div>
+
+          <!-- FORMULÁRIO DE EDIÇÃO - só quando grupo selecionado E usuário é admin -->
+          <div class="section-card" *ngIf="selectedGroup && (isAdminOfSelectedGroup || isAdmin) && !isCreatingNewGroup">
+            <div class="section-header">
+              <h2>Editar Grupo</h2>
+              <div class="admin-subtitle">
+                Você é administrador deste grupo
+              </div>
             </div>
-          </div>
-          <div class="section-content">
-            <form [formGroup]="groupForm" (ngSubmit)="createOrUpdateGroup()">
-              <div class="form-group">
-                <label for="name">Nome do Grupo</label>
-                <input type="text" id="name" formControlName="name" placeholder="Ex: Turma Ortodontia 2025"
-                  class="form-control">
-                <div *ngIf="groupForm.get('name')?.hasError('required') && groupForm.get('name')?.touched"
-                  class="error-message">
-                  Nome é obrigatório
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="description">Descrição</label>
-                <textarea id="description" formControlName="description" rows="3"
-                  placeholder="Descrição ou observações sobre o grupo" class="form-control"></textarea>
-              </div>
-
-              <div class="form-actions">
-                <div class="action-button secondary-button" (click)="resetForm()">
-                  Cancelar
-                </div>
-
-                <div class="action-button danger-button" (click)="deleteSelectedGroup()">
-                  Excluir Grupo
-                </div>
-
-                <div class="action-button primary-button" (click)="createOrUpdateGroup()"
-                  [class.disabled]="groupForm.invalid">
-                  Atualizar Grupo
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- VISUALIZAÇÃO PARA MEMBROS - quando selecionado mas não é admin -->
-        <div class="section-card" *ngIf="selectedGroup && !isAdminOfSelectedGroup && !isAdmin && !isCreatingNewGroup">
-          <div class="section-header">
-            <h2>
-              <img src="https://dentistas.com.br/assets/group.png" class="header-icon">
-              {{ selectedGroup.name }}
-            </h2>
-            <div *ngIf="selectedGroup.clinica" class="subtitle">
-              {{ selectedGroup.clinica }}
-            </div>
-          </div>
-          <div class="section-content">
-            <div class="group-details">
-              <p *ngIf="selectedGroup.description">{{ selectedGroup.description }}</p>
-
-              <div class="members-section">
-                <h3>Administradores</h3>
-                <div class="chips-container">
-                  <div *ngFor="let adminId of selectedGroup?.adminIds || []" class="chip readonly">
-                    {{ getUserName(adminId) }}
+            <div class="section-content">
+              <form [formGroup]="groupForm" (ngSubmit)="createOrUpdateGroup()">
+                <div class="form-group">
+                  <label for="name">Nome do Grupo</label>
+                  <input type="text" id="name" formControlName="name" placeholder="Ex: Turma Ortodontia 2025"
+                    class="form-control">
+                  <div *ngIf="groupForm.get('name')?.hasError('required') && groupForm.get('name')?.touched"
+                    class="error-message">
+                    Nome é obrigatório
                   </div>
                 </div>
 
-                <h3>Membros</h3>
-                <div class="chips-container">
-                  <div *ngFor="let memberId of selectedGroup?.memberIds || []" class="chip readonly">
-                    {{ getUserName(memberId) }}
+                <div class="form-group">
+                  <label for="description">Descrição</label>
+                  <textarea id="description" formControlName="description" rows="3"
+                    placeholder="Descrição ou observações sobre o grupo" class="form-control"></textarea>
+                </div>
+
+                <!-- Administradores -->
+                <div class="form-group">
+                  <label>Administradores</label>
+                  <div class="chips-container">
+                    <div *ngFor="let adminId of selectedAdmins" class="chip admin">
+                      {{ getUserName(adminId) }}
+                      <button type="button" class="chip-remove" (click)="removeAdmin(adminId)" *ngIf="adminId !== userId && adminId !== userEmail">×</button>
+                    </div>
+                  </div>
+                  <div class="member-field-row new-member-row" *ngIf="showNewAdminField">
+                    <input class="member-input" [formControl]="adminInputControl" placeholder="Email do novo admin">
+                    <button type="button" class="action-button confirm-button" (click)="confirmAddAdmin()">Adicionar</button>
+                    <button type="button" class="action-button cancel-button" (click)="cancelAddAdmin()">Cancelar</button>
+                  </div>
+                  <button type="button" class="action-button add-header-button" (click)="startAddingAdmin()" *ngIf="!showNewAdminField">
+                    +
+                  </button>
+                </div>
+
+                <!-- Membros -->
+                <div class="form-group">
+                  <label>Membros</label>
+                  <div class="chips-container">
+                    <div *ngFor="let memberId of selectedMembers" class="chip member">
+                      {{ getUserName(memberId) }}
+                      <button type="button" class="chip-remove" (click)="removeMember(memberId)">×</button>
+                    </div>
+                  </div>
+                  <div class="member-field-row new-member-row" *ngIf="showNewMemberField">
+                    <input class="member-input" [formControl]="memberInputControl" placeholder="Email do novo membro">
+                    <button type="button" class="action-button confirm-button" (click)="confirmAddMember()">Adicionar</button>
+                    <button type="button" class="action-button cancel-button" (click)="cancelAddMember()">Cancelar</button>
+                  </div>
+                  <button type="button" class="action-button add-header-button" (click)="startAddingMember()" *ngIf="!showNewMemberField">
+                    +
+                  </button>
+                </div>
+
+                <div class="form-actions">
+                  <div class="action-button secondary-button" (click)="resetForm()">
+                    Cancelar
+                  </div>
+                  <div class="action-button danger-button" (click)="deleteSelectedGroup()">
+                    Excluir Grupo
+                  </div>
+                  <div class="action-button primary-button" (click)="createOrUpdateGroup()"
+                    [class.disabled]="groupForm.invalid">
+                    Atualizar Grupo
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- VISUALIZAÇÃO PARA MEMBROS - quando selecionado mas não é admin -->
+          <div class="section-card" *ngIf="selectedGroup && !isAdminOfSelectedGroup && !isAdmin && !isCreatingNewGroup">
+            <div class="section-header">
+              <h2>
+                <img src="https://dentistas.com.br/assets/group.png" class="header-icon">
+                {{ selectedGroup.name }}
+              </h2>
+              <div *ngIf="selectedGroup.clinica" class="subtitle">
+                {{ selectedGroup.clinica }}
+              </div>
+            </div>
+            <div class="section-content">
+              <div class="group-details">
+                <p *ngIf="selectedGroup.description">{{ selectedGroup.description }}</p>
+
+                <div class="members-section">
+                  <h3>Administradores</h3>
+                  <div class="chips-container">
+                    <div *ngFor="let adminId of selectedGroup?.adminIds || []" class="chip readonly">
+                      {{ getUserName(adminId) }}
+                    </div>
+                  </div>
+
+                  <h3>Membros</h3>
+                  <div class="chips-container">
+                    <div *ngFor="let memberId of selectedGroup?.memberIds || []" class="chip readonly">
+                      {{ getUserName(memberId) }}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="form-actions">
-              <div class="action-button primary-button" (click)="requestToJoinGroup(selectedGroup)">
-                <img src="https://dentistas.com.br/assets/novo.png" alt="Solicitar entrada">
-                Solicitar entrada no grupo
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FORMULÁRIO DE CRIAÇÃO - só aparece quando clicar "Novo Grupo" -->
-        <div class="section-card" *ngIf="isCreatingNewGroup">
-          <div class="section-header">
-            <h2>
-              <img src="https://dentistas.com.br/assets/novo.png" class="header-icon" alt="Novo">
-              Criar Novo Grupo
-            </h2>
-          </div>
-          <div class="section-content">
-            <form [formGroup]="groupForm" (ngSubmit)="createOrUpdateGroup()">
-              <div class="form-group">
-                <label for="name">Nome do Grupo</label>
-                <input type="text" id="name" formControlName="name" placeholder="Ex: Turma Ortodontia 2025"
-                  class="form-control">
-                <div *ngIf="groupForm.get('name')?.hasError('required') && groupForm.get('name')?.touched"
-                  class="error-message">
-                  Nome é obrigatório
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="description">Descrição</label>
-                <textarea id="description" formControlName="description" rows="3"
-                  placeholder="Descrição ou observações sobre o grupo" class="form-control"></textarea>
-              </div>
-
               <div class="form-actions">
-                <div class="action-button secondary-button" (click)="resetForm()">
-                  Cancelar
-                </div>
-
-                <div class="action-button primary-button" (click)="createOrUpdateGroup()"
-                  [class.disabled]="groupForm.invalid">
-                  Criar Grupo
+                <div class="action-button primary-button" (click)="requestToJoinGroup(selectedGroup)">
+                  <img src="https://dentistas.com.br/assets/novo.png" alt="Solicitar entrada">
+                  Solicitar entrada no grupo
                 </div>
               </div>
-            </form>
+            </div>
+          </div>
+
+          <!-- FORMULÁRIO DE CRIAÇÃO - só aparece quando clicar "Novo Grupo" -->
+          <div class="section-card" *ngIf="isCreatingNewGroup">
+            <div class="section-header">
+              <h2>
+                <img src="https://dentistas.com.br/assets/novo.png" class="header-icon" alt="Novo">
+                Criar Novo Grupo
+              </h2>
+            </div>
+            <div class="section-content">
+              <form [formGroup]="groupForm" (ngSubmit)="createOrUpdateGroup()">
+                <div class="form-group">
+                  <label for="name">Nome do Grupo</label>
+                  <input type="text" id="name" formControlName="name" placeholder="Ex: Turma Ortodontia 2025"
+                    class="form-control">
+                  <div *ngIf="groupForm.get('name')?.hasError('required') && groupForm.get('name')?.touched"
+                    class="error-message">
+                    Nome é obrigatório
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Descrição</label>
+                  <textarea id="description" formControlName="description" rows="3"
+                    placeholder="Descrição ou observações sobre o grupo" class="form-control"></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <div class="action-button secondary-button" (click)="resetForm()">
+                    Cancelar
+                  </div>
+
+                  <div class="action-button primary-button" (click)="createOrUpdateGroup()"
+                    [class.disabled]="groupForm.invalid">
+                    Criar Grupo
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
