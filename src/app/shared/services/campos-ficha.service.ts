@@ -42,34 +42,34 @@ export class CamposFichaService {
   // Retorna os campos fixos conforme a coleção (subcollection) selecionada
   getCamposFichaRegistro(userId: string, subcollection: string): Observable<Campo[]> {
     switch (subcollection) {
-      case 'padrao':
-        return of([...DEFAULT_CAMPOS_PADRAO]);
-      case 'exames':
-        return of([...CAMPOS_FICHAS_EXAMES]);
-      case 'documentos':
-        return of([...CAMPOS_FICHAS_DOCUMENTOS]);    
-      case 'planos':
-        return of([...CAMPOS_FICHAS_PLANOS]);        
-        case 'atendimentos':
-          return of([...CAMPOS_FICHAS_ATENDIMENTOS]);
-      case 'consultas':
-        return of([...CAMPOS_FICHAS_TRATAMENTOS]);
-      case 'pagamentos':
-        return of([...CAMPOS_FICHAS_PAGAMENTOS]);
-      case 'dentes':
-        return of([...CAMPOS_FICHAS_DENTES]);
-      case 'dentesendo':
-        return of([...CAMPOS_FICHAS_DENTES_ENDO]);
-      case 'dentesperio':
-        return of([...CAMPOS_FICHAS_DENTES_PERIO]);
-      case 'anamnese':
-        return of([...CAMPOS_FICHAS_ANAMNESE]);
-      case 'diagnosticos':
-        return of([...CAMPOS_FICHAS_DIAGNOSTICOS]);
-      case 'risco':
-        return of([...CAMPOS_FICHAS_RISCO]);
-      default:
-        return of([...DEFAULT_CAMPOS_PADRAO_FICHAS]);
+    case 'padrao':
+      return of([...DEFAULT_CAMPOS_PADRAO]);
+    case 'exames':
+      return of([...CAMPOS_FICHAS_EXAMES]);
+    case 'documentos':
+      return of([...CAMPOS_FICHAS_DOCUMENTOS]);    
+    case 'planos':
+      return of([...CAMPOS_FICHAS_PLANOS]);        
+    case 'atendimentos':
+      return of([...CAMPOS_FICHAS_ATENDIMENTOS]);
+    case 'consultas':
+      return of([...CAMPOS_FICHAS_TRATAMENTOS]);
+    case 'pagamentos':
+      return of([...CAMPOS_FICHAS_PAGAMENTOS]);
+    case 'dentes':
+      return of([...CAMPOS_FICHAS_DENTES]);
+    case 'dentesendo':
+      return of([...CAMPOS_FICHAS_DENTES_ENDO]);
+    case 'dentesperio':
+      return of([...CAMPOS_FICHAS_DENTES_PERIO]);
+    case 'anamnese':
+      return of([...CAMPOS_FICHAS_ANAMNESE]);
+    case 'diagnosticos':
+      return of([...CAMPOS_FICHAS_DIAGNOSTICOS]);
+    case 'risco':
+      return of([...CAMPOS_FICHAS_RISCO]);
+    default:
+      return of([...DEFAULT_CAMPOS_PADRAO_FICHAS]);
     }
   }
 

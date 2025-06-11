@@ -52,14 +52,14 @@ export class CrmSyncService {
     return this.firestore.collection(collectionPath, ref => 
       ref.where('crmData', '!=', null)
     ).valueChanges({ idField: 'id' })
-    .pipe(
-      map(registros => {
-        return registros.filter((registro: any) => {
-          const crmData = registro.crmData;
-          // Verificar campos obrigatórios
-          return !crmData.leadStatus; // Adicionar mais verificações conforme necessário
-        });
-      })
-    );
+      .pipe(
+        map(registros => {
+          return registros.filter((registro: any) => {
+            const crmData = registro.crmData;
+            // Verificar campos obrigatórios
+            return !crmData.leadStatus; // Adicionar mais verificações conforme necessário
+          });
+        })
+      );
   }
 }

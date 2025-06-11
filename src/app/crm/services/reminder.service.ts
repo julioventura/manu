@@ -82,9 +82,9 @@ export class ReminderService {
     return this.firestore
       .collectionGroup('reminders', ref => 
         ref.where('concluido', '==', false)
-           .where('data', '>=', today)
-           .orderBy('data', 'asc')
-           .limit(limit)
+          .where('data', '>=', today)
+          .orderBy('data', 'asc')
+          .limit(limit)
       )
       .valueChanges({ idField: 'id' });
   }
@@ -96,8 +96,8 @@ export class ReminderService {
     return this.firestore
       .collectionGroup('reminders', ref => 
         ref.where('concluido', '==', false)
-           .where('data', '<', today)
-           .orderBy('data', 'desc')
+          .where('data', '<', today)
+          .orderBy('data', 'desc')
       )
       .valueChanges({ idField: 'id' });
   }

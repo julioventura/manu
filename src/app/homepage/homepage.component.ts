@@ -8,21 +8,21 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../shared/services/user.service';
+import { UserService, UserProfile } from '../shared/services/user.service'; // ← IMPORTAR interface
 import { CommonModule } from '@angular/common';
 import { take } from 'rxjs/operators';
 
-// Outras importações de componentes
+// Importações dos componentes
 import { ChatbotHomepageComponent } from "./chatbot-homepage/chatbot-homepage.component";
 import { EnderecoComponent } from "./endereco/endereco.component";
-import { ContatoComponent } from "./contato/contato.component";
 import { TitulacoesComponent } from "./titulacoes/titulacoes.component";
 import { HorariosComponent } from "./horarios/horarios.component";
 import { ConveniosComponent } from "./convenios/convenios.component";
 import { RedesComponent } from "./redes/redes.component";
-import { CartaoComponent } from "./cartao/cartao.component";
 import { CapaComponent } from "./capa/capa.component";
 import { RodapeHomepageComponent } from "./rodape-homepage/rodape-homepage.component";
+import { ContatoComponent } from "./contato/contato.component";
+import { CartaoComponent } from "./cartao/cartao.component";
 
 @Component({
   selector: 'app-homepage',
@@ -33,31 +33,32 @@ import { RodapeHomepageComponent } from "./rodape-homepage/rodape-homepage.compo
     CommonModule,
     ChatbotHomepageComponent,
     EnderecoComponent,
-    ContatoComponent,
     TitulacoesComponent,
     HorariosComponent,
     ConveniosComponent,
     RedesComponent,
-    CartaoComponent,
     CapaComponent,
-    RodapeHomepageComponent
+    RodapeHomepageComponent,
+    CartaoComponent,
+    ContatoComponent,
   ]
 })
 export class HomepageComponent implements OnInit {
   username: string = '';
-  userProfile: any = null;
+  userProfile: UserProfile | null = null; // ← Agora usando interface do UserService
   errorMessage: string = '';
   isLoading: boolean = true;
   isChatbotExpanded: boolean = false;
-
+  showContato: boolean = false;
+  showCartao: boolean = false;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService
   ) { }
 
-  ngOnInit() {
-    
+  ngOnInit(): void {
     // Capturar parâmetros da URL
     this.route.params.subscribe(params => {
       const usernameParam = params['username'];
@@ -80,12 +81,11 @@ export class HomepageComponent implements OnInit {
     this.userService.loadUserProfileByUsername(username)
       .pipe(take(1))
       .subscribe({
-        next: (userProfiles: any[]) => {
-          
+        next: (userProfiles: UserProfile[]) => {
           if (userProfiles && userProfiles.length > 0) {
             this.userProfile = userProfiles[0];
             
-            // Configurar dados para exibição nos componentes filhos
+            // Agora está garantidamente compatível
             this.userService.setHomepageProfile(this.userProfile);
           } else {
             console.error(`HomepageComponent: Nenhum perfil encontrado para username: ${username}`);

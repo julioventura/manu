@@ -95,7 +95,7 @@ export class InteractionService {
     return this.firestore
       .collectionGroup('interactions', ref => 
         ref.orderBy('data', 'desc')
-         .limit(limit)
+          .limit(limit)
       )
       .valueChanges({ idField: 'id' })
       .pipe(

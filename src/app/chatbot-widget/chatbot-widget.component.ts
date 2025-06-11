@@ -646,7 +646,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
       })
       .map(([key, value]) => {
         // Formatar o nome do campo para exibição
-        let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
+        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
 
         // Formatar o valor para exibição
         let formattedValue = value;
@@ -750,7 +750,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     // Calcular a nova posição baseada na posição inicial - APENAS HORIZONTAL
     let newRight = this.initialRight + deltaX;
     // Manter a posição vertical fixa
-    let newBottom = this.initialBottom;
+    const newBottom = this.initialBottom;
     
     // Obter as dimensões corretas do viewport
     const viewportWidth = document.documentElement.clientWidth;

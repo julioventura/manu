@@ -47,33 +47,33 @@ export class ImportarCadastroComponent {
   }
   
 
-    // Novo método importData para processar e armazenar dados CSV no Firestore
-    async importData(data: any[]) {
-      if (!this.userId || data.length === 0) {
-        this.importStatus = 'Por favor, selecione um arquivo CSV válido.';
-        return;
-      }
-  
-      this.importStatus = 'Importando dados...';
-  
-      const batch = this.firestore.firestore.batch();
-      const collectionPath = `/users/${this.userId}/${this.selectedCollection}`;
-      const collectionRef = this.firestore.collection(collectionPath).ref;
-  
-      data.forEach(record => {
-        const docRef = collectionRef.doc(); // Cria um novo documento com ID automático
-        const recordWithId = { ...record, id: docRef.id }; // Adiciona o campo `id` ao registro
-        batch.set(docRef, recordWithId); // Adiciona o registro ao batch
-      });
-  
-      try {
-        await batch.commit();
-        this.importStatus = 'Importação concluída com sucesso!';
-      } catch (error) {
-        console.error('Erro ao importar dados:', error);
-        this.importStatus = 'Erro ao importar os dados.';
-      }
+  // Novo método importData para processar e armazenar dados CSV no Firestore
+  async importData(data: any[]) {
+    if (!this.userId || data.length === 0) {
+      this.importStatus = 'Por favor, selecione um arquivo CSV válido.';
+      return;
     }
+  
+    this.importStatus = 'Importando dados...';
+  
+    const batch = this.firestore.firestore.batch();
+    const collectionPath = `/users/${this.userId}/${this.selectedCollection}`;
+    const collectionRef = this.firestore.collection(collectionPath).ref;
+  
+    data.forEach(record => {
+      const docRef = collectionRef.doc(); // Cria um novo documento com ID automático
+      const recordWithId = { ...record, id: docRef.id }; // Adiciona o campo `id` ao registro
+      batch.set(docRef, recordWithId); // Adiciona o registro ao batch
+    });
+  
+    try {
+      await batch.commit();
+      this.importStatus = 'Importação concluída com sucesso!';
+    } catch (error) {
+      console.error('Erro ao importar dados:', error);
+      this.importStatus = 'Erro ao importar os dados.';
+    }
+  }
 
 
 

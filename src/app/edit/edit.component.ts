@@ -135,86 +135,86 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
     this.subgruposExpandidos = {};
     
     this.afAuth.authState.pipe(
-        filter(user => !!user), // Só prosseguir se houver usuário
-        take(1)
+      filter(user => !!user), // Só prosseguir se houver usuário
+      take(1)
     ).subscribe(user => {
-        if (user?.uid) {
-            this.userId = user.uid;
-            const id = this.route.snapshot.paramMap.get('id');
-            if (id) { this.id = id; }
-            this.collection = this.route.snapshot.paramMap.get('collection')!;
-            this.subcollection = this.route.snapshot.paramMap.get('subcollection')!;
-            this.fichaId = this.route.snapshot.paramMap.get('fichaId')!;
+      if (user?.uid) {
+        this.userId = user.uid;
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) { this.id = id; }
+        this.collection = this.route.snapshot.paramMap.get('collection')!;
+        this.subcollection = this.route.snapshot.paramMap.get('subcollection')!;
+        this.fichaId = this.route.snapshot.paramMap.get('fichaId')!;
 
-            this.titulo_da_pagina = this.util.titulo_ajuste_singular(this.subcollection || this.collection);
+        this.titulo_da_pagina = this.util.titulo_ajuste_singular(this.subcollection || this.collection);
 
 
-            if (!this.id) {
-                console.error('Registro não identificado.');
-                this.voltar();
-            } else {
-                if (this.subcollection) {
-                    this.FormService.loadFicha(this.userId, this.collection, this.id, this.subcollection, this.fichaId, this.view_only)
-                        .then(() => {
-                            this.inicializarGruposESubgrupos();
-                        })
-                        .catch(error => {
-                            console.error('Erro ao carregar ficha:', error);
-                        });
-                } else {
-                    this.FormService.loadRegistro(this.userId, this.collection, this.id, this.view_only)
-                        .then(() => {
-                            this.inicializarGruposESubgrupos();
-                        })
-                        .catch(error => {
-                            console.error('Erro ao carregar registro:', error);
-                        });
-                }
-            }
-            
-            this.subtitulo_da_pagina = this.FormService.nome_in_collection;
-            if (this.subcollection) {
-                this.customLabelWidthValue = 350;
-            } else {
-                this.customLabelWidthValue = 150;
-            }
-            this.updateCustomLabelWidth();
-
-            // Só carregar grupos se necessário (verificar se a funcionalidade de grupos está sendo usada)
-            this.loadGroupsIfNeeded();
+        if (!this.id) {
+          console.error('Registro não identificado.');
+          this.voltar();
         } else {
-            console.error('Usuário não autenticado.');
-            this.util.goHome();
+          if (this.subcollection) {
+            this.FormService.loadFicha(this.userId, this.collection, this.id, this.subcollection, this.fichaId, this.view_only)
+              .then(() => {
+                this.inicializarGruposESubgrupos();
+              })
+              .catch(error => {
+                console.error('Erro ao carregar ficha:', error);
+              });
+          } else {
+            this.FormService.loadRegistro(this.userId, this.collection, this.id, this.view_only)
+              .then(() => {
+                this.inicializarGruposESubgrupos();
+              })
+              .catch(error => {
+                console.error('Erro ao carregar registro:', error);
+              });
+          }
         }
+            
+        this.subtitulo_da_pagina = this.FormService.nome_in_collection;
+        if (this.subcollection) {
+          this.customLabelWidthValue = 350;
+        } else {
+          this.customLabelWidthValue = 150;
+        }
+        this.updateCustomLabelWidth();
+
+        // Só carregar grupos se necessário (verificar se a funcionalidade de grupos está sendo usada)
+        this.loadGroupsIfNeeded();
+      } else {
+        console.error('Usuário não autenticado.');
+        this.util.goHome();
+      }
     });
 
     this.boundBeforeUnloadHandler = this.beforeUnloadHandler.bind(this);
     window.addEventListener('beforeunload', this.boundBeforeUnloadHandler);
-}
+  }
 
-private loadGroupsIfNeeded(): void {
+  private loadGroupsIfNeeded(): void {
     // Verificar se realmente precisa carregar grupos
     if (!this.shouldLoadGroups()) {
-        return;
+      return;
     }
 
     // Verificar se grupos já foram carregados
     if (this.groups && this.groups.length > 0) {
-        return;
+      return;
     }
 
     this.groupService.getAllUserGroups().pipe(
-        takeUntil(this.destroy$), // Adicione um destroy$ subject para cancelar subscriptions
-        catchError(error => {
-            console.warn('EditComponent: Não foi possível carregar grupos:', error);
-            return of([]);
-        })
+      takeUntil(this.destroy$), // Adicione um destroy$ subject para cancelar subscriptions
+      catchError(error => {
+        console.warn('EditComponent: Não foi possível carregar grupos:', error);
+        return of([]);
+      })
     ).subscribe((groups: any[]) => {
-        this.groups = groups;
+      this.groups = groups;
     });
-}
+  }
 
-private shouldLoadGroups(): boolean {
+  private shouldLoadGroups(): boolean {
     // Só carregar grupos se:
     // 1. Não é uma subcollection
     // 2. Tem collection e id válidos
@@ -224,7 +224,7 @@ private shouldLoadGroups(): boolean {
            !!this.id && 
            !this.view_only &&
            this.router.url.includes('/edit/');
-}
+  }
 
   // Método para inicializar todos os grupos como fechados
   inicializarGruposFechados() {
@@ -801,19 +801,19 @@ private shouldLoadGroups(): boolean {
     
     // Se não tiver um valor padrão, definir com base no tipo
     switch(campo.tipo) {
-      case 'checkbox':
-        return false;
-      case 'radio':
-      case 'select':
-        // Para radio/select, retornar a primeira opção, se disponível
-        return campo.opcoes && campo.opcoes.length > 0 ? campo.opcoes[0].value : null;
-      case 'number':
-        return 0;
-      case 'text':
-      case 'textarea':
-      case 'date':
-      default:
-        return '';
+    case 'checkbox':
+      return false;
+    case 'radio':
+    case 'select':
+      // Para radio/select, retornar a primeira opção, se disponível
+      return campo.opcoes && campo.opcoes.length > 0 ? campo.opcoes[0].value : null;
+    case 'number':
+      return 0;
+    case 'text':
+    case 'textarea':
+    case 'date':
+    default:
+      return '';
     }
   }
 }

@@ -67,7 +67,7 @@ export class AiHomepageService {
         // Garantir que o retorno corresponde ao tipo Message
         return {
           content: response.message || 'Desculpe, não consegui processar sua mensagem.',
-          sender: 'bot' as 'bot', // Cast explícito para o tipo literal
+          sender: 'bot' as const, // Cast explícito para o tipo literal
           timestamp: new Date()
         };
       }),
@@ -75,7 +75,7 @@ export class AiHomepageService {
         console.error('Erro ao enviar mensagem:', error);
         return of({
           content: 'Desculpe, tive um problema ao processar sua mensagem. Tente novamente mais tarde.',
-          sender: 'bot' as 'bot', // Cast explícito para o tipo literal
+          sender: 'bot' as const, // Cast explícito para o tipo literal
           timestamp: new Date()
         });
       })

@@ -55,27 +55,27 @@ export class ErupcoesComponent implements OnInit {
   }
 
 
-    // Getter para o texto formatado
-    get faixaDeMesesTexto(): string {
-      return `em ${this.faixaDeMeses} ${this.faixaDeMeses === 1 ? 'mês' : 'meses'}`;
-    }
+  // Getter para o texto formatado
+  get faixaDeMesesTexto(): string {
+    return `em ${this.faixaDeMeses} ${this.faixaDeMeses === 1 ? 'mês' : 'meses'}`;
+  }
 
 
   
-    abrirPopup(paciente: any): void {
-      const dialogRef = this.dialog.open(ErupcoesPopupComponent);
-      // Configura os dados manualmente usando `componentInstance`
-      dialogRef.componentInstance.data = {
-        nome: paciente.nome,
-        nascimento: paciente.nascimento,
-        telefone: paciente.telefone,
-        idade: paciente.idade,
-        dataChamadaInicial: '21/10/2024',
-        dataUltimaChamada: '28/10/2024',
-        dataResposta: '29/10/2024',
-        dataComparecimento: '31/10/2024'
-      };
-    }
+  abrirPopup(paciente: any): void {
+    const dialogRef = this.dialog.open(ErupcoesPopupComponent);
+    // Configura os dados manualmente usando `componentInstance`
+    dialogRef.componentInstance.data = {
+      nome: paciente.nome,
+      nascimento: paciente.nascimento,
+      telefone: paciente.telefone,
+      idade: paciente.idade,
+      dataChamadaInicial: '21/10/2024',
+      dataUltimaChamada: '28/10/2024',
+      dataResposta: '29/10/2024',
+      dataComparecimento: '31/10/2024'
+    };
+  }
   
   
 

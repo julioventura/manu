@@ -119,10 +119,10 @@ export class CrmService {
         return of(crmData);
       })
     ).toPromise()
-    .then(crmData => {
-      return this.firestore.doc(`${collectionPath}/${docId}`)
-        .update({ crmData });
-    });
+      .then(crmData => {
+        return this.firestore.doc(`${collectionPath}/${docId}`)
+          .update({ crmData });
+      });
   }
   
   // Obter registros por status para o pipeline

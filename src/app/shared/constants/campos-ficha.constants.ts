@@ -262,7 +262,7 @@ export const CAMPOS_FICHAS_DENTES_ENDO: Campo[] = [
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 1', nome: 'canal1IAF', tipo: 'text', label: 'IAF – Instrumento apical foraminal (Patência)' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 1', nome: 'canal1IAI', tipo: 'text', label: 'IAI - Instrumento inicial apical' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 1', nome: 'canal1IM', tipo: 'text', label: 'IM – Instrumento de memória (Último do preparo apical)' },
-    // Canal 2
+  // Canal 2
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 2', nome: 'canal2Nome', tipo: 'text', label: 'Nome/Sigla' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 2', nome: 'canal2Ref', tipo: 'text', label: 'Referência Coronária' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 2', nome: 'canal2CAD', tipo: 'number', label: 'CAD – comprimento aparente do dente' },
@@ -273,7 +273,7 @@ export const CAMPOS_FICHAS_DENTES_ENDO: Campo[] = [
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 2', nome: 'canal2IAF', tipo: 'text', label: 'IAF – Instrumento apical foraminal (Patência)' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 2', nome: 'canal2IAI', tipo: 'text', label: 'IAI - Instrumento inicial apical' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 2', nome: 'canal2IM', tipo: 'text', label: 'IM – Instrumento de memória (Último do preparo apical)' },
-    // Canal 3
+  // Canal 3
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 3', nome: 'canal3Nome', tipo: 'text', label: 'Nome/Sigla' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 3', nome: 'canal3Ref', tipo: 'text', label: 'Referência Coronária' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 3', nome: 'canal3CAD', tipo: 'number', label: 'CAD – comprimento aparente do dente' },
@@ -284,7 +284,7 @@ export const CAMPOS_FICHAS_DENTES_ENDO: Campo[] = [
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 3', nome: 'canal3IAF', tipo: 'text', label: 'IAF – Instrumento apical foraminal (Patência)' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 3', nome: 'canal3IAI', tipo: 'text', label: 'IAI - Instrumento inicial apical' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 3', nome: 'canal3IM', tipo: 'text', label: 'IM – Instrumento de memória (Último do preparo apical)' },
-    // Canal 4
+  // Canal 4
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 4', nome: 'canal4Nome', tipo: 'text', label: 'Nome/Sigla' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 4', nome: 'canal4Ref', tipo: 'text', label: 'Referência Coronária' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 4', nome: 'canal4CAD', tipo: 'number', label: 'CAD – comprimento aparente do dente' },
@@ -295,7 +295,7 @@ export const CAMPOS_FICHAS_DENTES_ENDO: Campo[] = [
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 4', nome: 'canal4IAF', tipo: 'text', label: 'IAF – Instrumento apical foraminal (Patência)' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 4', nome: 'canal4IAI', tipo: 'text', label: 'IAI - Instrumento inicial apical' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 4', nome: 'canal4IM', tipo: 'text', label: 'IM – Instrumento de memória (Último do preparo apical)' },
-    // Canal 5
+  // Canal 5
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 5', nome: 'canal5Nome', tipo: 'text', label: 'Nome/Sigla' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 5', nome: 'canal5Ref', tipo: 'text', label: 'Referência Coronária' },
   { grupo: '06) Canais Radiculares', subgrupo: 'Canal 5', nome: 'canal5CAD', tipo: 'number', label: 'CAD – comprimento aparente do dente' },
@@ -320,7 +320,7 @@ export const CAMPOS_FICHAS_DENTES_ENDO: Campo[] = [
   { grupo: '07) Medicação Intracanal', subgrupo: 'Consulta 2', nome: 'medicacaoIntracanalConsulta2c', tipo: 'boolean', label: 'Otosporin' },
   { grupo: '07) Medicação Intracanal', subgrupo: 'Consulta 2', nome: 'medicacaoIntracanalConsulta2d', tipo: 'boolean', label: 'Hidróxido de cálcio' },
   
-    // Medicação Intracanal Consulta 3
+  // Medicação Intracanal Consulta 3
   { grupo: '07) Medicação Intracanal', subgrupo: 'Consulta 3', nome: 'medicacaoIntracanalConsulta3a', tipo: 'boolean', label: 'Hipoclorito de sódio' },
   { grupo: '07) Medicação Intracanal', subgrupo: 'Consulta 3', nome: 'medicacaoIntracanalConsulta3b', tipo: 'boolean', label: 'Clorexidina' },
   { grupo: '07) Medicação Intracanal', subgrupo: 'Consulta 3', nome: 'medicacaoIntracanalConsulta3c', tipo: 'boolean', label: 'Otosporin' },
@@ -371,7 +371,7 @@ export const CAMPOS_FICHAS_DENTES_ENDO: Campo[] = [
   { grupo: '09) Selamento Coronário Provisório', subgrupo: 'Consulta 2', nome: 'selamentoCoronarProvisorioConsulta2d', tipo: 'boolean', label: 'Resina flow' },
   { grupo: '09) Selamento Coronário Provisório', subgrupo: 'Consulta 2', nome: 'selamentoCoronarProvisorioConsulta2e', tipo: 'boolean', label: 'Ionômero de vidro' },
   
-    // Selamento Coronário Provisório Consulta 3
+  // Selamento Coronário Provisório Consulta 3
   { grupo: '09) Selamento Coronário Provisório', subgrupo: 'Consulta 3', nome: 'selamentoCoronarProvisorioConsulta3a', tipo: 'boolean', label: 'Teflon' },
   { grupo: '09) Selamento Coronário Provisório', subgrupo: 'Consulta 3', nome: 'selamentoCoronarProvisorioConsulta3b', tipo: 'boolean', label: 'Coltosol' },
   { grupo: '09) Selamento Coronário Provisório', subgrupo: 'Consulta 3', nome: 'selamentoCoronarProvisorioConsulta3c', tipo: 'boolean', label: 'Resina composta' },

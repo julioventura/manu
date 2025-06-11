@@ -6,13 +6,42 @@ import 'firebase/compat/firestore';
 import { Observable, of, from, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 
-// Interface para usuário
-interface UserProfile {
+// EXPORTAR: Interface para usuário
+export interface UserProfile {
   uid: string;
   email: string;
   displayName?: string;
   createdAt: Date;
   updatedAt: Date;
+  // Adicionar campos que podem existir nos dados do Firestore
+  username?: string;
+  nome?: string;
+  telefone?: string;
+  especialidade?: string;
+  endereco?: string;
+  bio?: string;
+  foto?: string;
+  redes_sociais?: {
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+    whatsapp?: string;
+  };
+  horarios?: {
+    segunda?: string;
+    terca?: string;
+    quarta?: string;
+    quinta?: string;
+    sexta?: string;
+    sabado?: string;
+    domingo?: string;
+  };
+  convenios?: string[];
+  titulacoes?: string[];
+  created_at?: string;
+  updated_at?: string;
+  is_active?: boolean;
+  subscription_type?: string;
   [key: string]: unknown;
 }
 
@@ -38,8 +67,7 @@ interface ActivityLog {
   timestamp: Date;
 }
 
-// Interface mais flexível
-// CERTIFICAR que está exportada:
+// Interface mais flexível - já exportada
 export interface NavigationContext {
   route?: string;
   component?: string;
@@ -52,9 +80,6 @@ export interface NavigationContext {
   };
   [key: string]: unknown;
 }
-
-// Ou ainda mais simples:
-// type NavigationContext = Record<string, unknown>;
 
 @Injectable({
   providedIn: 'root'
