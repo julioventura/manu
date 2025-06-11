@@ -1,4 +1,4 @@
-<footer>
+<footer class="footer">
   <mat-toolbar color="primary" class="footer-toolbar">
     <span class="footer-content">
       <span class="footer-text">
@@ -10,9 +10,8 @@
         {{ userName }}
       </span>
 
-      <span class="footer-actions">
-        <button mat-button (click)="logout()">
-          <mat-icon>logout</mat-icon>
+      <span class="footer-text">
+        <button class="button" (click)="logout()">
           Sair
         </button>
       </span>

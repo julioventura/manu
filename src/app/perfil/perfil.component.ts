@@ -1,7 +1,7 @@
-// Alteração: remoção de logs de depuração (console.log)
+// CORRIGIR: src/app/perfil/perfil.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '../shared/services/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserService, UserProfile } from '../shared/services/user.service';
 import { UtilService } from '../shared/utils/util.service';
 import { FirestoreService } from '../shared/services/firestore.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -11,12 +11,12 @@ import { finalize } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { CanComponentDeactivate } from '../shared/guards/can-deactivate.guard';
 
+// MANTER: Interfaces locais para estruturas específicas
 interface Horario {
   dia: string;
   horario: string;
 }
 
-// Em perfil.component.ts
 interface Endereco {
   rua: string;
   bairro: string;
@@ -30,6 +30,20 @@ interface Convenio {
   nomeConvenio: string;
 }
 
+// ADICIONAR: Interface para evento de campo
+interface FieldChangeEvent {
+  field: string;
+  value: unknown;
+}
+
+// CORRIGIDO: Interface estendida com compatibilidade correta
+interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos' | 'convenios'> {
+  id?: string; // Para compatibilidade com Firestore
+  username?: string; // Adicionado para corrigir erro de tipagem
+  horarios?: Horario[] | string | UserProfile['horarios']; // CORRIGIDO: compatível com UserProfile
+  enderecos?: Endereco[] | string;
+  convenios?: Convenio[] | string | string[];
+}
 
 @Component({
   selector: 'app-perfil',
@@ -39,7 +53,8 @@ interface Convenio {
 })
 export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   profileForm: FormGroup;
-  userProfileData: any = {};
+  // CORRIGIDO: Inicializar com null em vez de objeto vazio
+  userProfileData: FirestoreUserProfile | null = null;
   isLoading = true;
   errorMessage = '';
   userEmail: string | null = null;
@@ -60,7 +75,6 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
   novoHorario: string = '';
   nomeConvenio: string = '';
 
-  // Em perfil.component.ts - dentro da classe PerfilComponent
   // Arrays para gerenciar os endereços
   enderecos: Endereco[] = [];
   novoEndereco: Endereco = {
@@ -77,14 +91,14 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     nomeConvenio: ''
   };
 
-  // (Opcional) Armazena a referência para o handler do beforeunload
+  // Armazena a referência para o handler do beforeunload
   private boundBeforeUnloadHandler!: (event: BeforeUnloadEvent) => void;
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     public util: UtilService,
-    private firestoreService: FirestoreService<any>,
+    private firestoreService: FirestoreService<FirestoreUserProfile>,
     private auth: AngularFireAuth,
     private router: Router
   ) {
@@ -94,7 +108,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     this.groupedFields = getGroupedProfileFields();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.auth.authState.subscribe(user => {
       if (user && user.email) {
         this.userEmail = user.email;
@@ -110,13 +124,13 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
       this.isLoading = false;
     });
 
-    // Inicializa horarios a partir do userProfileData
+    // CORRIGIDO: Verificação se userProfileData não é null
     if (this.userProfileData && this.userProfileData.horarios) {
       try {
         // Tenta converter se estiver em formato de string
         if (typeof this.userProfileData.horarios === 'string') {
           this.horarios = JSON.parse(this.userProfileData.horarios);
-        } else {
+        } else if (Array.isArray(this.userProfileData.horarios)) {
           this.horarios = this.userProfileData.horarios || [];
         }
       } catch (e) {
@@ -130,7 +144,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     window.addEventListener('beforeunload', this.boundBeforeUnloadHandler);
   }
 
-  loadUserProfile() {
+  loadUserProfile(): void {
     this.isLoading = true;
 
     if (!this.userEmail) {
@@ -140,9 +154,8 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
       return;
     }
 
-
     this.firestoreService.getRegistroById('usuarios/dentistascombr/users', this.userEmail).subscribe(
-      (userData: any) => {
+      (userData: FirestoreUserProfile | null) => {
         if (userData) {
           this.userProfileData = userData;
           this.originalUsername = userData.username || '';
@@ -150,7 +163,14 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
           localStorage.setItem('userData', JSON.stringify(userData));
           this.updateFormWithProfileData();
         } else {
-          this.userProfileData = { email: this.userEmail };
+          // CORRIGIDO: Criar objeto compatível com FirestoreUserProfile
+          this.userProfileData = {
+            id: this.userEmail || '',
+            uid: this.userEmail || '',
+            email: this.userEmail || '',
+            createdAt: new Date(),
+            updatedAt: new Date()
+          } as FirestoreUserProfile;
         }
         this.isLoading = false;
       },
@@ -162,61 +182,121 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     );
   }
 
-  updateFormWithProfileData() {
-    if (this.userProfileData) {
-      // Resetar valores antes de preencher
-      this.profileForm.reset();
+  updateFormWithProfileData(): void {
+    // CORRIGIDO: Verificação se userProfileData não é null
+    if (!this.userProfileData) {
+      console.warn('userProfileData is null, cannot update form');
+      return;
+    }
 
-      // Preencher com os dados do perfil
-      const formValues = Object.keys(this.profileForm.controls)
-        .reduce((acc, key) => {
-          acc[key] = this.userProfileData[key] ||
-            (key === 'email' ? this.userEmail : '');
+    // Resetar valores antes de preencher
+    this.profileForm.reset();
+
+    // CORRIGIDO: Preencher com os dados do perfil (linha 159 corrigida)
+    const formValues = Object.keys(this.profileForm.controls)
+      .reduce((acc, key) => {
+        // CORRIGIDO: Verificação adicional de null safety
+        if (!this.userProfileData) {
+          acc[key] = key === 'email' ? (this.userEmail || '') : '';
           return acc;
-        }, {} as Record<string, any>);
-
-      this.profileForm.patchValue(formValues);
-
-      // Carregar horários se existirem
-      if (this.userProfileData.horarios && Array.isArray(this.userProfileData.horarios)) {
-        this.horarios = [...this.userProfileData.horarios];
-      } else if (typeof this.userProfileData.horarios === 'string') {
-        try {
-          this.horarios = JSON.parse(this.userProfileData.horarios);
-        } catch (e) {
-          console.error('Erro ao converter horários:', e);
-          this.horarios = [];
         }
-      } else {
+
+        const value = this.userProfileData[key as keyof FirestoreUserProfile];
+        
+        // CORRIGIDO: Garantir que sempre retorna string
+        if (value !== undefined && value !== null) {
+          if (typeof value === 'string') {
+            acc[key] = value;
+          } else if (typeof value === 'number') {
+            acc[key] = String(value);
+          } else if (value instanceof Date) {
+            acc[key] = value.toISOString();
+          } else if (typeof value === 'boolean') {
+            acc[key] = String(value);
+          } else {
+            // Para objetos complexos, converter para string vazia
+            acc[key] = '';
+          }
+        } else {
+          // Valor é null ou undefined
+          acc[key] = key === 'email' ? (this.userEmail || '') : '';
+        }
+        
+        return acc;
+      }, {} as Record<string, string>);
+
+    this.profileForm.patchValue(formValues);
+
+    // Carregar horários se existirem
+    if (this.userProfileData.horarios && Array.isArray(this.userProfileData.horarios)) {
+      this.horarios = [...this.userProfileData.horarios];
+    } else if (typeof this.userProfileData.horarios === 'string') {
+      try {
+        this.horarios = JSON.parse(this.userProfileData.horarios);
+      } catch (e) {
+        console.error('Erro ao converter horários:', e);
         this.horarios = [];
       }
+    } else {
+      this.horarios = [];
+    }
 
-      if (!this.userProfileData.email && this.userEmail) {
-        this.userProfileData.email = this.userEmail;
-      }
+    // CORRIGIDO: Usar acesso com colchetes (linha 244-245)
+    if (!this.userProfileData['email'] && this.userEmail) {
+      this.userProfileData['email'] = this.userEmail;
+    }
 
-      // Carregar endereços se existirem
-      if (this.userProfileData.enderecos && Array.isArray(this.userProfileData.enderecos)) {
-        this.enderecos = [...this.userProfileData.enderecos];
-      } 
-      else if (typeof this.userProfileData.enderecos === 'string') {
-        try {
-          this.enderecos = JSON.parse(this.userProfileData.enderecos);
-        } catch (e) {
-          console.error('Erro ao converter endereços:', e);
-          this.enderecos = [];
-        }
-      } else {
+    // Carregar endereços se existirem
+    if (this.userProfileData.enderecos && Array.isArray(this.userProfileData.enderecos)) {
+      this.enderecos = [...this.userProfileData.enderecos];
+    } 
+    else if (typeof this.userProfileData.enderecos === 'string') {
+      try {
+        this.enderecos = JSON.parse(this.userProfileData.enderecos);
+      } catch (e) {
+        console.error('Erro ao converter endereços:', e);
         this.enderecos = [];
       }
+    } else {
+      this.enderecos = [];
+    }
 
-      // Carregar convenios se existirem
-      if (this.userProfileData.convenios && Array.isArray(this.userProfileData.convenios)) {
-        this.convenios = [...this.userProfileData.convenios];
-      }
-      else if (typeof this.userProfileData.convenios === 'string') {
+    // CORRIGIDO: Carregar convenios com tipagem correta
+    if (this.userProfileData.convenios) {
+      if (Array.isArray(this.userProfileData.convenios)) {
+        // Se já é array de Convenio, usar diretamente
+        if (this.userProfileData.convenios.length > 0) {
+          const firstItem = this.userProfileData.convenios[0];
+          if (typeof firstItem === 'object' && firstItem !== null && 'nomeConvenio' in firstItem) {
+            // Array de objetos Convenio
+            this.convenios = [...this.userProfileData.convenios as Convenio[]];
+          } else if (typeof firstItem === 'string') {
+            // CORRIGIDO: Array de strings, converter para Convenio[]
+            this.convenios = (this.userProfileData.convenios as string[]).map((nome: string) => ({
+              nomeConvenio: nome
+            }));
+          } else {
+            this.convenios = [];
+          }
+        } else {
+          this.convenios = [];
+        }
+      } else if (typeof this.userProfileData.convenios === 'string') {
         try {
-          this.convenios = JSON.parse(this.userProfileData.convenios);
+          const parsed = JSON.parse(this.userProfileData.convenios);
+          if (Array.isArray(parsed)) {
+            if (parsed.length > 0 && typeof parsed[0] === 'string') {
+              // Array de strings
+              this.convenios = parsed.map((nome: string) => ({
+                nomeConvenio: nome
+              }));
+            } else {
+              // Array de objetos Convenio
+              this.convenios = parsed;
+            }
+          } else {
+            this.convenios = [];
+          }
         } catch (e) {
           console.error('Erro ao converter convenios:', e);
           this.convenios = [];
@@ -224,14 +304,12 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
       } else {
         this.convenios = [];
       }
-
-
-
-
+    } else {
+      this.convenios = [];
     }
   }
 
-  updateCustomLabelWidth() {
+  updateCustomLabelWidth(): void {
     this.customLabelWidth = `${this.customLabelWidthValue}px`;
   }
 
@@ -296,41 +374,82 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     });
   }
 
-  onFieldChanged(event: { field: string; value: any }) {
+  onFieldChanged(event: FieldChangeEvent): void {
     // Handle the field change
-    // Your implementation...
+    console.log('Field changed:', event.field, 'Value:', event.value);
   }
 
-  salvar() {
+  salvar(): void {
     if (this.isSaving) return;
     this.isSaving = true;
+
+    // CORRIGIDO: Verificação se userProfileData não é null
+    if (!this.userProfileData) {
+      console.error('Cannot save: userProfileData is null');
+      this.isSaving = false;
+      return;
+    }
 
     // Garantir que os endereços estão sincronizados com o formulário antes de salvar
     const formValues = this.profileForm.getRawValue();
 
-    // Usar spread operator para criar um novo objeto e evitar modificar o original
-    const dataToSave = {
+    // CORRIGIDO: Criar objeto compatível com UserProfile para o UserService
+    const dataToSaveFirestore: FirestoreUserProfile = {
+      id: this.userProfileData.id || this.userEmail || '',
+      // CORRIGIDO: Usar acesso com colchetes (linhas 398-400)
+      uid: this.userProfileData['uid'] || this.userEmail || '',
+      email: this.userProfileData['email'] || this.userEmail || '',
+      createdAt: this.userProfileData['createdAt'] || new Date(),
+      updatedAt: new Date(),
       ...formValues,
       horarios: this.horarios,
       enderecos: this.enderecos,
       convenios: this.convenios
     };
 
+    // Para o UserService, criar objeto compatível com UserProfile
+    // CORRIGIDO: Converter horários para formato do UserProfile
+    const horariosUserProfile: UserProfile['horarios'] = this.horarios.reduce((acc, horario) => {
+      const dia = horario.dia.toLowerCase();
+      if (['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'].includes(dia)) {
+        acc[dia as keyof NonNullable<UserProfile['horarios']>] = horario.horario;
+      }
+      return acc;
+    }, {} as NonNullable<UserProfile['horarios']>);
 
-    // Prosseguir com o salvamento...
-    const userId = this.userProfileData.id || this.userEmail;
+    const dataToSaveUserService: UserProfile = {
+      // CORRIGIDO: Usar acesso com colchetes (linhas 419-421)
+      uid: this.userProfileData['uid'] || this.userEmail || '',
+      email: this.userProfileData['email'] || this.userEmail || '',
+      createdAt: this.userProfileData['createdAt'] || new Date(),
+      updatedAt: new Date(),
+      ...formValues,
+      horarios: horariosUserProfile
+    };
 
-    from(this.firestoreService.updateRegistro('usuarios/dentistascombr/users', userId, dataToSave))
+    // CORRIGIDO: Prosseguir com o salvamento (linha 428)
+    const userId = this.userProfileData.id || this.userProfileData['uid'] || this.userEmail;
+
+    if (!userId) {
+      console.error('Cannot save: no user ID');
+      this.isSaving = false;
+      return;
+    }
+
+    // CORRIGIDO: Garantir que userId é string
+    const userIdString = String(userId);
+
+    from(this.firestoreService.updateRegistro('usuarios/dentistascombr/users', userIdString, dataToSaveFirestore))
       .pipe(finalize(() => {
         this.isSaving = false;
       }))
       .subscribe(() => {
         this.isEditing = false;
         // Atualizar dados locais
-        this.userProfileData = { ...this.userProfileData, ...dataToSave };
+        this.userProfileData = { ...this.userProfileData, ...dataToSaveFirestore };
 
-        // IMPORTANTE: Atualizar no UserService para refletir em toda a aplicação
-        this.userService.setUserProfile(this.userProfileData);
+        // CORRIGIDO: Usar dados compatíveis com UserProfile
+        this.userService.setUserProfile(dataToSaveUserService);
 
         // Desativar formulário após salvar
         this.profileForm.disable();
@@ -407,7 +526,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     this.onFieldChanged({ field: fieldName, value: (event.target as HTMLInputElement).value });
   }
 
-  addHorario() {
+  addHorario(): void {
     if (this.novoDia && this.novoHorario) {
       this.horarios.push({
         dia: this.novoDia.trim(),
@@ -425,8 +544,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
   }
 
-
-  removeHorario(index: number) {
+  removeHorario(index: number): void {
     if (index >= 0 && index < this.horarios.length) {
       this.horarios.splice(index, 1);
 
@@ -437,8 +555,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
   }
 
-  // Em perfil.component.ts - dentro da classe PerfilComponent
-  addEndereco() {
+  addEndereco(): void {
     // Validação básica - precisa ter pelo menos rua e cidade
     if (this.novoEndereco.rua) {
       // Adiciona uma cópia do endereço (não a referência)
@@ -461,7 +578,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
   }
 
-  removeEndereco(index: number) {
+  removeEndereco(index: number): void {
     if (index >= 0 && index < this.enderecos.length) {
       this.enderecos.splice(index, 1);
 
@@ -472,9 +589,8 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
   }
 
-
-  addConvenio() {
-    if (this.nomeConvenio && this.novoConvenio) {
+  addConvenio(): void {
+    if (this.nomeConvenio) {
       this.convenios.push({
         nomeConvenio: this.nomeConvenio.trim(),
       });
@@ -489,8 +605,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
   }
 
-
-  removeConvenio(index: number) {
+  removeConvenio(index: number): void {
     if (index >= 0 && index < this.convenios.length) {
       this.convenios.splice(index, 1);
 
@@ -503,8 +618,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
 
   // Método para identificar alterações não salvas
   private hasUnsavedChanges(): boolean {
-    // Exemplo: se estiver em modo de edição e houver alterações, retorne true.
-    return this.isEditing; // Ajuste essa condição conforme sua lógica
+    return this.isEditing;
   }
   
   // Método chamado pelo CanDeactivateGuard
@@ -515,7 +629,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     return true;
   }
   
-  // Opicional: trata o evento de beforeunload
+  // Opcional: trata o evento de beforeunload
   beforeUnloadHandler(event: BeforeUnloadEvent): void {
     if (this.hasUnsavedChanges()) {
       event.preventDefault();
@@ -525,7 +639,5 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
   
   ngOnDestroy(): void {
     window.removeEventListener('beforeunload', this.boundBeforeUnloadHandler);
-    // Outros códigos de destruição...
   }
-
 }

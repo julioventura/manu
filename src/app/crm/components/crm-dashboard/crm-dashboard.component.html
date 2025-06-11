@@ -161,7 +161,7 @@
                                         <div class="reminder-item">
                                             <div class="reminder-content">
                                                 <div class="reminder-title">{{ lembrete.titulo }}</div>
-                                                <div class="reminder-date">{{ lembrete.data?.toDate() | date:'dd/MM/yyyy' }}</div>
+                                                <div class="reminder-date">{{ getDateFromTimestamp(lembrete.data) | date:'dd/MM/yyyy' }}</div>
                                                 <div class="reminder-description" *ngIf="lembrete.descricao">{{ lembrete.descricao }}</div>
                                             </div>
                                             <div class="reminder-actions">
@@ -184,7 +184,7 @@
                                             <div class="reminder-item">
                                                 <div class="reminder-content">
                                                     <div class="reminder-title">{{ lembrete.titulo }}</div>
-                                                    <div class="reminder-date overdue">{{ lembrete.data?.toDate() | date:'dd/MM/yyyy' }}</div>
+                                                    <div class="reminder-date overdue">{{ getDateFromTimestamp(lembrete.data) | date:'dd/MM/yyyy' }}</div>
                                                     <div class="reminder-description" *ngIf="lembrete.descricao">{{ lembrete.descricao }}</div>
                                                 </div>
                                                 <div class="reminder-actions">

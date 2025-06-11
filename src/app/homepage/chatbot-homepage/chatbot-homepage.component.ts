@@ -4,6 +4,16 @@ import { AiHomepageService, Message } from './ai-homepage.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+// ADICIONAR: Interface para ProfileData
+interface ProfileData {
+  nome?: string;
+  displayName?: string;
+  especialidade?: string;
+  telefone?: string;
+  endereco?: string;
+  [key: string]: unknown;
+}
+
 @Component({
   selector: 'app-chatbot-homepage',
   templateUrl: './chatbot-homepage.component.html',
@@ -13,7 +23,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ChatbotHomepageComponent implements OnInit, AfterViewChecked {
   @Input() username: string = '';
-  @Input() profileData: any;
+  @Input() profileData: ProfileData | null = null; // CORRIGIDO: tipo específico
   @Output() expansionChange = new EventEmitter<boolean>();
   
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;

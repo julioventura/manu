@@ -1,9 +1,11 @@
-<div class="app-container">
-  <router-outlet></router-outlet>
-  
-  <!-- ADICIONAR: condição para ocultar footer na homepage -->
-  <app-footer *ngIf="!isHomepagePage"></app-footer>
-</div>
+<div>
+  <div class="app-container">
+    <router-outlet></router-outlet>
+    
+    <!-- ADICIONAR: condição para ocultar footer na homepage -->
+    <app-footer *ngIf="!isHomepagePage"></app-footer>
+  </div>
 
-<!-- Chatbot Widget Global Flutuante - Apenas quando não estamos em uma rota de homepage -->
-<app-chatbot-widget *ngIf="!isHomepageRoute"></app-chatbot-widget>
+  <!-- Chatbot Widget Global Flutuante - Apenas quando não estamos em uma rota de homepage -->
+  <app-chatbot-widget *ngIf="!isHomepageRoute"></app-chatbot-widget>
+</div>
