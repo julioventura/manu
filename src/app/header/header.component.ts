@@ -5,21 +5,21 @@ import { BehaviorSubject } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommonModule } from '@angular/common'; // NgIf, NgFor, AsyncPipe are provided by CommonModule
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss'],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
   standalone: true,
   imports: [
-    CommonModule, // This provides *ngIf, *ngFor, async pipe, etc. to the template
+    CommonModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule
   ]
 })
-export class FooterComponent {
+export class HeaderComponent {
   showThemeMenu = false;
   themes: { name: Theme, label: string }[];
   currentTheme$: BehaviorSubject<Theme>;
@@ -44,9 +44,9 @@ export class FooterComponent {
   logout(): void {
     this.userService.logout().subscribe({
       next: () => {
-        console.log('Logout successful from footer');
+        console.log('Logout successful from header');
       },
-      error: (err) => console.error('Logout error from footer', err)
+      error: (err) => console.error('Logout error from header', err)
     });
   }
 }

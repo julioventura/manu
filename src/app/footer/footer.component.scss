@@ -1,9 +1,19 @@
 footer {
-  padding-bottom: 40px; // Espaço inferior global
+  padding: 10px 20px;
+  background-color: var(--footer-bg-color, #f0f0f0); // Cor de fundo padrão do rodapé
+  color: var(--footer-text-color, #333);
+  display: flex;
+  justify-content: flex-end; // Alinha itens à direita
+  align-items: center;
+  border-top: 1px solid var(--border-color, #ddd);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000; // Para garantir que fique acima de outros conteúdos
 }
 
- 
- .footer-toolbar {
+.footer-toolbar {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -252,4 +262,54 @@ footer {
       transform: none;
     }
   }
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.theme-selector-container {
+  position: relative;
+}
+
+.theme-menu {
+  position: absolute;
+  bottom: 100%; // Posiciona acima do botão
+  left: 0; // MODIFICADO: Alinha à esquerda do botão para crescer para a direita
+  // right: 0; // REMOVIDO ou comentado
+  background-color: var(--menu-bg-color, white);
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1010;
+  min-width: 120px; // O menu terá pelo menos esta largura
+
+  ul {
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+
+    li {
+      padding: 8px 15px;
+      cursor: pointer;
+      color: var(--menu-text-color, #333);
+      white-space: nowrap; // Impede que o texto quebre, forçando o menu a expandir se necessário
+
+      &:hover {
+        background-color: var(--menu-hover-bg-color, #f5f5f5);
+      }
+
+      &.active {
+        font-weight: bold;
+        color: var(--primary-color, #2A7AC3);
+      }
+    }
+  }
+}
+
+// Ajustes para o botão de paleta e sair
+button[mat-icon-button], button[mat-button] {
+  color: var(--footer-icon-color, inherit); // Herda a cor do texto do rodapé ou define uma específica
 }

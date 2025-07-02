@@ -1,7 +1,11 @@
 <div>
+  <app-header></app-header> <!-- ADICIONADO -->
+
   <div class="app-container">
-    <router-outlet></router-outlet>
-    
+    <div class="main-content-area"> <!-- Adicione uma div para o conteúdo principal se não existir -->
+      <router-outlet></router-outlet>
+    </div>
+
     <!-- ADICIONAR: condição para ocultar footer na homepage -->
     <app-footer *ngIf="!isHomepagePage"></app-footer>
   </div>

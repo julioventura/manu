@@ -12,6 +12,11 @@ import { environment } from '../environments/environment';
 import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
+// Importações do Angular Material
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 // Components (apenas componentes NÃO standalone)
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -29,6 +34,7 @@ import { ViewComponent } from './view/view.component'; // ADICIONAR
 
 // Componentes standalone que queremos usar globalmente
 import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component'; // ADICIONADO
 
 // Module imports
 import { AppRoutingModule } from './app-routing.module';
@@ -69,8 +75,15 @@ import { LoggingService } from './shared/services/logging.service';
     AngularFireAuthModule,
     AngularFireStorageModule,
     MaterialModule,
+
+    // Módulos do Angular Material adicionados:
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+
     // Componente standalone para uso global
-    FooterComponent
+    FooterComponent,
+    HeaderComponent // ADICIONADO
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),

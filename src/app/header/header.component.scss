@@ -1,0 +1,97 @@
+header.app-main-header {
+  padding: 0px 25px;
+  background-color: var(--header-bar-bg-color, transparent);
+  color: var(--header-bar-text-color, var(--footer-text-color, #333));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // Removido: position: fixed, top, left, right, z-index, transform, transition
+  // Removido: border-bottom para um visual mais limpo
+  width: 100%;
+  box-sizing: border-box;
+  // margin-bottom: 20px; // Espaçamento entre o header e o conteúdo abaixo
+}
+
+.header-content { // MODIFICADO
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; // Limita a largura máxima
+}
+
+// Estilos do logo (movidos do home.component.scss)
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Alinha à esquerda
+}
+
+.main-logo-text {
+  font-family: var(--logo-font-family, 'Arial', sans-serif);
+  font-size: 1.8em; // Reduzido para caber no header
+  font-weight: 700;
+  color: var(--logo-main-text-color, var(--primary-color-dark, #153d75));
+  letter-spacing: 1px;
+  text-transform: lowercase;
+  line-height: 1.1;
+}
+
+.ai-text {
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 0.7em; // Reduzido para caber no header
+  font-weight: 400;
+  color: var(--logo-ai-text-color, var(--text-color, #333));
+  letter-spacing: 0.5px;
+  margin-top: -3px;
+  text-transform: uppercase;
+}
+
+// Container para os controles do header (tema e logout)
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.theme-selector-container {
+  position: relative;
+}
+
+.theme-menu {
+  position: absolute;
+  top: 100%; // MODIFICADO: Posiciona abaixo do botão
+  left: 0;
+  background-color: var(--menu-bg-color, white);
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1010;
+  min-width: 120px;
+
+  ul {
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+
+    li {
+      padding: 8px 15px;
+      cursor: pointer;
+      color: var(--menu-text-color, #333);
+      white-space: nowrap;
+
+      &:hover {
+        background-color: var(--menu-hover-bg-color, #f5f5f5);
+      }
+
+      &.active {
+        font-weight: bold;
+        color: var(--primary-color, #2A7AC3);
+      }
+    }
+  }
+}
+
+button[mat-icon-button], button[mat-button] {
+  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar uma variável específica ou a do footer
+}

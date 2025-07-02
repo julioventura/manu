@@ -1,0 +1,26 @@
+<header class="app-main-header">
+  <div class="header-content">
+    <!-- Logo text section -->
+    <div class="logo-text">
+      <span class="main-logo-text">Dentistas.com.br/clinica</span>
+    </div>
+
+    <!-- Theme selector and logout -->
+    <div class="header-controls">
+      <div class="theme-selector-container">
+        <button mat-icon-button (click)="toggleThemeMenu()" matTooltip="Mudar Tema">
+          <mat-icon>palette</mat-icon>
+        </button>
+        <div class="theme-menu" *ngIf="showThemeMenu">
+          <ul>
+            <li *ngFor="let theme of themes" (click)="selectTheme(theme.name)"
+                [class.active]="(currentTheme$ | async) === theme.name">
+              {{ theme.label }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <button mat-button (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>

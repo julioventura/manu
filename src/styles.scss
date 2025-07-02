@@ -3,6 +3,240 @@
 @import './padding-margin.scss';
 
 // ====================================
+// Variáveis de cores BASE (Tema Inicial/Padrão)
+// ====================================
+
+:root {
+  // Tema Inicial (Padrão) - Suas variáveis existentes
+  --cor-de-fundo: #8493a9;
+  --transparente: #ffffff00;
+  --white: #ffffff;
+  --gray: #bdbdbd;
+  --gray-light: #eee;
+  --gray-dark: #333;
+
+  --red: #ff0000;
+  --red-light: #ffdfdf;
+  --red-lighter: #fff5f5;
+  --red-dark: #a80000;
+  --red-medio: #cfaeae;
+  --red-medio-dark: #8c6b6b;
+  --red-titulo: #b46868;
+  --red-subtitulo: #ffcdcd;
+  --red-subtitulo-hover: #ffb3b3;
+
+  --primary-color: #2A7AC3;
+  --primary-color-light: #badbff;
+  --primary-color-dark: #153d75;
+  --primary-hover: var(--primary-color-dark);
+  --primary-color-medio: #7b9ebf;
+
+  --chatbot-blue: #4a67de;
+
+  --secondary-color: #0d9113;
+  --secondary-color-light: #ddffde;
+  --secondary-color-dark: #105d14;
+
+  --success-color: #0d9113;
+
+  --text-color: var(--primary-color);
+  --text-color-dark: var(--primary-color-dark);
+  --text-color-claro: white;
+  --error-color: #f44336;
+  --hover-error-color: #a80000;
+  --input-border-color: #bbb;
+  --input-focus-color: rgba(33, 150, 243, 0.5);
+  --background-color: white;
+  --background-cinza: #e6e6e6;
+  --background-light: #efefef;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --box-shadow: 0px 0px 6px var(--shadow-color);
+
+  --tr_even_rows: #E9F1FB;
+  --tr_odd_rows: #D6E6FC;
+
+  --font-family: Roboto, "Helvetica Neue", sans-serif;
+  --font-size: 12px; // Considere aumentar para 14px ou 16px para melhor legibilidade
+  --max-width: 800px;
+  --medium-width: 500px;
+
+  --linhas_de_campos_do_view: #93c6f4;
+
+  // Cores para o rodapé e menu de tema (padrão)
+  --footer-bg-color: #f0f0f0;
+  --footer-text-color: #333;
+  --footer-icon-color: #333;
+  --menu-bg-color: white;
+  --menu-text-color: #333;
+  --menu-hover-bg-color: #f5f5f5;
+  --border-color: #ccc; // Cor de borda geral
+
+  --container-bg-color: #ffffff;
+  --container-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+
+  // Variáveis do Header para o tema Padrão
+  --header-background-color: transparent; // MODIFICADO: Fundo transparente para o header no tema padrão
+  --header-shadow: none; // MODIFICADO: Sem sombra (que pode parecer uma borda) para o header no tema padrão
+  --border-radius: 6px; // Mantém o border-radius se desejado, ou defina como 0px se não quiser cantos arredondados
+
+  // Variáveis do Logo para o tema Padrão
+  --logo-font-family: 'Arial', sans-serif; // Fonte padrão para o logo
+  --logo-main-text-color: var(--primary-color-dark); // Cor do texto principal do logo
+  --logo-ai-text-color: var(--text-color); // Cor do texto de IA
+
+  // Cores para header bar
+  --header-bar-bg-color: transparent;
+  --header-bar-text-color: var(--text-color);
+  --header-bar-icon-color: var(--primary-color);
+
+  // ...outras variáveis do tema padrão...
+}
+
+// ====================================
+// Tema Futurista
+// ====================================
+body.theme-futurista {
+  --cor-de-fundo: #0A192F; // Azul escuro profundo
+  --transparente: #ffffff00;
+  --white: #E6F1FF; // Branco levemente azulado
+  --gray: #5A677D;
+  --gray-light: #2A3B52;
+  --gray-dark: #0E1525;
+
+  --red: #FF4171; // Rosa neon
+  --red-light: #ff79a3;
+  --red-lighter: #ffb3d4;
+  --red-dark: #d1004e;
+  --red-medio: #c46c87;
+  --red-medio-dark: #8f4358;
+  --red-titulo: #ff6699;
+  --red-subtitulo: #ff99bb;
+  --red-subtitulo-hover: #ff80aa;
+
+  --primary-color: #64FFDA; // Verde água neon
+  --primary-color-light: #A7FFF0;
+  --primary-color-dark: #00BFA5;
+  --primary-hover: var(--primary-color-dark);
+  --primary-color-medio: #33C9B3;
+
+  --chatbot-blue: #3D5AFE; // Azul elétrico
+
+  --secondary-color: #FFEA00; // Amarelo neon
+  --secondary-color-light: #FFF59D;
+  --secondary-color-dark: #FFD600;
+
+  --success-color: var(--primary-color);
+
+  --text-color: #CCD6F6; // Texto principal claro
+  --text-color-dark: #8892B0; // Texto secundário/menos importante
+  --text-color-claro: var(--white);
+  --error-color: var(--red);
+  --hover-error-color: var(--red-dark);
+  --input-border-color: #2A3B52; // Borda do input mais escura
+  --input-focus-color: rgba(100, 255, 218, 0.5); // Foco com cor primária neon
+  --background-color: #112240; // Fundo de elementos/cards
+  --background-cinza: #1E2D48;
+  --background-light: #1A2A3A;
+  --shadow-color: rgba(100, 255, 218, 0.2); // Sombra com cor neon
+  --box-shadow: 0px 0px 10px var(--shadow-color);
+
+  --tr_even_rows: #1A2A3A;
+  --tr_odd_rows: #112240;
+
+  --logo-font-family: 'Orbitron', sans-serif;
+  --logo-main-text-color: #64FFDA;
+  --logo-ai-text-color: #CCD6F6;
+  --header-background-color: transparent; // Já era transparente
+  --header-shadow: none; // Já era sem sombra (ou uma sombra neon sutil)
+                         // Ex: --header-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+
+  // --font-family: 'Orbitron', sans-serif; // Exemplo de fonte futurista (precisa importar)
+  --linhas_de_campos_do_view: var(--primary-color-dark);
+
+  // Cores para o rodapé e menu de tema (futurista)
+  --footer-bg-color: #0A192F;
+  --footer-text-color: #CCD6F6;
+  --footer-icon-color: var(--primary-color);
+  --menu-bg-color: #112240;
+  --menu-text-color: #CCD6F6;
+  --menu-hover-bg-color: #1E2D48;
+  --border-color: #2A3B52;
+
+  --container-bg-color: transparent; // MODIFICADO: Fundo do container transparente no tema futurista
+  --container-shadow: none; // MODIFICADO: Sem sombra no tema futurista (opcional, mas comum com fundos transparentes)
+
+  --header-bar-bg-color: #0A192F; // Cor de fundo para a barra de header (futurista)
+  --header-bar-text-color: #CCD6F6; // Cor do texto para a barra de header (futurista)
+  --header-bar-icon-color: var(--primary-color); // Cor do ícone para a barra de header (futurista)
+}
+
+// ====================================
+// Estilos Globais que usam as variáveis
+// ====================================
+
+body {
+  background-color: var(--cor-de-fundo);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  margin: 0;
+  padding: 0;
+  // Removido: padding-top (header não é mais fixo)
+  padding-bottom: 60px; /* Espaço para o rodapé fixo (ajuste a altura) */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html,
+body {
+  height: 100%; // Necessário para alguns layouts
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color-dark); // Ou uma cor específica para títulos
+}
+
+// ... (Restante dos seus estilos globais, adaptando para usar as variáveis CSS)
+// Exemplo de adaptação:
+.box {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color); // Usando a nova variável de borda
+  box-shadow: var(--box-shadow);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+input,
+select,
+textarea {
+  background-color: var(--background-light);
+  color: var(--text-color);
+  border: 1px solid var(--input-border-color);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--input-focus-color);
+}
+
+button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  // Adapte os botões do Angular Material também, se necessário,
+  // ou crie overrides específicos para os temas.
+  // Ex:
+  &.theme-futurista {
+    .mat-primary {
+      background-color: var(--primary-color);
+      color: var(--cor-de-fundo); // Para contraste
+    }
+  }
+}
+
+// ====================================
 // Variáveis de cores
 // ====================================
 
@@ -123,13 +357,12 @@ h4 {
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    /* Centraliza o container */
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0px 0px 6px $shadow-color;
-    padding: 20px 20px 20px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--container-bg-color); // MODIFICADO: Usar variável CSS
+  border-radius: 16px;
+  box-shadow: var(--container-shadow); // MODIFICADO: Usar variável CSS
+  padding: 20px 20px 20px 20px;
 }
 
 .container_principal {
@@ -416,7 +649,6 @@ label {
 
     }
 }
-
 
 // Botões de ação do formulário
 .form-actions {
