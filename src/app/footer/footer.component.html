@@ -1,30 +1,16 @@
 <footer class="app-footer">
-  <div class="footer-content">
-    <!-- Informações do usuário à esquerda -->
-    <div class="user-info">
-      <span class="user-greeting">Olá, {{ userName$ | async }}</span>
-      <span class="app-version">Dentistas.com.br 4.2</span>
-    </div>
 
-    <!-- Controles à direita -->
-    <div class="footer-controls">
-      <div class="theme-selector-container">
-        <button mat-icon-button (click)="toggleThemeMenu()" matTooltip="Mudar Tema">
-          <mat-icon>palette</mat-icon>
-        </button>
-        <div class="theme-menu" *ngIf="showThemeMenu">
-          <ul>
-            <li *ngFor="let theme of themes" (click)="selectTheme(theme.name)"
-                [class.active]="(currentTheme$ | async) === theme.name">
-              {{ theme.label }}
-            </li>
-          </ul>
-        </div>
-      </div>
-      <button mat-button (click)="logout()" class="logout-btn">
-        <mat-icon>exit_to_app</mat-icon>
-        Sair
-      </button>
-    </div>
+  <!-- Logo text section -->
+  <div class="logo-text">
+    <span class="main-logo-text">Dentistas.com.br/clinica</span>
   </div>
-</footer> 
+
+  <!-- Controles à direita -->
+  <div class="footer-controls">
+
+    <button mat-button (click)="logout()" class="logout-btn">
+      <mat-icon>exit_to_app</mat-icon>
+      Sair
+    </button>
+  </div>
+</footer>

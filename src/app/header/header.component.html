@@ -1,7 +1,8 @@
 <header class="app-main-header">
-  <!-- Logo text section -->
-  <div class="logo-text">
-    <span class="main-logo-text">dentistas.com.br/clinica</span>
+
+  <!-- Saudação ao usuário -->
+  <div class="user-info">
+    <span class="user-greeting">Olá, {{ userName$ | async }}</span>
   </div>
 
   <!-- Theme selector only -->

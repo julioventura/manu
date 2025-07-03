@@ -1,47 +1,127 @@
+@import '../../styles.scss';
+
 footer.app-footer {
-  // Removido: position: fixed, bottom, left, right, z-index
-  background-color: transparent; // Fundo transparente
-  // Removido: backdrop-filter, border-top, box-shadow
+  max-width: $max-width; // Mesma largura máxima dos containers (800px)
+  margin: 0 auto; // Centraliza o footer
+  padding: 15px 0px; // Mesmo padding do header
   margin-top: 20px; // Espaçamento entre o conteúdo e o footer
-  // border-top: 1px solid var(--border-color, rgba(226, 232, 240, 0.3)); // Linha divisória sutil
-  padding-top: 15px; // Espaçamento acima do conteúdo do footer
-}
-
-.footer-content {
+  color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; // Conteúdo à esquerda, controles à direita
   align-items: center;
-  max-width: 800px; // Mesma largura máxima do header e containers
-  margin: 0 auto;
-  // padding: 12px 20px;
-  color: var(--footer-text-color, #64748b);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-// Informações do usuário (lado esquerdo)
+// Estilos do logo no footer (lado esquerdo)
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Alinha à esquerda
+}
+
+.main-logo-text {
+  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
+  font-size: 1.5em; // Tamanho ideal para estética
+  font-weight: 600;
+  color: var(--primary-color-dark, #153d75);
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  line-height: 1.2;
+}
+
+// Informações do usuário (lado esquerdo) - estilo similar ao logo do header - mantido caso seja usado
 .user-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
+  align-items: flex-start; // Alinha à esquerda como no header
 }
 
 .user-greeting {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-color, #1e293b);
+  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
+  font-size: 1.5em; // Tamanho ideal para estética
+  font-weight: 600;
+  color: var(--primary-color-dark, #153d75);
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  line-height: 1.2;
 }
 
 .app-version {
-  font-size: 11px;
-  color: var(--footer-text-color, #64748b);
-  opacity: 0.8;
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 0.7em; // Mesmo tamanho do subtítulo do header
+  font-weight: 400;
+  color: var(--logo-ai-text-color, var(--text-color, #333));
+  letter-spacing: 0.5px;
+  margin-top: -3px;
+  text-transform: uppercase;
 }
 
-// Controles (lado direito)
+// Container para os controles do footer (tema e logout) - igual ao header
 .footer-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 15px; // Mesmo gap do header
+}
+
+.theme-selector-container {
+  position: relative;
+}
+
+.theme-menu {
+  position: absolute;
+  top: 100%;
+  right: 0; // Alinha à direita do botão para não sair da tela
+  background-color: var(--menu-bg-color, white);
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1010;
+  min-width: 120px;
+
+  ul {
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+
+    li {
+      padding: 8px 15px;
+      cursor: pointer;
+      color: var(--menu-text-color, #333);
+      white-space: nowrap;
+
+      &:hover {
+        background-color: var(--menu-hover-bg-color, #f5f5f5);
+      }
+
+      &.active {
+        font-weight: bold;
+        color: var(--primary-color, #2A7AC3);
+      }
+    }
+  }
+}
+
+// Melhorias visuais do botão de tema - idêntico ao header
+.theme-btn {
+  color: var(--header-bar-icon-color, var(--primary-color, #153d75));
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--primary-color-dark, lch(0% 0 0));
+    transform: scale(1.1);
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
+button[mat-icon-button] {
+  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar a mesma variável do header
 }
     
     @media (max-width: 768px) {
@@ -372,6 +452,7 @@ button[mat-icon-button] {
   }
 }
 
+// Botão de logout - mantém estilo próprio mas harmonioso
 .logout-btn {
   display: flex;
   align-items: center;
@@ -387,7 +468,6 @@ button[mat-icon-button] {
   &:hover {
     background-color: var(--red, #ef4444);
     color: white;
-    // Removido: transform translateY (não faz sentido em footer integrado)
   }
 
   mat-icon {
@@ -396,6 +476,37 @@ button[mat-icon-button] {
     height: 16px;
   }
 }
+
+// Responsividade para telas menores - igual ao header
+@media screen and (max-width: $medium-width) {
+  footer.app-footer {
+    margin: 0 10px; // Pequena margem nas laterais em telas menores
+    padding: 10px 15px; // Reduz o padding em telas menores
+  }
+
+  .user-greeting, .main-logo-text {
+    font-size: 1.2em; // Reduz o tamanho da fonte em telas menores
+  }
+
+  .footer-controls {
+    gap: 10px; // Reduz o gap entre os controles
+  }
+}
+
+@media screen and (max-width: 400px) {
+  footer.app-footer {
+    padding: 8px 10px; // Padding ainda menor para telas muito pequenas
+  }
+
+  .user-greeting, .main-logo-text {
+    font-size: 1.0em; // Fonte ainda menor
+  }
+
+  .footer-controls {
+    gap: 8px;
+  }
+}
+
 
 // Responsividade
 @media screen and (max-width: 768px) {

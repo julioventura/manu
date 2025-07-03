@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ThemeService, Theme } from '../theme.service';
 import { UserService } from '../shared/services/user.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,6 +24,7 @@ export class HeaderComponent {
   showThemeMenu = false;
   themes: { name: Theme, label: string }[];
   currentTheme$: BehaviorSubject<Theme>;
+  userName$: Observable<string>;
 
   constructor(
     private themeService: ThemeService,
@@ -30,6 +32,16 @@ export class HeaderComponent {
   ) {
     this.themes = this.themeService.getThemes();
     this.currentTheme$ = this.themeService.activeTheme$;
+
+    // Inicializar o Observable do nome do usuário
+    this.userName$ = this.userService.getCurrentUserProfile().pipe(
+      map(user => {
+        if (user) {
+          return user.nome || user.displayName || user.username || user.email?.split('@')[0] || 'Usuário';
+        }
+        return 'Usuário';
+      })
+    );
   }
 
   toggleThemeMenu(): void {

@@ -80,14 +80,14 @@
   --border-radius: 6px; // Mantém o border-radius se desejado, ou defina como 0px se não quiser cantos arredondados
 
   // Variáveis do Logo para o tema Padrão
-  --logo-font-family: 'Arial', sans-serif; // Fonte padrão para o logo
+  --logo-font-family: 'Orbitron', sans-serif;
   --logo-main-text-color: var(--primary-color-dark); // Cor do texto principal do logo
   --logo-ai-text-color: var(--text-color); // Cor do texto de IA
 
   // Cores para header bar
   --header-bar-bg-color: transparent;
   --header-bar-text-color: var(--text-color);
-  --header-bar-icon-color: var(--primary-color);
+  --header-bar-icon-color: var(--primary-color-dark);
 
   // ...outras variáveis do tema padrão...
 }
