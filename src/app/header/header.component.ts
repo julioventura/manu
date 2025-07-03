@@ -52,4 +52,14 @@ export class HeaderComponent {
     this.themeService.setTheme(theme);
     this.showThemeMenu = false;
   }
+
+  logout(): void {
+    this.userService.logout().subscribe({
+      next: () => {
+        console.log('Logout successful from footer');
+      },
+      error: (err) => console.error('Logout error from footer', err)
+    });
+  }
+
 }

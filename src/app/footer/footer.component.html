@@ -8,9 +8,19 @@
   <!-- Controles à direita -->
   <div class="footer-controls">
 
-    <button mat-button (click)="logout()" class="logout-btn">
-      <mat-icon>exit_to_app</mat-icon>
-      Sair
-    </button>
+    <div class="theme-selector-container">
+      <button mat-icon-button (click)="toggleThemeMenu()" matTooltip="Mudar Tema" class="theme-btn">
+        <mat-icon>palette</mat-icon>
+      </button>
+      <div class="theme-menu" *ngIf="showThemeMenu">
+        <ul>
+          <li *ngFor="let theme of themes" (click)="selectTheme(theme.name)"
+              [class.active]="(currentTheme$ | async) === theme.name">
+            {{ theme.label }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </footer>

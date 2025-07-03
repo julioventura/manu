@@ -61,4 +61,5 @@ export class FooterComponent {
       error: (err) => console.error('Logout error from footer', err)
     });
   }
+  
 }

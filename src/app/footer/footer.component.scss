@@ -64,9 +64,6 @@ footer.app-footer {
   gap: 15px; // Mesmo gap do header
 }
 
-.theme-selector-container {
-  position: relative;
-}
 
 .theme-menu {
   position: absolute;
@@ -102,15 +99,15 @@ footer.app-footer {
   }
 }
 
-// Melhorias visuais do botão de tema - idêntico ao header
+// Melhorias visuais do botão de tema no footer - cor primary-color-dark
 .theme-btn {
-  color: var(--header-bar-icon-color, var(--primary-color, #153d75));
+  color: var(--primary-color-dark, #153d75) !important;
   transition: all 0.2s ease;
 
   &:hover {
-    color: var(--primary-color-dark, lch(0% 0 0));
+    color: var(--primary-color-dark, #153d75) !important;
     transform: scale(1.1);
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: rgba(21, 61, 117, 0.1) !important;
   }
 
   mat-icon {
@@ -345,9 +342,6 @@ button[mat-icon-button] {
   gap: 15px;
 }
 
-.theme-selector-container {
-  position: relative;
-}
 
 .theme-menu {
   position: absolute;
@@ -452,28 +446,45 @@ button[mat-icon-button] {
   }
 }
 
-// Botão de logout - mantém estilo próprio mas harmonioso
+// Botão de logout - design harmonioso com header e footer
 .logout-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px !important;
-  border-radius: 20px !important;
-  background-color: var(--red-light, rgba(239, 68, 68, 0.1));
-  color: var(--red, #ef4444);
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  gap: 8px;
+  padding: 10px 18px !important;
+  border: none !important; // Removida a borda
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  color: var(--primary-color-dark, #153d75) !important;
+  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif) !important;
+  font-size: 0.9em !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: lowercase !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
 
   &:hover {
-    background-color: var(--red, #ef4444);
-    color: white;
+    background-color: var(--primary-color-dark, #153d75) !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(21, 61, 117, 0.3) !important;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(21, 61, 117, 0.2) !important;
   }
 
   mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover mat-icon {
+    transform: rotate(-10deg);
   }
 }
 
@@ -491,6 +502,17 @@ button[mat-icon-button] {
   .footer-controls {
     gap: 10px; // Reduz o gap entre os controles
   }
+
+  .logout-btn {
+    padding: 8px 14px !important;
+    font-size: 0.8em !important;
+    
+    mat-icon {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -504,6 +526,18 @@ button[mat-icon-button] {
 
   .footer-controls {
     gap: 8px;
+  }
+
+  .logout-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75em !important;
+    gap: 6px;
+
+    mat-icon {
+      font-size: 14px !important;
+      width: 14px !important;
+      height: 14px !important;
+    }
   }
 }
 

@@ -1,44 +1,6 @@
-/* Estilos globais da aplicação dentistas.com.br/clinica */
+/* You can add global styles to this file, and also import other style files */
 
 @import './padding-margin.scss';
-
-// ====================================
-// VARIÁVEIS SASS (Para compatibilidade com componentes existentes)
-// ====================================
-
-$primary-color: #2A7AC3;
-$primary-color-light: #badbff;
-$primary-color-dark: #153d75;
-$primary-hover: $primary-color-dark;
-$primary-color-medio: #7b9ebf;
-
-$red: #ff0000;
-$red-light: #ffdfdf;
-$red-lighter: #fff5f5;
-$red-dark: #a80000;
-$red-titulo: #b46868;
-$red-subtitulo-hover: #ffb3b3;
-
-$secondary-color: #0d9113;
-$success-color: #0d9113;
-
-$white: #ffffff;
-$gray: #bdbdbd;
-$gray-light: #eee;
-$gray-dark: #333;
-
-$text-color: $primary-color;
-$background-cinza: #e6e6e6;
-$shadow-color: rgba(0, 0, 0, 0.4);
-$box-shadow: 0px 0px 6px $shadow-color;
-
-$tr_even_rows: #E9F1FB;
-$tr_odd_rows: #D6E6FC;
-
-$font-family: Roboto, "Helvetica Neue", sans-serif;
-$font-size: 12px;
-$max-width: 800px;
-$medium-width: 500px;
 
 // ====================================
 // VARIÁVEIS CSS CUSTOMIZADAS - TEMAS
@@ -46,7 +8,7 @@ $medium-width: 500px;
 
 :root {
   // ====================================
-  // TEMA PADRÃO
+  // TEMA INICIAL (PADRÃO)
   // ====================================
   
   // Cores de fundo e base
@@ -137,17 +99,17 @@ $medium-width: 500px;
 }
 
 // ====================================
-// TEMA FUTURISTA
+// Tema Futurista
 // ====================================
 body.theme-futurista {
-  --cor-de-fundo: #0A192F;
+  --cor-de-fundo: #0A192F; // Azul escuro profundo
   --transparente: #ffffff00;
-  --white: #E6F1FF;
+  --white: #E6F1FF; // Branco levemente azulado
   --gray: #5A677D;
   --gray-light: #2A3B52;
   --gray-dark: #0E1525;
 
-  --red: #FF4171;
+  --red: #FF4171; // Rosa neon
   --red-light: #ff79a3;
   --red-lighter: #ffb3d4;
   --red-dark: #d1004e;
@@ -157,31 +119,31 @@ body.theme-futurista {
   --red-subtitulo: #ff99bb;
   --red-subtitulo-hover: #ff80aa;
 
-  --primary-color: #64FFDA;
+  --primary-color: #64FFDA; // Verde água neon
   --primary-color-light: #A7FFF0;
   --primary-color-dark: #00BFA5;
   --primary-hover: var(--primary-color-dark);
   --primary-color-medio: #33C9B3;
 
-  --chatbot-blue: #3D5AFE;
+  --chatbot-blue: #3D5AFE; // Azul elétrico
 
-  --secondary-color: #FFEA00;
+  --secondary-color: #FFEA00; // Amarelo neon
   --secondary-color-light: #FFF59D;
   --secondary-color-dark: #FFD600;
 
   --success-color: var(--primary-color);
 
-  --text-color: #CCD6F6;
-  --text-color-dark: #8892B0;
+  --text-color: #CCD6F6; // Texto principal claro
+  --text-color-dark: #8892B0; // Texto secundário/menos importante
   --text-color-claro: var(--white);
   --error-color: var(--red);
   --hover-error-color: var(--red-dark);
-  --input-border-color: #2A3B52;
-  --input-focus-color: rgba(100, 255, 218, 0.5);
-  --background-color: #112240;
+  --input-border-color: #2A3B52; // Borda do input mais escura
+  --input-focus-color: rgba(100, 255, 218, 0.5); // Foco com cor primária neon
+  --background-color: #112240; // Fundo de elementos/cards
   --background-cinza: #1E2D48;
   --background-light: #1A2A3A;
-  --shadow-color: rgba(100, 255, 218, 0.2);
+  --shadow-color: rgba(100, 255, 218, 0.2); // Sombra com cor neon
   --box-shadow: 0px 0px 10px var(--shadow-color);
 
   --tr_even_rows: #1A2A3A;
@@ -190,26 +152,32 @@ body.theme-futurista {
   --logo-font-family: 'Orbitron', sans-serif;
   --logo-main-text-color: #64FFDA;
   --logo-ai-text-color: #CCD6F6;
-  --header-background-color: transparent;
-  --header-shadow: none;
+  --header-background-color: transparent; // Já era transparente
+  --header-shadow: none; // Já era sem sombra (ou uma sombra neon sutil)
+                         // Ex: --header-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
 
+  // --font-family: 'Orbitron', sans-serif; // Exemplo de fonte futurista (precisa importar)
   --linhas_de_campos_do_view: var(--primary-color-dark);
 
-  --footer-bg-color: transparent;
-  --footer-text-color: #8892B0;
+  // Cores para o rodapé e menu de tema (futurista)
+  --footer-bg-color: transparent; // Footer transparente no tema futurista
+  --footer-text-color: #8892B0; // Cor mais suave para texto do footer
   --footer-icon-color: var(--primary-color);
   --menu-bg-color: #112240;
   --menu-text-color: #CCD6F6;
   --menu-hover-bg-color: #1E2D48;
   --border-color: #2A3B52;
 
-  --container-bg-color: transparent;
-  --container-shadow: none;
+  --container-bg-color: transparent; // MODIFICADO: Fundo do container transparente no tema futurista
+  --container-shadow: none; // MODIFICADO: Sem sombra no tema futurista (opcional, mas comum com fundos transparentes)
 
-  --header-bar-bg-color: #0A192F;
-  --header-bar-text-color: #CCD6F6;
-  --header-bar-icon-color: var(--primary-color);
+  --header-bar-bg-color: #0A192F; // Cor de fundo para a barra de header (futurista)
+  --header-bar-text-color: #CCD6F6; // Cor do texto para a barra de header (futurista)
+  --header-bar-icon-color: var(--primary-color); // Cor do ícone para a barra de header (futurista)
 }
+
+
+
 
 // ====================================
 // CORES ESPECIAIS E UTILITÁRIAS
@@ -235,7 +203,7 @@ body {
   margin: 0;
   padding: 0.5em;
   padding-top: 1.5em;
-  padding-bottom: 40px;
+  padding-bottom: 40px; // Espaço inferior global
   transition: background-color 0.3s ease, color 0.3s ease;
   height: 100%;
 }
@@ -244,10 +212,53 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-color-dark);
 }
 
+// ... (Restante dos seus estilos globais, adaptando para usar as variáveis CSS)
+// Exemplo de adaptação:
+.box {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color); // Usando a nova variável de borda
+  box-shadow: var(--box-shadow);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+input,
+select,
+textarea {
+  background-color: var(--background-light);
+  color: var(--text-color);
+  border: 1px solid var(--input-border-color);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--input-focus-color);
+}
+
+button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  // Adapte os botões do Angular Material também, se necessário,
+  // ou crie overrides específicos para os temas.
+  // Ex:
+  &.theme-futurista {
+    .mat-primary {
+      background-color: var(--primary-color);
+      color: var(--cor-de-fundo); // Para contraste
+    }
+  }
+}
+
+
+// // ...existing code...
+
+
 h1 {
     font-size: 1.4rem;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
 }
 
 h2 {
@@ -272,29 +283,21 @@ h4 {
     text-align: center;
 }
 
-// ====================================
-// ELEMENTOS BÁSICOS
-// ====================================
-
 .red {
     color: var(--red-dark);
 }
 
 .box {
-    background-color: var(--background-color);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--box-shadow);
-    padding: 15px;
-    margin-bottom: 15px;
     border-radius: 10px;
+    box-shadow: 0px 0px 6px var(--shadow-color);
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
-  background-color: var(--container-bg-color);
+  background-color: var(--container-bg-color); // MODIFICADO: Usar variável CSS
   border-radius: 16px;
-  box-shadow: var(--container-shadow);
+  box-shadow: var(--container-shadow); // MODIFICADO: Usar variável CSS
   padding: 20px 20px 20px 20px;
 }
 
@@ -304,98 +307,6 @@ h4 {
     margin-bottom: 40px;
 }
 
-// ====================================
-// INPUTS E FORMULÁRIOS
-// ====================================
-
-input,
-select,
-textarea {
-  background-color: var(--background-light);
-  color: var(--text-color);
-  border: 1px solid var(--input-border-color);
-  padding: 8px;
-  border-radius: 4px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px var(--input-focus-color);
-}
-
-input,
-select {
-    padding: 3px;
-    margin: 2px 0;
-    margin-right: 2pt;
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    color: var(--primary-color-dark);
-    font-size: 12px;
-    background-color: #fff;
-}
-
-input:focus,
-select:focus {
-    outline: none;
-    border: 2px solid var(--primary-color);
-    background-color: #ffdcb6;
-    border-color: #ff7373;
-}
-
-label {
-    font-size: 10px;
-    margin-right: 2pt;
-}
-
-// ====================================
-// BOTÕES
-// ====================================
-
-button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
-  &.theme-futurista {
-    .mat-primary {
-      background-color: var(--primary-color);
-      color: var(--cor-de-fundo);
-    }
-  }
-}
-
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-
-    .btn {
-        background-color: var(--primary-color);
-        color: var(--white);
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-
-        &:hover {
-            background-color: var(--primary-hover);
-        }
-    }
-
-    .btn-secondary {
-        background-color: var(--gray);
-        color: var(--white);
-
-        &:hover {
-            background-color: var(--gray-dark);
-        }
-    }
-}
-
-// ====================================
-// NAVEGAÇÃO
-// ====================================
 
 .navegacao,
 .navegacao_direita {
@@ -422,20 +333,8 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     cursor: pointer;
 }
 
-// ====================================
-// UTILITÁRIAS
-// ====================================
-
 .center {
     text-align: center;
-}
-
-.left {
-    text-align: left;
-}
-
-.right {
-    text-align: right;
 }
 
 .largo {
@@ -450,33 +349,9 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     margin: 0px;
 }
 
-.pointer {
-    cursor: pointer;
-}
 
-.semitransparent {
-    opacity: 0.5;
-}
 
-.normal {
-    font-family: var(--font-family);
-    font-size: var(--font-size);
-    color: var(--text-color);
-    font-weight: normal;
-    background-color: var(--white);
-}
-
-.title {
-    font-size: 20px;
-}
-
-.small {
-    font-size: 8px;
-}
-
-// ====================================
-// ESPACADORES
-// ====================================
+// LEGADOS DA VERSAO 2
 
 .espacador {
     height: 5pt;
@@ -503,10 +378,6 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     height: 2em;
 }
 
-// ====================================
-// GRID SYSTEM
-// ====================================
-
 .ui-grid-col-2 {
     width: 12.5%;
 }
@@ -519,10 +390,26 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     width: 25%;
 }
 
-// ====================================
-// FICHAS E REGISTROS
-// ====================================
 
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+// Estilos dos detalhes de uma ficha
 .record-details {
     background-color: #ffffff;
     padding: 16px;
@@ -531,6 +418,7 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     border: 0px solid #fff;
     margin: 1px 1px 1px 1px;
 
+
     .detail-container {
         display: flex;
         justify-content: flex-start;
@@ -538,11 +426,23 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
         padding: 0px;
         border-bottom: 1px solid var(--linhas_de_campos_do_view);
 
+        // &:last-child {
+        //   border-bottom: none;
+        // }
+
         .detail-label {
+            // width: 120px;
             font-weight: normal;
             color: var(--primary-color);
             font-size: 12px;
             text-align: left;
+        }
+
+        @media screen and (max-width: var(--medium-width)) {
+            .detail-label {
+                width: 80px;
+                font-size: 9px;
+            }
         }
 
         .detail-value,
@@ -551,12 +451,18 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
             font-size: 14px;
             font-weight: 600;
             text-align: left;
-            width: 100%;
-            box-sizing: border-box;
         }
 
         .detail-value-semborda {
             color: var(--red-dark);
+        }
+
+        @media screen and (max-width: var(--medium-width)) {
+
+            .detail-value,
+            detail-value-semborda {
+                font-size: 11px;
+            }
         }
 
         .detail-id {
@@ -574,10 +480,10 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
             cursor: pointer;
             font-size: 14px;
             margin-left: 10px;
+        }
 
-            &:hover {
-                background-color: var(--secondary-color-dark);
-            }
+        .whatsapp-btn:hover {
+            background-color: var(--secondary-color-dark);
         }
 
         .url {
@@ -622,10 +528,125 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     }
 }
 
-// ====================================
-// HEADER E NAVEGAÇÃO
-// ====================================
+.detail-value {
+    width: 100%;
+    /* Ocupará 100% da largura disponível */
+    box-sizing: border-box;
+    /* Inclui o padding e border dentro da largura */
+}
 
+.detail-value-semborda {
+    width: 100%;
+    /* Ocupará 100% da largura disponível */
+    box-sizing: border-box;
+    /* Inclui o padding e border dentro da largura */
+}
+
+
+input,
+select {
+    // width: 100%;
+    padding: 3px;
+    margin: 2px 0;
+    margin-right: 2pt;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--primary-color-dark);
+    font-size: 12px;
+    background-color: #fff;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border: 2px solid var(--primary-color);
+    background-color: #ffdcb6;
+    border-color: #ff7373;
+}
+
+label {
+    font-size: 10px;
+    margin-right: 2pt;
+}
+
+// Ajustes para responsividade
+// Garante que os botões fiquem na mesma linha (row)
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px; // Espaçamento entre os botões
+    margin-top: 5px;
+}
+
+@media screen and (max-width: var(--medium-width)) {
+    .field-row {
+        flex-direction: column;
+        align-items: flex-start;
+
+    }
+}
+
+// Botões de ação do formulário
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .btn {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+
+        &:hover {
+            background-color: var(--primary-hover);
+        }
+    }
+
+    .btn-secondary {
+        background-color: var(--gray);
+        color: var(--white);
+
+        &:hover {
+            background-color: var(--gray-dark);
+        }
+    }
+}
+
+.image-preview {
+    margin-top: 10px;
+
+    img {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 100px;
+    }
+}
+
+.aviso {
+    // container para avisos de status apos realizar tarefas
+    margin-top: 30px;
+    background-color: var(--primary-color-light);
+
+    color: var(--primary-color-dark);
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+
+    padding: 40px 20px 30px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+}
+
+// FORMULARIOS DE VIEW.COMPONENT E view_only.COMPONENT E LIST-FICHAS E REGISTROS,COMPONENT
+// EDIT-FICHA
+
+// Header com título e botões de ação
 .header {
     font-family: var(--font-family);
     display: flex;
@@ -653,13 +674,23 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
         font-weight: bolder;
         width: 40px;
         height: 40px;
+    }
 
-        &:hover {
-            background-color: var(--primary-hover);
-        }
+    .back-btn:hover,
+    .add-btn:hover {
+        background-color: var(--primary-hover);
     }
 }
 
+.title {
+    font-size: 20px;
+}
+
+.small {
+    font-size: 8px;
+}
+
+// Linha com o nome do registro
 .record-header {
     background-color: #2A7AC3;
     color: #ffffff;
@@ -678,22 +709,24 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     }
 }
 
-// ====================================
-// MENU E BOTÕES
-// ====================================
-
+// Menu de botões de fichas
 .menu {
     display: flex;
     justify-content: space-between;
+    /* Distribui os botões uniformemente */
     align-items: center;
     flex-wrap: wrap;
+    /* Permite que os botões quebrem a linha se necessário */
     max-width: 100%;
+    /* Limita o menu à largura máxima do contêiner */
     gap: 1px;
+    /* Espaçamento entre os botões */
     background-color: var(--white);
     color: var(--white);
     border-radius: 8px;
     text-align: center;
     box-sizing: border-box;
+    /* Garante que padding seja incluído na largura total */
 }
 
 .menu-button {
@@ -716,6 +749,7 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     }
 }
 
+// Botões de navegação entre seções
 .section-buttons {
     display: flex;
     justify-content: space-around;
@@ -733,17 +767,14 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
         text-align: center;
         font-size: 8pt;
         font-weight: 700;
+    }
 
-        &:hover {
-            background-color: var(--primary-color-light);
-        }
+    .section-btn:hover {
+        background-color: var(--primary-color-light);
     }
 }
 
-// ====================================
-// TABELAS
-// ====================================
-
+// Estilo da tabela
 .registros-table {
     font-family: "Roboto", sans-serif;
     font-size: 14px;
@@ -768,6 +799,7 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
         }
 
         tbody {
+
             tr {
                 background-color: var(--tr_odd_rows);
 
@@ -791,41 +823,27 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     }
 }
 
-// ====================================
-// IMAGENS E MÍDIA
-// ====================================
 
-.image-preview {
-    margin-top: 10px;
 
-    img {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 5px;
-        width: 100px;
-    }
+.semitransparent {
+    opacity: 0.5;
 }
 
-// ====================================
-// AVISOS E NOTIFICAÇÕES
-// ====================================
 
-.aviso {
-    margin-top: 30px;
-    background-color: var(--primary-color-light);
-    color: var(--primary-color-dark);
-    text-align: center;
-    font-size: large;
-    font-weight: bold;
-    padding: 40px 20px 30px 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+.normal {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    color: var(--text-color);
+    font-weight: normal;
+    background-color: var(--white);
 }
 
-// ====================================
-// COMPONENTES ESPECIAIS
-// ====================================
+// Header
+h1 {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
 
 .subtitulo_puro {
     background-color: #ffffff;
@@ -840,6 +858,24 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     border-radius: 6px;
     padding: 0px;
 }
+
+
+@media screen and (max-width: var(--medium-width)) {
+
+    .navegacao,
+    .navegacao_direita {
+        width: 35px;
+        height: 35px;
+    }
+
+    .header {
+        .title {
+            font-size: 14px;
+        }
+    }
+}
+
+// // ...existing code...
 
 .social-label {
     font-size: 8px;
@@ -858,50 +894,168 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     align-items: flex-start;
 }
 
-// ====================================
-// RESPONSIVIDADE
-// ====================================
 
-.button-group {
-    display: flex;
-    justify-content: flex-start;
-    gap: 5px;
-    margin-top: 5px;
-}
+// PADDING
 
-@media screen and (max-width: var(--medium-width)) {
-    .navegacao,
-    .navegacao_direita {
-        width: 35px;
-        height: 35px;
+// Define the common padding values
+$padding-values: (
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    40,
+    50
+);
+$directions: (
+    't': 'top',
+    'r': 'right',
+    'b': 'bottom',
+    'l': 'left'
+);
+
+// Generate predefined utility classes
+@each $value in $padding-values {
+
+    // All sides padding
+    .p-#{$value} {
+        padding: #{$value}px;
     }
 
-    .header {
-        .title {
-            font-size: 14px;
+    // Individual directions
+    @each $abbr, $dir in $directions {
+        .p#{$abbr}-#{$value} {
+            padding-#{$dir}: #{$value}px;
         }
     }
 
-    .field-row {
-        flex-direction: column;
-        align-items: flex-start;
+    // Horizontal padding (left and right)
+    .px-#{$value} {
+        padding-left: #{$value}px;
+        padding-right: #{$value}px;
     }
 
-    .detail-label {
-        width: 80px;
-        font-size: 9px;
-    }
-
-    .detail-value,
-    detail-value-semborda {
-        font-size: 11px;
+    // Vertical padding (top and bottom)
+    .py-#{$value} {
+        padding-top: #{$value}px;
+        padding-bottom: #{$value}px;
     }
 }
 
-// ====================================
-// DIÁLOGOS E MODAIS
-// ====================================
+// CSS variables for arbitrary values
+.p {
+    padding: var(--p);
+}
 
+.pt {
+    padding-top: var(--pt);
+}
+
+.pr {
+    padding-right: var(--pr);
+}
+
+.pb {
+    padding-bottom: var(--pb);
+}
+
+.pl {
+    padding-left: var(--pl);
+}
+
+.px {
+    padding-left: var(--px);
+    padding-right: var(--px);
+}
+
+.py {
+    padding-top: var(--py);
+    padding-bottom: var(--py);
+}
+
+
+// MARGIN - Sistema igual ao padding
+
+// Define the common margin values (mesmos valores do padding)
+$margin-values: (
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    40,
+    50
+);
+
+// Gerar classes utilitárias predefinidas para margin
+@each $value in $margin-values {
+
+    // All sides margin
+    .m-#{$value} {
+        margin: #{$value}px;
+    }
+
+    // Individual directions
+    @each $abbr, $dir in $directions {
+        .m#{$abbr}-#{$value} {
+            margin-#{$dir}: #{$value}px;
+        }
+    }
+
+    // Horizontal margin (left and right)
+    .mx-#{$value} {
+        margin-left: #{$value}px;
+        margin-right: #{$value}px;
+    }
+
+    // Vertical margin (top and bottom)
+    .my-#{$value} {
+        margin-top: #{$value}px;
+        margin-bottom: #{$value}px;
+    }
+}
+
+// CSS variables para valores arbitrários de margin
+.m {
+    margin: var(--m);
+}
+
+.mt {
+    margin-top: var(--mt);
+}
+
+.mr {
+    margin-right: var(--mr);
+}
+
+.mb {
+    margin-bottom: var(--mb);
+}
+
+.ml {
+    margin-left: var(--ml);
+}
+
+.mx {
+    margin-left: var(--mx);
+    margin-right: var(--mx);
+}
+
+.my {
+    margin-top: var(--my);
+    margin-bottom: var(--my);
+}
+
+
+// app-root {
+//   zoom: 110%; /* Aplica x% de zoom */
+// }
+
+// Para garantir que o diálogo tenha a aparência correta
 .modern-dialog .mat-dialog-container {
   padding: 0;
   overflow: hidden;
@@ -909,10 +1063,13 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
+/* Estilo global para o cursor durante o arrasto do chatbot */
 body.dragging-chatbot {
   cursor: grabbing !important;
   user-select: none;
 }
+
+// Adicione este estilo no arquivo global para estilizar o diálogo de detalhes
 
 .lead-details-dialog .mat-mdc-dialog-content {
   max-height: 60vh;
@@ -925,6 +1082,9 @@ body.dragging-chatbot {
   font-weight: 500 !important;
 }
 
+// // ...existing code...
+
+// OU usar uma classe específica para páginas
 .page-with-margin {
   margin-bottom: 40px;
 }

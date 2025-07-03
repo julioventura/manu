@@ -67,9 +67,6 @@ header.app-main-header {
   gap: 15px;
 }
 
-.theme-selector-container {
-  position: relative;
-}
 
 .theme-menu {
   position: absolute;
@@ -128,6 +125,48 @@ button[mat-icon-button], button[mat-button] {
   color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar uma variável específica ou a do footer
 }
 
+// Botão de logout no header - mesmo estilo do footer
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  color: var(--primary-color-dark, #153d75) !important;
+  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif) !important;
+  font-size: 0.9em !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: lowercase !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background-color: var(--primary-color-dark, #153d75) !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(21, 61, 117, 0.3) !important;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(21, 61, 117, 0.2) !important;
+  }
+
+  mat-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover mat-icon {
+    transform: rotate(-10deg);
+  }
+}
+
 // Responsividade para telas menores
 @media screen and (max-width: $medium-width) {
   header.app-main-header {
@@ -142,6 +181,17 @@ button[mat-icon-button], button[mat-button] {
   .header-controls {
     gap: 10px; // Reduz o gap entre os controles
   }
+
+  .logout-btn {
+    padding: 8px 14px !important;
+    font-size: 0.8em !important;
+    
+    mat-icon {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -155,5 +205,17 @@ button[mat-icon-button], button[mat-button] {
 
   .header-controls {
     gap: 8px;
+  }
+
+  .logout-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75em !important;
+    gap: 6px;
+
+    mat-icon {
+      font-size: 14px !important;
+      width: 14px !important;
+      height: 14px !important;
+    }
   }
 }
