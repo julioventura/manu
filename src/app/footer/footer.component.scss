@@ -1,53 +1,48 @@
-footer {
-  padding: 10px 20px;
-  background-color: var(--footer-bg-color, #f0f0f0); // Cor de fundo padrão do rodapé
-  color: var(--footer-text-color, #333);
-  display: flex;
-  justify-content: flex-end; // Alinha itens à direita
-  align-items: center;
-  border-top: 1px solid var(--border-color, #ddd);
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-sizing: border-box;
-  z-index: 1000; // Para garantir que fique acima de outros conteúdos
+footer.app-footer {
+  // Removido: position: fixed, bottom, left, right, z-index
+  background-color: transparent; // Fundo transparente
+  // Removido: backdrop-filter, border-top, box-shadow
+  margin-top: 20px; // Espaçamento entre o conteúdo e o footer
+  // border-top: 1px solid var(--border-color, rgba(226, 232, 240, 0.3)); // Linha divisória sutil
+  padding-top: 15px; // Espaçamento acima do conteúdo do footer
 }
 
-.footer-toolbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      height: 40px;
-    }
-    
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    
-    .footer-text {
-      font-size: 14px;
-    }
-    
-    .footer-actions {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .footer-actions button {
-      font-size: 12px;
-    }
-    
-    .footer-actions mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-      margin-right: 4px;
-    }
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 800px; // Mesma largura máxima do header e containers
+  margin: 0 auto;
+  // padding: 12px 20px;
+  color: var(--footer-text-color, #64748b);
+}
+
+// Informações do usuário (lado esquerdo)
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.user-greeting {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color, #1e293b);
+}
+
+.app-version {
+  font-size: 11px;
+  color: var(--footer-text-color, #64748b);
+  opacity: 0.8;
+}
+
+// Controles (lado direito)
+.footer-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
     
     @media (max-width: 768px) {
       .footer-content {
@@ -309,7 +304,138 @@ footer {
   }
 }
 
-// Ajustes para o botão de paleta e sair
-button[mat-icon-button], button[mat-button] {
-  color: var(--footer-icon-color, inherit); // Herda a cor do texto do rodapé ou define uma específica
+// Seletor de tema
+.theme-selector-container {
+  position: relative;
+}
+
+.theme-menu {
+  position: absolute;
+  top: 100%; // Muda para abrir para baixo (como no header)
+  right: 0;
+  background-color: var(--menu-bg-color, white);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1010;
+  min-width: 130px;
+  margin-top: 8px; // Espaçamento do botão
+
+  ul {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+
+    li {
+      padding: 10px 16px;
+      cursor: pointer;
+      color: var(--menu-text-color, #475569);
+      font-size: 14px;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--menu-hover-bg-color, #f1f5f9);
+      }
+
+      &.active {
+        font-weight: 600;
+        color: var(--primary-color, #3b82f6);
+        background-color: var(--primary-color-light, rgba(59, 130, 246, 0.1));
+      }
+
+      &:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 0 8px 8px;
+      }
+    }
+  }
+}
+
+// Botões
+button[mat-icon-button] {
+  color: var(--footer-icon-color, #64748b);
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: var(--primary-color, #3b82f6);
+    transform: scale(1.05);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  background-color: var(--red-light, rgba(239, 68, 68, 0.1));
+  color: var(--red, #ef4444);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--red, #ef4444);
+    color: white;
+    // Removido: transform translateY (não faz sentido em footer integrado)
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Responsividade
+@media screen and (max-width: 768px) {
+  .footer-content {
+    padding: 10px 15px;
+  }
+
+  .user-info {
+    .user-greeting {
+      font-size: 13px;
+    }
+
+    .app-version {
+      font-size: 10px;
+    }
+  }
+
+  .footer-controls {
+    gap: 8px;
+  }
+
+  .logout-btn {
+    padding: 6px 12px !important;
+    font-size: 12px;
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .footer-content {
+    padding: 8px 12px;
+  }
+
+  // Em telas muito pequenas, pode empilhar ou simplificar
+  .logout-btn span {
+    display: none; // Esconde o texto "Sair", mostra só o ícone
+  }
 }

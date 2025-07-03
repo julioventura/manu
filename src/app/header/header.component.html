@@ -1,13 +1,13 @@
 <header class="app-main-header">
   <!-- Logo text section -->
   <div class="logo-text">
-    <span class="main-logo-text">Dentistas.com.br/clinica</span>
+    <span class="main-logo-text">dentistas.com.br/clinica</span>
   </div>
 
-  <!-- Theme selector and logout -->
+  <!-- Theme selector only -->
   <div class="header-controls">
     <div class="theme-selector-container">
-      <button mat-icon-button (click)="toggleThemeMenu()" matTooltip="Mudar Tema">
+      <button mat-icon-button (click)="toggleThemeMenu()" matTooltip="Mudar Tema" class="theme-btn">
         <mat-icon>palette</mat-icon>
       </button>
       <div class="theme-menu" *ngIf="showThemeMenu">
@@ -19,6 +19,5 @@
         </ul>
       </div>
     </div>
-    <button mat-button (click)="logout()">Sair</button>
   </div>
 </header>

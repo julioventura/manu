@@ -3,8 +3,8 @@
 header.app-main-header {
   max-width: $max-width; // Mesma largura máxima dos containers (800px)
   margin: 0 auto; // Centraliza o header
-  padding: 15px 20px;
-  background-color: var(--header-bar-bg-color, transparent);
+  padding: 15px 0px;
+  // background-color: var(--header-bar-bg-color, transparent);
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
   justify-content: space-between; // Logo à esquerda, controles à direita
@@ -85,6 +85,24 @@ header.app-main-header {
         color: var(--primary-color, #2A7AC3);
       }
     }
+  }
+}
+
+// Melhorias visuais do botão de tema
+.theme-btn {
+  color: var(--header-bar-icon-color, var(--primary-color, #3b82f6));
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--primary-color-dark, #1d4ed8);
+    transform: scale(1.1);
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
   }
 }
 

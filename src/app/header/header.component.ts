@@ -40,13 +40,4 @@ export class HeaderComponent {
     this.themeService.setTheme(theme);
     this.showThemeMenu = false;
   }
-
-  logout(): void {
-    this.userService.logout().subscribe({
-      next: () => {
-        console.log('Logout successful from header');
-      },
-      error: (err) => console.error('Logout error from header', err)
-    });
-  }
 }

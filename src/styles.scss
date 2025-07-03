@@ -63,9 +63,9 @@
   --linhas_de_campos_do_view: #93c6f4;
 
   // Cores para o rodapé e menu de tema (padrão)
-  --footer-bg-color: #f0f0f0;
-  --footer-text-color: #333;
-  --footer-icon-color: #333;
+  --footer-bg-color: transparent; // Footer transparente no tema padrão
+  --footer-text-color: #64748b; // Cor mais suave para texto do footer
+  --footer-icon-color: #64748b;
   --menu-bg-color: white;
   --menu-text-color: #333;
   --menu-hover-bg-color: #f5f5f5;
@@ -154,8 +154,8 @@ body.theme-futurista {
   --linhas_de_campos_do_view: var(--primary-color-dark);
 
   // Cores para o rodapé e menu de tema (futurista)
-  --footer-bg-color: #0A192F;
-  --footer-text-color: #CCD6F6;
+  --footer-bg-color: transparent; // Footer transparente no tema futurista
+  --footer-text-color: #8892B0; // Cor mais suave para texto do footer
   --footer-icon-color: var(--primary-color);
   --menu-bg-color: #112240;
   --menu-text-color: #CCD6F6;
@@ -170,71 +170,8 @@ body.theme-futurista {
   --header-bar-icon-color: var(--primary-color); // Cor do ícone para a barra de header (futurista)
 }
 
-// ====================================
-// Estilos Globais que usam as variáveis
-// ====================================
 
-body {
-  background-color: var(--cor-de-fundo);
-  color: var(--text-color);
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  margin: 0;
-  padding: 0;
-  // Removido: padding-top (header não é mais fixo)
-  padding-bottom: 60px; /* Espaço para o rodapé fixo (ajuste a altura) */
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
 
-html,
-body {
-  height: 100%; // Necessário para alguns layouts
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-color-dark); // Ou uma cor específica para títulos
-}
-
-// ... (Restante dos seus estilos globais, adaptando para usar as variáveis CSS)
-// Exemplo de adaptação:
-.box {
-  background-color: var(--background-color);
-  border: 1px solid var(--border-color); // Usando a nova variável de borda
-  box-shadow: var(--box-shadow);
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 4px;
-}
-
-input,
-select,
-textarea {
-  background-color: var(--background-light);
-  color: var(--text-color);
-  border: 1px solid var(--input-border-color);
-  padding: 8px;
-  border-radius: 4px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px var(--input-focus-color);
-}
-
-button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
-  // Adapte os botões do Angular Material também, se necessário,
-  // ou crie overrides específicos para os temas.
-  // Ex:
-  &.theme-futurista {
-    .mat-primary {
-      background-color: var(--primary-color);
-      color: var(--cor-de-fundo); // Para contraste
-    }
-  }
-}
 
 // ====================================
 // Variáveis de cores
@@ -305,14 +242,75 @@ $linhas_de_campos_do_view: #93c6f4;
     color: $transparente;
 }
 
+// ====================================
+// Estilos Globais que usam as variáveis
+// ====================================
+
 body {
-    font-family: $font-family;
-    font-size: $font-size;
-    color: $text-color;
+  background-color: var(--cor-de-fundo);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  height: 100%; // Necessário para alguns layouts
+}
+
+html {
+    height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color-dark); // Ou uma cor específica para títulos
+}
+
+// ... (Restante dos seus estilos globais, adaptando para usar as variáveis CSS)
+// Exemplo de adaptação:
+.box {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color); // Usando a nova variável de borda
+  box-shadow: var(--box-shadow);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+input,
+select,
+textarea {
+  background-color: var(--background-light);
+  color: var(--text-color);
+  border: 1px solid var(--input-border-color);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--input-focus-color);
+}
+
+button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  // Adapte os botões do Angular Material também, se necessário,
+  // ou crie overrides específicos para os temas.
+  // Ex:
+  &.theme-futurista {
+    .mat-primary {
+      background-color: var(--primary-color);
+      color: var(--cor-de-fundo); // Para contraste
+    }
+  }
+}
+
+
+body {
     padding: 0.5em;
     padding-top: 1.5em;
     padding-bottom: 1.5em;
-    background-color: $cor-de-fundo;
 }
 
 html,
