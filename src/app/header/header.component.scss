@@ -29,7 +29,6 @@ header.app-main-header {
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
-  text-transform: lowercase;
   line-height: 1.2;
 }
 
@@ -46,7 +45,6 @@ header.app-main-header {
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
-  text-transform: lowercase;
   line-height: 1.2;
 }
 
@@ -139,7 +137,6 @@ button[mat-icon-button], button[mat-button] {
   font-size: 0.9em !important;
   font-weight: 500 !important;
   letter-spacing: 0.5px !important;
-  text-transform: lowercase !important;
   transition: all 0.3s ease !important;
   box-shadow: none !important;
 

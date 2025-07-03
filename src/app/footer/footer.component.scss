@@ -2,22 +2,23 @@
 
 footer.app-footer {
   max-width: $max-width; // Mesma largura máxima dos containers (800px)
-  margin: 0 auto; // Centraliza o footer
-  padding: 15px 0px; // Mesmo padding do header
-  margin-top: 20px; // Espaçamento entre o conteúdo e o footer
+  margin: 24px auto 0 auto; // Centraliza o footer e aproxima do container acima
+  padding: 12px 0px; // Padding reduzido para aproximar
+  background: rgba(21, 61, 117, 0.4); // primary-dark com 40% de transparência
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
-  justify-content: space-between; // Conteúdo à esquerda, controles à direita
+  justify-content: center; // Centraliza conteúdo do footer
   align-items: center;
   width: 100%;
   box-sizing: border-box;
 }
 
-// Estilos do logo no footer (lado esquerdo)
+// Estilos do logo no footer 
 .logo-text {
+  text-align: center;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; // Alinha à esquerda
+  justify-content: center;
 }
 
 .main-logo-text {
@@ -26,11 +27,10 @@ footer.app-footer {
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
-  text-transform: lowercase;
   line-height: 1.2;
 }
 
-// Informações do usuário (lado esquerdo) - estilo similar ao logo do header - mantido caso seja usado
+// Informações do usuário  - estilo similar ao logo do header - mantido caso seja usado
 .user-info {
   display: flex;
   flex-direction: column;
@@ -43,7 +43,6 @@ footer.app-footer {
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
-  text-transform: lowercase;
   line-height: 1.2;
 }
 
@@ -67,7 +66,7 @@ footer.app-footer {
 
 .theme-menu {
   position: absolute;
-  top: 100%;
+  bottom: 100%; // MODIFICADO: Posiciona acima do botão para abrir para cima
   right: 0; // Alinha à direita do botão para não sair da tela
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #ccc);
@@ -383,9 +382,10 @@ button[mat-icon-button] {
   position: relative;
 }
 
+
 .theme-menu {
   position: absolute;
-  top: 100%; // Muda para abrir para baixo (como no header)
+  bottom: 100%; // Abre para cima do botão
   right: 0;
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #e2e8f0);
@@ -393,7 +393,7 @@ button[mat-icon-button] {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   z-index: 1010;
   min-width: 130px;
-  margin-top: 8px; // Espaçamento do botão
+  margin-bottom: 8px; // Espaçamento do botão para cima
 
   ul {
     list-style: none;
@@ -419,11 +419,11 @@ button[mat-icon-button] {
       }
 
       &:first-child {
-        border-radius: 8px 8px 0 0;
+        border-radius: 0 0 8px 8px;
       }
 
       &:last-child {
-        border-radius: 0 0 8px 8px;
+        border-radius: 8px 8px 0 0;
       }
     }
   }
@@ -460,7 +460,6 @@ button[mat-icon-button] {
   font-size: 0.9em !important;
   font-weight: 500 !important;
   letter-spacing: 0.5px !important;
-  text-transform: lowercase !important;
   transition: all 0.3s ease !important;
   box-shadow: none !important;
 
@@ -492,7 +491,7 @@ button[mat-icon-button] {
 @media screen and (max-width: $medium-width) {
   footer.app-footer {
     margin: 0 10px; // Pequena margem nas laterais em telas menores
-    padding: 10px 15px; // Reduz o padding em telas menores
+    padding: 0px 15px; // Reduz o padding em telas menores
   }
 
   .user-greeting, .main-logo-text {
@@ -517,7 +516,7 @@ button[mat-icon-button] {
 
 @media screen and (max-width: 400px) {
   footer.app-footer {
-    padding: 8px 10px; // Padding ainda menor para telas muito pequenas
+    padding: 0px 10px; // Padding ainda menor para telas muito pequenas
   }
 
   .user-greeting, .main-logo-text {
