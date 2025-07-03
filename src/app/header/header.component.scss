@@ -1,24 +1,20 @@
+@import '../../styles.scss';
+
 header.app-main-header {
-  padding: 0px 25px;
+  max-width: $max-width; // Mesma largura máxima dos containers (800px)
+  margin: 0 auto; // Centraliza o header
+  padding: 15px 20px;
   background-color: var(--header-bar-bg-color, transparent);
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
-  justify-content: center;
+  justify-content: space-between; // Logo à esquerda, controles à direita
   align-items: center;
-  // Removido: position: fixed, top, left, right, z-index, transform, transition
-  // Removido: border-bottom para um visual mais limpo
   width: 100%;
   box-sizing: border-box;
-  // margin-bottom: 20px; // Espaçamento entre o header e o conteúdo abaixo
 }
 
-.header-content { // MODIFICADO
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px; // Limita a largura máxima
-}
+// Removido .header-content pois não é mais necessário
+// O header agora gerencia diretamente o layout
 
 // Estilos do logo (movidos do home.component.scss)
 .logo-text {
@@ -60,8 +56,8 @@ header.app-main-header {
 
 .theme-menu {
   position: absolute;
-  top: 100%; // MODIFICADO: Posiciona abaixo do botão
-  left: 0;
+  top: 100%;
+  right: 0; // Alinha à direita do botão para não sair da tela
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
@@ -94,4 +90,34 @@ header.app-main-header {
 
 button[mat-icon-button], button[mat-button] {
   color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar uma variável específica ou a do footer
+}
+
+// Responsividade para telas menores
+@media screen and (max-width: $medium-width) {
+  header.app-main-header {
+    margin: 0 10px; // Pequena margem nas laterais em telas menores
+    padding: 10px 15px; // Reduz o padding em telas menores
+  }
+
+  .main-logo-text {
+    font-size: 1.4em; // Reduz o tamanho da fonte em telas menores
+  }
+
+  .header-controls {
+    gap: 10px; // Reduz o gap entre os controles
+  }
+}
+
+@media screen and (max-width: 400px) {
+  header.app-main-header {
+    padding: 8px 10px; // Padding ainda menor para telas muito pequenas
+  }
+
+  .main-logo-text {
+    font-size: 1.2em; // Fonte ainda menor
+  }
+
+  .header-controls {
+    gap: 8px;
+  }
 }
