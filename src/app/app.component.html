@@ -8,6 +8,6 @@
     <app-footer></app-footer>
   </div>
 
-  <!-- Chatbot Widget Global Flutuante - Apenas quando não estamos em uma rota de homepage -->
-  <app-chatbot-widget *ngIf="!isHomepageRoute"></app-chatbot-widget>
+  <!-- Chatbot Widget Global Flutuante - Apenas quando não estamos em uma rota de homepage e usuário é autorizado -->
+  <app-chatbot-widget *ngIf="!isHomepageRoute && isAuthorizedUser"></app-chatbot-widget>
 </div>

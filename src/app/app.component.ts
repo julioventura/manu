@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isChatbotExpanded = false;
   isHomepageRoute = false;
   isHomepagePage = false;
+  isAuthorizedUser = false; // Nova propriedade para controlar usuários autorizados
   private routerSubscription: Subscription = new Subscription();
 
   constructor(
@@ -51,13 +52,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     try {
+      // Monitorar mudanças de autenticação continuamente
+      this.afAuth.authState.subscribe(user => {
+        if (user) {
+          // Verificar se o usuário é autorizado para ver o chatbot
+          this.isAuthorizedUser = this.checkAuthorizedUser(user.email);
+        } else {
+          // Usuário não logado - não é autorizado
+          this.isAuthorizedUser = false;
+        }
+      });
+
       // Aguardar a autenticação antes de inicializar os serviços
       this.afAuth.authState.pipe(
         take(1),
         switchMap(user => {
           if (user) {
-            // Alteração: removido log de depuração
-            
             // Inicializar serviços apenas após autenticação
             this.userService.chatbotExpanded$.subscribe(expanded => {
               this.isChatbotExpanded = expanded;
@@ -68,7 +78,6 @@ export class AppComponent implements OnInit, OnDestroy {
               filter(event => event instanceof NavigationEnd)
             );
           } else {
-            // Alteração: removido log de depuração
             return EMPTY;
           }
         })
@@ -162,5 +171,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     
     return false;
+  }
+
+  // Método para verificar se o usuário é autorizado a ver o chatbot
+  private checkAuthorizedUser(email: string | null): boolean {
+    const authorizedEmails = ['julio@dentistas.com.br', 'admin@dentistas.com.br'];
+    return email ? authorizedEmails.includes(email) : false;
   }
 }
