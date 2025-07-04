@@ -45,7 +45,13 @@ export class FirestoreService<T extends { id?: string }> {
 
   // READ: Buscar registro por ID (usado para perfis pessoais, baseado no UID)
   getRegistroById(collectionPath: string, id: string): Observable<any | undefined> {
-    return this.firestore.collection<any>(collectionPath).doc(id).valueChanges();
+    // Usar this.firestore em vez de this.afs para consistência
+    return this.firestore.collection<any>(collectionPath).doc(id).valueChanges().pipe(
+      catchError(error => {
+        console.error('Error in getRegistroById:', error);
+        return of(undefined);
+      })
+    );
   }
 
   // Adicionar o tipo genérico ao método getRegistroByUsername

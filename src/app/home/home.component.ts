@@ -154,10 +154,15 @@ export class HomeComponent implements OnInit {
    * @description Carrega os dados do usuário, como o username, utilizando o FirestoreService.
    */
   loadUserData(email: string): void {
-    this.firestoreService.getRegistroById('usuarios/dentistascombr/users', email).subscribe(userData => {
-      if (userData && userData.username) {
-        this.username = userData.username;
-      } 
+    this.firestoreService.getRegistroById('usuarios/dentistascombr/users', email).subscribe({
+      next: (userData) => {
+        if (userData && userData.username) {
+          this.username = userData.username;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading user data:', error);
+      }
     });
   }
 

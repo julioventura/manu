@@ -122,6 +122,7 @@ export class UserService {
         if (!user) {
           return of(null);
         }
+        // Usar this.firestore em vez de injeção direta
         return this.firestore.doc<UserProfile>(`users/${user.uid}`).valueChanges();
       }),
       map(profile => profile || null),
