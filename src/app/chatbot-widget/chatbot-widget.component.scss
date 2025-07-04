@@ -58,11 +58,18 @@
 
         i {
           margin-right: 0 !important;
-          padding-left: 1px;
-          padding-bottom: 1px;
-          font-size: 24px !important;
-          color: #fff !important;
+          padding: 0;
+          font-size: 0 !important; // Esconder o ícone/emoji
+          color: transparent !important;
+          background-image: url('/assets/chatbot.png') !important;
+          background-size: 40px 40px !important;
+          background-repeat: no-repeat !important;
+          background-position: center !important;
+          width: 40px !important;
+          height: 40px !important;
           animation: pulse 2s infinite !important;
+          border-radius: 50% !important;
+          background-color: transparent !important;
         }
       }
 
@@ -149,19 +156,25 @@
     align-items: center;
     font-weight: 600;
 
+    // Estilo para o ícone do robô
     i {
       margin-right: 8px;
-      font-size: 18px;
-      color: white;
-      background-color: #87CEEB; // Light blue background
-      padding: 8px;
+      font-size: 16px !important;
+      color: white !important;
+      background-color: #87CEEB !important; // Light blue background
+      padding: 7px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      box-sizing: border-box;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 16px;
+      display: inline-block !important;
+      
+      // Se há texto (emoji) dentro do i, mostrar
+      &:not(:empty) {
+        font-size: 14px !important;
+        line-height: 16px;
+      }
     }
 
     span {
@@ -196,8 +209,32 @@
       border-radius: 50%;
       transition: background-color 0.2s;
 
+      // Estilo para o ícone de minimizar
+      i {
+        font-size: 14px !important;
+        color: white !important;
+        background-color: #87CEEB !important; // Light blue background
+        padding: 6px;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        text-align: center;
+        line-height: 16px;
+        display: inline-block !important;
+        
+        // Se há texto (emoji) dentro do i, mostrar
+        &:not(:empty) {
+          font-size: 12px !important;
+          line-height: 16px;
+        }
+      }
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.1);
+        
+        i {
+          background-color: #6BB6E8 !important; // Cor um pouco mais escura no hover
+        }
       }
     }
   }

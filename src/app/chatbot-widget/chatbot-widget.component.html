@@ -56,14 +56,14 @@
 
     <!-- Título (centralizado) com botão de contexto integrado -->
     <div class="chatbot-title">
-      <i class="fas fa-robot"></i>
+      <i class="fas fa-robot">🤖</i>
       <span>Chatbot de I.A.</span>
     </div>
     
     <!-- Controles (lado direito) - remover botão de contexto daqui -->
     <div class="chatbot-controls">
       <button class="minimize-button" (click)="$event.stopPropagation(); toggleChat()">
-        <i class="fas" [ngClass]="isMinimized ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        <i class="fas" [ngClass]="isMinimized ? 'fa-chevron-up' : 'fa-chevron-down'">⬇️</i>
       </button>
     </div>
   </div>
