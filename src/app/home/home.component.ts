@@ -32,10 +32,10 @@ interface UserData {
 }
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    imports: [NgIf]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  imports: [NgIf]
 })
 export class HomeComponent implements OnInit {
   nome: string = '';  // Armazena o nome do usuário logado
@@ -128,11 +128,16 @@ export class HomeComponent implements OnInit {
   loadIconConfig(): void {
     if (!this.userId) return;
 
-    // Solicita o documento de configurações do usuário no Firestore
-    this.firestore.doc(`/users/${this.userId}/settings/HomeConfig`).get().subscribe(doc => {
-      if (doc.exists) {
-        this.visibleIcons = doc.data() as { [key: string]: boolean };
-      } 
+    // Use FirestoreService to avoid injection context issues
+    this.firestoreService.getRegistroById(`users/${this.userId}/settings`, 'HomeConfig').subscribe({
+      next: (config) => {
+        if (config) {
+          this.visibleIcons = config as { [key: string]: boolean };
+        }
+      },
+      error: (error) => {
+        console.error('Error loading icon config:', error);
+      }
     });
   }
 
@@ -143,11 +148,11 @@ export class HomeComponent implements OnInit {
    */
   saveIconConfig(): void {
     if (this.userId) {
-      this.firestore.doc(`/users/${this.userId}/settings/HomeConfig`).set(this.visibleIcons)
+      // Use FirestoreService to avoid injection context issues
+      this.firestoreService.updateRegistro(`users/${this.userId}/settings`, 'HomeConfig', this.visibleIcons)
         .catch(error => console.error("Erro ao salvar configurações:", error));
     }
   }
-
   /**
    * loadUserData(email: string): void
    * @param email - Email do usuário para buscar os dados.

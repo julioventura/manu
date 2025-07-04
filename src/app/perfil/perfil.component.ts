@@ -47,10 +47,10 @@ interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos
 }
 
 @Component({
-    selector: 'app-perfil',
-    templateUrl: './perfil.component.html',
-    styleUrls: ['./perfil.component.scss'],
-    imports: [NgClass, NgIf, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, KeyValuePipe]
+  selector: 'app-perfil',
+  templateUrl: './perfil.component.html',
+  styleUrls: ['./perfil.component.scss'],
+  imports: [NgClass, NgIf, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, KeyValuePipe]
 })
 export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   profileForm: FormGroup;
@@ -156,7 +156,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
 
     this.firestoreService.getRegistroById('usuarios/dentistascombr/users', this.userEmail).subscribe(
-      (userData: FirestoreUserProfile | null) => {
+      (userData: FirestoreUserProfile | undefined) => {
         if (userData) {
           this.userProfileData = userData;
           this.originalUsername = userData.username || '';

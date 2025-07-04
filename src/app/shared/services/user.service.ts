@@ -5,6 +5,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { Observable, of, from, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
+import { FirestoreService } from './firestore.service';
 
 // EXPORTAR: Interface para usuário
 export interface UserProfile {
@@ -108,7 +109,8 @@ export class UserService {
   
   constructor(
     private afAuth: AngularFireAuth,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>
   ) {}
 
   // Método getCurrentUser
@@ -122,10 +124,15 @@ export class UserService {
         if (!user) {
           return of(null);
         }
-        // Usar this.firestore em vez de injeção direta
-        return this.firestore.doc<UserProfile>(`users/${user.uid}`).valueChanges();
+        // Use FirestoreService directly without wrapping in new Observable
+        return this.firestoreService.getRegistroById('users', user.uid).pipe(
+          map(profile => profile as UserProfile || null),
+          catchError(error => {
+            console.error('Error getting user profile:', error);
+            return of(null);
+          })
+        );
       }),
-      map(profile => profile || null),
       catchError(error => {
         console.error('Error getting user profile:', error);
         return of(null);
@@ -142,7 +149,13 @@ export class UserService {
       updatedAt: new Date()
     };
 
-    return from(this.firestore.doc(`users/${user.uid}`).set(userProfile));
+    return from(this.firestoreService.addRegistro('users', { ...userProfile, id: user.uid })).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Error creating user profile:', error);
+        throw error;
+      })
+    );
   }
 
   updateUserProfile(uid: string, data: Partial<UserProfile>): Observable<void> {
@@ -151,12 +164,18 @@ export class UserService {
       updatedAt: new Date()
     };
 
-    return from(this.firestore.doc(`users/${uid}`).update(updateData));
+    return from(this.firestoreService.updateRegistro('users', uid, updateData)).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Error updating user profile:', error);
+        throw error;
+      })
+    );
   }
 
   getUserData(uid: string): Observable<UserData | null> {
-    return this.firestore.doc<UserData>(`users/${uid}`).valueChanges().pipe(
-      map(userData => userData || null),
+    return this.firestoreService.getRegistroById('users', uid).pipe(
+      map(userData => userData as UserData || null),
       catchError(error => {
         console.error('Error getting user data:', error);
         return of(null);
@@ -165,9 +184,8 @@ export class UserService {
   }
 
   searchUsersByEmail(email: string): Observable<UserData[]> {
-    return this.firestore.collection<UserData>('users', ref => 
-      ref.where('email', '==', email)
-    ).valueChanges().pipe(
+    return this.firestoreService.getDocumentsByField('users', 'email', email).pipe(
+      map(results => results as UserData[]),
       catchError(error => {
         console.error('Error searching users by email:', error);
         return of([]);
@@ -176,18 +194,24 @@ export class UserService {
   }
 
   userExists(uid: string): Observable<boolean> {
-    return this.firestore.doc(`users/${uid}`).get().pipe(
-      map(doc => doc.exists),
+    return this.firestoreService.getRegistroById('users', uid).pipe(
+      map(userData => !!userData),
       catchError(() => of(false))
     );
   }
 
   deleteUserProfile(uid: string): Observable<void> {
-    return from(this.firestore.doc(`users/${uid}`).delete());
+    return from(this.firestoreService.deleteRegistro('users', uid)).pipe(
+      catchError(error => {
+        console.error('Error deleting user profile:', error);
+        throw error;
+      })
+    );
   }
 
   getAllUsers(): Observable<UserData[]> {
-    return this.firestore.collection<UserData>('users').valueChanges().pipe(
+    return this.firestoreService.getColecao('users').pipe(
+      map(results => results as UserData[]),
       catchError(error => {
         console.error('Error getting all users:', error);
         return of([]);
@@ -196,7 +220,7 @@ export class UserService {
   }
 
   checkUserPermissions(uid: string): Observable<UserPermissions> {
-    return this.firestore.doc(`users/${uid}`).valueChanges().pipe(
+    return this.firestoreService.getRegistroById('users', uid).pipe(
       map(() => {
         // Implementar lógica de permissões conforme necessário
         return {
@@ -216,7 +240,7 @@ export class UserService {
       timestamp: new Date()
     };
 
-    return from(this.firestore.collection('userLogs').add(logData)).pipe(
+    return from(this.firestoreService.addRegistro('userLogs', { ...logData, id: this.firestoreService.createId() })).pipe(
       map(() => void 0),
       catchError(error => {
         console.error('Error logging user activity:', error);
@@ -226,9 +250,10 @@ export class UserService {
   }
 
   getUserActivityLogs(uid: string): Observable<ActivityLog[]> {
-    return this.firestore.collection<ActivityLog>('userLogs', ref => 
+    return this.firestoreService.getDocumentsWithQuery('userLogs', ref => 
       ref.where('uid', '==', uid).orderBy('timestamp', 'desc').limit(50)
-    ).valueChanges().pipe(
+    ).pipe(
+      map(results => results as unknown as ActivityLog[]),
       catchError(error => {
         console.error('Error getting user activity logs:', error);
         return of([]);
@@ -237,17 +262,21 @@ export class UserService {
   }
 
   updateLastAccess(uid: string): Observable<void> {
-    return from(this.firestore.doc(`users/${uid}`).update({
+    return from(this.firestoreService.updateRegistro('users', uid, {
       lastAccess: new Date(),
       updatedAt: new Date()
-    }));
+    })).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Error updating last access:', error);
+        throw error;
+      })
+    );
   }
 
   emailExists(email: string): Observable<boolean> {
-    return this.firestore.collection('users', ref => 
-      ref.where('email', '==', email).limit(1)
-    ).get().pipe(
-      map(snapshot => !snapshot.empty),
+    return this.firestoreService.getDocumentsByField('users', 'email', email).pipe(
+      map(results => results.length > 0),
       catchError(() => of(false))
     );
   }
@@ -267,9 +296,8 @@ export class UserService {
       return this.getAllUsers();
     }
 
-    return this.firestore.collection<UserData>('users', ref => 
-      ref.where(key, '==', value)
-    ).valueChanges().pipe(
+    return this.firestoreService.getDocumentsByField('users', key, value).pipe(
+      map(results => results as unknown as UserData[]),
       catchError(error => {
         console.error('Error searching users:', error);
         return of([]);
@@ -278,8 +306,8 @@ export class UserService {
   }
 
   getUserCount(): Observable<number> {
-    return this.firestore.collection('users').get().pipe(
-      map(snapshot => snapshot.size),
+    return this.firestoreService.getColecao('users').pipe(
+      map(results => results.length),
       catchError(() => of(0))
     );
   }
@@ -288,9 +316,10 @@ export class UserService {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysAgo);
 
-    return this.firestore.collection<UserData>('users', ref => 
+    return this.firestoreService.getDocumentsWithQuery('users', ref => 
       ref.where('lastAccess', '>=', cutoffDate)
-    ).valueChanges().pipe(
+    ).pipe(
+      map(results => results as unknown as UserData[]),
       catchError(error => {
         console.error('Error getting active users:', error);
         return of([]);
@@ -335,8 +364,14 @@ export class UserService {
           throw new Error('User not authenticated');
         }
         
-        const recordPath = `users/${user.uid}/${collection}/${recordId}`;
-        return from(this.firestore.doc(recordPath).delete());
+        const recordPath = `users/${user.uid}/${collection}`;
+        return from(this.firestoreService.deleteRegistro(recordPath, recordId)).pipe(
+          map(() => void 0),
+          catchError(error => {
+            console.error('Error deleting user data:', error);
+            throw error;
+          })
+        );
       }),
       catchError(error => {
         console.error('Error deleting user data:', error);
@@ -350,11 +385,16 @@ export class UserService {
     return this.afAuth.authState.pipe(
       switchMap(user => {
         if (user && user.email) {
-          return this.firestore.doc<UserProfile>(`usuarios/dentistascombr/users/${user.email}`).valueChanges();
+          return this.firestoreService.getRegistroById('usuarios/dentistascombr/users', user.email).pipe(
+            map(profile => profile as UserProfile || null),
+            catchError(error => {
+              console.error('Error getting user profile data:', error);
+              return of(null);
+            })
+          );
         }
         return of(null);
       }),
-      map((profile: UserProfile | null | undefined): UserProfile | null => profile ?? null),
       tap((profile: UserProfile | null) => {  // LINHA 295 - corrigir tipo aqui
         if (profile) {
           this.userProfile = profile;
@@ -368,10 +408,8 @@ export class UserService {
   }
 
   loadUserProfileByUsername(username: string): Observable<UserProfile[]> {
-    return this.firestore.collection<UserProfile>('usuarios/dentistascombr/users', ref => 
-      ref.where('username', '==', username)
-    ).valueChanges().pipe(
-      map((profiles: (UserProfile | undefined)[]): UserProfile[] => 
+    return this.firestoreService.getRegistroByUsername<UserProfile>('usuarios/dentistascombr/users', username).pipe(
+      map((profiles: UserProfile[]): UserProfile[] => 
         profiles.filter((profile): profile is UserProfile => profile !== undefined)
       ), // ADICIONAR esta linha para filtrar undefined
       tap((profiles: UserProfile[]) => {  // CORRIGIR tipo aqui
@@ -399,10 +437,8 @@ export class UserService {
   }
 
   isValidUsername(username: string): Observable<boolean> {
-    return this.firestore.collection('usuarios/dentistascombr/users', ref => 
-      ref.where('username', '==', username).limit(1)
-    ).get().pipe(
-      map(snapshot => !snapshot.empty),
+    return this.firestoreService.getRegistroByUsername<UserProfile>('usuarios/dentistascombr/users', username).pipe(
+      map(results => results.length === 0), // Username is valid if no user is found with that username
       catchError(() => of(false))
     );
   }

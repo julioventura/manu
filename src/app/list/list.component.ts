@@ -20,13 +20,12 @@
  * 15. voltar: Navega de volta à listagem de registros ou fichas internas.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, runInInjectionContext, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from '../shared/services/firestore.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UtilService } from '../shared/utils/util.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormService } from '../shared/services/form.service';
 import { ExportService } from '../shared/services/export.service';
 import { PdfExportService } from '../shared/services/pdf-export.service';
@@ -37,14 +36,14 @@ import { Registro } from '../shared/constants/registro.model';
 import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-    selector: 'app-list',
-    templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss'],
-    imports: [
-        NgIf,
-        FormsModule,
-        NgFor,
-    ],
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
+  imports: [
+    NgIf,
+    FormsModule,
+    NgFor,
+  ],
 })
 export class ListComponent implements OnInit {
 
@@ -70,7 +69,7 @@ export class ListComponent implements OnInit {
   subtitulo_da_pagina: string = '';
   id!: string;
   nome_in_collection: string = '';
-  fichas: any[] = [];
+  fichas: unknown[] = [];
   show_busca: boolean = false;
   userEmail: string | null = null;
 
@@ -85,15 +84,15 @@ export class ListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private firestoreService: FirestoreService<Registro>,
+    private firestoreService: FirestoreService<Record<string, unknown>>,
     private afAuth: AngularFireAuth,
     private fb: FormBuilder,
     public util: UtilService,
-    private firestore: AngularFirestore,
     public FormService: FormService,
     private exportService: ExportService,
     private pdfExportService: PdfExportService,
-    private subcolecaoService: SubcolecaoService
+    private subcolecaoService: SubcolecaoService,
+    private injector: Injector
   ) { }
 
   /**
@@ -121,8 +120,11 @@ export class ListComponent implements OnInit {
       if (user && user.uid) {
         this.userId = user.uid;
         this.userEmail = user.email;
-        this.verificarOuCriarConfiguracao();
-        this.loadRegistros();
+        // Wrap FirestoreService calls in runInInjectionContext to avoid NG0203 errors
+        runInInjectionContext(this.injector, () => {
+          this.verificarOuCriarConfiguracao();
+          this.loadRegistros();
+        });
       }
     });
 
@@ -164,8 +166,8 @@ export class ListComponent implements OnInit {
 
       // Consulta os registros ordenados pelo campo "nome"
       this.firestoreService.getRegistros(collectionPath, ref => ref.orderBy('nome')).subscribe(
-        (registros: Registro[]) => {
-          this.registros = registros;
+        (registros: Record<string, unknown>[]) => {
+          this.registros = registros as unknown as Registro[];
           this.totalRegistros = this.registros.length;
           this.page = 1;
           this.searchQuery = '';
@@ -228,22 +230,22 @@ export class ListComponent implements OnInit {
       // Converte para Promise se for Observable, ou mantém se já for Promise
       const carregarCamposPromise = carregarCampos instanceof Promise ? 
         carregarCampos : 
-        new Promise<any[]>(resolve => carregarCampos.subscribe((campos: any[]) => resolve(campos)));      
+        new Promise<unknown[]>(resolve => carregarCampos.subscribe((campos: unknown[]) => resolve(campos)));      
         
       carregarCamposPromise.then(() => {
         // Após campos carregados, geramos o código e criamos o registro
         return this.firestoreService.gerarProximoCodigo(collectionPath);
       })
         .then((novoCodigo) => {
-          const novoRegistro: any = {};
-          novoRegistro.id = this.firestoreService.createId();
-          novoRegistro.codigo = novoCodigo;
+          const novoRegistro: Record<string, unknown> = {};
+          novoRegistro['id'] = this.firestoreService.createId();
+          novoRegistro['codigo'] = novoCodigo;
         
           // Valores comuns independente do tipo de coleção
           novoRegistro['data'] = this.getDataAtual(); // Data de hoje
         
           if (this.subcollection) {
-            novoRegistro.ficha_id = this.id;
+            novoRegistro['ficha_id'] = this.id;
           }
         
           // Inicializa os campos com valores apropriados para seus tipos
@@ -262,7 +264,7 @@ export class ListComponent implements OnInit {
           // Adicionar o registro e navegar
           return this.firestoreService.addRegistro(collectionPath, novoRegistro)
             .then(() => {
-              this.router.navigate([collectionRoute, novoRegistro.id]);
+              this.router.navigate([collectionRoute, novoRegistro['id']]);
             });
         })
         .catch((error) => {
@@ -392,11 +394,13 @@ export class ListComponent implements OnInit {
   verificarOuCriarConfiguracao() {
     if (this.userId) {
       const configPath = `users/${this.userId}/configuracoesCampos`;
-      this.firestore.collection(configPath).doc(this.collection).get()
+      // Use FirestoreService instead of direct AngularFirestore to avoid NG0203 errors
+      this.firestoreService.getRegistroById(configPath, this.collection)
         .subscribe((doc) => {
-          if (! doc.exists) {
+          if (!doc) {
             const camposPadrao = this.getCamposPadraoPorCollection();
-            this.firestore.collection(configPath).doc(this.collection).set({ campos: camposPadrao })
+            const configData = { id: this.collection, campos: camposPadrao };
+            this.firestoreService.addRegistro(configPath, configData)
               .then(() => {
                 // alert(`Configuração padrão criada para a coleção "${this.collection}". Você pode personalizar os campos em "Configurações".`);
               })
@@ -419,9 +423,8 @@ export class ListComponent implements OnInit {
    * - Retorna um array com os menus padrão definidos para a coleção informada.
    * Retorna: any - Array com os menus padrão.
    */
-  getMenusPadraoPorCollection(colecao: string): any {
-    const subcolecoes = this.subcolecaoService.getSubcolecoesDisponiveis();
-    const menusPadrao: { [key: string]: any[] } = {
+  getMenusPadraoPorCollection(colecao: string): unknown[] {
+    const menusPadrao: { [key: string]: unknown[] } = {
       associados: [CAMPOS_FICHAS_PAGAMENTOS],
       pacientes: [CAMPOS_FICHAS_EXAMES, CAMPOS_FICHAS_PLANOS, CAMPOS_FICHAS_TRATAMENTOS, CAMPOS_FICHAS_PAGAMENTOS],
       clientes: [CAMPOS_FICHAS_PLANOS, CAMPOS_FICHAS_ATENDIMENTOS, CAMPOS_FICHAS_PAGAMENTOS],
@@ -513,22 +516,22 @@ export class ListComponent implements OnInit {
     } else if (field === 'data') {
       this.dataSortOrder = this.dataSortOrder === 'asc' ? 'desc' : 'asc';
       this.sortRegistros(field, this.dataSortOrder);
-    } else {
     }
+    // Note: No action needed for other fields
   }
 
   // Crie o método auxiliar que ordena os registros:
   private sortRegistros(field: string, order: string): void {
     this.registrosFiltrados.sort((a, b) => {
       if (field === 'data') {
-        const dateA = new Date((a as any)[field]);
-        const dateB = new Date((b as any)[field]);
+        const dateA = new Date((a as unknown as Record<string, unknown>)[field] as string);
+        const dateB = new Date((b as unknown as Record<string, unknown>)[field] as string);
         return order === 'asc'
           ? dateA.getTime() - dateB.getTime()
           : dateB.getTime() - dateA.getTime();
       }
-      const valA = (a as any)[field] ? (a as any)[field].toString().toLowerCase() : '';
-      const valB = (b as any)[field] ? (b as any)[field].toString().toLowerCase() : '';
+      const valA = (a as unknown as Record<string, unknown>)[field] ? ((a as unknown as Record<string, unknown>)[field] as string).toString().toLowerCase() : '';
+      const valB = (b as unknown as Record<string, unknown>)[field] ? ((b as unknown as Record<string, unknown>)[field] as string).toString().toLowerCase() : '';
       if (valA < valB) return order === 'asc' ? -1 : 1;
       if (valA > valB) return order === 'asc' ? 1 : -1;
       return 0;

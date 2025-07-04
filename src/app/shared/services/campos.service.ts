@@ -13,9 +13,9 @@
 */
 
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
+import { FirestoreService } from './firestore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ import { switchMap } from 'rxjs/operators';
 export class CamposService {
 
   // Configuração padrão dos campos para todas as coleções
-  public camposPadrao: any[] = [
+  public camposPadrao: Array<{ nome: string; tipo: string; label: string }> = [
     { nome: 'nome', tipo: 'text', label: 'Nome' },
     { nome: 'codigo', tipo: 'text', label: 'Código' },
     { nome: 'sexo', tipo: 'text', label: 'Sexo (M/F)' },
@@ -52,26 +52,24 @@ export class CamposService {
   // Caminho de configuração no Firestore (base para as configurações de campos)
   private configPath: string = '';
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestoreService: FirestoreService<Record<string, unknown>>) { }
 
   // Retorna os campos de configuração para uma coleção específica.
   // Se "colecao" é "padrao", retorna uma cópia dos camposPadrao;
   // para outros casos, tenta buscar a configuração salva no Firestore e, se não existir, reverte para os padrões.
-  getCamposRegistro(userId: string, colecao: string): Observable<any[]> {
+  getCamposRegistro(userId: string, colecao: string): Observable<Array<{ nome: string; tipo: string; label: string }>> {
     this.configPath = 'users/' + userId + '/configuracoesCampos';
 
     if (colecao === 'padrao') {
       return of([...this.camposPadrao]);
     } else {
-      return this.firestore
-        .collection(this.configPath)
-        .doc(colecao)
-        .valueChanges()
+      return this.firestoreService
+        .getRegistroById(this.configPath, colecao)
         .pipe(
-          switchMap((configuracaoFirestore: any) => {
-            if (configuracaoFirestore && configuracaoFirestore.campos) {
+          switchMap((configuracaoFirestore: Record<string, unknown> | undefined) => {
+            if (configuracaoFirestore && configuracaoFirestore['campos']) {
               // Se uma configuração personalizada existe no Firestore, retorna-a.
-              return of(configuracaoFirestore.campos);
+              return of(configuracaoFirestore['campos'] as Array<{ nome: string; tipo: string; label: string }>);
             } else {
               // Se não houver configuração, utiliza os campos padrão.
               return of([...this.camposPadrao]);
@@ -83,27 +81,25 @@ export class CamposService {
 
   // Salva ou atualiza a configuração de campos para uma coleção.
   // Para "padrao" atualiza os campos padrão localmente; para outros, salva no Firestore.
-  setCamposRegistro(userId: string, colecao: string, campos: any[]): Promise<void> {
+  setCamposRegistro(userId: string, colecao: string, campos: Array<{ nome: string; tipo: string; label: string }>): Promise<void> {
     this.configPath = 'users/' + userId + '/configuracoesCampos';
 
     if (colecao === 'padrao') {
       this.camposPadrao = campos;
       return Promise.resolve();
     } else {
-      return this.firestore.collection(this.configPath).doc(colecao).set({ campos });
+      const configData = { id: colecao, campos };
+      return this.firestoreService.addRegistro(this.configPath, configData);
     }
   }
 
   // Retorna uma lista de todas as coleções (IDs dos documentos) que possuem uma configuração de campos.
   // Utiliza snapshotChanges para capturar as mudanças e extrair os IDs dos documentos.
-  getColecoes(userId: string): Observable<any[]> {
+  getColecoes(userId: string): Observable<string[]> {
     this.configPath = 'users/' + userId + '/configuracoesCampos';
 
-    return this.firestore.collection(this.configPath).snapshotChanges().pipe(
-      switchMap(actions => {
-        const colecoes = actions.map(action => action.payload.doc.id);
-        return of(colecoes);
-      })
+    return this.firestoreService.getRegistros(this.configPath).pipe(
+      map(registros => registros.map(registro => (registro as Record<string, unknown>)['id'] as string))
     );
   }
 }
