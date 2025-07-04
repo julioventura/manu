@@ -4,8 +4,8 @@
       <router-outlet></router-outlet>
     </div>
 
-    <!-- Footer sempre visível -->
-    <app-footer></app-footer>
+    <!-- Footer visível apenas quando o usuário estiver logado -->
+    <app-footer *ngIf="isUserLoggedIn"></app-footer>
   </div>
 
   <!-- Chatbot Widget Global Flutuante - Apenas quando não estamos em uma rota de homepage e usuário é autorizado -->

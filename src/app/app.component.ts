@@ -32,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isHomepageRoute = false;
   isHomepagePage = false;
   isAuthorizedUser = false; // Nova propriedade para controlar usuários autorizados
+  isUserLoggedIn = false; // Nova propriedade para controlar se o usuário está logado
   private routerSubscription: Subscription = new Subscription();
 
   constructor(
@@ -55,10 +56,13 @@ export class AppComponent implements OnInit, OnDestroy {
       // Monitorar mudanças de autenticação continuamente
       this.afAuth.authState.subscribe(user => {
         if (user) {
+          // Usuário está logado
+          this.isUserLoggedIn = true;
           // Verificar se o usuário é autorizado para ver o chatbot
           this.isAuthorizedUser = this.checkAuthorizedUser(user.email);
         } else {
-          // Usuário não logado - não é autorizado
+          // Usuário não logado
+          this.isUserLoggedIn = false;
           this.isAuthorizedUser = false;
         }
       });
