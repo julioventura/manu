@@ -1,18 +1,21 @@
 <footer class="app-footer">
-  <!-- Seção esquerda com versão do app -->
+  
+  <!-- Seção com nome do usuário -->
   <div class="footer-left">
-    <span class="app-version">Dentistas.com.br 4.2</span>
-  </div>
-
-  <!-- Seção central com nome do usuário -->
-  <div class="footer-center">
     <span class="user-name">{{ userName$ | async }}</span>
   </div>
 
-  <!-- Seção direita com botão Sair -->
-  <div class="footer-right">
+  <!-- Seção com botão Sair -->
+  <div class="footer-center">
     <button mat-button (click)="logout()" class="logout-btn">
       SAIR
     </button>
   </div>
+
+<!-- Seção com versão do app -->
+  <div class="footer-right">
+    <span class="app-version">Dentistas.com.br 4.2</span>
+  </div>
+
+ 
 </footer>

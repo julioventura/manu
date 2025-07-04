@@ -4,14 +4,14 @@ footer.app-footer {
   max-width: styles.$max-width; // Mesma largura máxima dos containers (800px)
   margin: 0 auto;
   padding: 10px 15px;
-  background: var(--primary-color-dark, #153d75); // Cor de fundo azul escuro como na imagem
+  // background: var(--primary-color-dark, #153d75); // Cor de fundo azul escuro como na imagem
   color: white;
   display: flex;
   justify-content: space-between; // Distribui o conteúdo nas 3 seções
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  border-radius: 0 0 8px 8px; // Bordas arredondadas na parte inferior
+  // border-radius: 0 0 8px 8px; // Bordas arredondadas na parte inferior
 }
 
 // Seção esquerda - versão do app
