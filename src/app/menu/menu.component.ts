@@ -32,10 +32,14 @@ export class MenuComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('MenuComponent ngOnInit - Input values:');
+    console.log('collection:', this.collection);
+    console.log('id:', this.id);
 
     this.afAuth.authState.subscribe(user => {
       if (user && user.uid) {
         this.userId = user.uid;
+        console.log('User authenticated with UID:', this.userId);
         // Agora você pode carregar as configurações do menu
 
         if (!this.collection || !this.id) {
@@ -44,24 +48,29 @@ export class MenuComponent implements OnInit {
         }
 
         this.carregarSubcolecoes();
+      } else {
+        console.error('User not authenticated in MenuComponent');
       }
     });
-
-
   }
 
   carregarSubcolecoes() {
+    console.log('carregarSubcolecoes called for collection:', this.collection);
     const configPath = `users/${this.userId}/configuracoesMenu`;
+    console.log('configPath:', configPath);
 
     this.firestore.collection(configPath).doc(this.collection).get()
       .subscribe(doc => {
+        console.log('Firestore response - doc.exists:', doc.exists);
         if (doc.exists) {
           const dados = doc.data() as { subcolecoes: string[] } | undefined;
+          console.log('Document data:', dados);
           if (dados && dados.subcolecoes) {
             this.subcolecoes = dados.subcolecoes.map(nome => ({
               nome,
               rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome.toLowerCase()}`
             }));
+            console.log('Subcolecoes loaded:', this.subcolecoes);
           } else {
             console.warn(`Nenhuma subcoleção configurada para a coleção "${this.collection}".`);
           }
@@ -70,6 +79,7 @@ export class MenuComponent implements OnInit {
 
           // Usa o método getMenusPadraoPorCollection para obter subcoleções padrão
           const subcolecoesPadrao = this.getMenusPadraoPorCollection(this.collection);
+          console.log('Subcolecoes padrao:', subcolecoesPadrao);
 
           this.firestore.collection(configPath).doc(this.collection).set({ subcolecoes: subcolecoesPadrao })
             .then(() => {
@@ -84,6 +94,14 @@ export class MenuComponent implements OnInit {
         }
       }, error => {
         console.error('Erro ao carregar subcoleções:', error);
+        // Fallback: carrega subcoleções padrão em caso de erro
+        console.log('Loading default subcollections due to error...');
+        const subcolecoesPadrao = this.getMenusPadraoPorCollection(this.collection);
+        this.subcolecoes = subcolecoesPadrao.map(nome => ({
+          nome,
+          rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome}`
+        }));
+        console.log('Fallback subcolecoes loaded:', this.subcolecoes);
       });
   }
 

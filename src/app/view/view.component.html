@@ -19,8 +19,20 @@
   <!-- HEADER / -->
 
   <!-- Botões das fichas internas -->
-  <div *ngIf="show_menu">
+  <div *ngIf="show_menu" class="menu-container">
+    <h3>Fichas Internas</h3>
     <app-menu [collection]="collection" [id]="id"></app-menu>
+  </div>
+
+  <!-- Debug info para identificar o problema -->
+  <div *ngIf="!show_menu" class="debug-info" style="background: #ffebee; padding: 10px; margin: 10px 0; border-radius: 4px;">
+    <small>
+      <strong>Debug Menu:</strong><br>
+      show_menu: {{ show_menu }}<br>
+      collection: {{ collection }}<br>
+      id: {{ id }}<br>
+      subcollection: {{ subcollection }}
+    </small>
   </div>
 
   <!-- Detalhes -->

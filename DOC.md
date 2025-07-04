@@ -26,7 +26,6 @@
 
 ### **Módulos Principais**
 
-- **CRM**: Sistema completo de gestão de leads e pipeline
 - **Fichas Clínicas**: Gestão de prontuários odontológicos
 - **Homepage Profissional**: Perfil público personalizado
 - **Chatbot IA**: Assistente virtual inteligente
@@ -37,7 +36,7 @@
 
 ## 📋 Resumo Técnico
 
-**O sistema Dentistas.com.br/clinica é uma plataforma SaaS moderna construída em Angular 18 com arquitetura modular e componentizada.** Utiliza Firebase como backend-as-a-service, oferecendo autenticação robusta, banco de dados em tempo real e armazenamento em nuvem. A aplicação implementa standalone components para otimização de performance e lazy loading para módulos específicos como CRM.
+**O sistema Dentistas.com.br/clinica é uma plataforma SaaS moderna construída em Angular 18 com arquitetura modular e componentizada.** Utiliza Firebase como backend-as-a-service, oferecendo autenticação robusta, banco de dados em tempo real e armazenamento em nuvem. A aplicação implementa standalone components para otimização de performance e lazy loading para módulos específicos.
 
 **A integração com OpenAI GPT-4o-mini através de um chatbot contextual representa um diferencial significativo, oferecendo assistência inteligente tanto para dentistas quanto para pacientes.** O sistema possui uma arquitetura bem estruturada com guards de rota, serviços especializados, e um sistema de permissões baseado em roles. A interface utiliza Material Design garantindo consistência visual e usabilidade otimizada para dispositivos móveis e desktop.
 
@@ -47,7 +46,7 @@
 
 ### **Gestão Clínica Completa e Inteligente**
 
-Transforme sua prática odontológica com uma solução digital que centraliza **prontuários eletrônicos, agenda, CRM de pacientes e relatórios financeiros** em uma única plataforma. O sistema oferece **backup automático na nuvem**, garantindo que seus dados nunca sejam perdidos, e permite acesso de qualquer dispositivo com internet.
+Transforme sua prática odontológica com uma solução digital que centraliza **prontuários eletrônicos, agenda e relatórios financeiros** em uma única plataforma. O sistema oferece **backup automático na nuvem**, garantindo que seus dados nunca sejam perdidos, e permite acesso de qualquer dispositivo com internet.
 
 ### **Presença Digital Profissional Automatizada**
 
@@ -55,7 +54,7 @@ Cada dentista recebe uma **homepage profissional personalizada** (dentistas.com.
 
 ### **Eficiência e Produtividade Maximizada**
 
-- **CRM inteligente** identifica oportunidades de tratamento e retorno de pacientes
+- **Sistema inteligente** identifica oportunidades de tratamento e retorno de pacientes
 - **Relatórios automatizados** para controle financeiro e performance
 - **Importação/exportação** de dados de outros sistemas
 - **Interface otimizada** para dispositivos móveis, permitindo atendimento em movimento
@@ -73,7 +72,7 @@ A plataforma conecta marcas diretamente com **dentistas e cirurgiões-dentistas 
 - **Targeting geográfico preciso** por cidade/região
 - **Segmentação por especialidade** odontológica (ortodontia, implantes, estética, etc.)
 - **Dados comportamentais** baseados no uso do sistema (frequência, módulos utilizados)
-- **Momento de compra identificado** através de atividades no CRM e fichas clínicas
+- **Momento de compra identificado** através de atividades nas fichas clínicas
 
 ### **Formatos Publicitários Nativos e Eficazes**
 
@@ -129,7 +128,7 @@ A plataforma conecta marcas diretamente com **dentistas e cirurgiões-dentistas 
 ### **Funcionalidades Avançadas**
 
 - **Chatbot IA contextual** com OpenAI GPT-4o-mini
-- **CRM integrado** com pipeline visual e automações
+- **Relatórios integrados** com pipeline visual e automações
 - **Relatórios dinâmicos** com gráficos interativos
 - **Sistema de permissões** granular por usuário/role
 

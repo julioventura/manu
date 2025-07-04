@@ -156,6 +156,16 @@ export class ViewComponent implements OnInit {
 
           // Exibe o menu se estiver na visualização do registro principal
           this.show_menu = !!(this.collection && this.id && !this.subcollection);
+          console.log('show_menu calculated:', this.show_menu);
+          console.log('collection:', this.collection);
+          console.log('id:', this.id);
+          console.log('subcollection:', this.subcollection);
+          
+          // TEMP: Forçar show_menu = true para debug
+          if (this.collection && this.id) {
+            this.show_menu = true;
+            console.log('TEMP: Forcing show_menu = true for debug');
+          }
         }
 
         // Ajuste da largura dos labels baseado em critério (ex.: coleção "dentesendo")

@@ -14,7 +14,6 @@ $files = @(
     "c:\contexto\dentistas-clinica\src\app\fichas\fichas.component.scss",
     "c:\contexto\dentistas-clinica\src\app\backup\backup.component.scss",
     "c:\contexto\dentistas-clinica\src\app\edit\edit.component.scss",
-    "c:\contexto\dentistas-clinica\src\app\crm\components\crm-dashboard\crm-dashboard.component.scss",
     "c:\contexto\dentistas-clinica\src\app\footer\footer.component.scss",
     "c:\contexto\dentistas-clinica\src\app\list\list.component.scss"
 )

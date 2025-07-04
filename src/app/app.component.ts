@@ -151,7 +151,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // Rotas diretas /<apelido> (páginas personalizadas)
     const systemRoutes = [
       '/home', '/login', '/config', '/perfil', '/backup', 
-      '/list', '/crm', '/tutfop', '/homepage-intro', '/grupos'
+      '/list', '/tutfop', '/homepage-intro', '/grupos'
     ];
     
     const pathSegments = url.split('/').filter(segment => segment);

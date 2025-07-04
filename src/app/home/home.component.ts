@@ -59,8 +59,7 @@ export class HomeComponent implements OnInit {
     empresas: false,
     fornecedores: false,
     perfil: true,
-    homepage: true,
-    crm: true
+    homepage: true
   };
 
   private userId: string | null = null;

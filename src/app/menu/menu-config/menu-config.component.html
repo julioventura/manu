@@ -7,6 +7,15 @@
     <h1 class="title">MENU INTERNO DAS FICHAS</h1>
     <div class="actions">
       <img src="https://dentistas.com.br/assets/salvar.png" class="navegacao" alt="Salvar" (click)="salvarConfiguracoes()">
+      <!-- Botões de debug adicionais -->
+      <button style="margin-left: 10px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 4px;" 
+              (click)="salvarConfiguracoesAlternativo()">
+        Debug Save
+      </button>
+      <button style="margin-left: 5px; padding: 5px 10px; background: #17a2b8; color: white; border: none; border-radius: 4px;" 
+              (click)="testarEscritaConfiguracoesMenu()">
+        Test Write
+      </button>
     </div>
   </div>
 
@@ -29,7 +38,10 @@
       <div class="subtitle">Subcoleções</div>
       <div class="subcolecoes-list">
         <div *ngFor="let subcolecao of subcolecoesDisponiveis" class="subcolecao-item">
-          <input type="checkbox" id="{{ subcolecao.nome }}" [(ngModel)]="subcolecao.selecionado" />
+          <input type="checkbox" 
+                 id="{{ subcolecao.nome }}" 
+                 [(ngModel)]="subcolecao.selecionado"
+                 (change)="onSubcolecaoChange(subcolecao)" />
           <label for="{{ subcolecao.nome }}">{{ subcolecao.nome }}</label>
         </div>
       </div>

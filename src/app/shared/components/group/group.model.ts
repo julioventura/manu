@@ -22,7 +22,7 @@ export interface Group {
 // Interface para o campo de grupo que será adicionado aos registros
 export interface GroupAccess {
   groupId: string;              // ID do grupo ao qual o registro pertence
-  // Não precisamos adicionar createdBy pois já existe nos modelos como visto no crm.model.ts
+  // Não precisamos adicionar createdBy pois já existe nos modelos
 }
 
 // Adicione esta interface ao arquivo group.model.ts
