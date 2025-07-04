@@ -2,8 +2,8 @@
 
 footer.app-footer {
   max-width: styles.$max-width; // Mesma largura mÃ¡xima dos containers (800px)
-  margin: 24px auto 0 auto; // Centraliza o footer e aproxima do container acima
-  padding: 12px 0px; // Padding reduzido para aproximar
+  margin: 0 auto 0 auto; // Centraliza o footer e aproxima do container acima
+  padding: 0 0px; // Padding reduzido para aproximar
   // background: rgba(21, 61, 117, 0.4); // primary-dark com 40% de transparÃªncia
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;

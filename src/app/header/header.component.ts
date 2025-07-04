@@ -37,6 +37,7 @@ export class HeaderComponent {
     this.userName$ = this.userService.getCurrentUserProfile().pipe(
       map(user => {
         if (user) {
+          // Priorizar nome, depois displayName, depois username, depois email
           return user.nome || user.displayName || user.username || user.email?.split('@')[0] || 'Usuário';
         }
         return 'Usuário';

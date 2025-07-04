@@ -124,12 +124,46 @@ export class UserService {
         if (!user) {
           return of(null);
         }
-        // Use FirestoreService directly without wrapping in new Observable
+        
+        // Tentar buscar primeiro na collection 'users' usando o UID
         return this.firestoreService.getRegistroById('users', user.uid).pipe(
-          map(profile => profile as UserProfile || null),
+          switchMap(profile => {
+            if (profile) {
+              return of(profile as UserProfile);
+            }
+            
+            // Se não encontrar, tentar na collection específica usando email
+            return this.firestoreService.getRegistroById('usuarios/dentistascombr/users', user.email || user.uid).pipe(
+              map(specificProfile => {
+                if (specificProfile) {
+                  return specificProfile as UserProfile;
+                }
+                
+                // Se ainda não encontrar, criar perfil básico com dados do Firebase Auth
+                const basicProfile: UserProfile = {
+                  uid: user.uid,
+                  email: user.email || '',
+                  displayName: user.displayName || '',
+                  nome: user.displayName || '',
+                  createdAt: new Date(),
+                  updatedAt: new Date()
+                };
+                return basicProfile;
+              })
+            );
+          }),
           catchError(error => {
             console.error('Error getting user profile:', error);
-            return of(null);
+            // Retornar perfil básico em caso de erro
+            const basicProfile: UserProfile = {
+              uid: user.uid,
+              email: user.email || '',
+              displayName: user.displayName || '',
+              nome: user.displayName || '',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            };
+            return of(basicProfile);
           })
         );
       }),
