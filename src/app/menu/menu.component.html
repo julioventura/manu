@@ -1,5 +1,9 @@
 <div class="menu">
-  <button *ngFor="let subcolecao of subcolecoes" class="menu-button" (click)="navegarPara(subcolecao)">
+  <!-- Botões das subcoleções -->
+  <button *ngFor="let subcolecao of subcolecoes" 
+          class="menu-button" 
+          (click)="navegarPara(subcolecao)"
+          [title]="'Ir para ' + ajustar(subcolecao.nome)">
     {{ ajustar(subcolecao.nome) }}
   </button>
 </div>

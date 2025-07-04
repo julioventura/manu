@@ -6,8 +6,8 @@
  * 2. updateCustomLabelWidth: Atualiza a variável que define a largura do label para custom styling.
  * 3. fixedFields (getter): Retorna os campos fixos (por exemplo, 'nome', 'data', 'nuvem', 'obs') que serão exibidos no container 1.
  * 4. adjustableFields (getter): Retorna os campos que não são fixos, para exibição no container 2.
- * 5. editar: Redireciona para a rota de edição, diferenciando edição de registro principal e ficha interna (subcollection).
- * 6. excluir: Exclui o registro ou ficha interna após confirmação do usuário e, em seguida, navega para a lista.
+ * 5. editarRegistro: Redireciona para a rota de edição, diferenciando edição de registro principal e ficha interna (subcollection).
+ * 6. excluirRegistro: Exclui o registro ou ficha interna após confirmação do usuário e, em seguida, navega para a lista.
  * 7. voltar: Navega para a rota de listagem de registros ou fichas, dependendo do contexto.
  * 8. getDynamicFields: Retorna os nomes dos campos dinâmicos que não fazem parte dos campos pré-definidos no FormGroup.
  * 9. openUrl: Abre uma URL em uma nova janela, caso o campo corresponda a um link.
@@ -37,12 +37,12 @@ const fadeAnimation = trigger('fadeAnimation', [
 ]);
 
 @Component({
-    selector: 'app-view',
-    templateUrl: './view.component.html',
-    styleUrls: ['./view.component.scss'],
-    encapsulation: ViewEncapsulation.Emulated,
-    animations: [fadeAnimation],
-    imports: [NgIf, MenuComponent, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault]
+  selector: 'app-view',
+  templateUrl: './view.component.html',
+  styleUrls: ['./view.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated,
+  animations: [fadeAnimation],
+  imports: [NgIf, MenuComponent, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault]
 })
 export class ViewComponent implements OnInit {
   userId: string | null = null;           // ID do usuário autenticado
@@ -91,18 +91,16 @@ export class ViewComponent implements OnInit {
    * Retorna: void.
    */
   ngOnInit() {
-    console.log('ngOnInit()');
     this.afAuth.authState.subscribe(user => {
       if (user && user.uid) {
         this.userId = user.uid;
         const id = this.route.snapshot.paramMap.get('id');
         if (id) { this.id = id; }
         this.collection = this.route.snapshot.paramMap.get('collection')!;
-        this.subcollection = this.route.snapshot.paramMap.get('subcollection')!;
-        this.fichaId = this.route.snapshot.paramMap.get('fichaId')!;
+        this.subcollection = this.route.snapshot.paramMap.get('subcollection') || '';
+        this.fichaId = this.route.snapshot.paramMap.get('fichaId') || '';
 
         if (!this.collection || !this.id) {
-          console.warn('Collection ou ID não foram passados corretamente.');
           return;
         }
 
@@ -110,62 +108,35 @@ export class ViewComponent implements OnInit {
         this.titulo_da_pagina = this.subcollection
           ? this.util.titulo_ajuste_singular(this.subcollection)
           : this.util.titulo_ajuste_singular(this.collection);
-        
-        console.log('userId:', this.userId);
-        console.log('collection:', this.collection);
-        console.log('id:', this.id);
-        console.log('titulo_da_pagina:', this.titulo_da_pagina);
-        console.log('subcollection:', this.subcollection);
-        console.log('fichaId:', this.fichaId);
 
         if (!this.id) {
-          console.error('Registro não identificado.');
           this.voltar();
         } else {
           if (this.subcollection) {
-            console.log('Carregando ficha interna...');
-            console.log('loadFicha()');
-            console.log('Collection :', this.collection);
-            console.log('Subcollection :', this.subcollection);
             this.FormService.loadFicha(this.userId, this.collection, this.id, this.subcollection, this.fichaId, this.view_only)
               .then(() => {
                 this.registro = this.FormService.registro;
                 this.isLoading = false;
               })
-              .catch(error => {
-                console.error('Erro ao carregar ficha:', error);
+              .catch(() => {
                 this.isLoading = false;
               });
           } else {
-            console.log('Collection :', this.collection);
-            console.log('loadRegistro()');
             this.FormService.loadRegistro(this.userId, this.collection, this.id, this.view_only)
               .then(() => {
                 this.registro = this.FormService.registro;
                 this.isLoading = false;
               })
-              .catch(error => {
-                console.error('Erro ao carregar registro:', error);
+              .catch(() => {
                 this.isLoading = false;
               });
           }
 
           // Define o subtítulo com base no nome do registro (obtido via FormService)
           this.subtitulo_da_pagina = this.FormService.nome_in_collection;
-          console.log('subtitulo_da_pagina:', this.subtitulo_da_pagina);
 
           // Exibe o menu se estiver na visualização do registro principal
           this.show_menu = !!(this.collection && this.id && !this.subcollection);
-          console.log('show_menu calculated:', this.show_menu);
-          console.log('collection:', this.collection);
-          console.log('id:', this.id);
-          console.log('subcollection:', this.subcollection);
-          
-          // TEMP: Forçar show_menu = true para debug
-          if (this.collection && this.id) {
-            this.show_menu = true;
-            console.log('TEMP: Forcing show_menu = true for debug');
-          }
         }
 
         // Ajuste da largura dos labels baseado em critério (ex.: coleção "dentesendo")
@@ -177,11 +148,9 @@ export class ViewComponent implements OnInit {
         this.updateCustomLabelWidth();
 
       } else {
-        console.error('Usuário não autenticado.');
         this.util.goHome();
       }
     });
-    console.log('ViewComponent inicializado.');
   }
 
   /**
@@ -246,16 +215,11 @@ export class ViewComponent implements OnInit {
    * Retorna: void.
    */
   editarRegistro() {
-    console.log('editar()');
     if (this.subcollection) {
       const editPath = `/edit-ficha/${this.collection}/${this.id}/fichas/${this.subcollection}/itens`;
-      console.log("editPath =", editPath);
-      console.log("fichaId =", this.fichaId);
       this.router.navigate([editPath, this.fichaId]);
     } else {
       const editPath = `/edit/${this.collection}`;
-      console.log("editPath =", editPath);
-      console.log("id =", this.id);
       this.router.navigate([editPath, this.id]);
     }
   }
@@ -271,7 +235,6 @@ export class ViewComponent implements OnInit {
    * Retorna: void.
    */
   excluirRegistro() {
-    console.log("excluir()");
     if (confirm('Você tem certeza que deseja excluir este registro?')) {
       let registro_id = '';
       if (this.subcollection) {
@@ -287,8 +250,7 @@ export class ViewComponent implements OnInit {
         .then(() => {
           this.router.navigate([this.routePath]);
         })
-        .catch(error => {
-          console.error('Erro ao excluir o registro:', error);
+        .catch(() => {
         });
     }
   }
@@ -303,7 +265,6 @@ export class ViewComponent implements OnInit {
    * Retorna: void.
    */
   voltar() {
-    console.log("voltar()");
     const listaPath = this.subcollection ?
       `/list-fichas/${this.collection}/${this.id}/fichas/${this.subcollection}` :
       `list/${this.collection}`;
@@ -336,7 +297,6 @@ export class ViewComponent implements OnInit {
    * Retorna: void.
    */
   openUrl(url: string): void {
-    console.log("openUrl()");
     if (url && url.trim().length > 0) {
       window.open(url, '_blank');
     }

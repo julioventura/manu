@@ -1,7 +1,7 @@
 .menu {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   margin: 20px 0;
   padding: 15px;
   background-color: #f8f9fa;
@@ -10,16 +10,18 @@
 }
 
 .menu-button {
-  padding: 10px 20px;
+  padding: 8px 16px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   transition: all 0.3s ease;
   text-transform: capitalize;
+  min-width: 120px;
+  white-space: nowrap;
 }
 
 .menu-button:hover {
@@ -32,7 +34,19 @@
   transform: translateY(0);
 }
 
-/* Responsivo */
+/* Responsivo para mais botões */
+@media (max-width: 1200px) {
+  .menu {
+    gap: 6px;
+  }
+  
+  .menu-button {
+    min-width: 100px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .menu {
     flex-direction: column;
@@ -42,6 +56,7 @@
   .menu-button {
     width: 100%;
     padding: 12px;
-    font-size: 16px;
+    font-size: 14px;
+    min-width: unset;
   }
 }

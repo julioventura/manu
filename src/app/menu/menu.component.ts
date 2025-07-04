@@ -1,4 +1,3 @@
-// Alteração: remoção de logs de depuração (console.log)
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -12,10 +11,11 @@ interface Subcolecao {
 }
 
 @Component({
-    selector: 'app-menu',
-    templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss'],
-    imports: [NgFor]
+  selector: 'app-menu',
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.scss'],
+  standalone: true,
+  imports: [NgFor]
 })
 export class MenuComponent implements OnInit {
   // Recebe a coleção e ID para uso no carregamento de subcoleções e navegação
@@ -32,94 +32,75 @@ export class MenuComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('MenuComponent ngOnInit - Input values:');
-    console.log('collection:', this.collection);
-    console.log('id:', this.id);
-
     this.afAuth.authState.subscribe(user => {
       if (user && user.uid) {
         this.userId = user.uid;
-        console.log('User authenticated with UID:', this.userId);
-        // Agora você pode carregar as configurações do menu
-
+        
         if (!this.collection || !this.id) {
-          console.warn('Collection ou ID não foram passados corretamente.');
           return;
         }
 
         this.carregarSubcolecoes();
-      } else {
-        console.error('User not authenticated in MenuComponent');
       }
     });
   }
 
   carregarSubcolecoes() {
-    console.log('carregarSubcolecoes called for collection:', this.collection);
-    const configPath = `users/${this.userId}/configuracoesMenu`;
-    console.log('configPath:', configPath);
+    // Carrega todas as subcoleções disponíveis
+    const todasSubcolecoes = this.getMenusPadraoPorCollection();
+    this.subcolecoes = todasSubcolecoes.map(nome => ({
+      nome,
+      rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome.toLowerCase()}`
+    }));
+  }
 
-    this.firestore.collection(configPath).doc(this.collection).get()
-      .subscribe(doc => {
-        console.log('Firestore response - doc.exists:', doc.exists);
-        if (doc.exists) {
-          const dados = doc.data() as { subcolecoes: string[] } | undefined;
-          console.log('Document data:', dados);
-          if (dados && dados.subcolecoes) {
-            this.subcolecoes = dados.subcolecoes.map(nome => ({
-              nome,
-              rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome.toLowerCase()}`
-            }));
-            console.log('Subcolecoes loaded:', this.subcolecoes);
-          } else {
-            console.warn(`Nenhuma subcoleção configurada para a coleção "${this.collection}".`);
-          }
-        } else {
-          console.warn(`Documento "configuracoesMenu/${this.collection}" não encontrado. Criando configuração padrão...`);
+  carregarSubcolecoesPadrao() {
+    const subcolecoesPadrao = this.getMenusPadraoPorCollection();
 
-          // Usa o método getMenusPadraoPorCollection para obter subcoleções padrão
-          const subcolecoesPadrao = this.getMenusPadraoPorCollection(this.collection);
-          console.log('Subcolecoes padrao:', subcolecoesPadrao);
+    if (subcolecoesPadrao.length > 0) {
+      // Cria o documento no Firestore para futuras configurações
+      const configPath = `users/${this.userId}/configuracoesMenu`;
+      this.firestore.collection(configPath).doc(this.collection).set({ subcolecoes: subcolecoesPadrao })
+        .then(() => {
+          // Configuração padrão criada
+        })
+        .catch(() => {
+          // Erro ao criar configuração
+        });
 
-          this.firestore.collection(configPath).doc(this.collection).set({ subcolecoes: subcolecoesPadrao })
-            .then(() => {
-              this.subcolecoes = subcolecoesPadrao.map(nome => ({
-                nome,
-                rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome}`
-              }));
-            })
-            .catch(error => {
-              console.error('Erro ao criar configuração de subcoleções padrão:', error);
-            });
-        }
-      }, error => {
-        console.error('Erro ao carregar subcoleções:', error);
-        // Fallback: carrega subcoleções padrão em caso de erro
-        console.log('Loading default subcollections due to error...');
-        const subcolecoesPadrao = this.getMenusPadraoPorCollection(this.collection);
-        this.subcolecoes = subcolecoesPadrao.map(nome => ({
-          nome,
-          rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome}`
-        }));
-        console.log('Fallback subcolecoes loaded:', this.subcolecoes);
-      });
+      // Mapeia as subcoleções para o formato correto
+      this.subcolecoes = subcolecoesPadrao.map(nome => ({
+        nome,
+        rota: `/list-fichas/${this.collection}/${this.id}/fichas/${nome.toLowerCase()}`
+      }));
+    } else {
+      this.subcolecoes = [];
+    }
   }
 
 
 
-  getMenusPadraoPorCollection(colecao: string): string[] { // CORRIGIR: any[] → string[]
-    const menusPadrao: { [key: string]: string[] } = { // CORRIGIR: any[] → string[]
-      associados: ['pagamentos'],
-      pacientes: ['exames', 'planos', 'pagamentos', 'atendimentos', 'dentesendo'],
-      alunos: ['planos', 'atendimentos'],
-      professores: ['planos', 'atendimentos'],
-      dentistas: ['planos', 'atendimentos', 'pagamentos'],
-      equipe: ['planos', 'atendimentos', 'pagamentos'],
-      proteticos: ['planos', 'atendimentos', 'pagamentos'],
-      fornecedores: ['pagamentos']
-    };
+  getMenusPadraoPorCollection(): string[] {
+    // Lista completa de subcoleções disponíveis
+    const subcolecoesPadrao = [
+      'exames',
+      'planos', 
+      'pagamentos',
+      'atendimentos',
+      'consultas',
+      'documentos',
+      'dentes',
+      'dentesendo',
+      'dentesperio',
+      'erupcoes',
+      'anamnese',
+      'diagnosticos',
+      'risco',
+      'retornos'
+    ];
 
-    return menusPadrao[colecao] || [];
+    // Retorna todas as subcoleções para qualquer coleção
+    return subcolecoesPadrao;
   }
 
 
