@@ -1,23 +1,36 @@
-# Dentistas.com.br/clinica - Análise Técnica e Estratégica do Sistema
+# Dentistas.com.br/clinica ### **Ferramentas de Desenvolvimento**
+
+- **Build System**: Angular CLI 20.0.5 + Custom Webpack 18.0.0
+- **Linting**: ESLint 8.57.1 + Angular ESLint 20.0.0
+- **Ambiente**: Dotenv 16.5.0 para configuração de variáveis
+- **Versionamento**: Type**Estado Atual da Tecnologia:**
+
+- ✅ Angular 20.0.6 com TypeScript 5.8.3 (versões atualizadas)
+- ✅ Material Design 20.0.5 para UI/UX moderna
+- ✅ Firebase 10.14.1 com AngularFire 20.0.1
+- ✅ Node.js 22.17.0 LTS (compatível com Angular 20)
+- ✅ Integração OpenAI GPT-4o-mini funcional
+- ✅ Sistema de build otimizado com custom webpack
+- ✅ Gerenciamento de estado e permissões implementado.8.3 com strict mode habilitadoise Técnica e Estratégica do Sistema
 
 ## 📊 Sumário de Recursos e Tecnologias
 
 ### **Framework & Linguagem**
 
-- **Frontend**: Angular 19.2.14 (TypeScript 5.5.4)
-- **Estilo**: SCSS + Angular Material Design 19.2.19
+- **Frontend**: Angular 20.0.6 (TypeScript 5.8.3)
+- **Estilo**: SCSS + Angular Material Design 20.0.5
 - **Arquitetura**: SPA (Single Page Application) com standalone components e roteamento dinâmico
 
 ### **Autenticação & Backend**
 
-- **Firebase Authentication**: Login com email/senha integrado via AngularFire 19.2.0
+- **Firebase Authentication**: Login com email/senha integrado via AngularFire 20.0.1
 - **Cloud Firestore**: Banco de dados NoSQL em tempo real
 - **Firebase Storage**: Armazenamento de arquivos e imagens
 - **Firebase Admin**: SDK 12.6.0 para operações administrativas
 
 ### **Bibliotecas e Ferramentas Principais**
 
-- **UI/UX**: Angular Material 19.2.19 + Material Design Icons 6.7.0
+- **UI/UX**: Angular Material 20.0.5 + Material Design Icons 6.7.0
 - **Gráficos e Dashboards**: @swimlane/ngx-charts 22.0.0-alpha.1 + Chart.js 4.4.4
 - **Geração de Documentos**: jsPDF + jsPDF-autotable 3.8.4 para relatórios PDF
 - **Processamento de Planilhas**: XLSX 0.18.5 para exportação/importação Excel
@@ -47,7 +60,7 @@
 
 ## 📋 Resumo Técnico
 
-**O sistema Dentistas.com.br/clinica é uma plataforma SaaS moderna construída em Angular 19 com arquitetura baseada em standalone components.** Utiliza Firebase como backend-as-a-service, oferecendo autenticação robusta, banco de dados em tempo real e armazenamento em nuvem. A aplicação implementa lazy loading, guards de rota avançados e um sistema de gerenciamento de estado otimizado para performance máxima.
+**O sistema Dentistas.com.br/clinica é uma plataforma SaaS moderna construída em Angular 20 com arquitetura baseada em standalone components.** Utiliza Firebase como backend-as-a-service, oferecendo autenticação robusta, banco de dados em tempo real e armazenamento em nuvem. A aplicação implementa lazy loading, guards de rota avançados e um sistema de gerenciamento de estado otimizado para performance máxima.
 
 **A integração com OpenAI GPT-4o-mini através de um chatbot contextual representa um diferencial significativo, oferecendo assistência inteligente tanto para dentistas quanto para pacientes.** O sistema possui uma arquitetura bem estruturada com TypeScript strict mode, ESLint para qualidade de código, e um sistema de build customizado com Webpack para otimização de bundle size.
 
@@ -132,10 +145,10 @@ A plataforma conecta marcas diretamente com **dentistas e cirurgiões-dentistas 
 
 ### **Arquitetura Moderna e Robusta**
 
-- **Angular 19** com standalone components para performance otimizada e bundle size reduzido
-- **TypeScript 5.5.4** com strict mode garantindo tipagem forte e redução de bugs
+- **Angular 20** com standalone components para performance otimizada e bundle size reduzido
+- **TypeScript 5.8.3** com strict mode garantindo tipagem forte e redução de bugs
 - **Firebase 10.14.1** oferecendo escalabilidade automática e sincronização real-time
-- **Material Design System** com Angular Material 19.2.19 para consistência visual
+- **Material Design System** com Angular Material 20.0.5 para consistência visual
 
 ### **Experiência do Usuário Superior**
 
@@ -269,8 +282,8 @@ O sistema Dentistas.com.br/clinica possui uma base técnica sólida construída 
 
 **Estado Atual da Tecnologia:**
 
-- ✅ Angular 19.2.14 com TypeScript 5.5.4 (versões atualizadas)
-- ✅ Material Design 19.2.19 para UI/UX moderna
+- ✅ Angular 20.0.6 com TypeScript 5.8.3 (versões atualizadas)
+- ✅ Material Design 20.0.5 para UI/UX moderna
 - ✅ Firebase 10.14.1 com AngularFire 19.2.0
 - ✅ Integração OpenAI GPT-4o-mini funcional
 - ✅ Sistema de build otimizado com custom webpack
@@ -282,6 +295,7 @@ O sistema Dentistas.com.br/clinica possui uma base técnica sólida construída 
 2. **Segurança avançada** (migração de API keys e criptografia)
 3. **Implementação gradual das funcionalidades de IA** mais impactantes
 4. **Expansão do sistema de analytics** e relatórios inteligentes
+5. **Testes completos** em diferentes ambientes e dispositivos
 
 O sistema está bem posicionado para se tornar líder de mercado no segmento de gestão odontológica digital.
 
@@ -290,11 +304,12 @@ O sistema está bem posicionado para se tornar líder de mercado no segmento de 
 ### **Configuração do Build**
 
 - **Target**: ES2022 com módulos ES2022 para compatibilidade moderna
-- **Bundler**: Angular CLI 19.2.15 com custom webpack configuration
+- **Bundler**: Angular CLI 20.0.5 com custom webpack configuration
 - **Bundle Strategy**: Application builder com lazy loading e tree shaking
 - **Base Path**: /clinica/ configurado para deploy em subdiretório
 - **Assets**: Configuração automática para favicon.ico e pasta assets/
-- **Polyfills**: Zone.js otimizado para Angular 19
+- **Polyfills**: Zone.js otimizado para Angular 20
+- **Node.js**: v22.17.0 LTS (requisito oficial do Angular 20)
 
 ### **Configuração TypeScript**
 
@@ -302,9 +317,9 @@ O sistema está bem posicionado para se tornar líder de mercado no segmento de 
 - **Compilation Options**:
   - `isolatedModules: true` para melhor performance
   - `experimentalDecorators: true` para suporte a decorators
-  - `emitDecoratorMetadata: true` para injeção de dependências
   - `skipLibCheck: true` para otimização de build
 - **Module Resolution**: Bundler strategy para otimização máxima
+- **Versão**: TypeScript 5.8.3 (compatível com Angular 20)
 
 ### **Configuração de Ambiente**
 
@@ -332,10 +347,11 @@ src/
 
 ### **Dependências Críticas**
 
-- **Angular Core**: 19.2.14 (framework base)
+- **Angular Core**: 20.0.6 (framework base)
 - **Firebase**: 10.14.1 (backend-as-a-service)
-- **RxJS**: 7.8.0 (programação reativa)
-- **Material Design**: 19.2.19 (sistema de design)
+- **RxJS**: 7.8.2 (programação reativa)
+- **Material Design**: 20.0.5 (sistema de design)
 - **Chart.js**: 4.4.4 (visualizações)
+- **Node.js**: 22.17.0 LTS (ambiente de execução)
 
 ---
