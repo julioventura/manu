@@ -163,11 +163,9 @@ export class GroupService {
               if (!record || typeof record !== 'object') return false;
               
               const recordObj = record as Record<string, unknown>;
-              // CORRIGIDO: usar notação de colchetes para index signature
               const hasGroupId = recordObj && recordObj['groupId'];
               const isInUserGroup = hasGroupId && groupIds.includes(recordObj['groupId'] as string);
               
-              // CORRIGIDO: usar this.debug em vez de só debug
               if (this.debug) {
                 console.log(`[GroupService] Record ${recordObj['id']}: groupId=${recordObj['groupId']}, inUserGroup=${isInUserGroup}`);
               }
