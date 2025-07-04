@@ -1,202 +1,83 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import * as XLSX from 'xlsx';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BackupService } from '../shared/services/backup.service';
 import { UtilService } from '../shared/utils/util.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
-import { MaterialModule } from '../shared/material.module';
-// CORRIGIDO: Import correto do DocumentData
-import { DocumentData } from '@angular/fire/compat/firestore';
-
-// ADICIONADO: Interface para dados de backup
-interface BackupDocumentData {
-  id: string;
-  data: DocumentData;
-}
-
-interface BackupData {
-  [collectionName: string]: BackupDocumentData[];
-}
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-backup',
-  templateUrl: './backup.component.html',
-  styleUrls: ['./backup.component.scss'],
   standalone: true,
   imports: [
-    MatProgressSpinnerModule,
     CommonModule,
-    MaterialModule
+    MatSnackBarModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatIconModule,
+    MatListModule,
+    MatDividerModule
   ],
+  templateUrl: './backup.component.html',
+  styleUrls: ['./backup.component.scss']
 })
-export class BackupComponent implements OnInit {
+export class BackupComponent {
+  backupService = inject(BackupService);
+  util = inject(UtilService);
 
-  message: string = '';
-  loading: boolean = false;
-  util: UtilService;
-
-  // ADICIONAR: Propriedades necessárias
-  backupStatus = false;
   backupInProgress = false;
+  progress = 0;
   backupStatusMessage = '';
+  backupStatus = false;
 
-  constructor(private firestore: AngularFirestore, private afAuth: AngularFireAuth, util: UtilService, private router: Router) {
-    this.util = util;
-  }
+  constructor() { }
 
-  ngOnInit(): void {
-    // Initialization logic here
-  }
-
-  // ADICIONAR: Método voltar
   voltar(): void {
-    this.router.navigate(['/home']);
+    this.util.voltar();
   }
 
-  async gerarBackup(tipo: string) {
-    // Adiciona confirmação antes de iniciar o backup
-    if (!window.confirm('Confirma iniciar o backup?')) {
-      return;
-    }
-    this.loading = true;
-    try {
-      const currentUser = await this.afAuth.currentUser;
-      if (!currentUser) {
-        this.message = 'Usuário não autenticado';
-        this.loading = false;
-        return;
-      }
-      const userId = currentUser.uid;
-
-      // CORRIGIDO: Usar interface tipada em vez de any
-      const backupData: BackupData = {};
-
-      // Atualize essa lista com as coleções existentes em /users/{userId}
-      const collections = [
-        "pacientes",
-        "alunos",
-        "associados",
-        "professores",
-        "dentistas",
-        "equipe",
-        "proteticos",
-        "configuracoesCampos",
-        "configuracoesFichas",
-        "settings",
-      ];
-
-      for (const collName of collections) {
-        const ref = this.firestore.firestore.collection(`/users/${userId}/${collName}`);
-        const snapshot = await ref.get();
-        // Salva somente se houver documentos
-        if (!snapshot.empty) {
-          backupData[collName] = snapshot.docs.map(doc => ({
-            id: doc.id,
-            data: doc.data()
-          }));
-        }
-      }
-
-      if (tipo == 'json') {
-        const json = JSON.stringify(backupData, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'backup_dentistas_com_br.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      } else {
-        const wb = XLSX.utils.book_new();
-        for (const collName in backupData) {
-          // CORRIGIDO: Usar interface tipada
-          const ws = XLSX.utils.json_to_sheet(backupData[collName].map((doc: BackupDocumentData) => doc.data));
-          XLSX.utils.book_append_sheet(wb, ws, collName);
-        }
-        XLSX.writeFile(wb, 'backup_dentistas_com_br.xlsx');
-      }
-    } catch (error) {
-      this.message = 'Erro ao gerar backup';
-      console.error(error);
-    }
-    this.loading = false;
-  }
-
-  // ADICIONAR: Método backupDados
   backupDados(): void {
-    this.backupStatus = true;
-    this.backupInProgress = true;
-    this.backupStatusMessage = 'Iniciando backup dos dados...';
-    
-    // Simular processo de backup
-    setTimeout(() => {
-      this.backupInProgress = false;
-      this.backupStatusMessage = 'Backup dos dados concluído com sucesso!';
-      
-      // Reset status após 3 segundos
-      setTimeout(() => {
-        this.backupStatus = false;
-      }, 3000);
-    }, 2000);
-    
-    console.log('Executando backup dos dados...');
+    this.runBackup();
   }
 
-  // ADICIONAR: Método backupConfiguracoes
   backupConfiguracoes(): void {
-    this.backupStatus = true;
-    this.backupInProgress = true;
-    this.backupStatusMessage = 'Iniciando backup das configurações...';
-    
-    setTimeout(() => {
-      this.backupInProgress = false;
-      this.backupStatusMessage = 'Backup das configurações concluído!';
-      
-      setTimeout(() => {
-        this.backupStatus = false;
-      }, 3000);
-    }, 1500);
-    
-    console.log('Executando backup das configurações...');
+    this.util.openSnackBar('Função não implementada.', 'Fechar');
   }
 
-  // ADICIONAR: Método restaurarBackup
   restaurarBackup(): void {
-    this.backupStatus = true;
-    this.backupInProgress = true;
-    this.backupStatusMessage = 'Restaurando backup...';
-    
-    setTimeout(() => {
-      this.backupInProgress = false;
-      this.backupStatusMessage = 'Backup restaurado com sucesso!';
-      
-      setTimeout(() => {
-        this.backupStatus = false;
-      }, 3000);
-    }, 2500);
-    
-    console.log('Restaurando backup...');
+    this.util.openSnackBar('Função não implementada.', 'Fechar');
   }
 
-  // ADICIONAR: Método backupCompleto
   backupCompleto(): void {
-    this.backupStatus = true;
+    this.runBackup();
+  }
+
+  runBackup(): void {
     this.backupInProgress = true;
-    this.backupStatusMessage = 'Executando backup completo do sistema...';
-    
-    setTimeout(() => {
-      this.backupInProgress = false;
-      this.backupStatusMessage = 'Backup completo finalizado com sucesso!';
-      
-      setTimeout(() => {
-        this.backupStatus = false;
-      }, 3000);
-    }, 4000);
-    
-    console.log('Executando backup completo...');
+    this.backupStatus = true;
+    this.progress = 0;
+    this.backupStatusMessage = 'Iniciando backup...';
+
+    this.backupService.backupAllData().subscribe({
+      next: (progress) => {
+        this.progress = progress;
+        this.backupStatusMessage = `Progresso do backup: ${progress}%`;
+      },
+      error: (err) => {
+        this.backupInProgress = false;
+        this.util.openSnackBar('Erro ao realizar o backup: ' + err.message, 'Fechar');
+      },
+      complete: () => {
+        this.backupInProgress = false;
+        this.progress = 100;
+        this.backupStatusMessage = 'Backup concluído com sucesso!';
+        this.util.openSnackBar('Backup concluído com sucesso!', 'Fechar');
+      }
+    });
   }
 }

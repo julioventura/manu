@@ -5,10 +5,16 @@ import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { CrmService } from '../../services/crm.service';
 import { ReminderService } from '../../services/reminder.service';
-import { MaterialModule } from '../../../shared/material.module';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LegendPosition, LegendPosition as NgxLegendPosition } from '@swimlane/ngx-charts';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 // Interfaces para tipagem
 interface MetricData {
@@ -49,10 +55,15 @@ type DateLike = Date | FirestoreTimestamp | string | number | null | undefined;
   imports: [
     CommonModule, 
     RouterModule, 
-    MaterialModule,
+    NgxChartsModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatIconModule,
+    MatListModule,
+    MatDividerModule,
+    MatButtonModule,
     CurrencyPipe,
-    DatePipe,
-    NgxChartsModule
+    DatePipe
   ]
 })
 export class CrmDashboardComponent implements OnInit {

@@ -1,6 +1,6 @@
 // CORRIGIR: src/app/perfil/perfil.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService, UserProfile } from '../shared/services/user.service';
 import { UtilService } from '../shared/utils/util.service';
 import { FirestoreService } from '../shared/services/firestore.service';
@@ -10,6 +10,7 @@ import { getProfileFormConfig, getGroupedProfileFields, ProfileField } from './p
 import { finalize } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { CanComponentDeactivate } from '../shared/guards/can-deactivate.guard';
+import { NgClass, NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, KeyValuePipe } from '@angular/common';
 
 // MANTER: Interfaces locais para estruturas específicas
 interface Horario {
@@ -46,10 +47,10 @@ interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos
 }
 
 @Component({
-  selector: 'app-perfil',
-  templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.scss'],
-  standalone: false
+    selector: 'app-perfil',
+    templateUrl: './perfil.component.html',
+    styleUrls: ['./perfil.component.scss'],
+    imports: [NgClass, NgIf, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, KeyValuePipe]
 })
 export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   profileForm: FormGroup;

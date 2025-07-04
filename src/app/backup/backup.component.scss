@@ -1,4 +1,4 @@
-@import '../../styles.scss';
+﻿@use '../../styles.scss' as styles;
 
 .icon-item {
     display: flex;
@@ -14,7 +14,7 @@
 
     p {
       font-weight: 500;
-      color: $primary-color;
+      color: styles.$primary-color;
       font-size: 8px;
     }
   }

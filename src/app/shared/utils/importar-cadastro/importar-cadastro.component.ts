@@ -5,12 +5,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import * as Papa from 'papaparse';
 
 import { UtilService } from '../util.service';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-importar-cadastro',
-  templateUrl: './importar-cadastro.component.html',
-  styleUrls: ['./importar-cadastro.component.scss'],
-  standalone: false
+    selector: 'app-importar-cadastro',
+    templateUrl: './importar-cadastro.component.html',
+    styleUrls: ['./importar-cadastro.component.scss'],
+    imports: [FormsModule, NgIf]
 })
 export class ImportarCadastroComponent {
   userId: string | null = null;

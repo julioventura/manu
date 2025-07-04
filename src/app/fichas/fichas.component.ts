@@ -13,12 +13,14 @@ import { NavegacaoService } from '../shared/services/navegacao.service';
 import { CamposFichaService } from '../shared/services/campos-ficha.service';
 import { UserService } from '../shared/services/user.service';
 import { UtilService } from '../shared/utils/util.service';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-fichas',
-  templateUrl: './fichas.component.html',
-  styleUrls: ['./fichas.component.scss'],
-  standalone: false,
+    selector: 'app-fichas',
+    templateUrl: './fichas.component.html',
+    styleUrls: ['./fichas.component.scss'],
+    imports: [FormsModule, NgFor],
 })
 export class FichasComponent implements OnInit {
   // Seleciona "padrao" inicialmente para a coleção

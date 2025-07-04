@@ -1,5 +1,5 @@
-@import '../../../styles.scss';
-@import '../homepage.component.scss';
+@use '../../../styles.scss' as styles;
+@use '../homepage.component.scss';
 
 /* filepath: /c:/contexto/dentistas/src/app/homepage/convenios/convenios.component.scss */
 .convenios-card {
@@ -58,7 +58,7 @@
     p {
       margin: 0;
       font-size: 0.95rem;
-      color: $primary-color;
+      color: styles.$primary-color;
     }
   }
   

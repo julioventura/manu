@@ -1,5 +1,5 @@
-@import '../../../styles.scss';
-@import '../homepage.component.scss';
+﻿@use '../../../styles.scss' as styles;
+@use '../homepage.component.scss';
 
 /* filepath: /c:/contexto/dentistas/src/app/homepage/endereco/endereco.component.scss */
 .endereco-card {
@@ -71,7 +71,7 @@
     margin-bottom: 16px;
     
     i {
-      color: $primary-color;
+      color: styles.$primary-color;
       font-size: 20px;
       margin-right: 10px;
     }
@@ -96,7 +96,7 @@
       line-height: 1.5;
       
       strong {
-        color: $secondary-color;
+        color: styles.$secondary-color;
       }
     }
   }
@@ -110,4 +110,5 @@
     border-radius: 6px;
   }
 }
+
 

@@ -1,4 +1,5 @@
-@import '../../styles.scss'; // Importando variáveis globais, p.ex. $primary-color
+﻿@use '../../styles.scss' as styles;
+@use 'sass:color';
 
 /* Widget base */
 .chatbot-container {
@@ -15,7 +16,7 @@
   width: 340px;
   background-color: #fff;
 
-  // Estado padrão (não-minimizado, não-maximizado)
+  // Estado padrÃ£o (nÃ£o-minimizado, nÃ£o-maximizado)
   &:not(.minimized):not(.maximized) {
     right: 20px;
     bottom: 20px;
@@ -26,19 +27,19 @@
     width: 50px !important; 
     height: 50px !important; 
     border-radius: 50% !important; 
-    background-color: $primary-color !important; 
-    transform: none !important; // Remover qualquer transformação
-    bottom: 20px !important; // Posição fixa
-    right: 20px !important; // Posição fixa
-    left: auto !important; // Garantir que left não interfira
-    top: auto !important; // Garantir que top não interfira
-    max-width: none !important; // Limpar restrições de maximizado
-    max-height: none !important; // Limpar restrições de maximizado
+    background-color: styles.$primary-color !important; 
+    transform: none !important; // Remover qualquer transformaÃ§Ã£o
+    bottom: 20px !important; // PosiÃ§Ã£o fixa
+    right: 20px !important; // PosiÃ§Ã£o fixa
+    left: auto !important; // Garantir que left nÃ£o interfira
+    top: auto !important; // Garantir que top nÃ£o interfira
+    max-width: none !important; // Limpar restriÃ§Ãµes de maximizado
+    max-height: none !important; // Limpar restriÃ§Ãµes de maximizado
 
     .chatbot-body,
     .chatbot-title span,
     .context-button {
-      display: none !important; // Esconder o botão de contexto quando minimizado
+      display: none !important; // Esconder o botÃ£o de contexto quando minimizado
     }
 
     .chatbot-header {
@@ -116,13 +117,13 @@
   }
 }
 
-/* Cabeçalho do chat */
+/* CabeÃ§alho do chat */
 .chatbot-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background-color: $primary-color;
+  background-color: styles.$primary-color;
   color: #fff;
   border-radius: 16px 16px 0 0;
 
@@ -154,10 +155,10 @@
     }
 
     span {
-      margin-right: 8px; // Adicionar margem à direita do texto para separar do botão
+      margin-right: 8px; // Adicionar margem Ã  direita do texto para separar do botÃ£o
     }
 
-    // Ajustar estilo do botão de contexto integrado no título
+    // Ajustar estilo do botÃ£o de contexto integrado no tÃ­tulo
     .context-button {
       background: transparent;
       border: none;
@@ -192,7 +193,7 @@
   }
 }
 
-/* Estilos melhorados para o cabeçalho arrastável */
+/* Estilos melhorados para o cabeÃ§alho arrastÃ¡vel */
 .chatbot-header.draggable {
   cursor: grab;
   position: relative;
@@ -203,17 +204,17 @@
   
   /* Indicador visual de arrasto - mais destacado */
   &::before {
-    content: '⋯'; /* Símbolo de pontos para indicar arrasto */
+    content: 'â‹¯'; /* SÃ­mbolo de pontos para indicar arrasto */
     position: absolute;
     left: 50%;
     top: 3px; /* 2px mais para cima do que antes */
     transform: translateX(-50%);
     font-size: 14px;
     line-height: 1;
-    color: rgba(255, 255, 255, 0.9); /* Cor branca mais visível */
+    color: rgba(255, 255, 255, 0.9); /* Cor branca mais visÃ­vel */
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.3); /* Sombra suave para melhor contraste */
     pointer-events: none;
-    opacity: 0; /* Começa invisível */
+    opacity: 0; /* ComeÃ§a invisÃ­vel */
     transition: opacity 0.2s ease;
   }
   
@@ -223,7 +224,7 @@
   }
 }
 
-/* Estilo para o cabeçalho arrastável apenas no modo expandido */
+/* Estilo para o cabeÃ§alho arrastÃ¡vel apenas no modo expandido */
 .chatbot-header.draggable {
   cursor: grab;
   position: relative;
@@ -234,7 +235,7 @@
   
   /* Remover indicador visual de arrasto no modo maximizado */
   .chatbot-container:not(.maximized) &::before {
-    content: '⋯';
+    content: 'â‹¯';
     position: absolute;
     left: 50%;
     top: 3px;
@@ -248,7 +249,7 @@
     transition: opacity 0.2s ease;
   }
   
-  /* Mostrar o indicador apenas no hover e no modo não maximizado */
+  /* Mostrar o indicador apenas no hover e no modo nÃ£o maximizado */
   .chatbot-container:not(.maximized) &:hover::before {
     opacity: 1;
   }
@@ -263,12 +264,12 @@
 .chatbot-container.dragging {
   opacity: 0.8;
   transition: none !important;
-  transform: none !important; // Garantir que não haja transform durante arrasto
+  transform: none !important; // Garantir que nÃ£o haja transform durante arrasto
   
   &.maximized {
     left: auto !important;
-    right: auto !important; // Permitir a definição via JS
-    bottom: auto !important; // Permitir a definição via JS
+    right: auto !important; // Permitir a definiÃ§Ã£o via JS
+    bottom: auto !important; // Permitir a definiÃ§Ã£o via JS
     transform: none !important;
     
     // Evitar conflito com outros estilos
@@ -280,7 +281,7 @@
   .chatbot-header {
     cursor: grabbing;
     
-    /* Símbolo mais visível durante o arrasto */
+    /* SÃ­mbolo mais visÃ­vel durante o arrasto */
     &::before {
       opacity: 1;
       color: #ffffff; /* Branco total durante o arrasto */
@@ -301,7 +302,7 @@ body.dragging-chatbot {
 
 /* Dica visual para arrastar - pode ser mostrada apenas no hover */
 .chatbot-header.draggable:hover::before {
-  content: '↔';
+  content: 'â†”';
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -319,7 +320,7 @@ body.dragging-chatbot {
   background-color: #f9f9fc;
 }
 
-/* Área de mensagens */
+/* Ãrea de mensagens */
 .messages-container {
   flex: 1;
   overflow-y: auto;
@@ -328,7 +329,7 @@ body.dragging-chatbot {
   display: flex;
   flex-direction: column;
   scroll-behavior: smooth; // Para rolagem suave
-  max-height: calc(100% - 70px); // Aumente um pouco o espaço para evitar overlap
+  max-height: calc(100% - 70px); // Aumente um pouco o espaÃ§o para evitar overlap
 }
 
 /* Estilos para as bolhas de mensagem */
@@ -344,23 +345,23 @@ body.dragging-chatbot {
 
 .bot-message {
   border-radius: 0px 18px 18px 18px;
-  background-color: $primary-color-light;
-  color: $primary-color-dark;
+  background-color: styles.$primary-color-light;
+  color: styles.$primary-color-dark;
   align-self: flex-start;
   margin-right: auto;
-  border: 1px solid $primary-color-light;
+  border: 1px solid styles.$primary-color-light;
 }
 
 .user-message {
   border-radius: 18px 18px 0px 18px;
   background-color: #0084ff;
-  /* Mantém o azul escuro para mensagens do usuário */
+  /* MantÃ©m o azul escuro para mensagens do usuÃ¡rio */
   color: white;
   align-self: flex-end;
   margin-left: auto;
 }
 
-/* Restaurar estilos dos balões de conversa */
+/* Restaurar estilos dos balÃµes de conversa */
 .message-group {
   display: flex;
   flex-direction: column;
@@ -386,7 +387,7 @@ body.dragging-chatbot {
       background-color: #0084ff;
       color: white;
       border-bottom-right-radius: 4px;
-      margin-left: auto; // Alinha à direita
+      margin-left: auto; // Alinha Ã  direita
       margin-right: 10px; // Margem direita
     }
 
@@ -395,13 +396,13 @@ body.dragging-chatbot {
       background-color: #E5F1FF; // Cor azul clara para mensagens do bot (restaurada)
       color: #333;
       border-bottom-left-radius: 4px;
-      margin-right: auto; // Alinha à esquerda
+      margin-right: auto; // Alinha Ã  esquerda
       margin-left: 10px; // Margem esquerda
     }
   }
 }
 
-// Também corrigir o estilo da mensagem de boas-vindas
+// TambÃ©m corrigir o estilo da mensagem de boas-vindas
 .welcome-message {
   display: flex;
   .message {
@@ -423,11 +424,11 @@ body.dragging-chatbot {
   }
 }
 
-// Adicionar estilos para o indicador de digitação
+// Adicionar estilos para o indicador de digitaÃ§Ã£o
 .typing-indicator {
   display: flex;
   align-items: center;
-  background-color: #E5F1FF !important; // Forçar a mesma cor azul clara
+  background-color: #E5F1FF !important; // ForÃ§ar a mesma cor azul clara
 
   span {
     height: 8px;
@@ -469,19 +470,19 @@ body.dragging-chatbot {
   .message-input {
     flex: 1;
     padding: 10px 16px;
-    border: 1px solid $red;
-    background-color: $red-lighter;
+    border: 1px solid styles.$red;
+    background-color: styles.$red-lighter;
     border-radius: 24px;
 
     font-size: 16px;
     font-weight: 500;
-    color: $red;
+    color: styles.$red;
 
     transition: border-color 0.3s;
     outline: none;
 
     &:focus {
-      border: 2px solid $red;
+      border: 2px solid styles.$red;
     }
   }
 
@@ -492,7 +493,7 @@ body.dragging-chatbot {
     min-width: 20px;
     min-height: 20px;
     border: none;
-    background-color: $primary-color;
+    background-color: styles.$primary-color;
     color: white;
     border-radius: 50%;
     font-size: 10px;
@@ -506,7 +507,7 @@ body.dragging-chatbot {
     transition: background-color 0.2s, transform 0.2s;
 
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: color.adjust(styles.$primary-color, $lightness: -10%);
       transform: scale(1.05);
     }
 
@@ -520,12 +521,12 @@ body.dragging-chatbot {
   }
 }
 
-/* Estilo para o botão de contexto na parte inferior */
+/* Estilo para o botÃ£o de contexto na parte inferior */
 .context-button-bottom {
   width: 30px;
   height: 30px;
   min-width: 30px;
-  /* Evita que o botão seja redimensionado */
+  /* Evita que o botÃ£o seja redimensionado */
   border: none;
   background-color: transparent;
   color: #2a7ac3;
@@ -539,7 +540,7 @@ body.dragging-chatbot {
   transition: color 0.2s, transform 0.2s;
 
   &:hover {
-    color: $primary-color;
+    color: styles.$primary-color;
     transform: scale(1.1);
   }
 
@@ -547,13 +548,13 @@ body.dragging-chatbot {
     transform: scale(0.8);
   }
 
-  /* Estiliza especificamente o ícone */
+  /* Estiliza especificamente o Ã­cone */
   i {
     font-size: 18px;
   }
 }
 
-/* Indicador de digitação */
+/* Indicador de digitaÃ§Ã£o */
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -602,7 +603,7 @@ body.dragging-chatbot {
     padding: 2px 8px;
     display: flex;
     align-items: center;
-    color: $primary-color;
+    color: styles.$primary-color;
 
     .context-label {
       font-weight: 600;
@@ -620,7 +621,7 @@ body.dragging-chatbot {
         font-weight: 500; // Nome mais destacado
       }
 
-      // Estilo para nomes de coleção/subcoleção
+      // Estilo para nomes de coleÃ§Ã£o/subcoleÃ§Ã£o
       span {
         &:not(:last-child):after {
           content: ", ";
@@ -630,7 +631,7 @@ body.dragging-chatbot {
   }
 }
 
-/* Ajuste para o botão de contexto */
+/* Ajuste para o botÃ£o de contexto */
 .context-button {
   background: transparent;
   border: none;
@@ -647,7 +648,7 @@ body.dragging-chatbot {
   }
 }
 
-/* Animações */
+/* AnimaÃ§Ãµes */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -729,7 +730,7 @@ body.dragging-chatbot {
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 9999; // Um pouco abaixo do chatbot
   bottom: 20px;
-  left: 20px; // Alinhado à esquerda
+  left: 20px; // Alinhado Ã  esquerda
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 1);
@@ -748,28 +749,28 @@ body.dragging-chatbot {
   &.maximized {
     width: 85vw; // 85% da largura da tela
     height: 85vh; // 85% da altura da tela
-    max-width: 1200px; // Para não ficar excessivamente grande em telas muito grandes
+    max-width: 1200px; // Para nÃ£o ficar excessivamente grande em telas muito grandes
     max-height: 800px; // Limitador de altura para telas muito grandes
     bottom: 50px; // Um pouco acima do fundo da tela
     left: 50%; // Centraliza horizontalmente
-    transform: translateX(-50%); // Complementa a centralização
+    transform: translateX(-50%); // Complementa a centralizaÃ§Ã£o
     border-radius: 20px; // Bordas um pouco mais arredondadas
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 1);
 
     .details-body {
-      height: calc(85vh - 50px); // Altura total menos a altura do cabeçalho
+      height: calc(85vh - 50px); // Altura total menos a altura do cabeÃ§alho
       max-height: 750px; // Limitador para telas muito grandes
     }
   }
 }
 
-/* Cabeçalho do popup de detalhes */
+/* CabeÃ§alho do popup de detalhes */
 .details-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background-color: $primary-color;
+  background-color: styles.$primary-color;
   color: #fff;
   border-radius: 16px 16px 0 0;
 
@@ -827,7 +828,7 @@ body.dragging-chatbot {
   background-color: #f9f9fc;
 }
 
-/* Conteúdo dos detalhes */
+/* ConteÃºdo dos detalhes */
 .details-content {
   .detail-item {
     margin-bottom: 12px;
@@ -840,7 +841,7 @@ body.dragging-chatbot {
 
     .detail-label {
       font-weight: 600;
-      color: $primary-color;
+      color: styles.$primary-color;
       margin-bottom: 4px;
     }
 
@@ -856,13 +857,13 @@ body.dragging-chatbot {
   padding: 40px 0;
 }
 
-/* Estilo para elementos clicáveis nos balões */
+/* Estilo para elementos clicÃ¡veis nos balÃµes */
 .clickable {
   cursor: pointer;
   text-decoration: underline dotted;
 
   &:hover {
-    color: darken($primary-color, 15%);
+    color: color.adjust(styles.$primary-color, $lightness: -15%);
   }
 }
 
@@ -893,3 +894,4 @@ body.dragging-chatbot {
     }
   }
 }
+

@@ -1,10 +1,10 @@
 // Alteração: remoção de logs de depuração (console.log)
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
-import { CRMData, PipelineConfig, PipelineStage } from '../models/crm.model';
+import { CRMData } from '../models/crm.model';
 import { CRMConfig } from '../models/crm-config.model';
 
 // Define an interface for the metrics response
@@ -67,10 +67,10 @@ export class CrmService {
 
   // Obter dados de CRM para um registro específico
   getCrmData(collectionPath: string, docId: string): Observable<CRMData | null> {
-    return this.firestore.doc(`${collectionPath}/${docId}`)
+    return this.firestore.doc<{ crmData: CRMData }>(`${collectionPath}/${docId}`)
       .valueChanges()
       .pipe(
-        map((doc: any) => doc?.crmData || null),
+        map((doc) => doc?.crmData || null),
         catchError(error => {
           console.error('Erro ao obter dados CRM:', error);
           return of(null);
@@ -93,73 +93,61 @@ export class CrmService {
       });
   }
   
-  // Inicializar dados de CRM para um novo registro
-  initializeCrmData(collectionPath: string, docId: string): Promise<void> {
-    // Obter configuração padrão para determinar estágio inicial
-    return this.getCrmConfig().pipe(
-      map(config => {
-        const defaultStage = config?.pipeline?.defaultStage || 'novo';
-        
-        const crmData: CRMData = {
-          leadStatus: defaultStage as any,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        };
-        
-        return crmData;
-      }),
-      catchError(() => {
-        // Configuração padrão caso não exista configuração no banco
-        const crmData: CRMData = {
-          leadStatus: 'novo',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        };
-        
-        return of(crmData);
-      })
-    ).toPromise()
-      .then(crmData => {
-        return this.firestore.doc(`${collectionPath}/${docId}`)
-          .update({ crmData });
+  // Atualiza o status de um lead no pipeline
+  updateLeadStatus(collectionPath: string, docId: string, newStatus: string): Promise<void> {
+    const update = {
+      'crmData.leadStatus': newStatus,
+      'crmData.updatedAt': new Date()
+    };
+    return this.firestore.doc(`${collectionPath}/${docId}`).update(update)
+      .catch(error => {
+        console.error(`Erro ao atualizar status do lead para ${newStatus}:`, error);
+        throw error;
       });
   }
-  
-  // Obter registros por status para o pipeline
-  getRegistrosByStatus(collection: string, status?: string): Observable<any[]> {
+
+  // Inicializar dados de CRM para um novo registro
+  initializeCrmData(collectionPath: string, docId: string): Promise<void> {
+    const initialCrmData: CRMData = {
+      leadStatus: 'novo',
+      leadSource: 'outro',
+      valorPotencial: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      tags: []
+    };
+    return this.firestore.doc(`${collectionPath}/${docId}`).set({ crmData: initialCrmData }, { merge: true });
+  }
+
+  // Busca registros com base no status do lead
+  getRegistrosByStatus(collection: string, status?: string): Observable<DocumentData[]> {
     if (status) {
-      // Se status for fornecido, filtra por ele
-      return this.firestore.collection(collection, ref => 
+      return this.firestore.collection(collection, ref =>
         ref.where('crmData.leadStatus', '==', status)
       ).valueChanges({ idField: 'id' });
     } else {
-      // Se não, retorna todos os registros da coleção
       return this.firestore.collection(collection).valueChanges({ idField: 'id' });
     }
   }
-  
-  // Obter todos os registros com dados de CRM
-  getAllCrmRegistros(collectionPath: string): Observable<any[]> {
-    return this.firestore.collection(collectionPath, ref => 
+
+  // Busca todos os registros que possuem dados de CRM
+  getAllCrmRegistros(collectionPath: string): Observable<DocumentData[]> {
+    return this.firestore.collection(collectionPath, ref =>
       ref.where('crmData', '!=', null)
     ).valueChanges({ idField: 'id' });
   }
-  
-  // Obter configuração do CRM
+
+  // Obter a configuração de CRM (ex: de um doc específico)
   getCrmConfig(): Observable<CRMConfig | null> {
-    return this.firestore.doc('configuracoes/crm')
+    return this.firestore.doc<CRMConfig>('configuracoes/crm')
       .valueChanges()
       .pipe(
-        map((config: any) => config as CRMConfig),
-        catchError(error => {
-          console.error('Erro ao obter configuração CRM:', error);
-          return of(null);
-        })
+        map(config => config || null),
+        catchError(() => of(null))
       );
   }
-  
-  // Ajustar o método getPipelineConfig
-  getPipelineConfig(): Observable<any> {
+
+  getPipelineConfig(): Observable<LocalPipelineConfig> {
     return this.firestore.doc<LocalPipelineConfig>('config/pipeline')
       .valueChanges()
       .pipe(
@@ -170,10 +158,7 @@ export class CrmService {
           
           return config;
         }),
-        catchError(error => {
-          console.error('Error getting pipeline config:', error);
-          return of(this.defaultPipelineConfig);
-        })
+        catchError(() => of(this.defaultPipelineConfig))
       );
   }
   
@@ -199,22 +184,23 @@ export class CrmService {
         };
         
         registros.forEach(registro => {
-          if (registro.crmData) {
+          const crmData = registro['crmData']; // Acesso corrigido
+          if (crmData) {
             // Contagem por status
-            const status = registro.crmData.leadStatus as string;
+            const status = crmData.leadStatus as string;
             if (status) {
               metrics.byStatus[status] = (metrics.byStatus[status] || 0) + 1;
             }
             
             // Contagem por origem
-            if (registro.crmData.leadSource) {
-              const source = registro.crmData.leadSource as string;
+            if (crmData.leadSource) {
+              const source = crmData.leadSource as string;
               metrics.bySource[source] = (metrics.bySource[source] || 0) + 1;
             }
             
             // Somar valor potencial
-            if (registro.crmData.valorPotencial) {
-              metrics.valorPotencialTotal += registro.crmData.valorPotencial;
+            if (crmData.valorPotencial) {
+              metrics.valorPotencialTotal += crmData.valorPotencial;
             }
           }
         });

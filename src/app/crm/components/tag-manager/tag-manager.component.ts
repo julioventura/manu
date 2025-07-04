@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from '../../../shared/material.module';
+
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
   imports: [
     CommonModule, 
     FormsModule, 
-    MaterialModule, 
     MatChipsModule,
     MatIconModule,
     MatButtonModule,

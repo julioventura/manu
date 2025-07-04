@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 // Componentes da aplicação
 import { HomeComponent } from './home/home.component';
@@ -28,7 +27,7 @@ import { CanDeactivateGuard } from './shared/guards/can-deactivate.guard';
 import { UsernameGuard } from './shared/guards/username.guard';
 import { AuthGuard } from './shared/guards/auth.guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -64,9 +63,3 @@ const routes: Routes = [
 
   { path: '**', component: HomeComponent, data: { animation: '11' } }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

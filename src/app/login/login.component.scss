@@ -1,39 +1,38 @@
-// Variáveis de cores
-$primary-color: #2196F3;
-$secondary-color: #4CAF50;
+@use '../../styles.scss' as styles;
+@use 'sass:color';
+
+// Local variáveis de cores (some are defined locally for this component)
 $error-color: #f44336;
 $hover-error-color: #a9001c;
-$white: #ffffff;
-$text-color: #2f5489;
 $input-border-color: #bbb;
 $input-focus-color: rgba(33, 150, 243, 0.5);
 $background-color: #e5eff4; // Mesma cor de fundo da imagem 1
 
-// Variáveis de outros estilos
-$font-family: 'Roboto', sans-serif;
+// Local font family override for this component
+$local-font-family: 'Roboto', sans-serif;
 
 // Estilo Geral
 body {
   font: unset;
-  font-family: $font-family;
+  font-family: $local-font-family;
   background-color: $background-color;
   margin: 0;
   padding: 0;
-  color: $text-color;
+  color: styles.$text-color;
 }
 
 .login-container {
   max-width: 400px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: $white;
+  background-color: styles.$white;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
-  font-family: $font-family;
+  font-family: $local-font-family;
 
   h2 {
-    color: $primary-color;
+    color: styles.$primary-color;
     margin-bottom: 2rem;
     font-size: x-large;
     font-weight: bold;
@@ -59,7 +58,7 @@ mat-form-field {
     border: 1px solid $input-border-color;
 
     &:focus {
-      border-color: $primary-color;
+      border-color: styles.$primary-color;
       box-shadow: 0 0 5px $input-focus-color;
     }
   }
@@ -72,15 +71,15 @@ mat-form-field {
 button[mat-raised-button] {
   width: 100%; // O botão de login ocupa 100% da largura do container
   padding: 12px;
-  background-color: $secondary-color;
-  color: $white;
+  background-color: styles.$secondary-color;
+  color: styles.$white;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 4px;
 
   &:hover {
-    background-color: darken($secondary-color, 10%);
+    background-color: color.adjust(styles.$secondary-color, $lightness: -10%);
   }
 
   &:disabled {
@@ -91,7 +90,7 @@ button[mat-raised-button] {
 
 .forgot-password-link {
   margin-top: 1rem;
-  color: $primary-color;
+  color: styles.$primary-color;
   font-size: 0.875rem;
   text-decoration: none;
 
@@ -102,7 +101,7 @@ button[mat-raised-button] {
 
 .novaconta {
   margin-top: 1rem;
-  color: $primary-color;
+  color: styles.$primary-color;
   font-size: 0.875rem;
   text-decoration: none;
 }

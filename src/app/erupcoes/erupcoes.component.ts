@@ -10,12 +10,13 @@ import { ErupcoesPopupComponent } from './erupcoes-popup/erupcoes-popup.componen
 import { UtilService } from '../shared/utils/util.service';
 import { dentesTabela, Dente, dentesTabelaHTML } from './dentes-tabela'; // Importa a tabela e a interface
 import { TabelaReferenciaDialogComponent } from './tabela-referencia-dialog.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-erupcoes',
-  standalone: false,
-  templateUrl: './erupcoes.component.html',
-  styleUrls: ['./erupcoes.component.scss']
+    selector: 'app-erupcoes',
+    templateUrl: './erupcoes.component.html',
+    styleUrls: ['./erupcoes.component.scss'],
+    imports: [NgIf, NgFor]
 }) 
 
 export class ErupcoesComponent implements OnInit {

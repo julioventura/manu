@@ -1,7 +1,7 @@
-@import '../../styles.scss';
+@use '../../styles.scss' as styles;
 
 h1 {
-    color: $primary-color;
+    color: styles.$primary-color;
     font-weight: bold;
     text-align: center;
     font-size: 2rem;
@@ -14,26 +14,26 @@ h2 {
     margin: 30px 0px 16px 0px;
     font-size: 1.2rem;
     font-weight: bold;
-    color: $primary-color;
+    color: styles.$primary-color;
     text-align: left;
     padding: 0 10px;
-    background-color: $background-cinza;
+    background-color: styles.$background-cinza;
 }
 
 h3 {
     margin: 0px;
     font-size: 1rem;
     font-weight: bold;
-    color: $primary-color-dark;
+    color: styles.$primary-color-dark;
     text-align: center;
     padding: 0px;
-    background-color: $background-cinza;
+    background-color: styles.$background-cinza;
     margin-bottom: 0px;
 }
 
 p {
     font-size: 1.1rem;
-    color: $white;
+    color: styles.$white;
     line-height: 1.6;
     text-align: left;
     font-weight: 500;
@@ -43,7 +43,7 @@ p {
 .profile-header {
     margin: 0 20px;
     text-align: center;
-    background-color: $background-cinza;
+    background-color: styles.$background-cinza;
     /* Fundo claro */
     padding-bottom: 20px;
 
@@ -77,7 +77,7 @@ p {
 .profile-info {
     padding: 0px 20px;
     text-align: left;
-    background-color: $white;
+    background-color: styles.$white;
     /* Cor de fundo clara para destaque */
 
 }
@@ -92,7 +92,7 @@ p {
         gap: 15px;
 
         .contact-btn {
-            background-color: $primary-color;
+            background-color: styles.$primary-color;
             color: white;
             padding: 12px 25px;
             border-radius: 5px;
@@ -159,12 +159,12 @@ p {
 
 .block-title {
     /* Container */
-    background-color: $primary-color;
+    background-color: styles.$primary-color;
     color: white;
     font-weight: 500;
-    border: solid 1px $primary-color;
+    border: solid 1px styles.$primary-color;
     border-radius: 8px 8px 0 0;
-    box-shadow: 0px 0px 6px $shadow-color;
+    box-shadow: 0px 0px 6px styles.$shadow-color;
     padding: 10px;
 }
 

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilService } from '../shared/utils/util.service';
+import { NgFor } from '@angular/common';
 
 interface Subcolecao {
   nome: string;
@@ -11,10 +12,10 @@ interface Subcolecao {
 }
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
-  standalone: false
+    selector: 'app-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
+    imports: [NgFor]
 })
 export class MenuComponent implements OnInit {
   // Recebe a coleção e ID para uso no carregamento de subcoleções e navegação

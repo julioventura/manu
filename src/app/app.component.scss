@@ -1,18 +1,18 @@
-@import '../styles.scss';
+@use '../styles.scss' as styles;
 
 // Variáveis de cores
-// $text-color: #2f5489;
+// styles.$text-color: #2f5489;
 
 
 // Estilo Geral
 body {
-    font-family: $font-family;
+    font-family: styles.$font-family;
     margin: 0;
     padding: 0;
     padding-top: 20px;
-    color: $text-color;
+    color: styles.$text-color;
     width: 100%;
-    max-width: $max-width;
+    max-width: styles.$max-width;
     text-align: center;
     // background-color: #839DAC;
   }
@@ -29,10 +29,10 @@ body.no-scroll {
 
   padding-top: 40px;
   padding-bottom: 20px;
-  max-width: $max-width;
+  max-width: styles.$max-width;
   background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: $box-shadow;
+  box-shadow: styles.$box-shadow;
 }
 
 /* Estilos para o chatbot flutuante global */

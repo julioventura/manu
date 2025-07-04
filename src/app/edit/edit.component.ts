@@ -31,7 +31,7 @@ import { FormService } from '../shared/services/form.service';
 import { CamposFichaService } from '../shared/services/campos-ficha.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CamposService } from '../shared/services/campos.service';
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, KeyValuePipe } from '@angular/common';
 import { fadeAnimation } from '../animations/fade.animation';
 import { CanComponentDeactivate } from '../shared/guards/can-deactivate.guard';
 import { MatDialog } from '@angular/material/dialog';
@@ -55,22 +55,22 @@ interface Campo {
 }
 
 @Component({
-  selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated,
-  animations: [
-    trigger('fadeAnimation', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('0.2s ease-in-out', style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate('0.2s ease-in-out', style({ opacity: 0 }))
-      ])
-    ])
-  ],
-  standalone: false
+    selector: 'app-edit',
+    templateUrl: './edit.component.html',
+    styleUrls: ['./edit.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
+    animations: [
+        trigger('fadeAnimation', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('0.2s ease-in-out', style({ opacity: 1 }))
+            ]),
+            transition(':leave', [
+                animate('0.2s ease-in-out', style({ opacity: 0 }))
+            ])
+        ])
+    ],
+    imports: [FormsModule, NgIf, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, KeyValuePipe]
 })
 export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanComponentDeactivate {
   @ViewChild('nomeInput') nomeInput?: ElementRef;

@@ -1,10 +1,10 @@
-@import '../../../styles.scss';
-@import '../homepage.component.scss';
+@use '../../../styles.scss' as styles;
+@use '../homepage.component.scss';
 
 /* filepath: /c:/contexto/dentistas/src/app/homepage/titulacoes/titulacoes.component.scss */
 
 p {
-  color: $primary-color;
+  color: styles.$primary-color;
 }
 
 .titulacoes-card {
@@ -34,7 +34,7 @@ p {
     margin-bottom: 1rem;
     padding-left: 10px;
     border-left: 2px solid rgba(52, 152, 219, 0.3);
-    color: $primary-color;
+    color: styles.$primary-color;
     font-size: small;
     
     &:last-child {

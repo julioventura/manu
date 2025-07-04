@@ -24,7 +24,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from '../shared/services/firestore.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UtilService } from '../shared/utils/util.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormService } from '../shared/services/form.service';
@@ -34,12 +34,17 @@ import { SubcolecaoService } from '../shared/services/subcolecao.service';
 import { CAMPOS_FICHAS_EXAMES, CAMPOS_FICHAS_DOCUMENTOS, CAMPOS_FICHAS_PLANOS, CAMPOS_FICHAS_ATENDIMENTOS, CAMPOS_FICHAS_TRATAMENTOS, CAMPOS_FICHAS_PAGAMENTOS } from '../shared/constants/campos-ficha.constants';
 import { SUBCOLLECTION_FIELDS } from '../shared/constants/subcollection-fields.config';
 import { Registro } from '../shared/constants/registro.model';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
-  standalone: false,
+    selector: 'app-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss'],
+    imports: [
+        NgIf,
+        FormsModule,
+        NgFor,
+    ],
 })
 export class ListComponent implements OnInit {
 

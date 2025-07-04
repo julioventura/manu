@@ -1,6 +1,6 @@
-/* filepath: c:\contexto\dentistas\src\app\crm\components\crm-dashboard\crm-dashboard.component.scss */
+﻿/* filepath: c:\contexto\dentistas\src\app\crm\components\crm-dashboard\crm-dashboard.component.scss */
 
-@import '../../../../styles.scss';
+@use '../../../../styles.scss' as styles;
 
 .crm-dashboard-container {
     padding: 24px;
@@ -83,7 +83,7 @@
             margin-top: 16px;
             
             @media (max-width: 1200px) {
-                grid-template-columns: repeat(4, 1fr); // Força sempre 4 colunas
+                grid-template-columns: repeat(4, 1fr); // ForÃ§a sempre 4 colunas
             }
             
             @media (max-width: 900px) {
@@ -282,19 +282,19 @@
     }
 }
 
-// Estilos do cabeçalho
+// Estilos do cabeÃ§alho
 .header {
     // position: sticky;
     top: 0;
     z-index: 100;
     background: #fff;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    border: $gray solid 1px;
+    border: styles.$gray solid 1px;
     border-radius: 8px;
     margin-bottom: 14px;
 
     padding: 0px 10px;
-    border-color: $primary-color; // Azul no modo de visualização
+    border-color: styles.$primary-color; // Azul no modo de visualizaÃ§Ã£o
 }
 
 // Adicione estes estilos para o layout de 3 colunas
@@ -353,7 +353,7 @@
 
 .collections-column {
   flex: 1 0 21%; // Define que cada coluna ocupa aproximadamente 25% (com gap entre elas)
-  min-width: 200px; // Garante uma largura mínima para cada coluna
+  min-width: 200px; // Garante uma largura mÃ­nima para cada coluna
   margin-bottom: 16px;
 }
 
@@ -409,12 +409,12 @@
 }
 
 .column {
-  flex: 0 0 25%; // Cada coluna ocupa exatamente 25% do espaço
+  flex: 0 0 25%; // Cada coluna ocupa exatamente 25% do espaÃ§o
   padding: 0 8px;
   box-sizing: border-box;
 }
 
-// Ajuste o estilo dos cards para se adaptarem às colunas
+// Ajuste o estilo dos cards para se adaptarem Ã s colunas
 .column .collection-card {
   width: 100%;
   min-height: 110px;
@@ -448,7 +448,7 @@
   }
 }
 
-// Adicione também media queries para responsividade
+// Adicione tambÃ©m media queries para responsividade
 @media (max-width: 768px) {
   .four-columns-container {
     flex-wrap: wrap;
@@ -480,7 +480,7 @@
 
 .column-half {
   flex: 1;
-  min-width: 0; // Evita que o conteúdo force a coluna a ser maior que o esperado
+  min-width: 0; // Evita que o conteÃºdo force a coluna a ser maior que o esperado
 }
 
 .dashboard-actions-container {

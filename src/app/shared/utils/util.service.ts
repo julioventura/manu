@@ -20,24 +20,30 @@
 */
 
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavegacaoService } from '../services/navegacao.service';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UtilService {
+  snackBar = inject(MatSnackBar);
 
   constructor(
     private router: Router,
     private navegacaoService: NavegacaoService,
     private storage: AngularFireStorage
   ) { }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+    });
+  }
 
   // Regex para validação de email
   public EMAIL_REGEXP = /^[^@]+@([^@.]+\.)+[^@.]+$/;
@@ -407,22 +413,22 @@ export class UtilService {
 
 
   // Método para fazer upload de arquivos no Firebase Storage
-  uploadFile(path: string, file: File): Observable<string> {
-    const filePath = `${path}/${file.name}`; // Define o caminho no Firebase Storage
-    const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath, file);
+  // uploadFile(path: string, file: File): Observable<string> {
+  //   const filePath = `${path}/${file.name}`; // Define o caminho no Firebase Storage
+  //   const fileRef = this.storage.ref(filePath);
+  //   const task = this.storage.upload(filePath, file);
 
-    return new Observable<string>(observer => {
-      task.snapshotChanges().pipe(
-        finalize(() => {
-          fileRef.getDownloadURL().subscribe(url => {
-            observer.next(url); // Retorna a URL do arquivo após o upload
-            observer.complete();
-          });
-        })
-      ).subscribe();
-    });
-  }
+  //   return new Observable<string>(observer => {
+  //     task.snapshotChanges().pipe(
+  //       finalize(() => {
+  //         fileRef.getDownloadURL().subscribe(url => {
+  //           observer.next(url); // Retorna a URL do arquivo após o upload
+  //           observer.complete();
+  //         });
+  //       })
+  //     ).subscribe();
+  //   });
+  // }
 
 
   voltar() {

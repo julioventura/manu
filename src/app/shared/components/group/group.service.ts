@@ -5,17 +5,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 
-import { Group, GroupJoinRequest } from './group.model';
+import { Group, GroupJoinRequest, SharingHistoryItem } from './group.model';
 
 // ADICIONAR: interfaces necessárias
-interface SharingHistoryItem {
-  id?: string;
-  action: string;
-  userId: string;
-  groupId: string;
-  timestamp: firebase.firestore.Timestamp | Date;
-  details?: string;
-}
 
 interface JoinRequestData {
   groupId: string;

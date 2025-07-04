@@ -4,13 +4,15 @@ import { NavegacaoService } from '../shared/services/navegacao.service';
 import { CamposService } from '../shared/services/campos.service';
 import { UserService } from '../shared/services/user.service'; //
 import { UtilService } from '../shared/utils/util.service';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
 
 
 @Component({
-  selector: 'app-camposRegistro',
-  templateUrl: './camposRegistro.component.html',
-  styleUrls: ['../fichas/fichas.component.scss'],
-  standalone: false
+    selector: 'app-camposRegistro',
+    templateUrl: './camposRegistro.component.html',
+    styleUrls: ['../fichas/fichas.component.scss'],
+    imports: [FormsModule, NgFor]
 })
 export class CamposRegistroComponent implements OnInit {
   colecaoSelecionada: string = 'padrao'; // Seleciona "padrao" inicialmente

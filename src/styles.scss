@@ -1,6 +1,6 @@
 /* Estilos globais da aplicação dentistas.com.br/clinica */
 
-@import './padding-margin.scss';
+@use './padding-margin.scss';
 
 // ====================================
 // VARIÁVEIS SASS (Para compatibilidade com componentes existentes)
@@ -48,7 +48,7 @@ $medium-width: 500px;
   // ====================================
   // TEMA PADRÃO
   // ====================================
-  
+
   // Cores de fundo e base
   --cor-de-fundo: #8493a9;
   --transparente: #ffffff00;

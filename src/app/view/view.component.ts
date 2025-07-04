@@ -21,6 +21,9 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilService } from '../shared/utils/util.service';
 import { FormService } from '../shared/services/form.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { MenuComponent } from '../menu/menu.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Definir a animação fadeAnimation
 const fadeAnimation = trigger('fadeAnimation', [
@@ -34,12 +37,12 @@ const fadeAnimation = trigger('fadeAnimation', [
 ]);
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.component.html',
-  styleUrls: ['./view.component.scss'],
-  standalone: false,
-  encapsulation: ViewEncapsulation.Emulated,
-  animations: [fadeAnimation]
+    selector: 'app-view',
+    templateUrl: './view.component.html',
+    styleUrls: ['./view.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
+    animations: [fadeAnimation],
+    imports: [NgIf, MenuComponent, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault]
 })
 export class ViewComponent implements OnInit {
   userId: string | null = null;           // ID do usuário autenticado

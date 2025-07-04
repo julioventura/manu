@@ -508,4 +508,32 @@ export class AiChatService {
       return null;
     }
   }
+
+  getMainRecordData(): any {
+    return this.mainRecordData;
+  }
+
+  getCurrentRecordData(): any {
+    return this.currentContext.currentRecord?.data;
+  }
+
+  getLastSubcollectionRecord(): any {
+    // Mock implementation
+    return null;
+  }
+
+  getCurrentCollectionRecord(): any {
+    if (this.currentContext.activeCollection && this.currentContext.currentRecord) {
+      return {
+        id: this.currentContext.currentRecord.id,
+        ...(this.currentContext.currentRecord.data as object)
+      };
+    }
+    return null;
+  }
+
+  getCurrentSubcollectionRecord(): any {
+    // Mock implementation
+    return null;
+  }
 }

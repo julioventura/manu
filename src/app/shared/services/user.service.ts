@@ -97,6 +97,7 @@ export class UserService {
 
   // ADICIONAR: Propriedade context
   public context: {
+    dentistId?: string;
     dentistName?: string;
     location?: string;
     patientName?: string;

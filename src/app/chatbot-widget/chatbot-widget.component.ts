@@ -81,7 +81,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
   showDetailsPopup: boolean = false;
   isDetailsMaximized: boolean = false;
   detailsType: 'collection' | 'subcollection' = 'collection';
-  detailsData: any = null;
+  detailsData: { [key: string]: unknown } | null = null;
   detailsTitle: string = 'Detalhes';
 
   // Adicionar estas propriedades à classe
@@ -127,10 +127,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     this.aiChatService.messageHistory$
       .pipe(takeUntil(this.destroy$))
       .subscribe(messages => {
-        // Log de diagnóstico integrado na única inscrição
-        if (messages.length > 0) {
-        }
-        
         // Substituir completamente o array local pelo histórico do serviço
         this.conversation = [...messages];
         this.shouldScrollToBottom = true;
@@ -268,7 +264,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
 
     this.aiChatService.sendMessage(messageText, this.sessionId, this.dentistId, context)
       .subscribe({
-        next: (response) => {
+        next: () => {
           // O serviço já adiciona a resposta ao histórico via addMessageToHistory
           this.isLoading = false;
         },
@@ -550,7 +546,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
       return null;
     }
 
-    const data = this.currentContext.currentRecord.data;
+    const data = this.currentContext.currentRecord.data as { nome?: string, title?: string, titulo?: string };
     // Tentar vários possíveis nomes de campo
     return data.nome || data.title || data.titulo || null;
   }
@@ -570,8 +566,9 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     }
 
     // Caso contrário, usamos o registro atual normalmente
-    return this.currentContext?.currentRecord?.data?.nome ?
-      this.formatRecordName(this.currentContext.currentRecord.data.nome) : '';
+    const recordData = this.currentContext?.currentRecord?.data as { nome?: string };
+    const recordName = recordData?.nome;
+    return recordName ? this.formatRecordName(recordName) : '';
   }
 
   /**
@@ -591,7 +588,8 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
         this.showDetailsPopup = true;
         this.detailsType = 'collection';
         this.detailsData = this.aiChatService.getCurrentRecordData();
-        this.detailsTitle = 'Detalhes: ' + this.currentContext?.currentRecord?.data?.nome;
+        const recordData = this.currentContext?.currentRecord?.data as { nome?: string };
+        this.detailsTitle = 'Detalhes: ' + (recordData?.nome || '');
       }, 300);
     } else {
       // Alternar visibilidade
@@ -600,7 +598,8 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
       if (this.showDetailsPopup) {
         this.detailsType = 'collection';
         this.detailsData = this.aiChatService.getCurrentRecordData();
-        this.detailsTitle = 'Detalhes: ' + this.currentContext?.currentRecord?.data?.nome;
+        const recordData = this.currentContext?.currentRecord?.data as { nome?: string };
+        this.detailsTitle = 'Detalhes: ' + (recordData?.nome || '');
       }
     }
   }
@@ -634,7 +633,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
   }
 
   // Método para formatar os dados de registro para exibição
-  formatRecordDetailsForDisplay(data: any): { key: string, value: any }[] {
+  formatRecordDetailsForDisplay(data: { [key: string]: unknown }): { key: string, value: unknown }[] {
     return Object.entries(data)
       .filter(([key, value]) => {
         // Usar a variável key para filtrar campos que não devem ser exibidos
@@ -698,7 +697,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     }
   }
 
-  trackByKey(_index: number, item: any): any {
+  trackByKey(_index: number, item: { id: string }): string {
     return item.id; // ou outra propriedade única
   }
 
@@ -750,7 +749,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     // Calcular a nova posição baseada na posição inicial - APENAS HORIZONTAL
     let newRight = this.initialRight + deltaX;
     // Manter a posição vertical fixa
-    const newBottom = this.initialBottom;
     
     // Obter as dimensões corretas do viewport
     const viewportWidth = document.documentElement.clientWidth;
@@ -792,7 +790,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
       
       // Validar posição final para garantir que o chatbot não tenha ultrapassado os limites
       const rect = chatElement.getBoundingClientRect();
-      const viewportHeight = document.documentElement.clientHeight;
       
       // Se o chatbot ultrapassou o topo, reposicioná-lo
       if (rect.top < 0) {
@@ -811,11 +808,10 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
   }
 
   // Método para auxiliar o desenvolvimento - remover na produção
-  private logChatPosition(message: string): void {
+  private logChatPosition(): void {
     const chatElement = document.querySelector('.chatbot-container') as HTMLElement;
     if (!chatElement) return;
     
-    const rect = chatElement.getBoundingClientRect();
   }
 
   // Método para salvar a posição

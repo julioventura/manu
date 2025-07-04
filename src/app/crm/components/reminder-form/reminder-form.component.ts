@@ -2,12 +2,21 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { ReminderService } from '../../services/reminder.service';
-import { MaterialModule } from '../../../shared/material.module';
-
-// Add explicit imports for date components
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+
+// Define an interface for the reminder object
+export interface Reminder {
+  id?: string;
+  titulo: string;
+  data: Date; // Should be a Date object
+  descricao: string;
+  concluido: boolean;
+}
 
 @Component({
   selector: 'app-reminder-form',
@@ -16,7 +25,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MaterialModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule
   ],
@@ -61,7 +72,7 @@ export class ReminderFormComponent implements OnInit {
   @Input() parentPath: string = '';
   @Input() parentId: string = '';
   @Input() editMode: boolean = false;
-  @Input() reminder: any = null;
+  @Input() reminder: Reminder | null = null;
   
   form: FormGroup;
   dialogRef = inject(MatDialogRef<ReminderFormComponent>);
@@ -91,7 +102,7 @@ export class ReminderFormComponent implements OnInit {
     if (this.editMode && this.reminder) {
       this.form.patchValue({
         titulo: this.reminder.titulo,
-        data: this.reminder.data?.toDate() || new Date(),
+        data: this.reminder.data, // No longer need to call toDate()
         descricao: this.reminder.descricao,
         concluido: this.reminder.concluido || false
       });
@@ -105,7 +116,7 @@ export class ReminderFormComponent implements OnInit {
         parentPath: this.parentPath + '/' + this.parentId
       };
       
-      if (this.editMode && this.reminder) {
+      if (this.editMode && this.reminder && this.reminder.id) { // Check for reminder.id
         this.reminderService.updateReminder(this.parentPath, this.parentId, this.reminder.id, reminderData)
           .then(() => this.dialogRef.close(true));
       } else {

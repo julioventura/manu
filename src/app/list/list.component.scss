@@ -1,6 +1,6 @@
-@import '../../styles.scss';
+﻿@use '../../styles.scss' as styles;
 
-// Paginação com botões
+// PaginaÃ§Ã£o com botÃµes
 .pagination {
     display: flex;
         justify-content: center ;
@@ -20,26 +20,26 @@
             width: 25px;
             height: 25px;
         &:hover {
-            background-color: $primary-hover;
+            background-color: styles.$primary-hover;
         }
 
         &:disabled {
-            background-color: $gray;
+            background-color: styles.$gray;
             cursor: not-allowed;
         }
     }
 
 }
 
-// Paginação - total de registros
+// PaginaÃ§Ã£o - total de registros
 .pagination_total {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: $font-family;
-    font-size: $font-size;
-    color: $white;
-    background-color: $primary-color;
+    font-family: styles.$font-family;
+    font-size: styles.$font-size;
+    color: styles.$white;
+    background-color: styles.$primary-color;
     border-radius: 0 0 10px 10px;
     height: 1.7rem;
 }
@@ -49,21 +49,21 @@
     display: flex;
     justify-content: center;
     padding-bottom: 10px;
-        color: $primary-color;
+        color: styles.$primary-color;
 
     input {
         width: 100%;
         max-width: 200px;
         padding: 4px 10px;
-        border: 2px solid $primary-color;
+        border: 2px solid styles.$primary-color;
         border-radius: 6px;
         font-size: 14px;
         font-weight: bold;
-        color: $primary-color;
+        color: styles.$primary-color;
 
         &:focus {
             outline: none;
-            border-color: $primary-color;
+            border-color: styles.$primary-color;
             outline: 0;
         }
     }
@@ -107,3 +107,5 @@
     padding: 8px 10px;
     height: 30px;
 }
+
+

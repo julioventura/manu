@@ -1,4 +1,5 @@
-@import '../../../styles.scss';
+﻿@use '../../../styles.scss' as styles;
+@use 'sass:color';
 
 .container {
     padding: 20px;
@@ -7,21 +8,21 @@
     border: 0;
     box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.5); // Sombra mais intensa
     margin: 0;
-    font-size: 12px; // Tamanho da fonte geral do conteúdo
+    font-size: 12px; // Tamanho da fonte geral do conteÃºdo
 }
 
 .container p {
     padding: 2px;
-    border-bottom: 1px solid $primary-color; // Linha inferior colorida para separação
+    border-bottom: 1px solid styles.$primary-color; // Linha inferior colorida para separaÃ§Ã£o
     &:nth-child(odd) {
-        // background-color: $primary-color-light; // Cor de fundo alternada para as linhas
-        background-color: $white; // Cor de fundo alternada para as linhas
+        // background-color: styles.$primary-color-light; // Cor de fundo alternada para as linhas
+        background-color: styles.$white; // Cor de fundo alternada para as linhas
     }
 }
 
 .container p strong {
     font-size: 10px; // Tamanho da fonte dos labels
-    color: $primary-color-dark;
+    color: styles.$primary-color-dark;
 }
 
 .menu-button {
@@ -31,17 +32,17 @@
     margin-top: 20px;
     border-radius: 12px;
     outline: 0;
-    background-color: $success-color; // Cor verde para o botão
+    background-color: styles.$success-color; // Cor verde para o botÃ£o
     color: white;
     font-weight: bold;
     text-align: center;
     border: none;
     cursor: pointer;
-    font-size: 12px; // Tamanho da fonte do botão
+    font-size: 12px; // Tamanho da fonte do botÃ£o
     transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: darken($success-color, 10%);
+        background-color: color.adjust(styles.$success-color, $lightness: -10%);
     }
 }
 

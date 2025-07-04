@@ -7,12 +7,15 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { filter, take, switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { Subscription } from 'rxjs';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { NgIf } from '@angular/common';
+import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
   animations: [
     trigger('routeAnimations', [
       transition('* <=> *', [
@@ -20,7 +23,8 @@ import { Subscription } from 'rxjs';
         animate('0.4s ease-in-out', style({ opacity: 1 }))
       ])
     ])
-  ]
+  ],
+  imports: [HeaderComponent, RouterOutlet, FooterComponent, NgIf, ChatbotWidgetComponent]
 })
 export class AppComponent implements OnInit, OnDestroy {
 

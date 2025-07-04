@@ -1,22 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '../../../shared/material.module';
+import { MatCardModule } from '@angular/material/card';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+
+interface ChartData {
+  name: string;
+  value: number;
+}
+
+interface SeriesData {
+  name: string;
+  series: ChartData[];
+}
 
 @Component({
   selector: 'app-crm-reports',
   templateUrl: './crm-reports.component.html',
   styleUrls: ['./crm-reports.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, MaterialModule, NgxChartsModule]
+  imports: [CommonModule, RouterModule, MatCardModule, NgxChartsModule]
 })
 export class CrmReportsComponent implements OnInit {
   // Dados de tendência ao longo do tempo
-  timeTrendData: any[] = [];
+  timeTrendData: SeriesData[] = [];
   
   // Previsão de vendas
-  forecastData: any[] = [];
+  forecastData: SeriesData[] = [];
   
   // Opções de gráficos
   colorScheme = {

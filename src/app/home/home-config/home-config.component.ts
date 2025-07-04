@@ -4,12 +4,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
  
 import { UtilService } from '../../shared/utils/util.service';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
   
 @Component({
-  selector: 'app-home-config',
-  templateUrl: './home-config.component.html',
-  styleUrls: ['./home-config.component.scss'],
-  standalone: false
+    selector: 'app-home-config',
+    templateUrl: './home-config.component.html',
+    styleUrls: ['./home-config.component.scss'],
+    imports: [NgFor, FormsModule]
 })
 export class HomeConfigComponent implements OnInit {
   colecoesAtivas = ['Associados', 'Pacientes', 'Alunos', 'Professores', 'Dentistas', 'Equipe', 'Protéticos']; // Exemplo de coleções ativas

@@ -1,11 +1,11 @@
-@import '../../../../styles.scss';
+@use '../../../../styles.scss' as styles;
 
 .group-sharing-modal {
   min-width: 400px;
   max-width: 500px;
 
   h2 {
-    color: $primary-color;
+    color: styles.$primary-color;
     display: flex;
     align-items: center;
     margin-bottom: 16px;
@@ -22,7 +22,7 @@
     padding: 12px;
     background-color: #f8f9fa;
     border-radius: 6px;
-    border-left: 4px solid $primary-color;
+    border-left: 4px solid styles.$primary-color;
 
     p {
       margin: 4px 0;

@@ -1,5 +1,5 @@
-@import '../../../styles.scss';
-@import '../homepage.component.scss';
+@use '../../../styles.scss' as styles;
+@use '../homepage.component.scss';
 
 /* filepath: /c:/contexto/dentistas/src/app/homepage/contato/contato.component.scss */
 .contato-card {
@@ -67,5 +67,5 @@
   font-size: 1rem;
   font-weight: 500;
   margin: 0.2rem 0 0;
-  color: $primary-color;
+  color: styles.$primary-color;
 }

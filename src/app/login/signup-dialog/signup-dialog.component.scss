@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@use '../../../styles.scss';
 
 :host {
   display: block;
@@ -17,7 +17,7 @@ display: flex;
   align-items: center;
   padding: 0px 24px 0;
   color: #ffffff;
-  background: $primary-color;
+  background: styles.$primary-color;
   
   .header-icon {
     font-size: 32px;
@@ -30,7 +30,7 @@ display: flex;
     margin: 0;
     font-size: 24px;
     font-weight: 500;
-    color: $white;
+    color: styles.$white;
   }
 }
 

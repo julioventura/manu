@@ -43,6 +43,7 @@ export class InteractionService {
             if (updatedCrmData) {
               return this.crmService.updateCrmData(collectionPath, docId, updatedCrmData);
             }
+            return Promise.resolve();
           });
       });
   }

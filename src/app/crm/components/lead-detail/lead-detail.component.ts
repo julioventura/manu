@@ -6,7 +6,11 @@ import { CrmService } from '../../services/crm.service';
 import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ReminderFormComponent } from '../reminder-form/reminder-form.component';
-import { MaterialModule } from '../../../shared/material.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-lead-detail',
@@ -16,7 +20,10 @@ import { MaterialModule } from '../../../shared/material.module';
   imports: [
     CommonModule,
     RouterModule,
-    MaterialModule
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class LeadDetailComponent implements OnInit {

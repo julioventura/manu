@@ -14,11 +14,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { UserService } from '../shared/services/user.service';
-import { ConfigService } from '../shared/services/config.service';
-import { GroupService } from '../shared/components/group/group.service';
-import { GroupSharingModalComponent } from '../shared/components/group/group-sharing-modal.component';
-import { UtilService } from '../shared/utils/util.service';
+import { UserService } from '../../shared/services/user.service';
+import { ConfigService } from '../../shared/services/config.service';
+import { GroupService } from '../../shared/components/group/group.service';
+import { GroupSharingModalComponent } from '../../shared/components/group/group-sharing-modal.component';
+import { UtilService } from '../../shared/utils/util.service';
 
 // CORRIGIR: Definir todas as interfaces necessárias
 interface ViewData {

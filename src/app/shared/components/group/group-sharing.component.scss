@@ -1,5 +1,5 @@
 /* filepath: c:\contexto\dentistas\src\app\shared\components\group\group-sharing.component.scss */
-@import '../../../../styles.scss';
+@use '../../../../styles.scss';
 
 .group-sharing-container {
   margin-top: 20px;
@@ -13,7 +13,7 @@
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 12px;
-  color: $primary-color;
+  color: styles.$primary-color;
 }
 
 .detail-container {

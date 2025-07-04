@@ -6,10 +6,32 @@ import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
 import { CrmService } from '../../services/crm.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { MaterialModule } from '../../../shared/material.module';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
 import { MatChipsModule } from '@angular/material/chips';
-import { PipelineConfig, PipelineStage } from '../../models/crm.model';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import firebase from 'firebase/compat/app';
+
+interface Lead {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  crmData?: {
+    leadStatus: string;
+    leadSource?: string;
+    valorPotencial?: number;
+    dataCadastro?: Date | firebase.firestore.Timestamp; // Can be a Date or a Firestore Timestamp
+    observacoes?: string;
+    tags?: string[];
+  };
+}
 
 @Component({
   selector: 'app-pipeline-view',
@@ -22,16 +44,23 @@ import { PipelineConfig, PipelineStage } from '../../models/crm.model';
     RouterModule, 
     FormsModule, 
     DragDropModule, 
-    MaterialModule,
-    MatChipsModule
+    MatChipsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatDialogModule
   ]
 })
 export class PipelineViewComponent implements OnInit {
-  @ViewChild('leadDetailsDialog') leadDetailsDialog!: TemplateRef<any>;
+  @ViewChild('leadDetailsDialog') leadDetailsDialog!: TemplateRef<Lead>;
   
   stageIds: string[] = [];
   stageLabels: {[key: string]: string} = {};
-  pipeline: {[key: string]: any[]} = {};
+  pipeline: {[key: string]: Lead[]} = {};
   isLoading = true;
   selectedCollection = 'pacientes';
   collections = [
@@ -79,7 +108,7 @@ export class PipelineViewComponent implements OnInit {
     });
     
     // Gerar dados de teste para o pipeline
-    const testLeads = [
+    const testLeads: Lead[] = [
       {
         id: 'test1',
         nome: 'Maria Silva',
@@ -136,77 +165,72 @@ export class PipelineViewComponent implements OnInit {
         }
       }
     ];
-    
-    // Distribuir leads pelos estágios
+
+    // Simular a distribuição de leads nas fases do pipeline
     testLeads.forEach(lead => {
-      const status = lead.crmData.leadStatus;
-      if (this.pipeline[status]) {
-        this.pipeline[status].push(lead);
+      if (lead.crmData && this.pipeline[lead.crmData.leadStatus]) {
+        this.pipeline[lead.crmData.leadStatus].push(lead);
       }
     });
-    
-    this.isLoading = false;
-  }
 
-  drop(event: CdkDragDrop<any[]>): void {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-      
-      // Update lead status
-      const lead = event.container.data[event.currentIndex];
-      const newStatus = event.container.id;
-      
-      this.crmService.updateCrmData(this.selectedCollection, lead.id, {
-        ...lead.crmData,
-        leadStatus: newStatus
-      }).then(() => {
-        this.snackBar.open('Status atualizado com sucesso', 'OK', {
-          duration: 3000
-        });
-      }).catch(err => {
-        this.snackBar.open('Erro ao atualizar status', 'OK', {
-          duration: 3000
-        });
-      });
-    }
+    this.isLoading = false;
   }
 
   onCollectionChange(): void {
     this.loadPipelineData();
   }
 
-  viewRegistro(collection: string, id: string): void {
-    this.router.navigate(['/crm/lead', collection, id]);
+  drop(event: CdkDragDrop<Lead[]>): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      const lead = event.previousContainer.data[event.previousIndex];
+      const newStage = event.container.id;
+
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+
+      this.crmService.updateLeadStatus(this.selectedCollection, lead.id, newStage)
+        .then(() => {
+          this.snackBar.open('Status do lead atualizado com sucesso!', 'Fechar', { duration: 3000 });
+        })
+        .catch(err => {
+          console.error('Erro ao atualizar status do lead:', err);
+          this.snackBar.open('Erro ao atualizar status do lead.', 'Fechar', { duration: 3000 });
+          // Reverter a alteração em caso de erro
+          transferArrayItem(
+            event.container.data,
+            event.previousContainer.data,
+            event.currentIndex,
+            event.previousIndex
+          );
+        });
+    }
   }
 
-  getBackgroundStyle(stageId: string): any {
-    // Define colors com as mesmas chaves que testStages
-    const colors: {[key: string]: string} = {
+  viewRegistro(collection: string, id: string): void {
+    this.router.navigate(['/view', collection, id]);
+  }
+
+  getBackgroundStyle(stageId: string): { [key: string]: string } {
+    const stageColors: {[key: string]: string} = {
       'novo': '#e3f2fd',
       'qualificado': '#e8f5e9',
-      'em_atendimento': '#fff8e1', 
+      'em_atendimento': '#fff8e1',
       'fechado_ganho': '#e8eaf6',
       'fechado_perdido': '#ffebee'
     };
-    
-    return {
-      'background-color': colors[stageId] || '#f5f5f5'
-    };
+    return { 'background-color': stageColors[stageId] || '#fafafa' };
   }
 
-  // Novo método para abrir o popup de detalhes
-  viewLeadDetails(lead: any): void {
+  viewLeadDetails(lead: Lead): void {
     this.dialog.open(this.leadDetailsDialog, {
-      data: lead,
       width: '500px',
-      panelClass: 'lead-details-dialog'
+      data: lead
     });
   }
 }

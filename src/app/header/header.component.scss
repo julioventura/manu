@@ -1,31 +1,31 @@
-@import '../../styles.scss';
+﻿@use '../../styles.scss' as styles;
 
 header.app-main-header {
-  max-width: $max-width; // Mesma largura máxima dos containers (800px)
+  max-width: styles.$max-width; // Mesma largura mÃ¡xima dos containers (800px)
   margin: 0 auto; // Centraliza o header
   padding: 15px 0px;
   // background-color: var(--header-bar-bg-color, transparent);
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
-  justify-content: space-between; // Logo à esquerda, controles à direita
+  justify-content: space-between; // Logo Ã  esquerda, controles Ã  direita
   align-items: center;
   width: 100%;
   box-sizing: border-box;
 }
 
-// Removido .header-content pois não é mais necessário
+// Removido .header-content pois nÃ£o Ã© mais necessÃ¡rio
 // O header agora gerencia diretamente o layout
 
-// Estilos da saudação ao usuário (lado esquerdo)
+// Estilos da saudaÃ§Ã£o ao usuÃ¡rio (lado esquerdo)
 .user-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; // Alinha à esquerda
+  align-items: flex-start; // Alinha Ã  esquerda
 }
 
 .user-greeting {
   font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 1.5em; // Tamanho ideal para estética
+  font-size: 1.5em; // Tamanho ideal para estÃ©tica
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
@@ -36,12 +36,12 @@ header.app-main-header {
 .logo-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; // Alinha à esquerda
+  align-items: flex-start; // Alinha Ã  esquerda
 }
 
 .main-logo-text {
   font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 1.5em; // Tamanho ideal para estética
+  font-size: 1.5em; // Tamanho ideal para estÃ©tica
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
@@ -69,7 +69,7 @@ header.app-main-header {
 .theme-menu {
   position: absolute;
   top: 100%;
-  right: 0; // Alinha à direita do botão para não sair da tela
+  right: 0; // Alinha Ã  direita do botÃ£o para nÃ£o sair da tela
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
@@ -100,7 +100,7 @@ header.app-main-header {
   }
 }
 
-// Melhorias visuais do botão de tema
+// Melhorias visuais do botÃ£o de tema
 .theme-btn {
   color: var(--header-bar-icon-color, var(--primary-color, #153d75));
   // color: var(--logo-main-text-color, var(--primary-color-dark, #153d75));
@@ -120,10 +120,10 @@ header.app-main-header {
 }
 
 button[mat-icon-button], button[mat-button] {
-  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar uma variável específica ou a do footer
+  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar uma variÃ¡vel especÃ­fica ou a do footer
 }
 
-// Botão de logout no header - mesmo estilo do footer
+// BotÃ£o de logout no header - mesmo estilo do footer
 .logout-btn {
   display: flex;
   align-items: center;
@@ -165,7 +165,7 @@ button[mat-icon-button], button[mat-button] {
 }
 
 // Responsividade para telas menores
-@media screen and (max-width: $medium-width) {
+@media screen and (max-width: styles.$medium-width) {
   header.app-main-header {
     margin: 0 10px; // Pequena margem nas laterais em telas menores
     padding: 10px 15px; // Reduz o padding em telas menores
@@ -216,3 +216,4 @@ button[mat-icon-button], button[mat-button] {
     }
   }
 }
+

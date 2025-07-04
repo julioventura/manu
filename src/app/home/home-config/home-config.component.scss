@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+﻿@use '../../../styles.scss' as styles;
 
 input, select{
     padding: 3px;
@@ -29,14 +29,14 @@ label {
 .colecao-buttons button {
     padding: 10px;
     border: 1px solid #ccc;
-    background-color: $primary-color;
+    background-color: styles.$primary-color;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .colecao-buttons button:hover {
-    background-color: $primary-color-dark;
+    background-color: styles.$primary-color-dark;
 }
 
 .colecao-buttons button.selected {
@@ -56,3 +56,4 @@ input, select {
     font-size: 14px;
     font-weight: bold;
 }
+

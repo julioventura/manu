@@ -5,6 +5,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 import { UtilService } from '../../shared/utils/util.service';
 import { NavegacaoService } from '../../shared/services/navegacao.service';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Subcolecao {
   nome: string;
@@ -12,10 +14,10 @@ interface Subcolecao {
 }
 
 @Component({
-  selector: 'app-menu-config',
-  templateUrl: './menu-config.component.html',
-  styleUrls: ['./menu-config.component.scss'],
-  standalone: false
+    selector: 'app-menu-config',
+    templateUrl: './menu-config.component.html',
+    styleUrls: ['./menu-config.component.scss'],
+    imports: [NgFor, FormsModule]
 })
 export class MenuConfigComponent implements OnInit {
   colecoesDisponiveis = [

@@ -1,13 +1,13 @@
-@import '../../styles.scss';
+﻿@use '../../styles.scss' as styles;
 
 footer.app-footer {
-  max-width: $max-width; // Mesma largura máxima dos containers (800px)
+  max-width: styles.$max-width; // Mesma largura mÃ¡xima dos containers (800px)
   margin: 24px auto 0 auto; // Centraliza o footer e aproxima do container acima
   padding: 12px 0px; // Padding reduzido para aproximar
-  background: rgba(21, 61, 117, 0.4); // primary-dark com 40% de transparência
+  background: rgba(21, 61, 117, 0.4); // primary-dark com 40% de transparÃªncia
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
-  justify-content: center; // Centraliza conteúdo do footer
+  justify-content: center; // Centraliza conteÃºdo do footer
   align-items: center;
   width: 100%;
   box-sizing: border-box;
@@ -23,23 +23,23 @@ footer.app-footer {
 
 .main-logo-text {
   font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 1.5em; // Tamanho ideal para estética
+  font-size: 1.5em; // Tamanho ideal para estÃ©tica
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
   line-height: 1.2;
 }
 
-// Informações do usuário  - estilo similar ao logo do header - mantido caso seja usado
+// InformaÃ§Ãµes do usuÃ¡rio  - estilo similar ao logo do header - mantido caso seja usado
 .user-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; // Alinha à esquerda como no header
+  align-items: flex-start; // Alinha Ã  esquerda como no header
 }
 
 .user-greeting {
   font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 1.5em; // Tamanho ideal para estética
+  font-size: 1.5em; // Tamanho ideal para estÃ©tica
   font-weight: 600;
   color: var(--primary-color-dark, #153d75);
   letter-spacing: 0.5px;
@@ -48,7 +48,7 @@ footer.app-footer {
 
 .app-version {
   font-family: var(--font-family, 'Roboto', sans-serif);
-  font-size: 0.7em; // Mesmo tamanho do subtítulo do header
+  font-size: 0.7em; // Mesmo tamanho do subtÃ­tulo do header
   font-weight: 400;
   color: var(--logo-ai-text-color, var(--text-color, #333));
   letter-spacing: 0.5px;
@@ -66,8 +66,8 @@ footer.app-footer {
 
 .theme-menu {
   position: absolute;
-  bottom: 100%; // MODIFICADO: Posiciona acima do botão para abrir para cima
-  right: 0; // Alinha à direita do botão para não sair da tela
+  bottom: 100%; // MODIFICADO: Posiciona acima do botÃ£o para abrir para cima
+  right: 0; // Alinha Ã  direita do botÃ£o para nÃ£o sair da tela
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
@@ -98,7 +98,7 @@ footer.app-footer {
   }
 }
 
-// Melhorias visuais do botão de tema no footer - cor primary-color-dark
+// Melhorias visuais do botÃ£o de tema no footer - cor primary-color-dark
 .theme-btn {
   color: var(--primary-color-dark, #153d75) !important;
   transition: all 0.2s ease;
@@ -117,7 +117,7 @@ footer.app-footer {
 }
 
 button[mat-icon-button] {
-  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar a mesma variável do header
+  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar a mesma variÃ¡vel do header
 }
     
     @media (max-width: 768px) {
@@ -151,7 +151,7 @@ button[mat-icon-button] {
       }
     }
 
-// ATUALIZAR: gap do grid de ícones
+// ATUALIZAR: gap do grid de Ã­cones
 .services-section.icon-grid.largo {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -161,16 +161,16 @@ button[mat-icon-button] {
   max-width: 1000px;
 }
 
-// Para telas grandes - forçar 5 colunas
+// Para telas grandes - forÃ§ar 5 colunas
 @media (min-width: 1300px) {
   .services-section.icon-grid.largo {
     grid-template-columns: repeat(5, 1fr);
-    gap: 50px; // AUMENTAR: +10px também aqui
+    gap: 50px; // AUMENTAR: +10px tambÃ©m aqui
     max-width: 1200px;
   }
 }
 
-// Responsivo - manter proporção do gap aumentado
+// Responsivo - manter proporÃ§Ã£o do gap aumentado
 @media (max-width: 1200px) {
   .services-section.icon-grid.largo {
     grid-template-columns: repeat(4, 1fr);
@@ -203,9 +203,9 @@ button[mat-icon-button] {
   }
 }
 
-// NOVO: Estilo elegante para botão do footer
+// NOVO: Estilo elegante para botÃ£o do footer
 .button {
-  // Layout e dimensões
+  // Layout e dimensÃµes
   padding: 5px 16px 4px 16px;
   height: 32px;
   min-width: 60px;
@@ -219,12 +219,12 @@ button[mat-icon-button] {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   
-  // Cores - tema azul compatível com a página
+  // Cores - tema azul compatÃ­vel com a pÃ¡gina
   background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
   color: white;
   box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
   
-  // Cursor e transições
+  // Cursor e transiÃ§Ãµes
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
@@ -264,7 +264,7 @@ button[mat-icon-button] {
   }
 }
 
-// VARIAÇÃO: Botão outline para footer (opcional)
+// VARIAÃ‡ÃƒO: BotÃ£o outline para footer (opcional)
 .button.outline {
   background: transparent;
   border: 1.5px solid #2196F3;
@@ -285,7 +285,7 @@ button[mat-icon-button] {
   }
 }
 
-// VARIAÇÃO: Botão pequeno para espaços reduzidos
+// VARIAÃ‡ÃƒO: BotÃ£o pequeno para espaÃ§os reduzidos
 .button.small {
   padding: 4px 12px;
   height: 28px;
@@ -306,12 +306,12 @@ button[mat-icon-button] {
     transition: all 0.2s ease;
     
     &:hover {
-      transform: none; // Remover animação de hover no mobile
+      transform: none; // Remover animaÃ§Ã£o de hover no mobile
     }
   }
 }
 
-// ACESSIBILIDADE: Melhor contraste para usuários com deficiência visual
+// ACESSIBILIDADE: Melhor contraste para usuÃ¡rios com deficiÃªncia visual
 @media (prefers-contrast: high) {
   .button {
     background: #1565C0;
@@ -324,7 +324,7 @@ button[mat-icon-button] {
   }
 }
 
-// PREFERÊNCIA: Reduzir movimento para usuários sensíveis
+// PREFERÃŠNCIA: Reduzir movimento para usuÃ¡rios sensÃ­veis
 @media (prefers-reduced-motion: reduce) {
   .button {
     transition: none;
@@ -344,15 +344,15 @@ button[mat-icon-button] {
 
 .theme-menu {
   position: absolute;
-  bottom: 100%; // Posiciona acima do botão
-  left: 0; // MODIFICADO: Alinha à esquerda do botão para crescer para a direita
+  bottom: 100%; // Posiciona acima do botÃ£o
+  left: 0; // MODIFICADO: Alinha Ã  esquerda do botÃ£o para crescer para a direita
   // right: 0; // REMOVIDO ou comentado
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #ccc);
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1010;
-  min-width: 120px; // O menu terá pelo menos esta largura
+  min-width: 120px; // O menu terÃ¡ pelo menos esta largura
 
   ul {
     list-style: none;
@@ -363,7 +363,7 @@ button[mat-icon-button] {
       padding: 8px 15px;
       cursor: pointer;
       color: var(--menu-text-color, #333);
-      white-space: nowrap; // Impede que o texto quebre, forçando o menu a expandir se necessário
+      white-space: nowrap; // Impede que o texto quebre, forÃ§ando o menu a expandir se necessÃ¡rio
 
       &:hover {
         background-color: var(--menu-hover-bg-color, #f5f5f5);
@@ -385,7 +385,7 @@ button[mat-icon-button] {
 
 .theme-menu {
   position: absolute;
-  bottom: 100%; // Abre para cima do botão
+  bottom: 100%; // Abre para cima do botÃ£o
   right: 0;
   background-color: var(--menu-bg-color, white);
   border: 1px solid var(--border-color, #e2e8f0);
@@ -393,7 +393,7 @@ button[mat-icon-button] {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   z-index: 1010;
   min-width: 130px;
-  margin-bottom: 8px; // Espaçamento do botão para cima
+  margin-bottom: 8px; // EspaÃ§amento do botÃ£o para cima
 
   ul {
     list-style: none;
@@ -429,7 +429,7 @@ button[mat-icon-button] {
   }
 }
 
-// Botões
+// BotÃµes
 button[mat-icon-button] {
   color: var(--footer-icon-color, #64748b);
   transition: color 0.2s ease, transform 0.2s ease;
@@ -446,7 +446,7 @@ button[mat-icon-button] {
   }
 }
 
-// Botão de logout - design harmonioso com header e footer
+// BotÃ£o de logout - design harmonioso com header e footer
 .logout-btn {
   display: flex;
   align-items: center;
@@ -488,7 +488,7 @@ button[mat-icon-button] {
 }
 
 // Responsividade para telas menores - igual ao header
-@media screen and (max-width: $medium-width) {
+@media screen and (max-width: styles.$medium-width) {
   footer.app-footer {
     margin: 0 10px; // Pequena margem nas laterais em telas menores
     padding: 0px 15px; // Reduz o padding em telas menores
@@ -580,6 +580,6 @@ button[mat-icon-button] {
 
   // Em telas muito pequenas, pode empilhar ou simplificar
   .logout-btn span {
-    display: none; // Esconde o texto "Sair", mostra só o ícone
+    display: none; // Esconde o texto "Sair", mostra sÃ³ o Ã­cone
   }
 }
