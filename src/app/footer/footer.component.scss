@@ -1,317 +1,119 @@
 ﻿@use '../../styles.scss' as styles;
 
 footer.app-footer {
-  max-width: styles.$max-width; // Mesma largura mÃ¡xima dos containers (800px)
-  margin: 0 auto 0 auto; // Centraliza o footer e aproxima do container acima
-  padding: 0 0px; // Padding reduzido para aproximar
-  // background: rgba(21, 61, 117, 0.4); // primary-dark com 40% de transparÃªncia
-  color: var(--header-bar-text-color, var(--footer-text-color, #333));
+  max-width: styles.$max-width; // Mesma largura máxima dos containers (800px)
+  margin: 0 auto;
+  padding: 10px 15px;
+  background: var(--primary-color-dark, #153d75); // Cor de fundo azul escuro como na imagem
+  color: white;
   display: flex;
-  justify-content: center; // Centraliza conteÃºdo do footer
+  justify-content: space-between; // Distribui o conteúdo nas 3 seções
   align-items: center;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 0 0 8px 8px; // Bordas arredondadas na parte inferior
 }
 
-// Estilos do logo no footer 
-.logo-text {
-  text-align: center;
-  width: 100%;
+// Seção esquerda - versão do app
+.footer-left {
   display: flex;
-  justify-content: center;
-}
-
-.main-logo-text {
-  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 1.5em; // Tamanho ideal para estÃ©tica
-  font-weight: 600;
-  color: var(--primary-color-dark, #153d75);
-  letter-spacing: 0.5px;
-  line-height: 1.2;
-}
-
-// InformaÃ§Ãµes do usuÃ¡rio  - estilo similar ao logo do header - mantido caso seja usado
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; // Alinha Ã  esquerda como no header
-}
-
-.user-greeting {
-  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 1.5em; // Tamanho ideal para estÃ©tica
-  font-weight: 600;
-  color: var(--primary-color-dark, #153d75);
-  letter-spacing: 0.5px;
-  line-height: 1.2;
+  align-items: center;
 }
 
 .app-version {
   font-family: var(--font-family, 'Roboto', sans-serif);
-  font-size: 0.7em; // Mesmo tamanho do subtÃ­tulo do header
+  font-size: 0.9em;
   font-weight: 400;
-  color: var(--logo-ai-text-color, var(--text-color, #333));
+  color: white;
   letter-spacing: 0.5px;
-  margin-top: -3px;
-  text-transform: uppercase;
 }
 
-// Container para os controles do footer (tema e logout) - igual ao header
-.footer-controls {
+// Seção central - nome do usuário
+.footer-center {
   display: flex;
   align-items: center;
-  gap: 15px; // Mesmo gap do header
+  justify-content: center;
+  flex: 1; // Ocupa o espaço central
 }
 
-
-.theme-menu {
-  position: absolute;
-  bottom: 100%; // MODIFICADO: Posiciona acima do botÃ£o para abrir para cima
-  right: 0; // Alinha Ã  direita do botÃ£o para nÃ£o sair da tela
-  background-color: var(--menu-bg-color, white);
-  border: 1px solid var(--border-color, #ccc);
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1010;
-  min-width: 120px;
-
-  ul {
-    list-style: none;
-    padding: 5px 0;
-    margin: 0;
-
-    li {
-      padding: 8px 15px;
-      cursor: pointer;
-      color: var(--menu-text-color, #333);
-      white-space: nowrap;
-
-      &:hover {
-        background-color: var(--menu-hover-bg-color, #f5f5f5);
-      }
-
-      &.active {
-        font-weight: bold;
-        color: var(--primary-color, #2A7AC3);
-      }
-    }
-  }
-}
-
-// Melhorias visuais do botÃ£o de tema no footer - cor primary-color-dark
-.theme-btn {
-  color: var(--primary-color-dark, #153d75) !important;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: var(--primary-color-dark, #153d75) !important;
-    transform: scale(1.1);
-    background-color: rgba(21, 61, 117, 0.1) !important;
-  }
-
-  mat-icon {
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-  }
-}
-
-button[mat-icon-button] {
-  color: var(--header-bar-icon-color, var(--footer-icon-color, inherit)); // Usar a mesma variÃ¡vel do header
-}
-    
-    @media (max-width: 768px) {
-      .footer-content {
-        flex-direction: row;
-        gap: 8px;
-        padding: 4px;
-      }
-      
-      .footer-text {
-        font-size: 8px;
-        text-align: center;
-      }
-    }
-
-    .footer-link {
-      color: white;
-      text-decoration: none;
-      
-      &:hover {
-        text-decoration: underline;
-        opacity: 0.8;
-      }
-      
-      &:visited {
-        color: white;
-      }
-      
-      &:active {
-        color: white;
-      }
-    }
-
-// ATUALIZAR: gap do grid de Ã­cones
-.services-section.icon-grid.largo {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 40px; // AUMENTAR: era 20px, agora 30px (+10px)
-  margin: 0 auto;
-  padding: 20px;
-  max-width: 1000px;
-}
-
-// Para telas grandes - forÃ§ar 5 colunas
-@media (min-width: 1300px) {
-  .services-section.icon-grid.largo {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 50px; // AUMENTAR: +10px tambÃ©m aqui
-    max-width: 1200px;
-  }
-}
-
-// Responsivo - manter proporÃ§Ã£o do gap aumentado
-@media (max-width: 1200px) {
-  .services-section.icon-grid.largo {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px; // Era 15px, agora 25px
-    max-width: 1000px;
-  }
-}
-
-@media (max-width: 900px) {
-  .services-section.icon-grid.largo {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px; // Era 15px, agora 25px
-    max-width: 750px;
-  }
-}
-
-@media (max-width: 600px) {
-  .services-section.icon-grid.largo {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px; // Era 10px, agora 20px
-    max-width: 500px;
-  }
-}
-
-@media (max-width: 400px) {
-  .services-section.icon-grid.largo {
-    grid-template-columns: 1fr;
-    gap: 15px; // Era 5px, agora 15px
-    max-width: 300px;
-  }
-}
-
-// NOVO: Estilo elegante para botÃ£o do footer
-.button {
-  // Layout e dimensÃµes
-  padding: 5px 16px 4px 16px;
-  height: 32px;
-  min-width: 60px;
-  border: none;
-  border-radius: 6px;
-  
-  // Tipografia
-  font-family: inherit;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  
-  // Cores - tema azul compatÃ­vel com a pÃ¡gina
-  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+.user-name {
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 1em;
+  font-weight: 500;
   color: white;
-  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
-  
-  // Cursor e transiÃ§Ãµes
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
-  
-  // Estados interativos
+  letter-spacing: 0.5px;
+}
+
+// Seção direita - botão sair
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+// Estilo do botão Sair
+.logout-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  background-color: var(--primary-color, #2A7AC3) !important; // Azul mais claro para o botão
+  color: white !important;
+  font-family: var(--font-family, 'Roboto', sans-serif) !important;
+  font-size: 0.85em !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+
   &:hover {
-    background: linear-gradient(135deg, #ee4343 0%, #812121 100%);
-    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.4);
+    background-color: rgba(255, 255, 255, 0.1) !important;
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   }
-  
+
   &:active {
     transform: translateY(0);
-    box-shadow: 0 1px 2px rgba(33, 150, 243, 0.3);
-    background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
-  }
-  
-  &:focus {
-    box-shadow: 
-      0 2px 4px rgba(33, 150, 243, 0.3),
-      0 0 0 2px rgba(33, 150, 243, 0.2);
-  }
-  
-  // Estado desabilitado
-  &:disabled {
-    background: #E0E0E0;
-    color: #9E9E9E;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-    
-    &:hover {
-      background: #E0E0E0;
-      transform: none;
-      box-shadow: none;
-    }
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
   }
 }
 
-// VARIAÃ‡ÃƒO: BotÃ£o outline para footer (opcional)
-.button.outline {
-  background: transparent;
-  border: 1.5px solid #2196F3;
-  color: #2196F3;
-  box-shadow: none;
-  
-  &:hover {
-    background: rgba(33, 150, 243, 0.1);
-    border-color: #1976D2;
-    color: #1976D2;
-    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+// Responsividade para telas menores
+@media screen and (max-width: styles.$medium-width) {
+  footer.app-footer {
+    margin: 0 10px;
+    padding: 8px 12px;
   }
-  
-  &:active {
-    background: rgba(33, 150, 243, 0.15);
-    border-color: #1565C0;
-    color: #1565C0;
+
+  .app-version, .user-name {
+    font-size: 0.8em;
+  }
+
+  .logout-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75em !important;
   }
 }
 
-// VARIAÃ‡ÃƒO: BotÃ£o pequeno para espaÃ§os reduzidos
-.button.small {
-  padding: 4px 12px;
-  height: 28px;
-  font-size: 11px;
-  min-width: 50px;
-}
+@media screen and (max-width: 400px) {
+  footer.app-footer {
+    padding: 6px 8px;
+    flex-direction: row; // Mantém horizontal mas com espaçamento reduzido
+    gap: 8px;
+  }
 
-// RESPONSIVO: Ajustes para mobile
-@media (max-width: 768px) {
-  .button {
-    padding: 4px 12px;
-    height: 28px;
-    font-size: 10px;
-    min-width: 45px;
-    border-radius: 4px;
-    
-    // Reduzir efeitos para performance mobile
-    transition: all 0.2s ease;
-    
-    &:hover {
-      transform: none; // Remover animaÃ§Ã£o de hover no mobile
-    }
+  .app-version, .user-name {
+    font-size: 0.7em;
+  }
+
+  .logout-btn {
+    padding: 4px 8px !important;
+    font-size: 0.65em !important;
   }
 }
 
-// ACESSIBILIDADE: Melhor contraste para usuÃ¡rios com deficiÃªncia visual
+// ACESSIBILIDADE: Melhor contraste para usuários com deficiência visual
 @media (prefers-contrast: high) {
   .button {
     background: #1565C0;
@@ -324,7 +126,7 @@ button[mat-icon-button] {
   }
 }
 
-// PREFERÃŠNCIA: Reduzir movimento para usuÃ¡rios sensÃ­veis
+// PREFERÊNCIA: Reduzir movimento para usuários sensíveis
 @media (prefers-reduced-motion: reduce) {
   .button {
     transition: none;
@@ -332,254 +134,5 @@ button[mat-icon-button] {
     &:hover {
       transform: none;
     }
-  }
-}
-
-.footer-content {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-
-.theme-menu {
-  position: absolute;
-  bottom: 100%; // Posiciona acima do botÃ£o
-  left: 0; // MODIFICADO: Alinha Ã  esquerda do botÃ£o para crescer para a direita
-  // right: 0; // REMOVIDO ou comentado
-  background-color: var(--menu-bg-color, white);
-  border: 1px solid var(--border-color, #ccc);
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1010;
-  min-width: 120px; // O menu terÃ¡ pelo menos esta largura
-
-  ul {
-    list-style: none;
-    padding: 5px 0;
-    margin: 0;
-
-    li {
-      padding: 8px 15px;
-      cursor: pointer;
-      color: var(--menu-text-color, #333);
-      white-space: nowrap; // Impede que o texto quebre, forÃ§ando o menu a expandir se necessÃ¡rio
-
-      &:hover {
-        background-color: var(--menu-hover-bg-color, #f5f5f5);
-      }
-
-      &.active {
-        font-weight: bold;
-        color: var(--primary-color, #2A7AC3);
-      }
-    }
-  }
-}
-
-// Seletor de tema
-.theme-selector-container {
-  position: relative;
-}
-
-
-.theme-menu {
-  position: absolute;
-  bottom: 100%; // Abre para cima do botÃ£o
-  right: 0;
-  background-color: var(--menu-bg-color, white);
-  border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  z-index: 1010;
-  min-width: 130px;
-  margin-bottom: 8px; // EspaÃ§amento do botÃ£o para cima
-
-  ul {
-    list-style: none;
-    padding: 8px 0;
-    margin: 0;
-
-    li {
-      padding: 10px 16px;
-      cursor: pointer;
-      color: var(--menu-text-color, #475569);
-      font-size: 14px;
-      white-space: nowrap;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background-color: var(--menu-hover-bg-color, #f1f5f9);
-      }
-
-      &.active {
-        font-weight: 600;
-        color: var(--primary-color, #3b82f6);
-        background-color: var(--primary-color-light, rgba(59, 130, 246, 0.1));
-      }
-
-      &:first-child {
-        border-radius: 0 0 8px 8px;
-      }
-
-      &:last-child {
-        border-radius: 8px 8px 0 0;
-      }
-    }
-  }
-}
-
-// BotÃµes
-button[mat-icon-button] {
-  color: var(--footer-icon-color, #64748b);
-  transition: color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    color: var(--primary-color, #3b82f6);
-    transform: scale(1.05);
-  }
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-}
-
-// BotÃ£o de logout - design harmonioso com header e footer
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px !important;
-  border: none !important; // Removida a borda
-  border-radius: 8px !important;
-  background-color: transparent !important;
-  color: var(--primary-color-dark, #153d75) !important;
-  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif) !important;
-  font-size: 0.9em !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.5px !important;
-  transition: all 0.3s ease !important;
-  box-shadow: none !important;
-
-  &:hover {
-    background-color: var(--primary-color-dark, #153d75) !important;
-    color: white !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(21, 61, 117, 0.3) !important;
-  }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(21, 61, 117, 0.2) !important;
-  }
-
-  mat-icon {
-    font-size: 18px !important;
-    width: 18px !important;
-    height: 18px !important;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover mat-icon {
-    transform: rotate(-10deg);
-  }
-}
-
-// Responsividade para telas menores - igual ao header
-@media screen and (max-width: styles.$medium-width) {
-  footer.app-footer {
-    margin: 0 10px; // Pequena margem nas laterais em telas menores
-    padding: 0px 15px; // Reduz o padding em telas menores
-  }
-
-  .user-greeting, .main-logo-text {
-    font-size: 1.2em; // Reduz o tamanho da fonte em telas menores
-  }
-
-  .footer-controls {
-    gap: 10px; // Reduz o gap entre os controles
-  }
-
-  .logout-btn {
-    padding: 8px 14px !important;
-    font-size: 0.8em !important;
-    
-    mat-icon {
-      font-size: 16px !important;
-      width: 16px !important;
-      height: 16px !important;
-    }
-  }
-}
-
-@media screen and (max-width: 400px) {
-  footer.app-footer {
-    padding: 0px 10px; // Padding ainda menor para telas muito pequenas
-  }
-
-  .user-greeting, .main-logo-text {
-    font-size: 1.0em; // Fonte ainda menor
-  }
-
-  .footer-controls {
-    gap: 8px;
-  }
-
-  .logout-btn {
-    padding: 6px 12px !important;
-    font-size: 0.75em !important;
-    gap: 6px;
-
-    mat-icon {
-      font-size: 14px !important;
-      width: 14px !important;
-      height: 14px !important;
-    }
-  }
-}
-
-
-// Responsividade
-@media screen and (max-width: 768px) {
-  .footer-content {
-    padding: 10px 15px;
-  }
-
-  .user-info {
-    .user-greeting {
-      font-size: 13px;
-    }
-
-    .app-version {
-      font-size: 10px;
-    }
-  }
-
-  .footer-controls {
-    gap: 8px;
-  }
-
-  .logout-btn {
-    padding: 6px 12px !important;
-    font-size: 12px;
-
-    mat-icon {
-      font-size: 14px;
-      width: 14px;
-      height: 14px;
-    }
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .footer-content {
-    padding: 8px 12px;
-  }
-
-  // Em telas muito pequenas, pode empilhar ou simplificar
-  .logout-btn span {
-    display: none; // Esconde o texto "Sair", mostra sÃ³ o Ã­cone
   }
 }

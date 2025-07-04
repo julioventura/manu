@@ -266,3 +266,100 @@ section {
   border-radius: 8px;
 }
 
+// Estilos do logo centralizado
+// Estilos específicos para o header no componente Home
+app-header {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0px 10px; // Aumentado o padding
+  margin-bottom: 0px; // Mais espaço abaixo
+  
+  .app-main-header {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 40px 20px; // Muito mais padding interno
+    // min-height: 120px; // Altura mínima garantida
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
+    border-radius: 20px; // Bordas mais arredondadas
+    box-shadow: 0 12px 40px rgba(21, 61, 117, 0.2), 
+                0 8px 20px rgba(21, 61, 117, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transform: scale(1); // Preparação para hover
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.02); // Leve efeito de hover
+      box-shadow: 0 16px 50px rgba(21, 61, 117, 0.25);
+    }
+  }
+  
+  .logo-text {
+    text-align: center;
+    width: 90%; // Aumentado para 90% da largura
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5%;
+  }
+  
+  .main-logo-text {
+    font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
+    font-size: 4rem; // Tamanho fixo muito maior para desktop
+    font-weight: 800; // Peso ainda mais pesado
+    color: var(--primary-color-dark, #153d75);
+    letter-spacing: 2px; // Espaçamento maior entre letras
+    line-height: 1.0;
+    text-align: center;
+    width: 100%;
+    max-width: 95%; // Quase toda a largura
+    text-shadow: 0 6px 12px rgba(21, 61, 117, 0.3),
+                 0 3px 6px rgba(21, 61, 117, 0.2),
+                 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase; // Letras maiúsculas para mais impacto
+    
+    // Responsividade para diferentes tamanhos de tela
+    @media (max-width: 768px) {
+      font-size: 3rem; // Muito maior para tablet
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 2.2rem; // Maior para mobile
+      letter-spacing: 1px;
+    }
+    
+    @media (min-width: 1200px) {
+      font-size: 5rem; // Gigante para desktop
+    }
+    
+    @media (min-width: 1400px) {
+      font-size: 6rem; // Ainda maior para telas grandes
+    }
+    
+    @media (min-width: 1600px) {
+      font-size: 7rem; // Máximo para telas muito grandes
+    }
+  }
+}
+
+.logo-text {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-logo-text {
+  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
+  font-size: 1.5em; // Tamanho ideal para estÃ©tica
+  font-weight: 600;
+  color: var(--primary-color-dark, #153d75);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
