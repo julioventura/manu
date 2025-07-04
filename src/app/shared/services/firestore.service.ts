@@ -22,12 +22,16 @@ export class FirestoreService<T extends { id?: string }> {
 
   // Helper method to safely get collection reference
   private getCollectionRef(collectionPath: string) {
-    return this.firestore.collection(collectionPath);
+    return runInInjectionContext(this.injector, () => {
+      return this.firestore.collection(collectionPath);
+    });
   }
 
   // Helper method to safely get document reference  
   private getDocRef(collectionPath: string, id: string) {
-    return this.firestore.collection(collectionPath).doc(id);
+    return runInInjectionContext(this.injector, () => {
+      return this.firestore.collection(collectionPath).doc(id);
+    });
   }
 
   private async getCurrentUserId(): Promise<string | null> {
@@ -38,25 +42,20 @@ export class FirestoreService<T extends { id?: string }> {
   // CREATE: Adicionar um novo registro à subcoleção do usuário
   addRegistro(collectionPath: string, registro: T): Promise<void> {
     return new Promise((resolve, reject) => {
-      // Use runInInjectionContext to ensure proper injection context
-      defer(() => {
-        return runInInjectionContext(this.injector, () => {
-          try {
-            const id = registro.id ? registro.id : this.createId();
-            const registroComId = { ...registro, id };
-            return this.firestore.collection(collectionPath).doc(id).set(registroComId);
-          } catch (error) {
-            console.error('Error creating document reference in addRegistro:', error);
-            throw error;
-          }
-        });
-      }).subscribe({
-        next: () => resolve(),
-        error: (error) => {
-          console.error('Error in addRegistro:', error);
-          reject(error);
-        }
-      });
+      try {
+        const id = registro.id ? registro.id : this.createId();
+        const registroComId = { ...registro, id };
+        const docRef = this.getDocRef(collectionPath, id);
+        docRef.set(registroComId)
+          .then(() => resolve())
+          .catch((error) => {
+            console.error('Error in addRegistro:', error);
+            reject(error);
+          });
+      } catch (error) {
+        console.error('Error creating document reference in addRegistro:', error);
+        reject(error);
+      }
     });
   }
 
@@ -153,46 +152,67 @@ export class FirestoreService<T extends { id?: string }> {
   // UPDATE: Atualizar um registro existente
   updateRegistro(collectionPath: string, id: string, registro: Partial<T>): Promise<void> {
     return new Promise((resolve, reject) => {
-      // Use runInInjectionContext to ensure proper injection context
-      defer(() => {
-        return runInInjectionContext(this.injector, () => {
-          try {
-            return this.firestore.collection(collectionPath).doc(id).update(registro);
-          } catch (error) {
-            console.error('Error creating document reference in updateRegistro:', error);
-            throw error;
+      try {
+        // Capture the document reference inside injection context using helper method
+        const docRef = this.getDocRef(collectionPath, id);
+        
+        // First check if document exists before updating
+        docRef.get().toPromise().then(docSnapshot => {
+          if (!docSnapshot || !docSnapshot.exists) {
+            // Document doesn't exist, create it instead
+            console.warn(`Document ${id} doesn't exist, creating it instead of updating`);
+            return docRef.set(registro);
+          } else {
+            // Document exists, update it
+            return docRef.update(registro);
           }
-        });
-      }).subscribe({
-        next: () => resolve(),
-        error: (error) => {
+        }).then(() => {
+          resolve();
+        }).catch((error) => {
           console.error('Error in updateRegistro:', error);
           reject(error);
-        }
-      });
+        });
+      } catch (error) {
+        console.error('Error creating document reference in updateRegistro:', error);
+        reject(error);
+      }
+    });
+  }
+
+  // UPSERT: Create or update a registro
+  upsertRegistro(collectionPath: string, id: string, registro: T): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        // Use helper method to get document reference
+        const docRef = this.getDocRef(collectionPath, id);
+        docRef.set(registro, { merge: true })
+          .then(() => resolve())
+          .catch((error) => {
+            console.error('Error in upsertRegistro:', error);
+            reject(error);
+          });
+      } catch (error) {
+        console.error('Error creating document reference in upsertRegistro:', error);
+        reject(error);
+      }
     });
   }
 
   // DELETE: Deletar um registro
   deleteRegistro(collectionPath: string, id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      // Use runInInjectionContext to ensure proper injection context
-      defer(() => {
-        return runInInjectionContext(this.injector, () => {
-          try {
-            return this.firestore.collection(collectionPath).doc(id).delete();
-          } catch (error) {
-            console.error('Error creating document reference in deleteRegistro:', error);
-            throw error;
-          }
-        });
-      }).subscribe({
-        next: () => resolve(),
-        error: (error) => {
-          console.error('Error in deleteRegistro:', error);
-          reject(error);
-        }
-      });
+      try {
+        const docRef = this.getDocRef(collectionPath, id);
+        docRef.delete()
+          .then(() => resolve())
+          .catch((error) => {
+            console.error('Error in deleteRegistro:', error);
+            reject(error);
+          });
+      } catch (error) {
+        console.error('Error creating document reference in deleteRegistro:', error);
+        reject(error);
+      }
     });
   }
 
@@ -292,23 +312,15 @@ export class FirestoreService<T extends { id?: string }> {
   // Método para gerar próximo código (usando Promise para manter compatibilidade)
   gerarProximoCodigo(collection: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      // Use runInInjectionContext to ensure proper injection context
-      defer(() => {
-        return runInInjectionContext(this.injector, () => {
-          try {
-            return this.firestore.collection(collection).get();
-          } catch (error) {
-            console.error('Error creating collection reference:', error);
-            throw error;
-          }
-        });
-      }).subscribe({
-        next: (querySnapshot) => {
+      try {
+        // Capture the collection reference inside injection context using helper method
+        const collectionRef = this.getCollectionRef(collection);
+        
+        collectionRef.get().toPromise().then((querySnapshot) => {
           let novoCodigo = '001';
           
-          const registros = querySnapshot.docs.map(doc => doc.data() as { codigo?: string });
-          
-          if (registros && registros.length > 0) {
+          if (querySnapshot && querySnapshot.docs.length > 0) {
+            const registros = querySnapshot.docs.map(doc => doc.data() as { codigo?: string });
             const codigos = registros.map((r: { codigo?: string }) => r.codigo ? r.codigo.split('-')[0] : '001');
             const ultimoCodigo = Math.max(...codigos.map(c => parseInt(c, 10)));
             const proximoCodigo = (ultimoCodigo + 1).toString().padStart(3, '0');
@@ -317,12 +329,14 @@ export class FirestoreService<T extends { id?: string }> {
 
           const digitoVerificador = this.util.calcularDigitoVerificador(novoCodigo);
           resolve(`${novoCodigo}-${digitoVerificador}`);
-        },
-        error: (error) => {
+        }).catch((error) => {
           console.error('Error generating next code:', error);
           reject('Erro ao gerar o próximo código.');
-        }
-      });
+        });
+      } catch (error) {
+        console.error('Error creating collection reference:', error);
+        reject(error);
+      }
     });
   }
 
