@@ -13,17 +13,21 @@
  * 9. openUrl: Abre uma URL em uma nova janela, caso o campo corresponda a um link.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from '../shared/services/firestore.service';
+import { FirestoreOptimizedService } from '../shared/services/firestore-optimized-simple.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilService } from '../shared/utils/util.service';
 import { FormService } from '../shared/services/form.service';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe } from '@angular/common';
 import { MenuComponent } from '../menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SkeletonLoaderComponent } from '../shared/components/skeleton-loader/skeleton-loader.component';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Campo } from '../shared/models/campo.model';
 
 // Definir a animação fadeAnimation
 const fadeAnimation = trigger('fadeAnimation', [
@@ -41,8 +45,9 @@ const fadeAnimation = trigger('fadeAnimation', [
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
+  changeDetection: ChangeDetectionStrategy.OnPush, // OTIMIZAÇÃO: OnPush
   animations: [fadeAnimation],
-  imports: [NgIf, MenuComponent, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault]
+  imports: [NgIf, MenuComponent, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, SkeletonLoaderComponent]
 })
 export class ViewComponent implements OnInit {
   userId: string | null = null;           // ID do usuário autenticado
@@ -68,13 +73,20 @@ export class ViewComponent implements OnInit {
   editar: () => void = () => this.editarRegistro();
   excluir: () => void = () => this.excluirRegistro();
 
+  // OTIMIZAÇÃO: Observables para data loading
+  registro$!: Observable<Record<string, unknown> | null>;
+  isLoading$ = new BehaviorSubject<boolean>(true);
+  fields$ = new BehaviorSubject<Campo[]>([]); // Observable for FormService.campos
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private firestoreService: FirestoreService<Record<string, unknown>>,
+    private firestoreOptimized: FirestoreOptimizedService, // NOVO: Serviço otimizado
     private afAuth: AngularFireAuth,
     public util: UtilService,
-    public FormService: FormService
+    public FormService: FormService,
+    private cdr: ChangeDetectorRef // NOVO: Para OnPush
   ) { }
 
   /**
@@ -112,25 +124,8 @@ export class ViewComponent implements OnInit {
         if (!this.id) {
           this.voltar();
         } else {
-          if (this.subcollection) {
-            this.FormService.loadFicha(this.userId, this.collection, this.id, this.subcollection, this.fichaId, this.view_only)
-              .then(() => {
-                this.registro = this.FormService.registro;
-                this.isLoading = false;
-              })
-              .catch(() => {
-                this.isLoading = false;
-              });
-          } else {
-            this.FormService.loadRegistro(this.userId, this.collection, this.id, this.view_only)
-              .then(() => {
-                this.registro = this.FormService.registro;
-                this.isLoading = false;
-              })
-              .catch(() => {
-                this.isLoading = false;
-              });
-          }
+          // OTIMIZAÇÃO: Usar método otimizado
+          this.loadRegistroOptimized();
 
           // Define o subtítulo com base no nome do registro (obtido via FormService)
           this.subtitulo_da_pagina = this.FormService.nome_in_collection;
@@ -299,6 +294,53 @@ export class ViewComponent implements OnInit {
   openUrl(url: string): void {
     if (url && url.trim().length > 0) {
       window.open(url, '_blank');
+    }
+  }
+
+  /**
+   * OTIMIZAÇÃO: Carregamento otimizado de dados
+   */
+  private loadRegistroOptimized(): void {
+    if (!this.userId || !this.collection || !this.id) return;
+
+    this.isLoading$.next(true);
+
+    if (this.subcollection && this.fichaId) {
+      // Carregar ficha específica com campos
+      this.FormService.loadFicha(
+        this.userId,
+        this.collection, 
+        this.id,
+        this.subcollection,
+        this.fichaId,
+        this.view_only
+      ).then(() => {
+        this.fields$.next(this.FormService.campos);
+        this.subtitulo_da_pagina = this.FormService.nome_in_collection;
+        this.isLoading$.next(false);
+        this.cdr.markForCheck();
+      }).catch(error => {
+        console.error('Erro ao carregar ficha:', error);
+        this.isLoading$.next(false);
+        this.cdr.markForCheck();
+      });
+    } else {
+      // Carregar registro principal com campos  
+      this.FormService.loadRegistro(
+        this.userId,
+        this.collection,
+        this.id,
+        this.view_only
+      ).then(() => {
+        this.fields$.next(this.FormService.campos);
+        this.subtitulo_da_pagina = this.FormService.nome_in_collection;
+        this.isLoading$.next(false);
+        this.cdr.markForCheck();
+      }).catch(error => {
+        console.error('Erro ao carregar registro:', error);
+        this.isLoading$.next(false);
+        this.cdr.markForCheck();
+      });
     }
   }
 }

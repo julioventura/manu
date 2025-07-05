@@ -24,11 +24,17 @@
   </div>
 
   <!-- Detalhes -->
-  <div class="dynamic-form-container" *ngIf="FormService.fichaForm && FormService.campos.length > 0">
+  <div class="dynamic-form-container">
 
-    <div *ngIf="FormService.isLoading" class="aviso">
-      Carregando...
+    <!-- Skeleton loader while loading -->
+    <div *ngIf="isLoading$ | async">
+      <app-skeleton-loader 
+        [itemCount]="5">
+      </app-skeleton-loader>
     </div>
+
+    <!-- Content when loaded -->
+    <div *ngIf="(isLoading$ | async) === false && FormService.fichaForm && FormService.campos.length > 0">
 
     <!-- Container 1: Exibe todos os campos PREENCHIDOS de collections -->
     <form *ngIf="!FormService.isLoading && !subcollection" [formGroup]="FormService.fichaForm" class="record-details borda_reta_topo">
@@ -164,5 +170,6 @@
       </form>
     </div> -->
 
+    </div> <!-- Close content div -->
   </div>
 </div>

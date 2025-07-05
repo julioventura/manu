@@ -18,28 +18,30 @@
   </div> -->
 
 
-  <!-- Exibir mensagem de carregamento enquanto os dados estão sendo buscados -->
+  <!-- OTIMIZAÇÃO: Skeleton loader melhor UX -->
   <div *ngIf="isLoading" class="loading-container">
-    <div class="spinner-container">
-      <div class="spinner"></div>
-    </div>
+    <app-skeleton-loader [itemCount]="10"></app-skeleton-loader>
   </div>
+
   <div *ngIf="!isLoading && registros.length === 0" class="aviso">
     <p>Nenhuma ficha encontrada.</p>
   </div>
 
-  <!-- Barra de pesquisa -->
+  <!-- OTIMIZAÇÃO: Barra de pesquisa otimizada -->
   <div *ngIf="registros.length > 0 && show_busca" class="search-bar">
-    <input type="text" placeholder="Buscar registro..." [(ngModel)]="searchQuery" (input)="filtrarRegistros()" />
+    <input 
+      type="text" 
+      placeholder="Buscar registro..." 
+      [(ngModel)]="searchQuery"
+      (input)="onSearchChange(searchQuery)" />
   </div>
 
-  <div *ngIf="!isLoading && registrosPaginados.length > 0 && this.subtitulo_da_pagina" class="record-header">
+  <div *ngIf="!isLoading && registros.length > 0 && this.subtitulo_da_pagina" class="record-header">
     {{ subtitulo_da_pagina }}
   </div>
 
-
-  <!-- Listagem de registros para coleção ou subcoleção -->
-  <div *ngIf="!isLoading && registrosPaginados.length > 0">
+  <!-- OTIMIZAÇÃO: Listagem otimizada -->
+  <div *ngIf="!isLoading && registros.length > 0">
 
 
     <div class="registros-table">
@@ -69,16 +71,16 @@
         </thead>
         <tbody>
 
-          <tr *ngFor="let registro of registrosPaginados" (click)="verFicha(registro.id)" style="cursor: pointer;">
+          <tr *ngFor="let registro of registrosPaginados" (click)="verFicha(getSafeString(asRegistro(registro).id))" style="cursor: pointer;">
 
             <ng-container *ngIf="!this.subcollection">
-              <td>{{ registro.nome ? registro.nome : '(vazio)' }}</td>
-              <td class="right">{{ util.normalizarFormatoData(registro.nascimento) }}</td>
+              <td>{{ asRegistro(registro).nome ? asRegistro(registro).nome : '(vazio)' }}</td>
+              <td class="right">{{ util.normalizarFormatoData(getSafeString(asRegistro(registro).nascimento)) }}</td>
             </ng-container>
 
             <ng-container *ngIf="this.subcollection">
-              <td>{{ registro.nome }}</td>
-              <td class="right">{{ util.normalizarFormatoData(registro.data) }}</td>
+              <td>{{ asRegistro(registro).nome }}</td>
+              <td class="right">{{ util.normalizarFormatoData(getSafeString(asRegistro(registro).data)) }}</td>
             </ng-container>
 
           </tr>
