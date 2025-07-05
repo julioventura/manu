@@ -47,7 +47,6 @@ export class HomeComponent implements OnInit {
 
   // Lista de ícones visíveis inicial
   visibleIcons: { [key: string]: boolean } = {
-    agenda: true,
     pacientes: true,
     alunos: true,
     professores: true,
@@ -105,10 +104,6 @@ export class HomeComponent implements OnInit {
             if (user.email == 'julio@dentistas.com.br') {
               this.configuracoes.is_admin = true;
             }
-
-            // Carrega as configurações de ícones a partir do Firestore
-            this.loadIconConfig();
-
           } else {
             this.router.navigate(['/login']);
           }
@@ -123,39 +118,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  /**
-   * loadIconConfig()
-   * @description Carrega as configurações de ícones personalizadas do usuário a partir do Firestore.
-   * Caso não haja uma configuração personalizada, mantém os valores padrão.
-   */
-  loadIconConfig(): void {
-    if (!this.userId) return;
 
-    // Use FirestoreService to avoid injection context issues
-    this.firestoreService.getRegistroById(`users/${this.userId}/settings`, 'HomeConfig').subscribe({
-      next: (config) => {
-        if (config) {
-          this.visibleIcons = config as { [key: string]: boolean };
-        }
-      },
-      error: (error) => {
-        console.error('Error loading icon config:', error);
-      }
-    });
-  }
-
-  /**
-   * saveIconConfig()
-   * @description Salva as configurações de ícones do usuário no Firestore.
-   * Caso a operação seja bem-sucedida, exibe uma mensagem no console; se não, loga o erro.
-   */
-  saveIconConfig(): void {
-    if (this.userId) {
-      // Use FirestoreService to avoid injection context issues
-      this.firestoreService.updateRegistro(`users/${this.userId}/settings`, 'HomeConfig', this.visibleIcons)
-        .catch(error => console.error("Erro ao salvar configurações:", error));
-    }
-  }
   /**
    * loadUserData(email: string): void
    * @param email - Email do usuário para buscar os dados.

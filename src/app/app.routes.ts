@@ -8,8 +8,6 @@ import { ResetPasswordComponent } from './login/reset-password/reset-password.co
 import { ConfigComponent } from './config/config.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { HomepageIntroComponent } from './homepage/homepage-intro/homepage-intro.component';
-import { MenuConfigComponent } from './menu/menu-config/menu-config.component';
-import { HomeConfigComponent } from './home/home-config/home-config.component';
 import { ImportarCadastroComponent } from './shared/utils/importar-cadastro/importar-cadastro.component';
 import { ErupcoesComponent } from './erupcoes/erupcoes.component';
 import { CamposRegistroComponent } from './camposRegistro/camposRegistro.component';
@@ -36,8 +34,6 @@ export const routes: Routes = [
   { path: 'config', component: ConfigComponent },
   { path: 'perfil', component: PerfilComponent, canDeactivate: [CanDeactivateGuard], data: { animation: '2' } },
   { path: 'homepage-intro', component: HomepageIntroComponent, data: { animation: '3' } },
-  { path: 'menu-config', component: MenuConfigComponent },
-  { path: 'home-config', component: HomeConfigComponent },
   { path: 'importar-cadastro', component: ImportarCadastroComponent },
   { path: 'erupcoes', component: ErupcoesComponent },
   { path: 'backup', component: BackupComponent },

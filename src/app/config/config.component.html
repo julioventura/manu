@@ -17,19 +17,6 @@
         <div id="Services" class="container margin0">
             <section class="services-section icon-grid largo">
 
-                <div class="icon-item" (click)="go('home-config')">
-                    <img src="https://dentistas.com.br/assets/menu.png" alt="Configurar">
-                    <p>MENU DA PÁGINA INICIAL <br>
-                        <span class="normal">(Pacientes, Equipe, etc)</span>
-                    </p>
-                </div>
-
-                <div class="icon-item" (click)="go('menu-config')">
-                    <img src="https://dentistas.com.br/assets/menu.png" alt="Configurar">
-                    <p>MENU INTERNO DAS FICHAS DE CADASTRO<br>
-                        <span class="normal">(Ex: Fichas para Exames, Atendimentos, Pagamentos, etc)</span>
-                    </p>
-                </div>
 
                 <div class="icon-item" (click)="go('groups')">
                     <img src="https://dentistas.com.br/assets/compartilhar.png" alt="Gerenciar Grupos">
@@ -45,48 +32,6 @@
             </section>
 
         </div>
-
-        <!-- APENAS PARA ADMIN -->
-        <div id="Services" *ngIf="this.configuracoes.is_admin" class="container container-red-border margin0">
-
-            <section class="services-section icon-grid largo">
-
-                <!-- <div class="icon-item" (click)="go('fichas')">
-                    <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
-                    <p>CAMPOS DAS FICHAS</p>
-                </div> -->
-
-                <!-- <div class="icon-item" (click)="go('groups')">
-                    <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Gerenciar Grupos">
-                    <p>GERENCIAR GRUPOS DE COMPARTILHAMENTO</p>
-                </div> -->
-
-                                
-                <!-- <div class="icon-item" (click)="go('groups')">
-                    <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Gerenciar Grupos">
-                    <p>GERENCIAR GRUPOS DE COMPARTILHAMENTO</p>
-                </div> -->
-
-                <!-- <div class="icon-item" (click)="go('camposRegistro')">
-                    <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
-                    <p>PERSONALIZAR CAMPOS DOS CADASTROS</p>
-                </div> -->
-
-                <div class="icon-item" (click)="go('importar-cadastro')">
-                    <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Importar Cadastro">
-                    <p>IMPORTAR CADASTRO </p>
-                </div>
-
-                <div class="icon-item" (click)="go('usuarios')">
-                    <img src="https://dentistas.com.br/assets/usuarios.png" alt="Configurar">
-                    <p>USUÁRIOS</p>
-                </div>
-
-            </section>
-        </div>
-
-
-
 
     </div>
 
