@@ -179,7 +179,7 @@ section {
   }
 }
 
-/* SeÃ§ao de ServiÃ§os */
+/* Secao de Servicos */
 .services-section {
   display: flex;
   justify-content: space-between;
@@ -190,6 +190,10 @@ section {
   border-radius: 6px;
   padding: 1rem 1rem;
   border: 1px solid var(--border-color, #8099be); // Adicionando borda temÃ¡tica
+}
+
+.pad_header {
+  padding: 2px;
 }
 
 /* Ajuste responsivo */
