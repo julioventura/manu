@@ -105,39 +105,104 @@ A plataforma conecta marcas diretamente com **dentistas e cirurgiões-dentistas 
 - **Conteúdo patrocinado** no chatbot IA com recomendações naturais
 - **Email marketing segmentado** para base ativa de usuários
 
+## Diagnóstico Especializado — Julho/2025
+
+### Pontos Fortes
+
+- **Stack Moderno:** Angular 20, TypeScript strict, SCSS, Angular Material, Firebase, integração com IA (OpenAI GPT-4o-mini).
+- **Arquitetura SPA modular:** Uso de standalone components, lazy loading, roteamento dinâmico, build customizado com Webpack.
+- **Qualidade de código:** ESLint, Angular ESLint, strict mode, dotenv para variáveis de ambiente.
+- **Funcionalidades avançadas:** Chatbot IA, dashboards, relatórios, backup, multi-usuário, permissões, exportação/importação de dados.
+- **Experiência do usuário:** UI responsiva, Material Design, PWA-ready, suporte mobile.
+- **Escalabilidade:** Firebase para backend, autenticação, storage, e banco de dados real-time.
+- **Visão de produto:** Propostas de valor claras para dentistas e anunciantes, roadmap de IA e monetização.
+
 ---
 
-## ⚠️ Pontos Fracos Identificados
+### Pontos Fracos e Riscos Técnicos
 
-### **Escalabilidade e Performance**
+#### 1. Performance e Build
 
-- Build bundles otimizados mas ainda com potencial de melhoria (bundle inicial: 3.60MB)
-- Lazy loading implementado mas pode ser expandido para mais módulos
-- Uso de standalone components reduz significativamente o bundle size
-- Configuração de CDN necessária para assets estáticos
-- Cache estratégico para consultas Firestore pode ser implementado
+- Bundle inicial ainda grande (3.6MB). Lazy loading não cobre todos os módulos.
+- Falta de CDN para assets estáticos pode prejudicar carregamento global.
+- Warnings de budget CSS indicam componentes pesados.
+- Service workers e cache offline ainda não implementados.
 
-### **Segurança e Compliance**
+#### 2. Segurança e Compliance
 
-- Configuração de variáveis de ambiente implementada com dotenv 16.5.0
-- Chaves de API gerenciadas via setup automático mas precisam de backend seguro
-- Sistema de autenticação robusto com Firebase Auth
-- Implementação de guards de rota para proteção de recursos
-- Auditoria de logs e conformidade LGPD ainda necessárias
+- Chaves de API ainda expostas no frontend (risco alto).
+- Falta de criptografia para dados sensíveis de pacientes.
+- Logs de auditoria e conformidade LGPD não implementados.
+- 2FA ausente, aumentando risco de acesso não autorizado.
 
-### **UX/UI e Acessibilidade**
+#### 3. Backup e Disaster Recovery
 
-- Material Design 19.2.19 implementado com Angular Material
-- Interface responsiva otimizada para desktop e mobile
-- Suporte a PWA (Progressive Web App) configurável
-- Modo escuro/claro alternável pode ser implementado
-- Testes de acessibilidade (WCAG) ainda pendentes
+- Backup ainda manual, sem redundância geográfica.
+- Ausência de testes de recuperação de desastres e integridade de dados.
 
-### **Backup e Disaster Recovery**
+#### 4. UX/UI e Acessibilidade
 
-- Backup manual dependente de ação do usuário
-- Falta de redundância geográfica automática
-- Ausência de testes de recuperação de desastres
+- Testes de acessibilidade (WCAG) pendentes.
+- Modo escuro/claro ainda não implementado.
+- Alguns elementos interativos não usam tags semânticas (acessibilidade prejudicada).
+- Textos hardcoded dificultam internacionalização.
+
+#### 5. Organização e Manutenção
+
+- Menção a scripts PowerShell e arquivos de configuração na raiz pode indicar processos manuais ou pouco padronizados.
+- Menção a múltiplas versões de Angular CLI/Webpack no DOC.md (atenção para inconsistências).
+- Código comentado e menus hardcoded dificultam manutenção.
+
+#### 6. Compliance Legal
+
+- Política de privacidade e consentimento de IA ainda não implementados.
+- Certificação de segurança médica pendente.
+
+---
+
+### Oportunidades de Melhoria
+
+1. **Performance**
+   - Expandir lazy loading para todos os módulos.
+   - Implementar CDN para assets.
+   - Otimizar CSS e dividir bundles.
+   - Adicionar service workers para cache offline.
+
+2. **Segurança**
+   - Migrar todas as chaves de API para backend seguro.
+   - Implementar criptografia de dados sensíveis.
+   - Adicionar autenticação 2FA.
+   - Implementar logs de auditoria e conformidade LGPD.
+
+3. **Backup e Resiliência**
+   - Automatizar backups diários e redundância geográfica.
+   - Criar e testar plano de disaster recovery.
+
+4. **UX/UI e Acessibilidade**
+   - Refatorar elementos interativos para usar elementos semânticos acessíveis (ex: `button`, `a`).
+   - Implementar modo escuro/claro.
+   - Internacionalizar textos.
+   - Realizar testes de acessibilidade e corrigir falhas.
+
+5. **Governança e Compliance**
+   - Implementar política de privacidade e consentimento de IA.
+   - Buscar certificação de segurança médica.
+
+6. **Automação e Padronização**
+   - Padronizar scripts de build/deploy.
+   - Remover código morto/comentado.
+   - Gerar menus e listas dinamicamente via TypeScript.
+
+7. **Novas Funcionalidades IA**
+   - Priorizar IA preditiva de receita, chatbot de conversão e assistente de diagnóstico, conforme roadmap do DOC.md.
+
+---
+
+### Conclusão
+
+O sistema está tecnicamente avançado e bem posicionado, mas há pontos críticos de segurança, performance e compliance que precisam de atenção imediata para garantir escalabilidade, confiabilidade e adequação legal. Recomenda-se priorizar as ações listadas nos requisitos urgentes do DOC.md, especialmente segurança, performance e backup.
+
+---
 
 ---
 
