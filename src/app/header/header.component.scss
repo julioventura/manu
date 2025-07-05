@@ -3,13 +3,14 @@
 header.app-main-header {
   max-width: styles.$max-width;
   margin: 0 auto;
-  padding: 0px 20px; // Aumentado o padding
+  padding: 10px 20px; // Padding ajustado para garantir espaço interno
   color: var(--header-bar-text-color, var(--footer-text-color, #333));
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden; // Garante que nada ultrapasse o container
   // min-height: 150px; // Altura mínima maior
 }
 
@@ -48,32 +49,43 @@ header.app-main-header {
 
 .main-logo-text {
   font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
-  font-size: 2.5rem; // Tamanho muito maior
+  font-size: clamp(0.6rem, 2.5vw, 2rem); // Tamanho mais conservador para garantir que caiba
   font-weight: 700;
   color: #4A90E2; // Cor azul igual ao ícone anexo
-  letter-spacing: 2px;
+  letter-spacing: clamp(0.1px, 0.1vw, 1px); // Letter spacing menor para economizar espaço
   line-height: 1.2;
+  width: 80%; // Ocupa 80% da largura do container pai
+  max-width: 100%; // Não ultrapassa o container
+  white-space: nowrap; // Força o texto a ficar em uma linha
+  text-align: center; // Mantém centralizado
   // text-transform: uppercase;
   text-shadow: 0 6px 12px rgba(74, 144, 226, 0.45), // Sombra principal intensificada em 50%
                0 3px 6px rgba(74, 144, 226, 0.3),   // Sombra secundária
                0 1px 3px rgba(74, 144, 226, 0.2);   // Sombra sutil
 
   @media (max-width: 768px) {
-    font-size: 2rem;
-    letter-spacing: 1.5px;
+    font-size: clamp(0.5rem, 2vw, 1.5rem);
+    letter-spacing: clamp(0.05px, 0.08vw, 0.8px);
   }
 
   @media (max-width: 480px) {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+    font-size: clamp(0.4rem, 1.8vw, 1.2rem);
+    letter-spacing: clamp(0.02px, 0.05vw, 0.5px);
+  }
+
+  @media (max-width: 320px) {
+    font-size: clamp(0.35rem, 1.5vw, 1rem);
+    letter-spacing: clamp(0.01px, 0.03vw, 0.3px);
   }
 
   @media (min-width: 1200px) {
-    font-size: 3rem;
+    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    letter-spacing: clamp(0.5px, 0.12vw, 1.2px);
   }
 
   @media (min-width: 1400px) {
-    font-size: 3.5rem;
+    font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+    letter-spacing: clamp(0.6px, 0.15vw, 1.5px);
   }
 }
 
