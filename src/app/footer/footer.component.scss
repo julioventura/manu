@@ -4,6 +4,7 @@ footer.app-footer {
   max-width: styles.$max-width; // Mesma largura máxima dos containers (800px)
   margin: 0 auto;
   padding: 10px 15px;
+  padding-bottom: 30px;
   // background: var(--primary-color-dark, #153d75); // Cor de fundo azul escuro como na imagem
   color: white;
   display: flex;
