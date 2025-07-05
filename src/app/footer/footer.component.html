@@ -2,7 +2,7 @@
   
   <!-- Seção com nome do usuário -->
   <div class="footer-left">
-    <span class="user-name">Logado: {{ userName$ | async }}</span>
+    <span class="user-name">{{ this.config.getAdminStatus() ? 'ADMIN: ' : 'Logado: '}} {{ userName$ | async }}</span> 
   </div>
 
   <!-- Seção com botão Sair -->

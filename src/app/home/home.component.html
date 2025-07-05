@@ -3,7 +3,7 @@
 
   <!-- Conteúdo principal -->
 
-  <div id="Services" class="container"  (click)="hideServices2()">
+  <div id="Services" class="container" (click)="hideServices2()">
     <section class="services-section icon-grid largo">
 
       <app-header></app-header>
@@ -72,24 +72,33 @@
         <p>PERFIL PROFISSIONAL</p>
       </div>
 
-      <!-- <div class="icon-item" (click)="go('homepage-intro')">
+      <div class="icon-item" (click)="go('')">
+        <img src="https://dentistas.com.br/assets/chatbot.png" alt="Meu Chatbot">
+        <p>MEU CHATBOT</p>
+      </div>
+
+      <div class="icon-item" (click)="go('')">
         <img src="https://dentistas.com.br/assets/global.png" alt="Sua Homepage">
-        <p>SUA HOMEPAGE</p>
-      </div> -->
+        <p>MINHA HOMEPAGE</p>
+      </div>
+
+      
+      <div class="icon-item" (click)="go('')">
+        <img src="https://dentistas.com.br/assets/chat.png" alt="Sua Homepage">
+        <p>MINHAS CONVERSAS</p>
+      </div>
+
 
       <div class="icon-item" (click)="go('backup')">
         <img src="https://dentistas.com.br/assets/backup.png" alt="Backup">
         <p>BACKUP </p>
       </div>
 
-      <div class="icon-item" (click)="go('config')">
-        <img src="https://dentistas.com.br/assets/config.png" alt="Configurar">
-        <p>CONFIGURAR </p>
-      </div>
 
     </section>
 
-    <section *ngIf="configuracoes.is_admin && showServices2" class="services-section icon-grid largo" (click)="$event.stopPropagation()">
+    <section *ngIf="configuracoes.is_admin && showServices2" class="services-section icon-grid largo"
+      (click)="$event.stopPropagation()">
 
       <div class="icon-item" (click)="util.go_url(url_agenda)">
         <img src="https://dentistas.com.br/assets/google-calendar.png" alt="Agenda Google">
@@ -113,6 +122,12 @@
         <img src="https://dentistas.com.br/assets/usuarios.png" alt="Equipe">
         <p>USUÁRIOS</p>
       </div>
+
+      <div class="icon-item" (click)="go('config')">
+        <img src="https://dentistas.com.br/assets/config.png" alt="Configurar">
+        <p>CONFIGURAR </p>
+      </div>
+
 
       <div class="icon-item" (click)="go('tutfop')">
         <img src="https://dentistas.com.br/assets/chatbot.png" alt="TUTFOP">

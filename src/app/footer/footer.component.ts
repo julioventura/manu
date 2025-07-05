@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 
+import { ConfigService } from '../shared/services/config.service';
+
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -23,7 +25,8 @@ export class FooterComponent {
   userName$: Observable<string>;
 
   constructor(
-    public userService: UserService
+    public userService: UserService,
+    public config: ConfigService
   ) {
     // Inicializar o Observable do nome do usuário
     this.userName$ = this.userService.getCurrentUserProfile().pipe(

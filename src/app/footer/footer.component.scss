@@ -36,7 +36,7 @@ footer.app-footer {
   flex: 1; // Ocupa o espaço central
 }
 
-.user-name {
+.app-version, .user-name, .footer-right  {
   font-family: var(--font-family, 'Roboto', sans-serif);
   font-size: 1em;
   font-weight: 500;
@@ -86,7 +86,7 @@ footer.app-footer {
     padding: 8px 12px;
   }
 
-  .app-version, .user-name {
+  .app-version, .user-name, .footer-right {
     font-size: 0.8em;
   }
 
@@ -103,7 +103,7 @@ footer.app-footer {
     gap: 8px;
   }
 
-  .app-version, .user-name {
+  .app-version, .user-name, .footer-right {
     font-size: 0.7em;
   }
 
