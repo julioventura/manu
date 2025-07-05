@@ -109,7 +109,22 @@
     // Altura ajustada para o corpo
     .chatbot-body {
       height: calc(85vh - 50px);
-      max-height: 750px;
+      max-height: 800px;
+    }
+
+    // Ajustar o container de mensagens no modo maximizado
+    .messages-container {
+      height: calc(100% - 80px); // Deixar mais espaço para o input-container
+      max-height: calc(100% - 80px);
+    }
+
+    // Garantir que o input-container tenha espaço no modo maximizado
+    .input-container {
+      position: relative;
+      z-index: 1;
+      background-color: #f5f5f5;
+      border-top: 1px solid #e0e0e0;
+      padding: 5px;
     }
   }
 
@@ -255,7 +270,6 @@
     position: absolute;
     left: 50%;
     top: 3px;
-    /* 2px mais para cima do que antes */
     transform: translateX(-50%);
     font-size: 14px;
     line-height: 1;
@@ -371,6 +385,14 @@ body.dragging-chatbot {
   flex-direction: column;
   height: 420px;
   background-color: #f9f9fc;
+  overflow: hidden; // Evitar overflow
+
+  // No modo maximizado, garantir que o layout flex funcione corretamente
+  .chatbot-container.maximized & {
+    height: calc(85vh - 50px);
+    max-height: 750px;
+    padding-bottom: 5px;
+  }
 }
 
 /* Ãrea de mensagens */
@@ -523,13 +545,16 @@ body.dragging-chatbot {
 .input-container {
   display: flex;
   align-items: center;
-  padding: 8px 12px 10px 12px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
+  padding: 0px 12px 0px 12px;
+  // background-color: #f5f5f5;
+  // border-top: 1px solid #e0e0e0;
+  flex-shrink: 0; // Impede que o container seja comprimido
+  min-height: 80px; // Altura mínima garantida
 
   .message-input {
     flex: 1;
     padding: 10px 16px;
+    margin-bottom: 10px;
     border: 1px solid styles.$red;
     background-color: styles.$red-lighter;
     border-radius: 24px;
@@ -588,9 +613,11 @@ body.dragging-chatbot {
   height: 30px;
   min-width: 30px;
   /* Evita que o botÃ£o seja redimensionado */
-  border: none;
-  background-color: transparent;
-  color: #2a7ac3;
+  border: 1px solid white;
+  background-color: rgb(192, 147, 0);
+  border-radius: 50%;
+  color: #ffffff;
+  content: '?';
   font-size: 14px;
   cursor: pointer;
   display: flex;
