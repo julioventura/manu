@@ -43,7 +43,7 @@
      (click)="isMinimized ? toggleChat() : null">
   
   <!-- Ícone para reabrir o chat quando minimizado -->
-  <img *ngIf="isMinimized" src="assets/chatbot.png" alt="Abrir Chatbot" style="width: 50px; height: 50px; cursor: pointer;"/>
+  <img *ngIf="isMinimized" src="assets/chatbot.png" alt="Abrir Chatbot" class="chatbot-icon" style="width: 50px; height: 50px; cursor: pointer;"/>
 
   <!-- Cabeçalho visível apenas quando não está minimizado -->
   <div class="chatbot-header" *ngIf="!isMinimized"
@@ -62,7 +62,7 @@
       <span>Chatbot de I.A.</span>
     </div>
     
-    <!-- Controles (lado direito) - remover botão de contexto daqui -->
+    <!-- Controles (lado direito) -->
     <div class="chatbot-controls">
       <button class="minimize-button" (click)="$event.stopPropagation(); toggleChat()">
         <i class="material-icons" style="color: white;">{{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</i>

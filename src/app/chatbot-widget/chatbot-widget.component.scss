@@ -24,9 +24,9 @@
 
   &.minimized {
     box-shadow: none !important; // Remover sombra
-    width: 50px !important; 
-    height: 50px !important; 
-    border-radius: 50% !important; 
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
     background-color: transparent !important; // Fundo transparente
     transform: none !important; // Remover qualquer transformaÃ§Ã£o
     bottom: 20px !important; // PosiÃ§Ã£o fixa
@@ -85,11 +85,11 @@
   }
 
   &.maximized {
-    width: 85vw; 
+    width: 85vw;
     height: 85vh;
     max-width: 1200px;
     max-height: 800px;
-    
+
     // Centralizar vertical e horizontalmente
     position: fixed;
     left: 50% !important;
@@ -97,17 +97,18 @@
     bottom: auto !important;
     right: auto !important;
     transform: translate(-50%, -50%) !important; // Centralizar em ambos os eixos
-    
+
     // Remover classes relacionadas a arrasto quando maximizado
-    &.manually-positioned, &.dragging {
-      left: 50% !important; 
+    &.manually-positioned,
+    &.dragging {
+      left: 50% !important;
       top: 50% !important;
       transform: translate(-50%, -50%) !important;
     }
-    
+
     // Altura ajustada para o corpo
     .chatbot-body {
-      height: calc(85vh - 50px); 
+      height: calc(85vh - 50px);
       max-height: 750px;
     }
   }
@@ -173,7 +174,7 @@
       text-align: center;
       line-height: 16px;
       display: inline-block !important;
-      
+
       // Se há texto (emoji) dentro do i, mostrar
       &:not(:empty) {
         font-size: 14px !important;
@@ -207,7 +208,7 @@
       background: transparent;
       border: none;
       color: #fff;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
       padding: 5px;
       border-radius: 50%;
@@ -215,30 +216,24 @@
 
       // Estilo para o ícone de minimizar
       i {
-        font-size: 14px !important;
+        font-size: 20px !important;
         color: white !important;
-        background-color: #87CEEB !important; // Light blue background
-        padding: 6px;
-        border-radius: 50%;
-        width: 28px;
-        height: 28px;
+        padding: 5px;
+        width: 20px;
+        height: 20px;
         text-align: center;
         line-height: 16px;
         display: inline-block !important;
-        
+
         // Se há texto (emoji) dentro do i, mostrar
         &:not(:empty) {
-          font-size: 12px !important;
-          line-height: 16px;
+          font-size: 20px !important;
+          // line-height: 16px;
         }
       }
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.1);
-        
-        i {
-          background-color: #6BB6E8 !important; // Cor um pouco mais escura no hover
-        }
       }
     }
   }
@@ -248,27 +243,32 @@
 .chatbot-header.draggable {
   cursor: grab;
   position: relative;
-  
+
   &:active {
     cursor: grabbing;
   }
-  
+
   /* Indicador visual de arrasto - mais destacado */
   &::before {
-    content: 'â‹¯'; /* SÃ­mbolo de pontos para indicar arrasto */
+    content: '___¯';
+    /* SÃ­mbolo de pontos para indicar arrasto */
     position: absolute;
     left: 50%;
-    top: 3px; /* 2px mais para cima do que antes */
+    top: 3px;
+    /* 2px mais para cima do que antes */
     transform: translateX(-50%);
     font-size: 14px;
     line-height: 1;
-    color: rgba(255, 255, 255, 0.9); /* Cor branca mais visÃ­vel */
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.3); /* Sombra suave para melhor contraste */
+    color: rgba(255, 255, 255, 0.9);
+    /* Cor branca mais visÃ­vel */
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    /* Sombra suave para melhor contraste */
     pointer-events: none;
-    opacity: 0; /* ComeÃ§a invisÃ­vel */
+    opacity: 0;
+    /* ComeÃ§a invisÃ­vel */
     transition: opacity 0.2s ease;
   }
-  
+
   /* Mostrar o indicador apenas no hover */
   &:hover::before {
     opacity: 1;
@@ -279,14 +279,14 @@
 .chatbot-header.draggable {
   cursor: grab;
   position: relative;
-  
+
   &:active {
     cursor: grabbing;
   }
-  
+
   /* Remover indicador visual de arrasto no modo maximizado */
   .chatbot-container:not(.maximized) &::before {
-    content: 'â‹¯';
+    content: '';
     position: absolute;
     left: 50%;
     top: 3px;
@@ -299,7 +299,7 @@
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  
+
   /* Mostrar o indicador apenas no hover e no modo nÃ£o maximizado */
   .chatbot-container:not(.maximized) &:hover::before {
     opacity: 1;
@@ -316,27 +316,29 @@
   opacity: 0.8;
   transition: none !important;
   transform: none !important; // Garantir que nÃ£o haja transform durante arrasto
-  
+
   &.maximized {
     left: auto !important;
     right: auto !important; // Permitir a definiÃ§Ã£o via JS
     bottom: auto !important; // Permitir a definiÃ§Ã£o via JS
     transform: none !important;
-    
+
     // Evitar conflito com outros estilos
     &.manually-positioned {
       transition: none !important;
     }
   }
-  
+
   .chatbot-header {
     cursor: grabbing;
-    
+
     /* SÃ­mbolo mais visÃ­vel durante o arrasto */
     &::before {
       opacity: 1;
-      color: #ffffff; /* Branco total durante o arrasto */
-      font-size: 16px; /* Ligeiramente maior durante o arrasto */
+      color: #ffffff;
+      /* Branco total durante o arrasto */
+      font-size: 16px;
+      /* Ligeiramente maior durante o arrasto */
     }
   }
 }
@@ -345,7 +347,7 @@
 body.dragging-chatbot {
   cursor: grabbing !important;
   user-select: none;
-  
+
   * {
     user-select: none;
   }
@@ -353,7 +355,7 @@ body.dragging-chatbot {
 
 /* Dica visual para arrastar - pode ser mostrada apenas no hover */
 .chatbot-header.draggable:hover::before {
-  content: 'â†”';
+  content: '___';
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -456,6 +458,7 @@ body.dragging-chatbot {
 // TambÃ©m corrigir o estilo da mensagem de boas-vindas
 .welcome-message {
   display: flex;
+
   .message {
     max-width: 80%;
     padding: 10px 14px;
@@ -492,9 +495,11 @@ body.dragging-chatbot {
     &:nth-child(1) {
       animation: bounce 1.2s infinite 0.2s;
     }
+
     &:nth-child(2) {
       animation: bounce 1.2s infinite 0.4s;
     }
+
     &:nth-child(3) {
       animation: bounce 1.2s infinite 0.6s;
     }
@@ -502,9 +507,13 @@ body.dragging-chatbot {
 }
 
 @keyframes bounce {
-  0%, 60%, 100% {
+
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
   }
+
   30% {
     transform: translateY(-4px);
   }
@@ -946,3 +955,27 @@ body.dragging-chatbot {
   }
 }
 
+/* Efeitos de foco e ativaÃ§Ã£o para o chatbot */
+.chatbot-icon {
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.chatbot-icon:hover {
+  animation: glow-pulse 1.5s infinite;
+}
+
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 10px 15px rgba(0, 123, 255, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
