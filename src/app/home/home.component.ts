@@ -64,6 +64,9 @@ export class HomeComponent implements OnInit {
   };
 
   private userId: string | null = null;
+  
+  // Controla a visibilidade do Services2 (só para admins)
+  showServices2: boolean = true;
 
   constructor(
     private auth: AngularFireAuth,  
@@ -193,6 +196,16 @@ export class HomeComponent implements OnInit {
       this.router.navigate([introUrl]); // Navega para a introdução no próprio app
     } else {
       this.router.navigate(['/' + component]);
+    }
+  }
+
+  /**
+   * hideServices2(): void
+   * @description Esconde o div Services2 quando clicado no fundo dele (só para admins).
+   */
+  hideServices2(): void {
+    if (this.configuracoes.is_admin) {
+      this.showServices2 = !this.showServices2;
     }
   }
 
