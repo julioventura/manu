@@ -57,7 +57,7 @@ footer.app-footer {
   padding: 8px 16px !important;
   border: none !important;
   border-radius: 6px !important;
-  background-color: var(--primary-color, #2A7AC3) !important; // Azul mais claro para o botão
+  background-color: rgba(255, 255, 255, 0.164) !important; // Agora fundo claro no normal
   color: white !important;
   font-family: var(--font-family, 'Roboto', sans-serif) !important;
   font-size: 0.85em !important;
@@ -68,7 +68,7 @@ footer.app-footer {
   box-shadow: none !important;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: var(--primary-color, #2A7AC3) !important; // Agora fundo azul no hover
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   }
