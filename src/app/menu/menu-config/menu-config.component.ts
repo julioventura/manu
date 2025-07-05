@@ -47,7 +47,6 @@ export class MenuConfigComponent implements OnInit {
     'anamnese',
     'diagnosticos',
     'risco',
-    'retornos'
   ];
 
   subcolecoesDisponiveis: Subcolecao[] = this.todasSubcolecoes.map(nome => ({

@@ -96,7 +96,6 @@ export class MenuComponent implements OnInit {
       'anamnese',
       'diagnosticos',
       'risco',
-      'retornos'
     ];
 
     // Retorna todas as subcoleções para qualquer coleção
