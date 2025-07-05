@@ -42,28 +42,30 @@
      [ngStyle]="!isMinimized ? {'right.px': chatPosition.right, 'bottom.px': chatPosition.bottom} : {}"
      (click)="isMinimized ? toggleChat() : null">
   
-  <!-- Atualizar evento mousedown para NÃO permitir arrasto no modo maximizado -->
-  <div class="chatbot-header" 
-       (mousedown)="!isMinimized && !isMaximized ? startDrag($event) : null"
-       [ngClass]="{'draggable': !isMinimized && !isMaximized}">
+  <!-- Ícone para reabrir o chat quando minimizado -->
+  <img *ngIf="isMinimized" src="assets/chatbot.png" alt="Abrir Chatbot" style="width: 50px; height: 50px; cursor: pointer;"/>
+
+  <!-- Cabeçalho visível apenas quando não está minimizado -->
+  <div class="chatbot-header" *ngIf="!isMinimized"
+       (mousedown)="!isMaximized ? startDrag($event) : null"
+       [ngClass]="{'draggable': !isMaximized}">
     
     <!-- Botão de maximizar (no lado esquerdo) -->
     <div class="chatbot-maximize" *ngIf="!isMinimized">
       <button class="maximize-button" (click)="$event.stopPropagation(); toggleMaximize()">
-        <i class="fas" [ngClass]="isMaximized ? 'fa-compress' : 'fa-expand'"></i>
+        <i class="material-icons" style="color: white;">{{ isMaximized ? 'fullscreen_exit' : 'fullscreen' }}</i>
       </button>
     </div>
 
     <!-- Título (centralizado) com botão de contexto integrado -->
     <div class="chatbot-title">
-      <i class="fas fa-robot">🤖</i>
       <span>Chatbot de I.A.</span>
     </div>
     
     <!-- Controles (lado direito) - remover botão de contexto daqui -->
     <div class="chatbot-controls">
       <button class="minimize-button" (click)="$event.stopPropagation(); toggleChat()">
-        <i class="fas" [ngClass]="isMinimized ? 'fa-chevron-up' : 'fa-chevron-down'">⬇️</i>
+        <i class="material-icons" style="color: white;">{{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</i>
       </button>
     </div>
   </div>
