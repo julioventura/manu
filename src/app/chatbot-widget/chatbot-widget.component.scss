@@ -16,7 +16,7 @@
   width: 340px;
   background-color: #fff;
 
-  // Estado padrÃ£o (nÃ£o-minimizado, nÃ£o-maximizado)
+  // Estado padrao (nao-minimizado, nao-maximizado)
   &:not(.minimized):not(.maximized) {
     right: 20px;
     bottom: 20px;
@@ -28,18 +28,18 @@
     height: 50px !important;
     border-radius: 50% !important;
     background-color: transparent !important; // Fundo transparente
-    transform: none !important; // Remover qualquer transformaÃ§Ã£o
-    bottom: 20px !important; // PosiÃ§Ã£o fixa
-    right: 20px !important; // PosiÃ§Ã£o fixa
-    left: auto !important; // Garantir que left nÃ£o interfira
-    top: auto !important; // Garantir que top nÃ£o interfira
+    transform: none !important; // Remover qualquer transformaÃ§ao
+    bottom: 20px !important; // PosiÃ§ao fixa
+    right: 20px !important; // PosiÃ§ao fixa
+    left: auto !important; // Garantir que left nao interfira
+    top: auto !important; // Garantir que top nao interfira
     max-width: none !important; // Limpar restriÃ§Ãµes de maximizado
     max-height: none !important; // Limpar restriÃ§Ãµes de maximizado
 
     .chatbot-body,
     .chatbot-title span,
     .context-button {
-      display: none !important; // Esconder o botÃ£o de contexto quando minimizado
+      display: none !important; // Esconder o botao de contexto quando minimizado
     }
 
     .chatbot-header {
@@ -198,10 +198,10 @@
     }
 
     span {
-      margin-right: 8px; // Adicionar margem Ã  direita do texto para separar do botÃ£o
+      margin-right: 8px; // Adicionar margem Ã  direita do texto para separar do botao
     }
 
-    // Ajustar estilo do botÃ£o de contexto integrado no tÃ­tulo
+    // Ajustar estilo do botao de contexto integrado no tÃ­tulo
     .context-button {
       background: transparent;
       border: none;
@@ -314,7 +314,7 @@
     transition: opacity 0.2s ease;
   }
 
-  /* Mostrar o indicador apenas no hover e no modo nÃ£o maximizado */
+  /* Mostrar o indicador apenas no hover e no modo nao maximizado */
   .chatbot-container:not(.maximized) &:hover::before {
     opacity: 1;
   }
@@ -329,12 +329,12 @@
 .chatbot-container.dragging {
   opacity: 0.8;
   transition: none !important;
-  transform: none !important; // Garantir que nÃ£o haja transform durante arrasto
+  transform: none !important; // Garantir que nao haja transform durante arrasto
 
   &.maximized {
     left: auto !important;
-    right: auto !important; // Permitir a definiÃ§Ã£o via JS
-    bottom: auto !important; // Permitir a definiÃ§Ã£o via JS
+    right: auto !important; // Permitir a definiÃ§ao via JS
+    bottom: auto !important; // Permitir a definiÃ§ao via JS
     transform: none !important;
 
     // Evitar conflito com outros estilos
@@ -500,7 +500,7 @@ body.dragging-chatbot {
   }
 }
 
-// Adicionar estilos para o indicador de digitaÃ§Ã£o
+// Adicionar estilos para o indicador de digitaÃ§ao
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -607,12 +607,11 @@ body.dragging-chatbot {
   }
 }
 
-/* Estilo para o botÃ£o de contexto na parte inferior */
+/* Estilo para o botao de contexto na parte inferior */
 .context-button-bottom {
   width: 30px;
   height: 30px;
   min-width: 30px;
-  /* Evita que o botÃ£o seja redimensionado */
   border: 1px solid white;
   background-color: rgb(192, 147, 0);
   border-radius: 50%;
@@ -642,7 +641,7 @@ body.dragging-chatbot {
   }
 }
 
-/* Indicador de digitaÃ§Ã£o */
+/* Indicador de digitaÃ§ao */
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -709,7 +708,7 @@ body.dragging-chatbot {
         font-weight: 500; // Nome mais destacado
       }
 
-      // Estilo para nomes de coleÃ§Ã£o/subcoleÃ§Ã£o
+      // Estilo para nomes de coleÃ§ao/subcoleÃ§ao
       span {
         &:not(:last-child):after {
           content: ", ";
@@ -719,7 +718,7 @@ body.dragging-chatbot {
   }
 }
 
-/* Ajuste para o botÃ£o de contexto */
+/* Ajuste para o botao de contexto */
 .context-button {
   background: transparent;
   border: none;
@@ -837,11 +836,11 @@ body.dragging-chatbot {
   &.maximized {
     width: 85vw; // 85% da largura da tela
     height: 85vh; // 85% da altura da tela
-    max-width: 1200px; // Para nÃ£o ficar excessivamente grande em telas muito grandes
+    max-width: 1200px; // Para nao ficar excessivamente grande em telas muito grandes
     max-height: 800px; // Limitador de altura para telas muito grandes
     bottom: 50px; // Um pouco acima do fundo da tela
     left: 50%; // Centraliza horizontalmente
-    transform: translateX(-50%); // Complementa a centralizaÃ§Ã£o
+    transform: translateX(-50%); // Complementa a centralizaÃ§ao
     border-radius: 20px; // Bordas um pouco mais arredondadas
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 1);
 
@@ -983,7 +982,7 @@ body.dragging-chatbot {
   }
 }
 
-/* Efeitos de foco e ativaÃ§Ã£o para o chatbot */
+/* Efeitos de foco e ativaÃ§ao para o chatbot */
 .chatbot-icon {
   border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);

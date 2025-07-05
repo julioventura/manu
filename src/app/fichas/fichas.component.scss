@@ -6,7 +6,7 @@
 //     padding: 20px 10px 20px 10px;
 // }
 
-// Header com tÃ­tulo e botÃµes de aÃ§Ã£o
+// Header com tÃ­tulo e botÃµes de aÃ§ao
 .header {
     display: flex;
     justify-content: space-between;
@@ -21,7 +21,7 @@
     }
 }
 
-// Linha com o nome da coleÃ§Ã£o
+// Linha com o nome da coleÃ§ao
 .record-header {
     background-color: styles.$primary-color;
     color: styles.$white;
@@ -90,7 +90,7 @@ button:hover {
         input,
         select {
             flex: 1; // Faz os inputs e selects ocuparem o espaÃ§o restante
-            min-width: 0; // Garante que os inputs nÃ£o se expandam muito
+            min-width: 0; // Garante que os inputs nao se expandam muito
         }
 
         .button-group {
@@ -138,7 +138,7 @@ button:hover {
                 margin-top: 5px;
 
                 button {
-                    width: 30px; // Tamanho padrÃ£o dos botÃµes em telas pequenas
+                    width: 30px; // Tamanho padrao dos botÃµes em telas pequenas
                 }
             }
         }

@@ -13,7 +13,7 @@
 
 .container p {
     padding: 2px;
-    border-bottom: 1px solid styles.$primary-color; // Linha inferior colorida para separaÃ§Ã£o
+    border-bottom: 1px solid styles.$primary-color; // Linha inferior colorida para separaÃ§ao
     &:nth-child(odd) {
         // background-color: styles.$primary-color-light; // Cor de fundo alternada para as linhas
         background-color: styles.$white; // Cor de fundo alternada para as linhas
@@ -32,13 +32,13 @@
     margin-top: 20px;
     border-radius: 12px;
     outline: 0;
-    background-color: styles.$success-color; // Cor verde para o botÃ£o
+    background-color: styles.$success-color; // Cor verde para o botao
     color: white;
     font-weight: bold;
     text-align: center;
     border: none;
     cursor: pointer;
-    font-size: 12px; // Tamanho da fonte do botÃ£o
+    font-size: 12px; // Tamanho da fonte do botao
     transition: background-color 0.3s ease;
 
     &:hover {
