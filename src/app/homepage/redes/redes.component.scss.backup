@@ -1,6 +1,5 @@
 @use '../../../styles.scss';
 @use '../homepage.component.scss';
-@use 'sass:list';
 
 // Social media colors
 $social-colors: (
@@ -54,7 +53,7 @@ $social-colors: (
     // Generate social network styles using the map
     @each $network, $colors in $social-colors {
       &.#{$network} {
-        @include social-network(list.nth($colors, 1), list.nth($colors, 2), list.nth($colors, 3));
+        @include social-network(nth($colors, 1), nth($colors, 2), nth($colors, 3));
       }
     }
   }

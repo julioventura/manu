@@ -10,7 +10,7 @@ import { getProfileFormConfig, getGroupedProfileFields, ProfileField } from './p
 import { finalize } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { CanComponentDeactivate } from '../shared/guards/can-deactivate.guard';
-import { NgClass, NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, KeyValuePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 // MANTER: Interfaces locais para estruturas específicas
 interface Horario {
@@ -50,7 +50,7 @@ interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss'],
-  imports: [NgClass, NgIf, FormsModule, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, KeyValuePipe]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   profileForm: FormGroup;

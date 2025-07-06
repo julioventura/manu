@@ -1,0 +1,583 @@
+@use '../../styles.scss' as styles;
+
+
+
+// styles.scss
+
+// ==================================
+// HEADER
+// ==================================
+.header {
+
+  .back-btn,
+  .add-btn {
+    background-color: styles.$primary-color;
+    color: styles.$white;
+    border: none;
+    padding: 0px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 40px;
+    height: 40px;
+  }
+
+  .back-btn:hover,
+  .add-btn:hover {
+    background-color: styles.$primary-hover;
+  }
+
+  .title {
+    color: styles.$red-dark;
+  }
+}
+// ==================================
+
+
+
+// Linha com o nome do registro
+.record-header {
+  background-color: styles.$white;
+  color: styles.$red-dark;
+}
+
+.record-details-top {
+  border-bottom: 1px solid styles.$red;
+  height: 2px;
+}
+
+// Estilos dos detalhes do registro
+.record-details,
+.dynamic-form-container {
+
+  outline: none;
+
+  .detail-container {
+    border-bottom: 0;
+
+    .detail-label {
+      color: styles.$red-dark;
+    }
+
+    .detail-value {
+      color: styles.$red-dark;
+      border: 1px solid styles.$red-light;
+      width: 100%;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        background-color: styles.$red-light;
+        border: 2px solid styles.$red;
+      }
+    }
+
+    input,
+    select {
+      font-size: 14px;
+      background-color: white;
+
+      &:focus {
+        background-color: styles.$red-light;
+        border: 2px solid styles.$red;
+      }
+    }
+
+    textarea {
+      background-color: #fff6ed;
+      border: 1px solid styles.$red;
+      font-size: 16px;
+
+      &:focus {
+        outline: none;
+        background-color: styles.$red-light;
+        border: 2px solid styles.$red;
+      }
+    }
+
+    .url {
+      color: styles.$red-dark;
+      background-color: white;
+      border: 2px solid styles.$red;
+      text-align: left;
+
+      &:focus {
+        background-color: styles.$red-light;
+        outline: none;
+        color: styles.$red-dark;
+        border: 2px solid styles.$red;
+        font-weight: bold;
+      }
+    }
+
+  }
+}
+
+.record-details .detail-container textarea {
+  background-color: #fff6ed;
+  border: 1pt solid red;
+  transition: background-color 0.3s ease;
+  margin: 0;
+
+  &:focus {
+    background-color: styles.$white;
+    border: 2pt solid red;
+  }
+}
+
+/* css do view */
+input {
+  border: 0;
+}
+
+.detail-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+}
+
+.detail-label {
+  flex: 0 0 var(--label-width);
+  /* opcional: adicione padding/margem se desejar separar do conteúdo */
+  padding-right: 5px;
+}
+
+.detail-value {
+  flex: 1;
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  /* alinha todos os filhos ao centro verticalmente */
+  gap: 10px;
+  /* espaço entre slider e texto */
+
+  /* Caso o texto esteja "baixo" em relação ao knob do slider, você pode:
+     1) aumentar o line-height do texto
+     2) ajustar a font-size ou 
+     3) usar um pequeno transform para subir o texto */
+  .small {
+    line-height: 1.2;
+    /* ou */
+    /* transform: translateY(-1px); */
+  }
+}
+
+// Novo estilo para o container do slider
+.width-control {
+  display: inline-block;
+  border: 1px solid styles.$red; // Borda de 1px
+  border-radius: 6px; // Border-radius de 6px
+  background-color: #fff; // Fundo branco opaco
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+  padding: 3px;
+  padding-right: 12px;
+  padding-left: 0px;
+}
+
+// Novo estilo para o container das subcollections (container 2)
+.full-width-container {
+  display: block;
+  width: 100%;
+  padding: 0; // Remove padding/bordas extras
+  border: none;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border: styles.$red solid 1px;
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 0px 10px;
+}
+
+.sticky-slider {
+  position: sticky;
+  top: 60px; // adjust based on header height
+  z-index: 100;
+  background-color: unset;
+  padding: 10px 0;
+  padding-bottom: 0px;
+  margin-left: 0px;
+}
+
+.mat-display-large,
+.mat-typography .mat-display-large,
+.mat-typography h1 {
+  font: 400 3.562rem / 4rem Roboto, sans-serif;
+  letter-spacing: -0.016rem;
+  margin: 0 0 0.0em;
+}
+
+.navegacao,
+.navegacao_direita {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+// Estilização para o perfil de usuário
+.profile-form {
+  .field-group {
+    margin-bottom: 20px;
+
+    .group-title {
+      font-weight: bold;
+      color: styles.$red-dark;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid styles.$red-light;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      label {
+        min-width: var(--label-width, 150px);
+        padding-right: 10px;
+        color: styles.$red-dark;
+      }
+
+      .field-input {
+        flex: 1;
+
+        input,
+        textarea {
+          width: 100%;
+          border: 1px solid styles.$red;
+          padding: 8px;
+          border-radius: 4px;
+
+          &:focus {
+            border-color: styles.$red;
+            outline: none;
+            box-shadow: 0 0 3px rgba(255, 0, 0, 0.3);
+            background-color: styles.$white;
+          }
+
+          &:disabled {
+            background-color: #f9f9f9;
+            color: #666;
+          }
+
+          &.error {
+            border-color: #f44336;
+          }
+        }
+
+        .error-message {
+          color: #f44336;
+          font-size: 0.8em;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    button {
+      padding: 10px 20px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+
+      &.primary {
+        background-color: styles.$primary-color;
+        color: white;
+
+        &:hover {
+          background-color: styles.$primary-hover;
+        }
+      }
+
+      &.secondary {
+        background-color: #ccc;
+        color: #333;
+
+        &:hover {
+          background-color: #bbb;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para mensagens de validação
+.validation-message {
+  color: #f44336;
+  font-weight: 500;
+  font-size: 0.8em;
+  margin-top: 4px;
+  margin-left: var(--label-width, 150px);
+}
+
+// Estilos para modo visualização vs. edição
+.view-mode {
+  .field-value {
+    padding: 8px;
+    border: 1px solid transparent;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    min-height: 18px;
+  }
+}
+
+.edit-mode {
+  .field-input {
+
+    input,
+    textarea,
+    select {
+      transition: all 0.2s ease;
+    }
+  }
+}
+
+
+
+
+// Adicionar ao final do arquivo
+.grupo-section {
+  margin-bottom: 15px;
+  border: 1px solid styles.$red-light;
+  border-radius: 8px 0;
+  overflow: hidden;
+
+  margin-bottom: 15px;
+  border: 1px solid styles.$red-light;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+// Estilos para os grupos
+.grupo-campos {
+  max-height: 1000px; // Altura máxima para animação
+  transition: max-height 0.2s ease, padding 0.2s ease;
+  padding: 0 0;
+
+  .detail-container {
+    padding: 10px 0px 0px 30px;
+  }
+
+  &.grupo-hidden {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    border-bottom: none;
+    border-top: none;
+  }
+}
+
+// Estilo para o cabeçalho dos grupos
+.grupo-titulo {
+
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.5em;
+  color: styles.$white;
+  background-color: styles.$red-titulo;
+
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  align-items: center;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  padding: 6px 15px;
+  padding-left: 10px;
+
+  border-radius: 5px;
+
+  span {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background-color: styles.$red-dark;
+    color: white;
+  }
+
+  i {
+    transition: transform 0.3s ease;
+  }
+}
+
+// Estilos para os subgrupos
+.subgrupo-titulo {
+
+  color: styles.$red-dark;
+  background-color: styles.$red-light;
+  border-radius: 5px;
+
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.4em;
+  text-align: left;
+
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+
+  span {
+    font-size: 10px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background-color: styles.$red-subtitulo-hover;
+    color: styles.$red-dark;
+  }
+
+
+}
+
+.subgrupo-campos {
+  max-height: 800px; // Altura máxima para animação
+  overflow: hidden;
+  transition: max-height 0.2s ease, padding 0.2s ease;
+  padding: 0;
+  background: #feeaea;
+  border: 1px solid styles.$red-light;
+  border-bottom: 0;
+
+  .detail-container {
+    padding: 6px;
+  }
+
+  &.subgrupo-hidden {
+    padding: 0;
+    max-height: 0;
+  }
+}
+
+// Estilo padrão para os campos sem subgrupos
+.grupo-campos:not(.grupo-hidden)>.detail-container {
+  padding: 8px 0px 0px 15px;
+}
+
+.record-details .detail-container .detail-value,
+.dynamic-form-container .detail-container .detail-value {
+  border: 1px solid styles.$red;
+
+  &.focus {
+    outline: none;
+    border: 1px solid styles.$red-dark;
+  }
+}
+
+.record-details .detail-container {
+
+  border-bottom: 1px solid styles.$red-light;
+  background: styles.$red-lighter;
+
+  .detail-label {
+    padding-left: 10px;
+  }
+
+  .detail-value {
+    margin: 5px;
+    border: 1px solid styles.$red;
+    color: styles.$red-dark;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    background-color: styles.$white;
+  }
+
+  textarea :focus {
+    color: styles.$red-dark;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    background-color: #fff6ed;
+    outline: none;
+    border: 1px solid styles.$red;
+  }
+
+  input {
+    &:focus {
+      outline: none;
+      border: 2px solid styles.$red;
+      background: styles.$white;
+    }
+
+  }
+
+}
+
+.record-details {
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+
+  border: 0;
+
+  padding: 1px 1px 0px 1px;
+  padding-top: 20px;
+
+  margin-top: 16px;
+  padding: 16px;
+}
+
+/* Add these styles at the end of your existing CSS file */
+
+.group-sharing-section {
+  margin-top: 20px;
+  padding: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.group-section-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.group-select {
+  width: 100%;
+  max-width: calc(100% - var(--label-width));
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+::ng-deep .mat-form-field-flex {
+  padding-top: 0 !important;
+}
+
+/* Make sure the field appears properly with your existing styles */
+.detail-container .mat-form-field {
+  width: calc(100% - var(--label-width));
+  display: inline-block;
+}
+

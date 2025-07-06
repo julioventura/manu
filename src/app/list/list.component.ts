@@ -28,7 +28,6 @@ import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UtilService } from '../shared/utils/util.service';
 import { FormService } from '../shared/services/form.service';
 import { ExportService } from '../shared/services/export.service';
-import { PdfExportService } from '../shared/services/pdf-export.service';
 import { SubcolecaoService } from '../shared/services/subcolecao.service';
 import { CAMPOS_FICHAS_EXAMES, CAMPOS_FICHAS_DOCUMENTOS, CAMPOS_FICHAS_PLANOS, CAMPOS_FICHAS_ATENDIMENTOS, CAMPOS_FICHAS_TRATAMENTOS, CAMPOS_FICHAS_PAGAMENTOS } from '../shared/constants/campos-ficha.constants';
 import { SUBCOLLECTION_FIELDS } from '../shared/constants/subcollection-fields.config';
@@ -99,7 +98,6 @@ export class ListComponent implements OnInit {
     public util: UtilService,
     public FormService: FormService,
     private exportService: ExportService,
-    private pdfExportService: PdfExportService,
     private subcolecaoService: SubcolecaoService,
     private injector: Injector,
     private firestoreOptimized: FirestoreOptimizedService,

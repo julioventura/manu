@@ -1,0 +1,834 @@
+﻿@use '../../../../styles.scss' as styles;
+@use 'sass:color';
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: styles.$primary-color;
+  text-align: center;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: styles.$primary-color;
+}
+
+.container {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+// ADICIONAR: apenas margem inferior para espaÃ§amento da tela
+.container_principal {
+  margin-bottom: 40px; // EspaÃ§o inferior para nao colar na borda
+}
+
+// OU se a classe jÃ¡ existir, apenas adicionar:
+.container.container_principal {
+  margin-bottom: 40px;
+}
+
+// ==================================
+// HEADER
+// ==================================
+.header {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  
+  .back-btn,
+  .add-btn {
+    background-color: styles.$primary-color;
+    color: styles.$white;
+    border: none;
+    padding: 0px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 40px;
+    height: 40px;
+  }
+
+  .back-btn:hover,
+  .add-btn:hover {
+    background-color: styles.$primary-hover;
+  }
+
+  .title {
+    color: styles.$primary-color;
+  }
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border: styles.$primary-color solid 1px;
+  border-radius: 8px;
+  padding: 0px 10px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+
+  p {
+    margin-top: 16px;
+  }
+}
+
+.selected {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.empty-list {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.header-icon {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+// Estilos para indicar grupos onde o usuÃ¡rio Ã© admin
+.admin-group {
+  border-left: 4px solid #4caf50;
+}
+
+.member-group {
+  border-left: 4px solid #2196f3;
+}
+
+.admin-badge {
+  font-size: 12px;
+  background-color: #4caf50;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+/* Section cards */
+.section-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.section-header {
+  border-bottom: 1px solid #eee;
+  padding: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    color: styles.$primary-color;
+
+    .header-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+
+  .admin-subtitle {
+    font-size: 14px;
+    color: #555;
+    margin-top: 4px;
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.section-content {
+  padding: 16px;
+}
+
+/* Table styles */
+.registros-table {
+  width: 100%;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    background-color: styles.$primary-color;
+    color: white;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #e1e1e1;
+  }
+
+  tr.selected {
+    background-color: rgba(styles.$primary-color, 0.1);
+  }
+
+  td {
+    padding: 8px 0px 8px 8px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .right {
+    padding: 0;
+    margin: 0;
+    text-align: right;
+  }
+}
+
+.badge {
+  display: inline-block;
+  font-weight: bold;
+
+  &.admin {
+    color: #4caf50;
+  }
+
+  &.member {
+    color: #2196f3;
+  }
+}
+
+.action-buttons {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  .espacador {
+    width: 10px;
+  }
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #333;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: styles.$primary-color;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(styles.$primary-color, 0.2);
+    }
+  }
+
+  textarea.form-control {
+    resize: vertical;
+  }
+
+  .error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+/* Action buttons - CLEAN VERSION */
+.action-button {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  border: none;
+  text-align: center;
+  min-height: 36px;
+  text-decoration: none;
+  user-select: none;
+
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.primary-button {
+    background-color: styles.$primary-color;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust(styles.$primary-color, $lightness: -10%);
+    }
+  }
+
+  &.secondary-button {
+    background-color: #f0f0f0;
+    color: #333;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+
+  &.danger-button {
+    background-color: #F6646B;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust(#F6646B, $lightness: -10%);
+    }
+  }
+
+  &.confirm-button {
+    background-color: #4caf50 !important;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover:not(.disabled) {
+      background-color: #45a049 !important;
+    }
+    
+    &.disabled {
+      background-color: #ccc !important;
+      cursor: not-allowed !important;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.cancel-button {
+    background-color: #757575 !important;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: #616161 !important;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.approve-button {
+    background-color: #4caf50 !important;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: #45a049 !important;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.reject-button {
+    background-color: #f44336 !important;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: #d32f2f !important;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.remove-button {
+    background-color: #f44336 !important;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-width: 40px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: #d32f2f !important;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.add-header-button {
+    background-color: styles.$primary-color;
+    color: white;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    
+    &:hover {
+      background-color: color.adjust(styles.$primary-color, $lightness: -10%);
+    }
+  }
+
+  &.approve-button {
+    background-color: #28a745;
+    color: white;
+    min-width: 40px;
+    height: 36px;
+    padding: 8px 12px;
+    
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  &.reject-button {
+    background-color: #dc3545;
+    color: white;
+    min-width: 40px;
+    height: 36px;
+    padding: 8px 12px;
+    
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  &.disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed !important;
+    
+    &:hover {
+      background-color: #ccc !important;
+    }
+  }
+}
+
+/* Members management */
+.group-members-section {
+  margin-top: 16px;
+}
+
+.members-category {
+  margin-bottom: 24px;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: styles.$primary-color;
+  }
+}
+
+.member-fields-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.member-field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .member-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: styles.$primary-color;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(styles.$primary-color, 0.2);
+    }
+  }
+
+  &.new-member-row {
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px dashed #dee2e6;
+  }
+}
+
+/* Join requests styling */
+.join-requests-section {
+  margin-bottom: 24px;
+}
+
+.requests-list {
+  .request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .request-info {
+      flex: 1;
+    }
+
+    .request-user {
+      font-weight: normal;
+      margin-bottom: 4px;
+
+      strong {
+        font-weight: bold;
+      }
+    }
+
+    .request-date {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .request-message {
+      margin-top: 6px;
+      font-style: italic;
+      color: #555;
+      border-left: 3px solid #eee;
+      padding-left: 8px;
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 8px;
+    }
+  }
+}
+
+/* Chips para administradores e membros */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+  min-height: 40px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  
+  &.admin {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  &.member {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  &.readonly {
+    background-color: #6c757d;
+    color: white;
+  }
+}
+
+.chip-remove {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  margin-left: 8px;
+  cursor: pointer;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.add-admin-section,
+.add-member-section {
+  margin-top: 8px;
+}
+
+.group-details {
+  p {
+    margin-bottom: 16px;
+    white-space: pre-line;
+  }
+}
+
+.members-section {
+  margin-top: 16px;
+}
+
+/* Console especÃ­fico - destaque especial */
+.console-card {
+  background-color: #f5f5f5; /* Fundo mais escuro */
+  border: 2px solid styles.$primary-color; /* Borda mais destacada */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+  
+  .section-header {
+    background-color: rgba(styles.$primary-color, 0.1);
+    
+    h2 {
+      font-weight: 700; /* TÃ­tulo mais destacado */
+    }
+  }
+}
+
+/* Dashboard styles - ajustes para o console */
+.dashboard-section {
+  margin-top: 20px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dashboard-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  background-color: #ffffff; /* Fundo branco para contrastar com o console */
+  border-radius: 6px;
+  border-left: 4px solid styles.$primary-color;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil nos itens */
+  
+  .dashboard-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  
+  .dashboard-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    
+    &.highlight {
+      font-size: 18px;
+      font-weight: bold;
+      color: styles.$primary-color;
+    }
+  }
+
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+  }
+
+  &[data-status="active"] {
+    border-left-color: #4caf50;
+  }
+
+  &[data-status="warning"] {
+    border-left-color: #ff9800;
+  }
+
+  &[data-status="info"] {
+    border-left-color: #2196f3;
+  }
+}
+
+/* Badge refinements for dashboard */
+.dashboard-value .badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  
+  &.admin {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  &.member {
+    background-color: #2196f3;
+    color: white;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .dashboard-item {
+    padding: 10px 12px;
+  }
+}
+
+/* Remove all conflicting and duplicate rules */
+/* Clean slate approach - no ::ng-deep overrides needed */
+
+/* Shared patients section */
+.shared-patients-section {
+  margin-top: 24px;
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+
+  h3 {
+    margin-bottom: 16px;
+    color: styles.$primary-color;
+    font-size: 16px;
+  }
+
+  .empty-patients {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+  }
+
+  .patients-list {
+    .patient-row {
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      .patient-detail {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+      }
+    }
+
+    .action-button.small {
+      padding: 4px 8px;
+      min-height: 28px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+

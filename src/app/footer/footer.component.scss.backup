@@ -1,0 +1,139 @@
+﻿@use '../../styles.scss' as styles;
+
+footer.app-footer {
+  max-width: styles.$max-width; // Mesma largura máxima dos containers (800px)
+  margin: 0 auto;
+  padding: 10px 15px;
+  padding-bottom: 30px;
+  // background: var(--primary-color-dark, #153d75); // Cor de fundo azul escuro como na imagem
+  color: white;
+  display: flex;
+  justify-content: space-between; // Distribui o conteúdo nas 3 seções
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  // border-radius: 0 0 8px 8px; // Bordas arredondadas na parte inferior
+}
+
+// Seção esquerda - versão do app
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.app-version {
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 0.9em;
+  font-weight: 400;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+// Seção central - nome do usuário
+.footer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1; // Ocupa o espaço central
+}
+
+.app-version, .user-name, .footer-right  {
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 1em;
+  font-weight: 500;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+// Seção direita - botão sair
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+// Estilo do botão Sair
+.logout-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  background-color: rgba(255, 255, 255, 0.164) !important; // Agora fundo claro no normal
+  color: white !important;
+  font-family: var(--font-family, 'Roboto', sans-serif) !important;
+  font-size: 0.85em !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background-color: var(--primary-color, #2A7AC3) !important; // Agora fundo azul no hover
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+// Responsividade para telas menores
+@media screen and (max-width: styles.$medium-width) {
+  footer.app-footer {
+    margin: 0 10px;
+    padding: 8px 12px;
+  }
+
+  .app-version, .user-name, .footer-right {
+    font-size: 0.8em;
+  }
+
+  .logout-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75em !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  footer.app-footer {
+    padding: 6px 8px;
+    flex-direction: row; // Mantém horizontal mas com espaçamento reduzido
+    gap: 8px;
+  }
+
+  .app-version, .user-name, .footer-right {
+    font-size: 0.7em;
+  }
+
+  .logout-btn {
+    padding: 4px 8px !important;
+    font-size: 0.65em !important;
+  }
+}
+
+// ACESSIBILIDADE: Melhor contraste para usuários com deficiência visual
+@media (prefers-contrast: high) {
+  .button {
+    background: #1565C0;
+    border: 2px solid #0D47A1;
+    
+    &:hover {
+      background: #0D47A1;
+      border-color: #01579B;
+    }
+  }
+}
+
+// PREFERÊNCIA: Reduzir movimento para usuários sensíveis
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+}
