@@ -11,13 +11,11 @@ import { CamposRegistroComponent } from './camposRegistro/camposRegistro.compone
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { EditComponent } from './edit/edit.component';
-import { GroupManagerComponent } from './shared/components/group/group-manager.component';
 import { TutfopComponent } from './tutfop/tutfop.component';
 
 // Guards
 import { CanDeactivateGuard } from './shared/guards/can-deactivate.guard';
 import { UsernameGuard } from './shared/guards/username.guard';
-import { AuthGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -37,7 +35,6 @@ export const routes: Routes = [
   { path: 'homepage-intro', component: HomepageIntroComponent, data: { animation: '3' } },
   { path: 'importar-cadastro', component: ImportarCadastroComponent },
   { path: 'camposRegistro', component: CamposRegistroComponent },
-  { path: 'groups', component: GroupManagerComponent, canActivate: [AuthGuard] },
   { path: 'tutfop', component: TutfopComponent },
 
   { path: 'list/:collection', component: ListComponent, data: { animation: '4' } },

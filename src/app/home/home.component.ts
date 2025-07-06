@@ -18,7 +18,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ConfigService } from '../shared/services/config.service';
 import { UtilService } from '../shared/utils/util.service';
 import { AiChatService } from '../chatbot-widget/ai-chat.service';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 
 // CORRIGIR: interface UserData para incluir id
@@ -36,7 +36,7 @@ interface UserData {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [NgIf, HeaderComponent]
+  imports: [CommonModule, HeaderComponent]
 })
 export class HomeComponent implements OnInit {
   nome: string = '';  // Armazena o nome do usuário logado

@@ -9,13 +9,6 @@
     <h1 class="title">{{ titulo_da_pagina }}</h1>
     <div class="right">
       <img src="https://dentistas.com.br/assets/editar.png" class="navegacao_direita" (click)="editar()">
-      <!-- CORRIGIDO: usar canShareRecord em vez de canShare() -->
-      <img 
-        *ngIf="canShareRecord" 
-        src="https://dentistas.com.br/assets/compartilhar.png" 
-        class="navegacao_direita" 
-        (click)="openSharingModal()"
-        title="Compartilhar com grupo">
       <img src="https://dentistas.com.br/assets/lixo.png" class="navegacao_direita" (click)="excluir()">
     </div>
   </div>
@@ -180,58 +173,6 @@
         </div>
       </form>
     </div>
-  </div>
-
-  <!-- For the group-sharing section -->
-  <!-- CORRIGIDO: usar helper seguro para groupId -->
-  <div class="group-sharing-container" *ngIf="registro">
-    <h3 class="section-title">Compartilhamento</h3>
-    <app-group-sharing 
-      [recordGroupId]="safeGetGroupId()" 
-      [collection]="collection" 
-      [recordId]="id"
-      (groupIdChange)="onGroupIdChanged()">
-    </app-group-sharing>
-    <!-- Botão para salvar alterações de compartilhamento -->
-    <div class="group-save-actions" *ngIf="groupChanged">
-      <button mat-raised-button color="primary" (click)="saveGroupChange()">
-        <mat-icon>save</mat-icon>
-        Salvar alterações de compartilhamento
-      </button>
-    </div>
-  </div>
-
-  <!-- CORRIGIDO: usar helper seguro para histórico -->
-  <div class="sharing-history-section" *ngIf="sharingHistory && sharingHistory.length > 0">
-    <h3>Histórico de Compartilhamento</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let entry of sharingHistory">
-        <mat-icon mat-list-icon [ngClass]="{
-          'share-icon': !safeString(entry.previousGroupId) && safeString(entry.groupId),
-          'unshare-icon': safeString(entry.previousGroupId) && !safeString(entry.groupId),
-          'change-icon': safeString(entry.previousGroupId) && safeString(entry.groupId)
-        }">
-          {{ !safeString(entry.previousGroupId) && safeString(entry.groupId) ? 'share' :
-          (safeString(entry.previousGroupId) && !safeString(entry.groupId) ? 'link_off' : 'swap_horiz') }}
-        </mat-icon>
-        <div mat-line>
-          <!-- CORRIGIDO: usar helpers seguros -->
-          <ng-container *ngIf="!safeString(entry.previousGroupId) && safeString(entry.groupId)">
-            Compartilhado com <strong>{{ getGroupName(safeString(entry.groupId)) }}</strong>
-          </ng-container>
-          <ng-container *ngIf="safeString(entry.previousGroupId) && !safeString(entry.groupId)">
-            Removido compartilhamento com <strong>{{ getGroupName(safeString(entry.previousGroupId)) }}</strong>
-          </ng-container>
-          <ng-container *ngIf="safeString(entry.previousGroupId) && safeString(entry.groupId)">
-            Alterado compartilhamento de <strong>{{ getGroupName(safeString(entry.previousGroupId)) }}</strong>
-            para <strong>{{ getGroupName(safeString(entry.groupId)) }}</strong>
-          </ng-container>
-        </div>
-        <div mat-line class="history-metadata">
-          {{ formatDate(entry.timestamp) }} por {{ safeString(entry.userName) || safeString(entry.userId) || 'Usuário desconhecido' }}
-        </div>
-      </mat-list-item>
-    </mat-list>
   </div>
 
 </div>

@@ -32,14 +32,11 @@ import { CamposFichaService } from '../shared/services/campos-ficha.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CamposService } from '../shared/services/campos.service';
 import { KeyValue, NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, KeyValuePipe } from '@angular/common';
-import { fadeAnimation } from '../animations/fade.animation';
 import { CanComponentDeactivate } from '../shared/guards/can-deactivate.guard';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
-import { firstValueFrom, Subscription, interval, of, Subject } from 'rxjs'; // Adicionar 'of' aqui
-import { take, filter, takeWhile, catchError, takeUntil } from 'rxjs/operators'; // Adicionar 'catchError' aqui
-import { GroupService } from '../shared/components/group/group.service';
-import { CommonModule } from '@angular/common';
+import { firstValueFrom, Subscription, interval, Subject } from 'rxjs';
+import { take, filter, takeWhile } from 'rxjs/operators';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -49,35 +46,40 @@ interface Campo {
   label?: string;
   grupo?: string;
   subgrupo?: string;
-  opcoes?: any[];
-  defaultValue?: any;
+  opcoes?: { value: string; label: string }[];
+  defaultValue?: string | number | boolean;
   expandido?: boolean;
 }
 
+interface RegistroData {
+  id?: string;
+  [key: string]: unknown;
+}
+
 @Component({
-    selector: 'app-edit',
-    templateUrl: './edit.component.html',
-    styleUrls: ['./edit.component.scss'],
-    encapsulation: ViewEncapsulation.Emulated,
-    animations: [
-        trigger('fadeAnimation', [
-            transition(':enter', [
-                style({ opacity: 0 }),
-                animate('0.2s ease-in-out', style({ opacity: 1 }))
-            ]),
-            transition(':leave', [
-                animate('0.2s ease-in-out', style({ opacity: 0 }))
-            ])
-        ])
-    ],
-    imports: [FormsModule, NgIf, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, KeyValuePipe]
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated,
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.2s ease-in-out', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('0.2s ease-in-out', style({ opacity: 0 }))
+      ])
+    ])
+  ],
+  imports: [FormsModule, NgIf, ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, KeyValuePipe]
 })
 export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanComponentDeactivate {
   @ViewChild('nomeInput') nomeInput?: ElementRef;
   userId: string | null = null;
   collection!: string;
   subcollection!: string;
-  registro: any = {};
+  registro: RegistroData = {};
   id!: string;
   view_only: boolean = false;
   fichaId: string = '';
@@ -100,22 +102,19 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
   private maxWaitTime = 5000; // 5 segundos máximo de espera
   private checkInterval = 100; // Verificar a cada 100ms
   
-  groups: any[] = [];
-  
   // Adicionar um Subject para destruição de subscriptions
   private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private firestoreService: FirestoreService<any>,
+    private firestoreService: FirestoreService<RegistroData>,
     private afAuth: AngularFireAuth,
     public util: UtilService,
     public FormService: FormService,
     private camposFichaService: CamposFichaService,
     private camposService: CamposService,
-    private dialog: MatDialog,
-    private groupService: GroupService
+    private dialog: MatDialog
   ) { }
 
   /**
@@ -179,9 +178,6 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
           this.customLabelWidthValue = 150;
         }
         this.updateCustomLabelWidth();
-
-        // Só carregar grupos se necessário (verificar se a funcionalidade de grupos está sendo usada)
-        this.loadGroupsIfNeeded();
       } else {
         console.error('Usuário não autenticado.');
         this.util.goHome();
@@ -190,40 +186,6 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
 
     this.boundBeforeUnloadHandler = this.beforeUnloadHandler.bind(this);
     window.addEventListener('beforeunload', this.boundBeforeUnloadHandler);
-  }
-
-  private loadGroupsIfNeeded(): void {
-    // Verificar se realmente precisa carregar grupos
-    if (!this.shouldLoadGroups()) {
-      return;
-    }
-
-    // Verificar se grupos já foram carregados
-    if (this.groups && this.groups.length > 0) {
-      return;
-    }
-
-    this.groupService.getAllUserGroups().pipe(
-      takeUntil(this.destroy$), // Adicione um destroy$ subject para cancelar subscriptions
-      catchError(error => {
-        console.warn('EditComponent: Não foi possível carregar grupos:', error);
-        return of([]);
-      })
-    ).subscribe((groups: any[]) => {
-      this.groups = groups;
-    });
-  }
-
-  private shouldLoadGroups(): boolean {
-    // Só carregar grupos se:
-    // 1. Não é uma subcollection
-    // 2. Tem collection e id válidos
-    // 3. O usuário está na página de edição (não visualização)
-    return !this.subcollection && 
-           !!this.collection && 
-           !!this.id && 
-           !this.view_only &&
-           this.router.url.includes('/edit/');
   }
 
   // Método para inicializar todos os grupos como fechados
@@ -316,13 +278,13 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
   }
   
   // Método para obter subgrupos únicos em um conjunto de campos
-  getUniqueSubgrupos(campos: any[]): string[] {
+  getUniqueSubgrupos(campos: Campo[]): string[] {
     const subgrupos = campos.map(campo => campo.subgrupo || '');
     return [...new Set(subgrupos)];
   }
   
   // Método para agrupar campos por subgrupo
-  groupBySubgrupo(campos: any[]): { [key: string]: any[] } {
+  groupBySubgrupo(campos: Campo[]): { [key: string]: Campo[] } {
     // Se não houver campos com subgrupo, cria um grupo vazio
     if (!this.hasSubgrupos(campos)) {
       return { '': campos };
@@ -335,11 +297,11 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
       }
       acc[subgrupo].push(campo);
       return acc;
-    }, {} as { [key: string]: any[] });
+    }, {} as { [key: string]: Campo[] });
   }
   
   // Método para verificar se um grupo tem subgrupos
-  hasSubgrupos(campos: any[]): boolean {
+  hasSubgrupos(campos: Campo[]): boolean {
     if (!campos || campos.length === 0) return false;
     
     // Verifica se pelo menos um campo tem um subgrupo não vazio
@@ -491,7 +453,6 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
       }
       const registroPath = `users/${this.userId}/${this.collection}`;
       const uploadPromises = Object.keys(this.arquivos).map(campoNome => {
-        const file = this.arquivos[campoNome];
         const url = prompt('Insira a URL do arquivo ou imagem:');
         return new Promise<void>((resolve) => {
           registroAtualizado[campoNome] = url;
@@ -573,8 +534,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
           this.FormService.registro = {};
         }
         this.camposFichaService.getCamposFichaRegistro(this.userId, this.subcollection).subscribe(
-          (campos: any[]) => {
-            const registroData = this.fichaId ? this.FormService.registro : {};
+          (campos: Campo[]) => {
             campos.forEach(campo => {
               // Adicione tipo explícito
               const defaultValue: string | boolean | number | null = this.getFieldDefaultValue(campo);
@@ -592,7 +552,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
         );
       } else {
         this.camposService.getCamposRegistro(this.userId, this.collection).subscribe(
-          (campos: any[]) => {
+          (campos: Campo[]) => {
             campos.forEach(campo => {
               let defaultValue;
               if (campo.tipo === 'checkbox' || campo.tipo === 'boolean') {
@@ -622,7 +582,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
    * @param campos Array de campos.
    * @returns Objeto onde a chave é o nome do grupo e o valor é o array de campos pertencentes a esse grupo.
    */
-  groupByGrupo(campos: any[]): { [key: string]: any[] } {
+  groupByGrupo(campos: Campo[]): { [key: string]: Campo[] } {
     return campos.reduce((acc, campo) => {
       const grupo = campo.grupo || '';
       if (!acc[grupo]) {
@@ -630,13 +590,13 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
       }
       acc[grupo].push(campo);
       return acc;
-    }, {} as { [key: string]: any[] });
+    }, {} as { [key: string]: Campo[] });
   }
 
   /**
    * Getter para camposAgrupados, que retorna os campos agrupados por grupo.
    */
-  get camposAgrupados(): { [key: string]: any[] } {
+  get camposAgrupados(): { [key: string]: Campo[] } {
     return this.groupByGrupo(this.FormService.campos);
   }
 
@@ -647,7 +607,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
    * - Retorna os campos fixos, definidos como ['nome', 'data', 'nuvem', 'obs'].
    * Retorna: Array de objetos de campo.
    */
-  get fixedFields(): any[] {
+  get fixedFields(): Campo[] {
     const fixed = ['nome', 'data', 'nuvem', 'obs'];
     return this.FormService.campos.filter(campo => fixed.includes(campo.nome));
   }
@@ -659,7 +619,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
    * - Retorna os campos que não são fixos.
    * Retorna: Array de objetos de campo.
    */
-  get adjustableFields(): any[] {
+  get adjustableFields(): Campo[] {
     return this.FormService.campos.filter(campo => campo.grupo && campo.grupo !== '');
   }
 
@@ -679,23 +639,23 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
   }
 
 
-  trackByKey(index: number, item: KeyValue<string, any[]>): string {
+  trackByKey(index: number, item: KeyValue<string, Campo[]>): string {
     return item.key;
   }
 
-  trackByCampo(index: number, campo: any): string {
+  trackByCampo(index: number, campo: Campo): string {
     return campo.nome;
   }
   
   // Track by function para subgrupos
-  trackBySubgrupo(index: number, item: KeyValue<string, any[]>): string {
+  trackBySubgrupo(index: number, item: KeyValue<string, Campo[]>): string {
     return item.key;
   }
   
   /**
    * Verifica se um grupo contém pelo menos um campo (independente de valor)
    */
-  hasFields(campos: any[]): boolean {
+  hasFields(campos: Campo[]): boolean {
     return campos && campos.length > 0;
   }
 
@@ -703,7 +663,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
    * Verifica se um grupo tem pelo menos um campo válido para exibição
    * No caso de edição, todos os campos são considerados válidos
    */
-  hasValidFields(campos: any[]): boolean {
+  hasValidFields(campos: Campo[]): boolean {
     if (!campos || campos.length === 0) return false;
     return true; // Na edição, todos os campos podem ser editados
   }
@@ -772,28 +732,29 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy, CanCompo
   }
   
   // Adicione underscore aos parâmetros não utilizados
-  onAddItem(_file: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onAddItem(_file: File) {
     // implementação existente
   }
 
   // Adicione underscore aos índices não utilizados
-  handleCheckboxChange(_index: number, itemCampo: any) {
+  handleCheckboxChange(_index: number, itemCampo: Campo) {
     if (!itemCampo) return;
     // implementação existente
   }
 
-  handleRadioChange(_index: number, itemCampo: any) {
+  handleRadioChange(_index: number, itemCampo: Campo) {
     if (!itemCampo) return;
     // implementação existente
   }
 
-  handleOptionChange(_index: number, itemCampo: any) {
+  handleOptionChange(_index: number, itemCampo: Campo) {
     if (!itemCampo) return;
     // implementação existente
   }
 
   // Adicionar este método à classe EditComponent
-  private getFieldDefaultValue(campo: any): any {
+  private getFieldDefaultValue(campo: Campo): string | number | boolean | null {
     // Verificar se o campo tem um valor padrão definido
     if (campo.defaultValue !== undefined) {
       return campo.defaultValue;

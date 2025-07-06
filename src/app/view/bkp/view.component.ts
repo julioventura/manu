@@ -16,8 +16,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { UserService } from '../../shared/services/user.service';
 import { ConfigService } from '../../shared/services/config.service';
-import { GroupService } from '../../shared/components/group/group.service';
-import { GroupSharingModalComponent } from '../../shared/components/group/group-sharing-modal.component';
 import { UtilService } from '../../shared/utils/util.service';
 
 // CORRIGIR: Definir todas as interfaces necessárias
@@ -35,23 +33,6 @@ interface Campo {
   grupo?: string;
   subgrupo?: string;
   [key: string]: unknown;
-}
-
-// CORRIGIR: Expandir interface SharingHistoryEntry com todas as propriedades necessárias
-interface SharingHistoryEntry {
-  id: string;
-  sharedWith: string;
-  sharedAt: Date;
-  permissions: string[];
-  // ADICIONAR: propriedades que estão sendo usadas no template
-  previousGroupId?: string;
-  groupId?: string;
-  timestamp?: Date | FirebaseTimestamp;
-  userName?: string;
-  userId?: string;
-  action?: string;
-  details?: string;
-  [key: string]: unknown; // Para flexibilidade adicional
 }
 
 interface KeyValuePair {
@@ -108,7 +89,6 @@ export class ViewComponent implements OnInit {
   registro: ViewData | null = null;
   isLoading: boolean = true;
   recordTitle: string = '';
-  currentGroupId: string | null = null;
   
   titulo_da_pagina: string = 'Visualizar Registro';
   subtitulo_da_pagina: string = '';
@@ -117,13 +97,11 @@ export class ViewComponent implements OnInit {
   show_menu: boolean = true;
   customLabelWidth: string = '150px';
   customLabelWidthValue: number = 150;
-  groupChanged: boolean = false;
   
   fichaForm: FormGroup;
   campos: Campo[] = [];
   fixedFields: Campo[] = [];
   adjustableFields: Campo[] = [];
-  sharingHistory: SharingHistoryEntry[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -131,7 +109,6 @@ export class ViewComponent implements OnInit {
     private location: Location,
     private userService: UserService,
     private configService: ConfigService,
-    private groupService: GroupService,
     public util: UtilService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -169,7 +146,6 @@ export class ViewComponent implements OnInit {
               
               if (this.registro) {
                 this.recordTitle = this.getRecordTitle(this.registro);
-                this.currentGroupId = this.getRecordGroupId();
                 this.titulo_da_pagina = `Visualizar ${this.collection}`;
                 this.subtitulo_da_pagina = this.recordTitle;
                 
@@ -299,38 +275,6 @@ export class ViewComponent implements OnInit {
     }
     
     return 'Registro sem título';
-  }
-
-  private getRecordGroupId(): string {
-    if (!this.registro) return '';
-    
-    const groupIdValue = this.registro['groupId'] || this.registro['grupo'] || this.registro['category'];
-    return typeof groupIdValue === 'string' ? groupIdValue : '';
-  }
-
-  canShareRecord(): boolean {
-    return this.currentGroupId !== null;
-  }
-
-  openSharingModal(): void {
-    this.openGroupSharing();
-  }
-
-  openGroupSharing(): void {
-    const dialogRef = this.dialog.open(GroupSharingModalComponent, {
-      width: '600px',
-      data: {
-        collection: this.collection,
-        recordId: this.id,
-        currentGroupId: this.currentGroupId
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadRecord();
-      }
-    });
   }
 
   goBack(): void {
@@ -497,25 +441,6 @@ export class ViewComponent implements OnInit {
     return item.key;
   }
 
-  safeGetGroupId(): string {
-    return this.currentGroupId || '';
-  }
-
-  onGroupIdChanged(newGroupId: string = ''): void {
-    this.currentGroupId = newGroupId;
-    this.groupChanged = true;
-  }
-
-  saveGroupChange(): void {
-    if (this.groupChanged && this.currentGroupId) {
-      this.groupChanged = false;
-    }
-  }
-
-  getGroupName(groupId: string): string {
-    return `Grupo ${groupId}`;
-  }
-
   formatDate(date: unknown): string {
     if (!date) return '';
     if (date && typeof date === 'object' && 'toDate' in date && typeof (date as FirebaseTimestamp).toDate === 'function') {
@@ -627,121 +552,5 @@ export class ViewComponent implements OnInit {
 
   hasFieldProperty(campo: Campo, property: string): boolean {
     return property in campo && campo[property] !== undefined && campo[property] !== null;
-  }
-
-  // ADICIONAR: métodos para acessar propriedades do SharingHistoryEntry de forma segura
-  getSharingHistoryProperty(entry: SharingHistoryEntry, property: string): unknown {
-    return entry[property] || null;
-  }
-
-  getSharingHistoryString(entry: SharingHistoryEntry, property: string): string {
-    const value = this.getSharingHistoryProperty(entry, property);
-    return this.safeString(value);
-  }
-
-  hasSharingHistoryProperty(entry: SharingHistoryEntry, property: string): boolean {
-    return property in entry && entry[property] !== undefined && entry[property] !== null;
-  }
-
-  // ADICIONAR: métodos específicos para o histórico de compartilhamento
-  getGroupChangeDescription(entry: SharingHistoryEntry): string {
-    const previousGroup = entry.previousGroupId;
-    const currentGroup = entry.groupId;
-    
-    if (previousGroup && currentGroup) {
-      return `Movido do grupo "${this.getGroupName(previousGroup)}" para "${this.getGroupName(currentGroup)}"`;
-    } else if (!previousGroup && currentGroup) {
-      return `Adicionado ao grupo "${this.getGroupName(currentGroup)}"`;
-    } else if (previousGroup && !currentGroup) {
-      return `Removido do grupo "${this.getGroupName(previousGroup)}"`;
-    }
-    
-    return 'Alteração de grupo';
-  }
-
-  formatSharingTimestamp(entry: SharingHistoryEntry): string {
-    const timestamp = entry.timestamp || entry.sharedAt;
-    if (!timestamp) return '';
-    
-    if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp) {
-      return (timestamp as FirebaseTimestamp).toDate().toLocaleString('pt-BR');
-    }
-    
-    if (timestamp instanceof Date) {
-      return timestamp.toLocaleString('pt-BR');
-    }
-    
-    return String(timestamp);
-  }
-
-  getSharingUserDisplay(entry: SharingHistoryEntry): string {
-    if (entry.userName) {
-      return entry.userName;
-    }
-    
-    if (entry.userId) {
-      return entry.userId;
-    }
-    
-    if (entry.sharedWith) {
-      return entry.sharedWith;
-    }
-    
-    return 'Usuário desconhecido';
-  }
-
-  // ADICIONAR: método para verificar se é uma mudança de grupo
-  isGroupChange(entry: SharingHistoryEntry): boolean {
-    return !!(entry.previousGroupId || entry.groupId);
-  }
-
-  // ADICIONAR: método para verificar se é compartilhamento
-  isSharing(entry: SharingHistoryEntry): boolean {
-    return !!entry.sharedWith && !this.isGroupChange(entry);
-  }
-
-  // ADICIONAR: método para obter o tipo de ação
-  getActionType(entry: SharingHistoryEntry): string {
-    if (this.isGroupChange(entry)) {
-      return 'group-change';
-    }
-    
-    if (this.isSharing(entry)) {
-      return 'sharing';
-    }
-    
-    return entry.action || 'unknown';
-  }
-
-  // CORRIGIR: método para obter ícone da ação
-  getActionIcon(entry: SharingHistoryEntry): string {
-    const actionType = this.getActionType(entry);
-    
-    switch (actionType) {
-    case 'group-change':
-      return 'swap_horiz';
-    case 'sharing':
-      return 'share';
-    case 'permission':
-      return 'security';
-    default:
-      return 'history';
-    }
-  }
-
-  // CORRIGIR: método para obter cor da ação
-  getActionColor(entry: SharingHistoryEntry): string {
-    const actionType = this.getActionType(entry);
-    
-    switch (actionType) {
-    case 'group-change':
-      return 'accent';
-    case 'sharing':
-      return 'primary';
-    case 'permission':
-      return 'warn';
-    default:
-      return '';
-    }
   }
 }

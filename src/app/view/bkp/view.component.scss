@@ -215,26 +215,3 @@ textarea {
     }
   }
 }
-
-// Adicionar no final do arquivo
-.group-sharing-container {
-  margin-top: 24px;
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  
-  .section-title {
-    margin-bottom: 16px;
-    color: #333;
-    font-weight: 500;
-    font-size: 18px;
-  }
-  
-  .group-save-actions {
-    margin-top: 16px;
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-}
