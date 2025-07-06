@@ -71,51 +71,7 @@
   </div>
   
   <div class="chatbot-body" *ngIf="!isMinimized">
-
-    <!-- Indicador de contexto - VERSÃO MODIFICADA -->
-    <div id="context-indicator" class="context-indicator" *ngIf="showContextIndicator && currentContext && configuracoes.is_admin">
-      <!-- Contexto (tipo de visualização) -->
-      <div class="context-pill" *ngIf="currentContext.currentView">
-        <span class="context-label">Contexto:</span>
-        <span class="context-value">
-          {{ currentContext.currentView.type || 'Home' }}
-        </span>
-      </div>
-
-      
-      <!-- Coleção - sempre visível quando disponível, inclusive em list-fichas -->
-      <div class="context-pill" *ngIf="currentContext.activeCollection">
-        <span class="context-label">Coleção:</span>
-        <span class="context-value">{{ formatCollectionName(currentContext.activeCollection) }}</span>
-      </div>
-
-      <!-- Balão Nome (collection) - modificar para adicionar o evento click -->
-      <div class="context-pill" *ngIf="currentContext.currentView?.name" (click)="toggleCollectionDetails()">
-        <span class="context-label">Nome:</span>
-        <span class="context-value clickable">
-          {{ currentContext.currentView?.name || '' }}
-        </span>
-      </div>
-      
-
-      <!-- Balão Ficha (subcollection) - modificar para adicionar o evento click -->
-      <div class="context-pill" *ngIf="currentContext.activeSubcollections?.length">
-        <span class="context-label">{{ (currentContext.activeSubcollections!.length > 1) ? 'Fichas:' : 'Ficha:' }}</span>
-        <span class="context-value">
-          <span *ngFor="let subcol of currentContext.activeSubcollections!; let last = last" 
-                class="clickable" (click)="toggleSubcollectionDetails(subcol)">
-            {{ formatSubcollectionName(subcol) }}
-            <!-- Em list-fichas, não mostramos nome de registro específico -->
-            <span *ngIf="subcol && !isListFichasView() && isSubcollectionView() && 
-                        isCurrentSubcollection(subcol) && getSubcollectionRecordName()">
-              : {{ getSubcollectionRecordName() }}
-            </span>
-            {{ !last ? ', ' : '' }}
-          </span>
-        </span>
-      </div>
-    </div>
-    
+   
     <!-- Área de mensagens com estrutura correta -->
     <div class="messages-container" #messagesContainer (scroll)="onMessagesScroll()">
       <!-- Mensagem de boas-vindas quando não há histórico -->
@@ -143,13 +99,6 @@
     </div>
     
     <div class="input-container">
-      <!-- Botão de contexto no lado esquerdo do input -->
-      <button class="context-button-bottom" 
-              *ngIf="!isMinimized && configuracoes.is_admin"
-              (click)="$event.stopPropagation(); toggleContextIndicator()" 
-              title="{{showContextIndicator ? 'Ocultar contexto' : 'Mostrar contexto'}}">
-        <i class="fas" [ngClass]="showContextIndicator ? 'fa-eye-slash' : 'fa-info-circle'"></i>
-      </button>
       
       <input 
         type="text"
