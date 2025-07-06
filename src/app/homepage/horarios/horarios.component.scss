@@ -1,114 +1,36 @@
-@use '../../../styles.scss';
-@use '../homepage.component.scss';
+// Horarios Component - Otimizado
+@use '../../shared/styles/optimized' as opt;
 
-// Common variables
-$primary-blue: #3498db;
-$dark-blue: #2980b9;
-$light-blue: rgba(52, 152, 219, 0.1);
-$purple: #9b59b6;
-$text-color: #555;
-$border-color: rgba(0, 0, 0, 0.08);
-
-// Common mixins
-@mixin separator-line {
-  border-bottom: 1px solid $border-color;
-  
-  &:last-child { border-bottom: none; }
+.horarios-container { @include opt.container-base; padding: 2rem; max-width: 600px; margin: 0 auto; background: white; }
+.horarios-header { text-align: center; margin-bottom: 2rem; 
+  h2 { color: var(--primary-color); margin-bottom: 0.5rem; }
+  p { color: #666; } 
 }
-
-@mixin info-display {
-  display: flex;
-  align-items: center;
-  
-  i {
-    color: $primary-blue;
-    margin-right: 8px;
+.horarios-list { 
+  .dia-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1rem; 
+    margin-bottom: 0.5rem; 
+    background: var(--background-light); 
+    border-radius: 8px; 
+    border-left: 4px solid var(--primary-color);
+    .dia { font-weight: 600; color: var(--text-dark); }
+    .horario { color: #666; font-size: 0.9rem; }
+    &.fechado .horario { color: var(--error-color); font-weight: 500; }
   }
-  
-  span { font-weight: 500; }
 }
-
-.perfil-card {
-  .perfil-lista {
-    margin-bottom: 1.25rem;
-    
-    .horario-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 12px;
-      @include separator-line;
-      
-      &:first-child { padding-top: 0; }
-      &:last-child { padding-bottom: 0; }
-      
-      .dia {
-        @include info-display;
-        
-        i { font-size: 1rem; }
-      }
-      
-      .hora {
-        font-weight: 500;
-        color: $primary-blue;
-      }
-    }
-  }
-  
-  .observacao {
-    display: flex;
-    background-color: $light-blue;
-    border-radius: 4px;
-    padding: 0.75rem;
-    margin-bottom: 1.25rem;
-    
-    i {
-      color: $primary-blue;
-      font-size: 1.1rem;
-      margin-right: 10px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    
-    p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: $text-color;
-    }
-  }
-  
-  .btn-agendar {
-    width: 100%;
-    background-color: $primary-blue;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.75rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    
-    i { margin-right: 8px; }
-    
-    &:hover { background-color: $dark-blue; }
-  }
-  
-  .agendamento-info {
-    display: flex;
-    align-items: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid $border-color;
-    
-    i {
-      color: $purple;
-      margin-right: 10px;
-      font-size: 1.1rem;
-    }
-    
-    span { font-weight: 500; }
-  }
+.horarios-observacoes { 
+  margin-top: 2rem; 
+  padding: 1rem; 
+  background: #fff3cd; 
+  border: 1px solid #ffeaa7; 
+  border-radius: 8px;
+  h4 { margin: 0 0 0.5rem 0; color: #856404; }
+  p { margin: 0; color: #856404; font-size: 0.9rem; }
+}
+@include opt.mobile { 
+  .horarios-container { padding: 1rem; }
+  .dia-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 }
