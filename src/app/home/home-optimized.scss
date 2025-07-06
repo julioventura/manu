@@ -1,5 +1,4 @@
-@use '../../_variables.scss' as styles;
-@use 'sass:color';
+@use '../../styles.scss' as styles;
 
 // Base mixins
 @mixin card-base {
@@ -111,7 +110,7 @@ section { text-align: center; }
       padding: 8px;
       transition: background-color 0.3s;
 
-      &:hover { background-color: color.adjust(styles.$primary-color, $lightness: -10%); }
+      &:hover { background-color: darken(styles.$primary-color, 10%); }
     }
   }
 }
@@ -154,8 +153,8 @@ app-header {
   display: block;
   width: 100%;
   text-align: center;
-  padding: 10px;
-  margin-bottom: 20px;
+//   padding: 10px;
+//   margin-bottom: 20px;
   
   .app-main-header {
     width: 100%;

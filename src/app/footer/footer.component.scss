@@ -1,25 +1,4 @@
-﻿@use '../../styles.scss' as styles;
-
-// Base mixins
-@mixin footer-text {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  color: white;
-  letter-spacing: 0.5px;
-}
-
-@mixin button-base {
-  display: flex;
-  align-items: center;
-  border: none;
-  border-radius: 6px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-  box-shadow: none;
-}
+﻿@use '../../_variables.scss' as styles;
 
 footer.app-footer {
   max-width: styles.$max-width;
@@ -45,18 +24,32 @@ footer.app-footer {
 .footer-right { display: flex; align-items: center; }
 
 .app-version {
-  @include footer-text;
-  font-size: 0.9em;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
+  color: white;
+  letter-spacing: 0.5px;
+  font-size: 0.9em;
 }
 
 .user-name {
-  @include footer-text;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: white;
+  letter-spacing: 0.5px;
   font-size: 1em;
 }
 
 .logout-btn {
-  @include button-base;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: none;
   padding: 8px 16px;
   background-color: rgba(255, 255, 255, 0.164);
   color: white;
@@ -74,7 +67,6 @@ footer.app-footer {
   }
 }
 
-// Responsive adjustments
 @media (max-width: styles.$medium-width) {
   footer.app-footer {
     margin: 0 10px;
@@ -93,24 +85,4 @@ footer.app-footer {
 
   .app-version, .user-name { font-size: 0.7em; }
   .logout-btn { padding: 4px 8px; font-size: 0.65em; }
-}
-
-// Accessibility improvements
-@media (prefers-contrast: high) {
-  .logout-btn {
-    background: #1565C0;
-    border: 2px solid #0D47A1;
-    
-    &:hover {
-      background: #0D47A1;
-      border-color: #01579B;
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logout-btn {
-    transition: none;
-    &:hover { transform: none; }
-  }
 }

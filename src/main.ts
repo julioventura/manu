@@ -1,7 +1,7 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withComponentInputBinding, withNavigationErrorHandler } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withNavigationErrorHandler, withPreloading, PreloadAllModules } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi, HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -39,7 +39,8 @@ bootstrapApplication(AppComponent, {
     ),
     provideRouter(routes, 
       withComponentInputBinding(), 
-      withNavigationErrorHandler(error => console.error(error))
+      withNavigationErrorHandler(error => console.error(error)),
+      withPreloading(PreloadAllModules)
     ),
     provideHttpClient(withInterceptorsFromDi()),
     FirestoreService,
@@ -48,4 +49,4 @@ bootstrapApplication(AppComponent, {
     provideAnimations()
   ]
 })
-.catch(err => console.error(err));
+  .catch(err => console.error(err));
