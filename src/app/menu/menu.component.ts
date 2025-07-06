@@ -87,15 +87,9 @@ export class MenuComponent implements OnInit {
       'planos', 
       'pagamentos',
       'atendimentos',
-      'consultas',
       'documentos',
-      'dentes',
       'dentesendo',
       'dentesperio',
-      'erupcoes',
-      'anamnese',
-      'diagnosticos',
-      'risco',
     ];
 
     // Retorna todas as subcoleções para qualquer coleção

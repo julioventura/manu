@@ -1,22 +1,16 @@
 import { Routes } from '@angular/router';
 
-// Componentes da aplicação
+// Componentes principais que permanecem eager loading (críticos)
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
-import { ConfigComponent } from './config/config.component';
-import { PerfilComponent } from './perfil/perfil.component';
 import { HomepageIntroComponent } from './homepage/homepage-intro/homepage-intro.component';
 import { ImportarCadastroComponent } from './shared/utils/importar-cadastro/importar-cadastro.component';
-import { ErupcoesComponent } from './erupcoes/erupcoes.component';
 import { CamposRegistroComponent } from './camposRegistro/camposRegistro.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { EditComponent } from './edit/edit.component';
-import { FichasComponent } from './fichas/fichas.component';
-import { BackupComponent } from './backup/backup.component';
-import { HomepageComponent } from './homepage/homepage.component';
 import { GroupManagerComponent } from './shared/components/group/group-manager.component';
 import { TutfopComponent } from './tutfop/tutfop.component';
 
@@ -31,14 +25,18 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'config', component: ConfigComponent },
-  { path: 'perfil', component: PerfilComponent, canDeactivate: [CanDeactivateGuard], data: { animation: '2' } },
+  
+  // Lazy Loaded Modules - Otimização de Bundle
+  { path: 'config', loadChildren: () => import('./config/config.routes').then(m => m.CONFIG_ROUTES) },
+  { path: 'perfil', loadChildren: () => import('./perfil/perfil.routes').then(m => m.PERFIL_ROUTES) },
+  { path: 'erupcoes', loadChildren: () => import('./erupcoes/erupcoes.routes').then(m => m.ERUPCOES_ROUTES) },
+  { path: 'backup', loadChildren: () => import('./backup/backup.routes').then(m => m.BACKUP_ROUTES) },
+  { path: 'fichas', loadChildren: () => import('./fichas/fichas.routes').then(m => m.FICHAS_ROUTES) },
+  
+  // Componentes principais que permanecem eager
   { path: 'homepage-intro', component: HomepageIntroComponent, data: { animation: '3' } },
   { path: 'importar-cadastro', component: ImportarCadastroComponent },
-  { path: 'erupcoes', component: ErupcoesComponent },
-  { path: 'backup', component: BackupComponent },
   { path: 'camposRegistro', component: CamposRegistroComponent },
-  { path: 'fichas', component: FichasComponent },
   { path: 'groups', component: GroupManagerComponent, canActivate: [AuthGuard] },
   { path: 'tutfop', component: TutfopComponent },
 
@@ -52,8 +50,7 @@ export const routes: Routes = [
   { path: 'add-ficha/:collection/:id/fichas/:subcollection', component: EditComponent, canDeactivate: [CanDeactivateGuard], data: { animation: '10' } },
   
   // IMPORTANTE: Esta rota username deve vir depois de todas as rotas específicas
-  { path: ':username', component: HomepageComponent, canActivate: [UsernameGuard] },
-  // e ANTES de qualquer wildcard ou lazy loading
-
+  { path: ':username', loadChildren: () => import('./homepage/homepage.routes').then(m => m.HOMEPAGE_ROUTES), canActivate: [UsernameGuard] },
+  
   { path: '**', component: HomeComponent, data: { animation: '11' } }
 ];

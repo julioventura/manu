@@ -37,12 +37,6 @@ export const SUBCOLLECTION_FIELDS: {
     secondField: 'data',
     secondHeader: 'Data'
   },
-  consultas: {
-    firstField: 'nome',
-    firstHeader: 'Consultas',
-    secondField: 'data',
-    secondHeader: 'Data'
-  },
   dentes: {
     firstField: 'nome',
     firstHeader: 'Dente',

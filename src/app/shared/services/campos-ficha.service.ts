@@ -22,7 +22,6 @@ import {
   CAMPOS_FICHAS_DOCUMENTOS,
   CAMPOS_FICHAS_PLANOS,
   CAMPOS_FICHAS_ATENDIMENTOS,
-  CAMPOS_FICHAS_TRATAMENTOS,
   CAMPOS_FICHAS_PAGAMENTOS,
   CAMPOS_FICHAS_DENTES,
   CAMPOS_FICHAS_DENTES_ENDO,
@@ -52,8 +51,6 @@ export class CamposFichaService {
       return of([...CAMPOS_FICHAS_PLANOS]);        
     case 'atendimentos':
       return of([...CAMPOS_FICHAS_ATENDIMENTOS]);
-    case 'consultas':
-      return of([...CAMPOS_FICHAS_TRATAMENTOS]);
     case 'pagamentos':
       return of([...CAMPOS_FICHAS_PAGAMENTOS]);
     case 'dentes':

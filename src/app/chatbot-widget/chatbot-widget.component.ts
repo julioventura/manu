@@ -463,9 +463,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
       'produtos': 'Produtos',
       'estoque': 'Estoque',
       'financeiro': 'Financeiro',
-      'consultas': 'Consultas',
-      'agendamentos': 'Agendamentos'
-    };
+      'atendimentos': 'Atendimentos'    };
 
     // Retorna o nome formatado ou capitaliza o original se não estiver no mapa
     return collectionNameMap[collection.toLowerCase()] ||
@@ -481,7 +479,7 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     const subcollectionNameMap: { [key: string]: string } = {
       'anamnese': 'Anamnese',
       'exames': 'Exames',
-      'consultas': 'Consultas',
+      'atendimentos': 'Atendimentos',
       'pagamentos': 'Pagamentos',
       'prontuario': 'Prontuário',
       'orcamentos': 'Orçamentos'

@@ -5,28 +5,28 @@
   1. ngOnInit(): Inicializa o componente, obtendo o usuário logado, definindo a lista fixa de coleções e carregando os campos.
   2. carregarCampos(): Utiliza o CamposFichaService para carregar os campos fixos da coleção selecionada.
   3. voltar(): Retorna à rota anterior utilizando o NavegacaoService.
-  4. unloadNotification($event): (Opcional) Intercepta o evento de unload da janela; sem lógica de edição ativa.
 */
 
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavegacaoService } from '../shared/services/navegacao.service';
 import { CamposFichaService } from '../shared/services/campos-ficha.service';
 import { UserService } from '../shared/services/user.service';
 import { UtilService } from '../shared/utils/util.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
+import { Campo } from '../shared/models/campo.model';
 
 @Component({
-    selector: 'app-fichas',
-    templateUrl: './fichas.component.html',
-    styleUrls: ['./fichas.component.scss'],
-    imports: [FormsModule, NgFor],
+  selector: 'app-fichas',
+  templateUrl: './fichas.component.html',
+  styleUrls: ['./fichas.component.scss'],
+  imports: [FormsModule, NgFor],
 })
 export class FichasComponent implements OnInit {
   // Seleciona "padrao" inicialmente para a coleção
   colecaoSelecionada: string = 'padrao';
   // Armazena os campos fixos da coleção selecionada
-  campos: any[] = [];
+  campos: Campo[] = [];
   // Lista fixa de coleções disponíveis
   colecoes: string[] = [];
   // UID do usuário logado
@@ -53,18 +53,13 @@ export class FichasComponent implements OnInit {
         this.userId = user.uid;
         // Define as coleções fixas
         this.colecoes = [
-          'padrao',
           'exames',
           'planos',
           'pagamentos',
           'atendimentos',
-          'consultas',
           'dentes',
           'dentesendo',
-          'dentesperio',
-          'anamnese',
-          'diagnosticos',
-          'risco'
+          'dentesperio'
         ];
         // Chama o método que carrega os campos da coleção selecionada
         this.carregarCampos();
@@ -101,15 +96,4 @@ export class FichasComponent implements OnInit {
     this.navegacaoService.goBack();
   }
 
-  /**
-   * unloadNotification()
-   * @description Método disparado antes do unload da janela. 
-   * Neste componente, não há lógica especial, pois não há edição ativa.
-   * 
-   * @param $event - Evento do unload da janela.
-   */
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any): void {
-    // Se não há edição, não é necessário interceptar a saída da página
-  }
 }

@@ -33,20 +33,13 @@ export class MenuConfigComponent implements OnInit {
   ];
 
   todasSubcolecoes = [
-    'padrao',
     'exames',
     'planos',
     'pagamentos',
     'atendimentos',
-    'consultas',
     'documentos ',
-    'dentes',
     'dentesendo',
     'dentesperio',
-    'erupcoes',
-    'anamnese',
-    'diagnosticos',
-    'risco',
   ];
 
   subcolecoesDisponiveis: Subcolecao[] = this.todasSubcolecoes.map(nome => ({

@@ -1,0 +1,935 @@
+@use '../../styles.scss' as styles;
+@use 'sass:color';
+
+// Estilos do cabeçalho
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border: styles.$gray solid 1px;
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 0px 10px;
+
+  &.view-mode {
+    border-color: styles.$primary-color; // Azul no modo de visualização
+  }
+
+  &.edit-mode {
+    border-color: styles.$red; // Vermelho no modo de edição
+  }
+}
+
+h1,
+h2,
+.title {
+  font-weight: bold;
+  text-align: center;
+
+  &.view-mode {
+    color: styles.$primary-color; // Azul no modo de visualização
+  }
+
+  &.edit-mode {
+    color: styles.$red-dark; // Vermelho no modo de edição
+  }
+}
+
+// Header
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0;
+
+  .title {
+    color: styles.$gray;
+    margin: 0;
+    font-size: 20px;
+
+    &.view-mode {
+      color: styles.$primary-color; // Azul no modo de visualização
+    }
+
+    &.edit-mode {
+      color: styles.$red-dark; // Vermelho no modo de edição
+    }
+  }
+
+  .actions {
+    display: flex;
+  }
+
+  .navegacao {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+}
+
+// Estilos do slider para ajustar largura dos labels
+.sticky-slider {
+  position: sticky;
+  top: 60px;
+  z-index: 100;
+  background-color: transparent;
+  padding: 10px 0;
+}
+
+.width-control {
+  display: inline-block;
+  border: 1px solid styles.$red;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 3px 12px 3px 0px;
+
+  &.view-mode {
+    color: styles.$primary-color; // modo de visualização
+    border-color: styles.$primary-color;
+  }
+
+  &.edit-mode {
+    color: styles.$red-dark; // modo de edição
+    border-color: styles.$red;
+  }
+
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .small {
+    line-height: 1.2;
+    font-size: 0.8em;
+  }
+
+}
+
+.field-group {
+  background-color: styles.$white;
+  padding-bottom: 0;
+
+  &.view-mode {
+    color: styles.$primary-color; // Azul no modo de visualização
+    border-left: 1px solid styles.$primary-color;
+    border-right: 1px solid styles.$primary-color;
+    border-bottom: 1px solid styles.$primary-color;
+    background-color: styles.$primary-color-light;
+  }
+
+  &.edit-mode {
+    color: styles.$red-dark; // Vermelho escuro no modo de edição
+    border-left: 1px solid styles.$red;
+    border-right: 1px solid styles.$red;
+    border-bottom: 1px solid styles.$red;
+    background-color: styles.$red-lighter;
+    margin-top: 10px;
+  }
+
+}
+
+.bottom-line {
+  // border-bottom: 1px solid styles.$red;
+  // padding-top: 5px;
+  background-color: styles.$red-lighter;
+  // border-left: 1px solid styles.$red;
+  // border-right: 1px solid styles.$red;
+  height: 3px;
+
+  &.view-mode {
+    border: 0;
+  }
+}
+
+
+// Estilos do formulário de perfil
+.profile-form {
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid styles.$gray;
+  padding: 10px;
+
+  &.view-mode {
+    border-color: styles.$primary-color; // Azul no modo de visualização
+  }
+
+  &.edit-mode {
+    border-color: styles.$red; // Vermelho escuro no modo de edição
+  }
+
+  // Estilo para o título dos grupos
+  .grupo-titulo {
+    font-size: 1em;
+    font-weight: 500;
+    color: styles.$gray;
+    margin-bottom: 6px;
+    margin-top: 20px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    border: 2px solid styles.$red-light;
+    text-align: left;
+    line-height: 1.5em;
+
+    &.view-mode {
+      color: white; // Azul no modo de visualização
+      border: 1px solid styles.$primary-color;
+      background-color: styles.$primary-color;
+    }
+
+    &.edit-mode {
+      color: styles.$white; // Vermelho escuro no modo de edição
+      border: 1px solid styles.$red;
+      background-color: styles.$red-dark;
+    }
+  }
+
+  // Container de cada campo
+  .detail-container {
+    display: flex;
+    padding-bottom: 4px;
+    padding: 0px 5px;
+    border: 0;
+    // border-left: 1px solid styles.$red;
+    // border-right: 1px solid styles.$red;
+    align-items: flex-start;
+
+    .detail-label {
+      flex: 0 0 var(--label-width, 150px);
+      padding-right: 10px;
+      padding-top: 1px;
+
+
+    }
+
+    .field-input-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-value {
+      // width: 100%;
+      padding: 3px;
+      border-radius: 5px;
+      min-height: 20px;
+
+      &.view-mode {
+        background-color: #fff;
+        border: 1px solid styles.$primary-color-light; // Borda azul no modo de visualização
+        color: styles.$primary-color-dark; // Texto azul no modo de visualização
+        cursor: not-allowed; // Não editável
+      }
+
+      &.edit-mode {
+        background-color: #fff;
+        border: 1px solid styles.$red; // Borda vermelha no modo de edição
+        color: styles.$red-dark; // Texto vermelho no modo de edição
+      }
+
+      &:focus {
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+        background: styles.$red-light;
+        background-color: styles.$red-light;
+      }
+
+      &.error {
+        border-color: #f44336;
+      }
+    }
+
+    textarea {
+      margin-bottom: 6px;
+
+      textarea.detail-value {
+        min-height: 80px;
+        resize: vertical;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  // Mensagens de validação
+  .validation-message {
+    color: #f44336;
+    font-size: 0.8em;
+    margin-top: 3px;
+  }
+
+  // Botões de ação
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid styles.$red-light;
+
+    .btn {
+      padding: 8px 20px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      min-width: 120px;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &.btn-primary {
+        background-color: styles.$red;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: color.adjust(styles.$red, $lightness: -10%);
+        }
+      }
+
+      &.btn-secondary {
+        background-color: #ccc;
+        color: #333;
+
+        &:hover:not(:disabled) {
+          background-color: #bbb;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para modos view/edit
+// .view-mode {
+//   .detail-value {
+//     background-color: #f9f9f9;
+//     border-color: transparent !important;
+//   }
+// }
+
+// Estilo para mensagem de erro geral
+.error-message {
+  color: white;
+  background-color: #f44336;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+// Estilo para container de loading
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+
+  .aviso {
+    color: styles.$red-dark;
+    font-size: 18px;
+  }
+}
+
+// Modern spinner styles for loading state
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: styles.$primary-color;
+  animation: spin 1s ease-in-out infinite;
+
+  &.view-mode {
+    border-top-color: styles.$primary-color;
+  }
+
+  &.edit-mode {
+    border-top-color: styles.$red;
+  }
+}
+
+.spinner-text {
+  color: styles.$gray-dark;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Spinner inline para os botões
+.spinner-inline {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+// Linha com o nome do registro
+.record-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 2px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+
+  &.view-mode {
+    background-color: styles.$primary-color; // Azul no modo de visualização
+    color: styles.$white;
+  }
+
+  &.edit-mode {
+    background-color: styles.$red-dark; // Vermelho no modo de edição
+    color: styles.$white;
+  }
+}
+
+// Detalhes do registro
+.record-details {
+  padding: 20px;
+  border-radius: 10px;
+
+  &.view-mode {
+    background-color: styles.$white;
+    box-shadow: none; // Sem sombra no modo de visualização
+  }
+
+  &.edit-mode {
+    background-color: styles.$white; // Fundo branco no modo de edição
+    box-shadow: styles.$box-shadow; // Sombra ativada
+  }
+}
+
+.detail-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 7px 10px 7px 10px;
+  border-bottom: 0; // Dinâmico para os modos
+
+  &.view-mode {
+    border-bottom-color: styles.$primary-color-light; // Azul claro no modo de visualização
+  }
+
+  &.edit-mode {
+    border-bottom-color: styles.$red-light; // Vermelho claro no modo de edição
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.detail-label {
+  font-size: 10px;
+  text-align: left;
+
+  &.view-mode {
+    color: styles.$primary-color; // Azul no modo de visualização
+  }
+
+  &.edit-mode {
+    color: styles.$red-dark; // Vermelho escuro no modo de edição
+  }
+}
+
+.detail-value {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid styles.$primary-color-light; // Borda azul no modo de visualização
+
+  &.view-mode {
+    background-color: styles.$white;
+    border: 0;
+    color: styles.$primary-color-dark; // Texto azul no modo de visualização
+    cursor: not-allowed; // Não editável
+  }
+
+  &.edit-mode {
+    background-color: styles.$white;
+    border: 0;
+    color: styles.$red-dark; // Texto vermelho no modo de edição
+  }
+
+  &:focus {
+    background-color: styles.$red-light;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    outline: none;
+    border-color: color.adjust(styles.$red, $lightness: -10%);
+  }
+}
+
+// Botões de ação do formulário
+.form-actions {
+  display: flex;
+  justify-content: flex-end; // Alinha os botões à direita
+  gap: 12px; // Espaço entre os botões
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid styles.$gray-light;
+
+  .btn {
+    min-width: 120px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &.btn-primary {
+      &.view-mode {
+        background-color: styles.$primary-color;
+      }
+
+      &.edit-mode {
+        background-color: styles.$red;
+      }
+
+      color: white;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &.btn-secondary {
+      background-color: styles.$gray-light;
+      color: styles.$gray-dark;
+
+      &:hover:not(:disabled) {
+        background-color: color.adjust(styles.$gray-light, $lightness: -5%);
+      }
+    }
+  }
+}
+
+// Transições suaves
+.record-details,
+.detail-container,
+.detail-label,
+.detail-value,
+.record-header {
+  transition: all 0.3s ease;
+}
+
+.section-title {
+  font-size: 0.8rem;
+  line-height: 0%;
+  font-weight: bold;
+  color: styles.$primary-color;
+  margin: 0;
+  margin-top: 20px;
+
+  &.view-mode {
+    color: styles.$primary-color; // Azul no modo de visualização
+  }
+
+  &.edit-mode {
+    color: styles.$red-dark; // Vermelho no modo de edição
+  }
+}
+
+.detail-value {
+  &.view-mode {
+    border: 1px solid styles.$primary-color; // Azul no modo de visualização
+    color: styles.$primary-color-dark; // Azul escuro o modo de visualização
+  }
+
+  &.edit-mode {
+    border: 1px solid styles.$red; // Vermelho no modo de edição
+    color: styles.$red-dark; // Vermelho escuro no modo de edição
+  }
+}
+
+input,
+textarea {
+  font-size: 14px;
+
+  &.view-mode {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid styles.$primary-color-light; // Azul no modo de visualização
+    color: styles.$primary-color; // Azul no modo de visualização
+    font-weight: 600;
+  }
+
+  &.edit-mode {
+    border: 1px solid styles.$red-light;
+    color: styles.$red-dark;
+
+    &:focus {
+      background-color: styles.$red-light;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+      font-weight: bold; // Aplicado a ambos os elementos quando com foco
+      outline: none;
+      font-size: 16px;
+    }
+  }
+}
+
+textarea {
+
+  &.view-mode {
+    background-color: #eee;
+  }
+}
+
+.perfil-content {
+  font-size: 12px;
+
+  .perfil-details {
+    font-size: 14px;
+    margin-top: 4px;
+  }
+}
+
+.perfil-editor {
+  .perfil-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .perfil-list {
+      overflow-y: auto;
+      border: 2px solid styles.$primary-color;
+      border-radius: 6px;
+      padding: 8px;
+
+      &.view-mode {
+        border-color: styles.$primary-color-light;
+        background-color: #f8fcff;
+        border-radius: 4px;
+        margin-bottom: 6px;
+      }
+
+      &.edit-mode {
+        color: styles.$red-dark;
+        border-color: styles.$red-light;
+        background-color: #fff9f9;
+      }
+
+      .perfil-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid #aaa;
+        box-shadow: 1px 1px 3px #ccc;
+        /* border-bottom: 2px solid #aaa; */
+        background: white;
+
+        &.view-mode {
+          border-color: styles.$primary-color-light;
+          border-bottom: 2px solid styles.$primary-color;
+        }
+
+        &.edit-mode {
+          border-color: styles.$red-light;
+          border-bottom: 2px solid styles.$red;
+        }
+
+        // &:last-child {
+        //   border-bottom: 2px solid styles.$primary-color-light;
+        // }
+
+        .btn-remove {
+          background: transparent;
+          border: none;
+          color: #dc3545;
+          cursor: pointer;
+          font-size: 18px;
+
+          &:hover {
+            color: #c82333;
+          }
+        }
+      }
+    }
+
+    .empty-message {
+      color: #6c757d;
+      font-style: italic;
+      text-align: center;
+      padding: 12px;
+      border: 1px dashed #ddd;
+      border-radius: 4px;
+    }
+  }
+
+  .btn-add {
+    background-color: styles.$red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(styles.$red, $lightness: -10%);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    i {
+      font-size: 12px;
+    }
+  }
+
+  .add-perfil-form {
+    border: 1px solid #ff0000;
+    border: 2px solid #ffdfdf;
+    /* border-color: #ffdfdf; */
+    border-radius: 4px;
+    padding: 16px;
+
+    &.view-mode {
+      color: styles.$primary-color;
+      background-color: styles.$primary-color-light;
+    }
+
+    &.edit-mode {
+      color: styles.$red-dark;
+      background-color: styles.$red-lighter;
+    }
+
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-end;
+
+      .input-field {
+        flex: 1;
+        min-width: 180px;
+
+        .input-label {
+          display: block;
+          font-size: 12px;
+          font-weight: 500;
+          margin-bottom: 4px;
+          color: styles.$gray;
+
+          &.view-mode {
+            color: styles.$primary-color;
+          }
+
+          &.edit-mode {
+            color: styles.$red-dark;
+          }
+
+          &:focus {
+            border-color: currentColor;
+            outline: none;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            background-color: styles.$red-light;
+          }
+        }
+
+        input {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1px solid styles.$red;
+          border-radius: 4px;
+          font-size: 14px;
+          transition: all 0.2s;
+
+          &:focus {
+            border-color: color.adjust(styles.$red, $lightness: -10%);
+            box-shadow: 0 0 0 2px rgba(styles.$red, 0.2);
+            outline: none;
+            background-color: styles.$red-light;
+          }
+
+          &::placeholder {
+            color: #aaa;
+            font-style: oblique;
+            font-size: 10px;
+          }
+        }
+
+        textarea {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1px solid styles.$red;
+          border-radius: 4px;
+          font-size: 14px;
+          transition: all 0.2s;
+
+          &:focus {
+            border-color: color.adjust(styles.$red, $lightness: -10%);
+            box-shadow: 0 0 0 2px rgba(styles.$red, 0.2);
+            outline: none;
+            background-color: styles.$red-light;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  // Melhoria para a lista de horários
+  .perfil-list {
+    &.edit-mode {
+      .perfil-item {
+        background-color: rgba(styles.$red-light, 0.1);
+        border-radius: 4px;
+        margin-bottom: 6px;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: rgba(styles.$red-light, 0.2);
+        }
+
+        .btn-remove {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background-color: rgba(styles.$red, 0.1);
+          }
+        }
+      }
+    }
+
+    &.view-mode {
+      .perfil-item {
+        background-color: rgba(styles.$primary-color-light, 0.1);
+        border-radius: 4px;
+        margin-bottom: 6px;
+      }
+    }
+  }
+
+  .empty-message {
+    text-align: center;
+    padding: 16px;
+    font-style: italic;
+    border: 1px dashed;
+
+    &.view-mode {
+      border-color: styles.$primary-color-light;
+      color: styles.$primary-color;
+    }
+
+    &.edit-mode {
+      border-color: styles.$red-light;
+      color: styles.$red;
+    }
+  }
+}
+
+// Responsividade para telas pequenas
+@media (max-width: 576px) {
+  .perfil-editor {
+    .add-perfil-form {
+      .input-group {
+        flex-direction: column;
+        align-items: stretch;
+
+        .btn-add {
+          width: 100%;
+          margin-top: 8px;
+          justify-content: center;
+        }
+      }
+
+      // Melhoria vinda da lista de enderecos
+      .input-fields-grid {
+        grid-template-columns: 1fr;
+
+        // de enderecos
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+
+        .btn-add {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+.help-text {
+  color: styles.$gray;
+  font-size: 14px;
+  font-weight: bold;
+
+  &.view-mode {
+    color: styles.$primary-color;
+  }
+
+  &.edit-mode {
+    color: styles.$red;
+  }
+}
+
+.view-mode {
+  color: styles.$primary-color;
+}
+
+.edit-mode {
+  color: styles.$red-dark;
+}
+
+::placeholder {
+  color: #16b32e;
+  font-style: oblique;
+  font-size: 12px;
+
+  &.view-mode {
+    color: white;
+  }
+
+  &.edit-mode {
+    color: styles.$red;
+  }
+}
+
