@@ -100,53 +100,154 @@
 
 // Body
 .chatbot-body {
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 16px;
   height: 400px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-// Messages
-.message {
-  @include message-base;
+// Messages container
+.messages-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding: 8px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
   
-  &.user {
-    background-color: #007bff;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+}
+
+// Welcome message
+.welcome-message {
+  text-align: center;
+  margin: 20px 0;
+  
+  .message {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 0 auto;
+    max-width: 70%;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    border: none;
+    
+    &::after {
+      display: none;
+    }
+  }
+}
+
+// Message groups
+.message-group {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0;
+}
+
+// Messages - Estilo clássico restaurado
+.message {
+  max-width: 75%;
+  padding: 12px 18px;
+  border-radius: 20px;
+  margin: 4px 0;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  
+  p {
+    margin: 0;
+    word-break: break-word;
+  }
+  
+  // Balão do usuário - azul clássico com seta
+  &.user-message {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
     color: white;
     margin-left: auto;
-    text-align: right;
+    text-align: left;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 3px 12px rgba(0, 123, 255, 0.3);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: -8px;
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-left-color: #0056b3;
+      border-bottom: none;
+      border-top-left-radius: 4px;
+    }
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 123, 255, 0.4);
+    }
   }
   
-  &.bot {
-    background-color: #e9ecef;
-    color: #333;
+  // Balão do bot - cinza clássico com seta
+  &.bot-message {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: #2c3e50;
     margin-right: auto;
     text-align: left;
+    border: 1px solid #e9ecef;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -8px;
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-right-color: #f8f9fa;
+      border-bottom: none;
+      border-top-right-radius: 4px;
+    }
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
   }
 }
 
-// Input area
-.chatbot-input {
+// Input area - Estilo clássico restaurado
+.input-container {
   display: flex;
-  padding: 12px 16px;
-  border-top: 1px solid #dee2e6;
-  background-color: white;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-top: 1px solid #e9ecef;
+  gap: 8px;
   
-  input {
-    flex: 1;
-    border: 1px solid #ced4da;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 14px;
-    outline: none;
-    &:focus { border-color: #667eea; }
-  }
-  
-  button {
-    margin-left: 8px;
-    background-color: #667eea;
+  .context-button-bottom {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
     color: white;
     border: none;
     border-radius: 50%;
@@ -156,33 +257,270 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.2s;
-    &:hover { background-color: #5a6fd8; }
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+    }
+  }
+  
+  .message-input {
+    flex: 1;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    
+    &:focus {
+      border-color: #667eea;
+      box-shadow: 0 2px 12px rgba(102, 126, 234, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    &::placeholder {
+      color: #6c757d;
+    }
+  }
+  
+  .send-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 12px rgba(40, 167, 69, 0.3);
+    
+    &:hover {
+      background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
+    
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    i {
+      font-size: 18px;
+    }
   }
 }
 
-// Typing indicator
+// Typing indicator - Estilo clássico
 .typing-indicator {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: #6c757d;
+  border: 1px solid #e9ecef;
+  border-bottom-left-radius: 4px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
-  padding: 8px 16px;
+  gap: 4px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
   
-  .dot {
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-right-color: #f8f9fa;
+    border-bottom: none;
+    border-top-right-radius: 4px;
+  }
+  
+  span {
     width: 8px;
     height: 8px;
-    background-color: #999;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 50%;
-    margin: 0 2px;
     animation: typing 1.4s infinite ease-in-out;
     
     &:nth-child(1) { animation-delay: -0.32s; }
     &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
   }
 }
 
 @keyframes typing {
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1); }
+}
+
+// Context indicator
+.context-indicator {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  
+  .context-pill {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin: 4px 0;
+    font-size: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+    
+    .context-label {
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    
+    .context-value {
+      margin-left: 4px;
+      
+      &.clickable {
+        cursor: pointer;
+        text-decoration: underline;
+        
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Details popup
+.details-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  max-height: 70vh;
+  z-index: 10001;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  
+  &.visible {
+    opacity: 1;
+  }
+  
+  &.maximized {
+    width: 90vw;
+    height: 80vh;
+    max-height: none;
+  }
+  
+  .details-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .details-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .maximize-button, .close-button {
+      @include button-base;
+    }
+  }
+  
+  .details-body {
+    padding: 20px;
+    max-height: 50vh;
+    overflow-y: auto;
+    
+    .detail-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .detail-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 4px;
+      }
+      
+      .detail-value {
+        color: #6c757d;
+        word-break: break-word;
+      }
+    }
+    
+    .no-details {
+      text-align: center;
+      color: #6c757d;
+      font-style: italic;
+    }
+  }
+}
+
+// Chatbot icon (when minimized)
+.chatbot-icon {
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Dragging state
+.chatbot-container.dragging {
+  cursor: grabbing;
+  
+  .chatbot-header.draggable {
+    cursor: grabbing;
+  }
+}
+
+.chatbot-header.draggable {
+  cursor: grab;
+  
+  &:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a5acd 100%);
+  }
+}
+
+// Header controls layout
+.chatbot-maximize, .chatbot-controls {
+  display: flex;
+  align-items: center;
+}
+
+.chatbot-title {
+  flex: 1;
+  text-align: center;
 }
 
 // Responsive
