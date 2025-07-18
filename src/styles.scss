@@ -899,6 +899,87 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
 }
 
 // ====================================
+// ESTILOS GLOBAIS PARA CHATBOT - CORREÇÃO DE CONFLITOS
+// ====================================
+
+/* Forçar estilos do chatbot globalmente para sobrescrever conflitos */
+app-chatbot-widget .chatbot-container .user-message,
+.chatbot-container .user-message,
+body .chatbot-container .user-message {
+  align-self: flex-end !important;
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 18px !important;
+  border-bottom-right-radius: 4px !important;
+  margin-left: 60px !important;
+  margin-right: 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 15px !important;
+  padding: 12px 16px !important;
+  max-width: 75% !important;
+  word-wrap: break-word !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  display: block !important;
+  text-align: left !important;
+}
+
+app-chatbot-widget .chatbot-container .bot-message,
+.chatbot-container .bot-message,
+body .chatbot-container .bot-message {
+  align-self: flex-start !important;
+  background-color: #E3F2FD !important;
+  color: #333 !important;
+  border-radius: 18px !important;
+  border-bottom-left-radius: 4px !important;
+  margin-right: 60px !important;
+  margin-left: 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 15px !important;
+  padding: 12px 16px !important;
+  max-width: 75% !important;
+  word-wrap: break-word !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  display: block !important;
+  text-align: left !important;
+}
+
+/* Garantir que p dentro das mensagens do chatbot também sigam o estilo */
+app-chatbot-widget .chatbot-container .user-message p,
+app-chatbot-widget .chatbot-container .bot-message p,
+.chatbot-container .user-message p,
+.chatbot-container .bot-message p {
+  margin: 0 !important;
+  font-size: 15px !important;
+  color: inherit !important;
+}
+
+/* Boas-vindas do chatbot */
+app-chatbot-widget .chatbot-container .welcome-message .message.bot-message,
+.chatbot-container .welcome-message .message.bot-message {
+  background-color: #E3F2FD !important;
+  color: #333 !important;
+  border-radius: 18px !important;
+  border-bottom-left-radius: 4px !important;
+  margin-right: 60px !important;
+  margin-left: 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 15px !important;
+  padding: 12px 16px !important;
+}
+
+/* Indicador de digitação do chatbot */
+app-chatbot-widget .chatbot-container .typing-indicator,
+.chatbot-container .typing-indicator {
+  background-color: #E3F2FD !important;
+  border-radius: 18px !important;
+  border-bottom-left-radius: 4px !important;
+  margin-right: 60px !important;
+  margin-left: 10px !important;
+  margin-bottom: 8px !important;
+  padding: 12px 16px !important;
+}
+
+// ====================================
 // DIÁLOGOS E MODAIS
 // ====================================
 

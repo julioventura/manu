@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked, AfterViewInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked, AfterViewInit, OnDestroy, ChangeDetectorRef, HostListener, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate, sequence } from '@angular/animations';
@@ -17,6 +17,7 @@ import { ConfigService } from '../shared/services/config.service';
   imports: [CommonModule, FormsModule],
   templateUrl: './chatbot-widget.component.html',
   styleUrls: ['./chatbot-widget.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('expandAnimation', [
       state('minimized', style({

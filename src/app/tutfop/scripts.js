@@ -15,8 +15,8 @@ Funções internas:
 // v 3.44a
 
 // URLs para produção e teste
-const webhookURLprod = 'https://marte.cirurgia.com.br/webhook/TutFOP_Teste';
-const webhookURLTest = 'https://marte.cirurgia.com.br/webhook-test/TutFOP_Teste';
+const webhookURLprod = 'https://marte.cirurgia.com.br/webhook/TutFOP3';
+const webhookURLTest = 'https://marte.cirurgia.com.br/webhook-test/TutFOP3';
 let webhookURL = webhookURLprod;
 
 // Limpar localStorage no carregamento da página para forçar o login sempre

@@ -9,7 +9,7 @@
   bottom: 20px;
   right: 20px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 1);
   border-radius: 16px;
   overflow: hidden;
@@ -246,95 +246,132 @@
   }
 }
 
-/* Mensagem de boas-vindas */
+/* Mensagem de boas-vindas - Com alta especificidade */
 .welcome-message {
   display: flex;
   
-  .message {
-    max-width: 80%;
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin: 4px 0;
-    background-color: #E5F1FF; // Azul claro clássico
-    color: #333;
-    border-bottom-left-radius: 4px;
-    margin-right: auto;
-    margin-left: 10px;
-    word-wrap: break-word;
-    line-height: 1.4;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  :host ::ng-deep .message.bot-message,
+  .message.bot-message {
+    max-width: 80% !important;
+    padding: 12px 16px !important;
+    border-radius: 18px !important;
+    border-bottom-left-radius: 4px !important;
+    margin: 4px 0 !important;
+    background-color: #E3F2FD !important; // Mesma cor do bot
+    color: #333 !important;
+    margin-right: 60px !important;
+    margin-left: 10px !important;
+    margin-bottom: 8px !important;
+    word-wrap: break-word !important;
+    line-height: 1.5 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    font-size: 15px !important; 
 
     p {
-      margin: 0;
+      margin: 0 !important;
+      font-size: 15px !important; 
     }
   }
 }
 
-/* Grupos de mensagens */
+/* Grupos de mensagens - Com especificidade alta */
 .message-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  width: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  margin-bottom: 10px !important;
+  width: 100% !important;
 
+  :host ::ng-deep .message,
   .message {
-    max-width: 80%;
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin: 4px 0;
-    word-wrap: break-word;
-    line-height: 1.4;
-    position: relative;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.3s ease-in;
+    max-width: 80% !important;
+    padding: 12px 16px !important;
+    border-radius: 18px !important;
+    margin: 4px 0 !important;
+    word-wrap: break-word !important;
+    line-height: 1.4 !important;
+    position: relative !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    animation: fadeIn 0.3s ease-in !important;
+    font-size: 15px !important; 
 
     p {
-      margin: 0;
-      white-space: pre-line;
-    }
-
-    &.user-message {
-      align-self: flex-end;
-      background-color: #0084ff; // Azul clássico do usuário
-      color: white;
-      border-bottom-right-radius: 4px;
-      margin-left: auto;
-      margin-right: 10px;
-    }
-
-    &.bot-message {
-      align-self: flex-start;
-      background-color: #E5F1FF; // Azul claro clássico do bot
-      color: #333;
-      border-bottom-left-radius: 4px;
-      margin-right: auto;
-      margin-left: 10px;
+      margin: 0 !important;
+      white-space: pre-line !important;
+      font-size: 15px !important; 
     }
   }
 }
 
-/* Indicador de digitação */
+/* Mensagens do usuário (verde) - Com alta especificidade para sobrescrever conflitos */
+:host ::ng-deep .chatbot-container .user-message,
+:host ::ng-deep .user-message,
+.chatbot-container .user-message,
+.user-message {
+  align-self: flex-end !important;
+  background-color: #4CAF50 !important; // Verde para usuário
+  color: white !important;
+  border-radius: 18px !important;
+  border-bottom-right-radius: 4px !important;
+  margin-left: 60px !important;
+  margin-right: 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 15px !important; 
+  padding: 12px 16px !important;
+  max-width: 75% !important;
+  word-wrap: break-word !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Mensagens do bot (azul) - Com alta especificidade para sobrescrever conflitos */
+:host ::ng-deep .chatbot-container .bot-message,
+:host ::ng-deep .bot-message,
+.chatbot-container .bot-message,
+.bot-message {
+  align-self: flex-start !important;
+  background-color: #E3F2FD !important; // Azul claro para bot
+  color: #333 !important;
+  border-radius: 18px !important;
+  border-bottom-left-radius: 4px !important;
+  margin-right: 60px !important;
+  margin-left: 10px !important;
+  margin-bottom: 8px !important;
+  font-size: 15px !important; 
+  padding: 12px 16px !important;
+  max-width: 75% !important;
+  word-wrap: break-word !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Indicador de digitação - Com alta especificidade */
+:host ::ng-deep .typing-indicator,
 .typing-indicator {
-  display: flex;
-  align-items: center;
-  background-color: #E5F1FF !important; // Forçar a mesma cor azul clara
+  display: flex !important;
+  align-items: center !important;
+  background-color: #E3F2FD !important; // Mesma cor do bot
+  border-radius: 18px !important;
+  border-bottom-left-radius: 4px !important;
+  margin-right: 60px !important;
+  margin-left: 10px !important;
+  margin-bottom: 8px !important;
+  padding: 12px 16px !important;
+  max-width: 75% !important;
 
   span {
-    height: 8px;
-    width: 8px;
-    background-color: #5A9BE6; // Cor de azul mais escuro para os pontos
-    border-radius: 50%;
-    display: inline-block;
-    margin: 0 2px;
+    height: 8px !important;
+    width: 8px !important;
+    background-color: #5A9BE6 !important; // Cor de azul mais escuro para os pontos
+    border-radius: 50% !important;
+    display: inline-block !important;
+    margin: 0 2px !important;
 
     &:nth-child(1) {
-      animation: bounce 1.2s infinite 0.2s;
+      animation: bounce 1.2s infinite 0.2s !important;
     }
     &:nth-child(2) {
-      animation: bounce 1.2s infinite 0.4s;
+      animation: bounce 1.2s infinite 0.4s !important;
     }
     &:nth-child(3) {
-      animation: bounce 1.2s infinite 0.6s;
+      animation: bounce 1.2s infinite 0.6s !important;
     }
   }
 }
