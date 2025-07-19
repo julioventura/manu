@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, of, Subject } from 'rxjs';
 import { map, catchError, switchMap, filter, tap, delay } from 'rxjs/operators';
-// REMOVER: take, firstValueFrom (não usados)
 import { Router, NavigationEnd } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
@@ -11,13 +10,7 @@ import { FirestoreService } from '../shared/services/firestore.service';
 import { SubcolecaoService } from '../shared/services/subcolecao.service';
 import { environment } from '../../environments/environment';
 
-// CORRIGIR: Configuração environment inline -> usar environment importado
-// const environment = {
-//   openaiApiKey: 'sua-chave-aqui',
-//   openaiModel: 'gpt-3.5-turbo'
-// };
 
-// CORRIGIR: usar environment importado
 const API_CONFIG = {
   openaiApiKey: environment.openaiApiKey,
   apiUrl: environment.openaiApiUrl || 'https://api.openai.com/v1/chat/completions'
@@ -277,7 +270,6 @@ export class AiChatService {
     this.contextSubject.next({...this.currentContext});
   }
 
-  // REMOVER métodos duplicados e manter apenas um sendMessage
   sendMessage(message: string, sessionId: string, dentistId: string, context?: Record<string, unknown>): Observable<Message> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
