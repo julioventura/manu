@@ -1,9 +1,9 @@
-import { Validators } from '@angular/forms';
+import { Validators, ValidatorFn } from '@angular/forms';
 
 export interface ProfileField {
   controlName: string;
-  defaultValue: any;
-  validators?: any[];
+  defaultValue: string;
+  validators?: ValidatorFn[];
   label?: string;
   type?: string;
   placeholder?: string;
@@ -55,7 +55,7 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
     group: '02. Capa da Homepage e Cartão de Visitas Digital'
   },
   {
-    controlName: 'titulo_profissional',
+    controlName: 'especialidade_principal',
     defaultValue: '',
     label: 'Especialidade principal',
     type: 'text',
@@ -205,8 +205,8 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
  * Creates a configuration object for a reactive form group from the profile fields
  * @returns Object with control names as keys and [defaultValue, validators] arrays as values
  */
-export function getProfileFormConfig(): { [key: string]: any[] } {
-  const formConfig: { [key: string]: any[] } = {};
+export function getProfileFormConfig(): { [key: string]: [string, ValidatorFn[]] } {
+  const formConfig: { [key: string]: [string, ValidatorFn[]] } = {};
   
   PROFILE_FORM_FIELDS.forEach(field => {
     formConfig[field.controlName] = [

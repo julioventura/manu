@@ -1,0 +1,339 @@
+/* Perfil Component Styles - Design Melhorado */
+@use '../../_variables.scss' as vars;
+
+.container_principal {
+  min-height: 100vh;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0;
+  margin-bottom: 1rem;
+
+  &.view-mode {
+    border-bottom: 2px solid vars.$primary-color;
+  }
+
+  &.edit-mode {
+    border-bottom: 2px solid #ff6b6b;
+  }
+}
+
+.content {
+  padding: 0 1rem 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+
+  .spinner-container {
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid vars.$primary-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+
+      &.edit-mode {
+        border-top-color: #ff6b6b;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  text-align: center;
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border: 1px solid #ffcdd2;
+}
+
+/* Design principal do formulário */
+.profile-form {
+  .field-group {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &.view-mode {
+      border-left: 4px solid vars.$primary-color;
+    }
+
+    &.edit-mode {
+      border-left: 4px solid #ff6b6b;
+      background: #fffaf0;
+    }
+  }
+
+  .grupo-titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+
+    &.view-mode {
+      color: vars.$primary-color;
+    }
+
+    &.edit-mode {
+      color: #ff6b6b;
+    }
+  }
+
+  /* Novo design: label e input em linhas separadas */
+  .field-container {
+    margin-bottom: 1.5rem;
+
+    .field-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+
+      &.view-mode {
+        color: vars.$primary-color;
+      }
+
+      &.edit-mode {
+        color: #ff6b6b;
+      }
+    }
+
+    .field-input-container {
+      width: 100%;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+
+      &.view-mode {
+        background: #f8f9fa;
+        border-color: vars.$primary-color;
+        color: #333;
+        cursor: default;
+
+        &:disabled {
+          opacity: 1;
+          background: #f8f9fa;
+        }
+      }
+
+      &.edit-mode {
+        background: #ffffff;
+        border-color: #ff6b6b;
+
+        &:focus {
+          outline: none;
+          border-color: #ff6b6b;
+          box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+      }
+
+      &.error {
+        border-color: #d32f2f;
+        background: #ffebee;
+      }
+
+      &[type="textarea"] {
+        min-height: 80px;
+        resize: vertical;
+      }
+    }
+
+    textarea.field-input {
+      min-height: 80px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .validation-message {
+      color: #d32f2f;
+      font-size: 0.875rem;
+      margin-top: 4px;
+      display: block;
+    }
+  }
+}
+
+/* Estilos para seções especiais (horários, endereços, convênios) */
+.perfil-container {
+  .perfil-list {
+    .perfil-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .perfil-content {
+        flex: 1;
+
+        .perfil-details {
+          color: #666;
+          font-size: 0.9rem;
+          margin-top: 0.25rem;
+        }
+      }
+
+      .btn-remove {
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease;
+        font-size: 1.2rem;
+        font-weight: bold;
+
+        &:hover {
+          background: #d32f2f;
+        }
+      }
+    }
+  }
+
+  .add-form {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: #f0f8ff;
+    border-radius: 8px;
+    border: 2px dashed #4CAF50;
+
+    .input-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .input-group {
+        flex: 1;
+      }
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      .field-label {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+
+        &.edit-mode {
+          color: #ff6b6b;
+        }
+      }
+
+      .field-input {
+        margin-bottom: 0;
+      }
+    }
+
+    .btn-add {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s ease;
+      font-size: 1rem;
+
+      &:hover:not(:disabled) {
+        background: #3d8b40;
+      }
+
+      &:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .empty-message {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #e0e0e0;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .content {
+    padding: 0 0.5rem 1rem 0.5rem;
+  }
+
+  .profile-form .field-group {
+    padding: 1rem;
+  }
+
+  .perfil-container .add-form {
+    padding: 1rem;
+  }
+
+  .profile-form .field-container .field-input {
+    padding: 10px 14px;
+    font-size: 16px; /* Evita zoom no iOS */
+  }
+}

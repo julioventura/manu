@@ -50,6 +50,7 @@ interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss'],
+  standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivate {
@@ -63,10 +64,6 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
   isSaving = false;
   usernameError = '';
   originalUsername = '';
-
-  // Configuração de layout
-  customLabelWidthValue: number = 100;
-  customLabelWidth: string = `${this.customLabelWidthValue}px`;
 
   // Add reference to grouped fields for the template
   groupedFields: { [key: string]: ProfileField[] };
@@ -106,6 +103,8 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     this.isEditing = false;
     this.profileForm = this.fb.group(getProfileFormConfig());
     this.profileForm.disable(); // Inicialmente desabilitado (modo visualização)
+    
+    // CORRIGIR: Inicializar groupedFields no constructor
     this.groupedFields = getGroupedProfileFields();
   }
 
@@ -156,7 +155,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
 
     this.firestoreService.getRegistroById('usuarios/dentistascombr/users', this.userEmail).subscribe(
-      (userData: FirestoreUserProfile | undefined) => {
+      (userData: FirestoreUserProfile | undefined) => {        
         if (userData) {
           this.userProfileData = userData;
           this.originalUsername = userData.username || '';
@@ -308,10 +307,6 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     } else {
       this.convenios = [];
     }
-  }
-
-  updateCustomLabelWidth(): void {
-    this.customLabelWidth = `${this.customLabelWidthValue}px`;
   }
 
   editar(): void {

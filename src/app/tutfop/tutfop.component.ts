@@ -208,6 +208,11 @@ export class TutfopComponent implements OnInit, OnDestroy {
     }
   }
 
+  // goHome(): Navega para a página inicial
+  goHome(): void {
+    this.util.goHome();
+  }
+
   // setupEventListeners(): Configura listeners para eventos do DOM
   private setupEventListeners(): void {
     const userInput = document.getElementById("tutfop-user-input") as HTMLTextAreaElement;
