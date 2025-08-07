@@ -1,5 +1,5 @@
 // Serviço FireStore Otimizado para Performance
-import { Injectable } from '@angular/core';
+import { Injectable, Injector, runInInjectionContext } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of, timer } from 'rxjs';
 import { map, catchError, shareReplay } from 'rxjs/operators';
@@ -20,7 +20,8 @@ export class FirestoreOptimizedService {
   private cacheTimeout = 5 * 60 * 1000; // 5 minutos
 
   constructor(
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private injector: Injector
   ) {}
 
   /**
@@ -38,31 +39,31 @@ export class FirestoreOptimizedService {
     }
 
     // Use Query type from AngularFirestore for type safety
-    const query$ = this.firestore.collection<T>(collectionPath, ref => {
-      let query = ref as firebase.default.firestore.Query<firebase.default.firestore.DocumentData>;
-      if (options.orderBy) {
-        query = query.orderBy(options.orderBy, options.orderDirection || 'asc');
-      }
-      if (options.limit) {
-        query = query.limit(options.limit);
-      }
-      if (options.startAfter) {
-        query = query.startAfter(options.startAfter);
-      }
-      return query;
-    })
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        map(data => {
-          console.debug('[FirestoreOptimizedService] valueChanges result:', data, 'for collection:', collectionPath, 'options:', options);
-          return data;
-        }),
-        catchError(error => {
-          console.error('FirestoreOptimized error:', error, 'for collection:', collectionPath, 'options:', options);
-          return of([]);
-        }),
-        shareReplay(1)
-      );
+    const query$ = runInInjectionContext(this.injector, () => 
+      this.firestore.collection<T>(collectionPath, ref => {
+        let query = ref as firebase.default.firestore.Query<firebase.default.firestore.DocumentData>;
+        if (options.orderBy) {
+          query = query.orderBy(options.orderBy, options.orderDirection || 'asc');
+        }
+        if (options.limit) {
+          query = query.limit(options.limit);
+        }
+        if (options.startAfter) {
+          query = query.startAfter(options.startAfter);
+        }
+        return query;
+      }).valueChanges({ idField: 'id' })
+    ).pipe(
+      map(data => {
+        console.debug('[FirestoreOptimizedService] valueChanges result:', data, 'for collection:', collectionPath, 'options:', options);
+        return data;
+      }),
+      catchError(error => {
+        console.error('FirestoreOptimized error:', error, 'for collection:', collectionPath, 'options:', options);
+        return of([]);
+      }),
+      shareReplay(1)
+    );
 
     // Armazenar no cache com expiração
     this.cache.set(cacheKey, query$);
@@ -84,16 +85,17 @@ export class FirestoreOptimizedService {
       return this.cache.get(cacheKey)! as Observable<T | null>;
     }
 
-    const doc$ = this.firestore.collection<T>(collectionPath).doc(docId)
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        map(doc => doc || null),
-        catchError(error => {
-          console.error('FirestoreOptimized getDocumentById error:', error);
-          return of(null);
-        }),
-        shareReplay(1)
-      );
+    const doc$ = runInInjectionContext(this.injector, () => 
+      this.firestore.collection<T>(collectionPath).doc(docId)
+        .valueChanges({ idField: 'id' })
+    ).pipe(
+      map(doc => doc || null),
+      catchError(error => {
+        console.error('FirestoreOptimized getDocumentById error:', error);
+        return of(null);
+      }),
+      shareReplay(1)
+    );
 
     // Armazenar no cache com expiração
     this.cache.set(cacheKey, doc$);

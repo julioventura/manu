@@ -1,5 +1,5 @@
 // Serviço FireStore Otimizado - Versão Simplificada
-import { Injectable } from '@angular/core';
+import { Injectable, Injector, runInInjectionContext } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
 import { map, catchError, shareReplay } from 'rxjs/operators';
@@ -11,7 +11,10 @@ export class FirestoreOptimizedService {
   private cache = new Map<string, Observable<unknown>>();
   private cacheTimeout = 5 * 60 * 1000; // 5 minutos
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(
+    private firestore: AngularFirestore,
+    private injector: Injector
+  ) {}
 
   /**
    * Busca otimizada com limite e ordenação
@@ -33,21 +36,21 @@ export class FirestoreOptimizedService {
     }
 
     console.log('🌐 FirestoreOptimized: Querying Firestore for', cacheKey);
-    const query$ = this.firestore.collection<T>(collectionPath, ref => 
-      ref.orderBy(orderBy, orderDirection).limit(limit)
-    )
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        map(data => {
-          console.log('✅ FirestoreOptimized: Data received', { path: collectionPath, count: data.length });
-          return data;
-        }),
-        catchError(error => {
-          console.error('❌ FirestoreOptimized error:', error);
-          return of([]);
-        }),
-        shareReplay(1)
-      );
+    const query$ = runInInjectionContext(this.injector, () => 
+      this.firestore.collection<T>(collectionPath, ref => 
+        ref.orderBy(orderBy, orderDirection).limit(limit)
+      ).valueChanges({ idField: 'id' })
+    ).pipe(
+      map(data => {
+        console.log('✅ FirestoreOptimized: Data received', { path: collectionPath, count: data.length });
+        return data;
+      }),
+      catchError(error => {
+        console.error('❌ FirestoreOptimized error:', error);
+        return of([]);
+      }),
+      shareReplay(1)
+    );
 
     // Armazenar no cache
     this.cache.set(cacheKey, query$);
@@ -102,16 +105,17 @@ export class FirestoreOptimizedService {
       return this.cache.get(cacheKey)! as Observable<T | null>;
     }
 
-    const doc$ = this.firestore.doc<T>(`${collectionPath}/${docId}`)
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        map(doc => doc || null),
-        catchError(error => {
-          console.error('Error fetching document:', error);
-          return of(null);
-        }),
-        shareReplay(1)
-      );
+    const doc$ = runInInjectionContext(this.injector, () => 
+      this.firestore.doc<T>(`${collectionPath}/${docId}`)
+        .valueChanges({ idField: 'id' })
+    ).pipe(
+      map(doc => doc || null),
+      catchError(error => {
+        console.error('Error fetching document:', error);
+        return of(null);
+      }),
+      shareReplay(1)
+    );
 
     this.cache.set(cacheKey, doc$);
     setTimeout(() => {
