@@ -23,14 +23,14 @@ export const CAMPOS_FICHAS_EXAMES: Campo[] = [
   { grupo: ' Principal', subgrupo: '', nome: 'obs', tipo: 'textarea', label: 'Observações' },
   { grupo: ' Principal', subgrupo: '', nome: 'nuvem', tipo: 'url', label: 'Arquivos na nuvem' },
   
-  { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'queixaPrincipal', tipo: 'text', label: 'Queixa Principal' },
+  { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'queixaPrincipal', tipo: 'text', label: 'Queixa Principal', expandido: true },
   { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'emTratamentoMedico', tipo: 'boolean', label: 'Está em tratamento médico?' },
   { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'motivoTratamentoMedico', tipo: 'text', label: 'Motivo do tratamento médico' },
   { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'usaMedicamento', tipo: 'boolean', label: 'Toma medicamentos?' },
   { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'quaisMedicamentos', tipo: 'text', label: 'Quais medicamentos?' },
   { grupo: 'Exames', subgrupo: 'Anamnese', nome: 'motivoMedicamentos', tipo: 'text', label: 'Motivo dos medicamentos' },
 
-  { grupo: 'Exames', subgrupo: 'Histórico Familiar', nome: 'diabetes', tipo: 'text', label: 'Diabetes na família' },
+  { grupo: 'Exames', subgrupo: 'Histórico Familiar', nome: 'diabetes', tipo: 'text', label: 'Diabetes na família', expandido: true },
   { grupo: 'Exames', subgrupo: 'Histórico Familiar', nome: 'coracao', tipo: 'text', label: 'Doenças cardíacas' },
 
 
