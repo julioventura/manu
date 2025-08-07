@@ -180,7 +180,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Método para verificar se o usuário é autorizado a ver o chatbot
   private checkAuthorizedUser(email: string | null): boolean {
-    const authorizedEmails = ['julio@dentistas.com.br', 'admin@dentistas.com.br'];
+    // OPÇÃO 1: Ativar para emails específicos (atual)
+    const authorizedEmails = [
+      'julio@dentistas.com.br', 
+      'admin@dentistas.com.br'
+    ];
     return email ? authorizedEmails.includes(email) : false;
+    
+    // OPÇÃO 2: Ativar para todos os usuários logados
+    // return !!email; // Descomente esta linha e comente o código acima
   }
 }
