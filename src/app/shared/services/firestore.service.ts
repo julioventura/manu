@@ -24,13 +24,16 @@ export class FirestoreService<T extends { id?: string }> {
       try {
         const id = registro.id ? registro.id : this.createId();
         const registroComId = { ...registro, id };
-        const docRef = this.firestore.collection(collectionPath).doc(id);
-        docRef.set(registroComId)
-          .then(() => resolve())
-          .catch((error) => {
-            console.error('Error in addRegistro:', error);
-            reject(error);
-          });
+        
+        runInInjectionContext(this.injector, () => {
+          const docRef = this.firestore.collection(collectionPath).doc(id);
+          docRef.set(registroComId)
+            .then(() => resolve())
+            .catch((error) => {
+              console.error('Error in addRegistro:', error);
+              reject(error);
+            });
+        });
       } catch (error) {
         console.error('Error creating document reference in addRegistro:', error);
         reject(error);
@@ -71,23 +74,25 @@ export class FirestoreService<T extends { id?: string }> {
   updateRegistro(collectionPath: string, id: string, registro: Partial<T>): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        const docRef = this.firestore.collection(collectionPath).doc(id);
-        
-        // First check if document exists before updating
-        docRef.get().toPromise().then(docSnapshot => {
-          if (!docSnapshot || !docSnapshot.exists) {
-            // Document doesn't exist, create it instead
-            console.warn(`Document ${id} doesn't exist, creating it instead of updating`);
-            return docRef.set(registro);
-          } else {
-            // Document exists, update it
-            return docRef.update(registro);
-          }
-        }).then(() => {
-          resolve();
-        }).catch((error) => {
-          console.error('Error in updateRegistro:', error);
-          reject(error);
+        runInInjectionContext(this.injector, () => {
+          const docRef = this.firestore.collection(collectionPath).doc(id);
+          
+          // First check if document exists before updating
+          docRef.get().toPromise().then(docSnapshot => {
+            if (!docSnapshot || !docSnapshot.exists) {
+              // Document doesn't exist, create it instead
+              console.warn(`Document ${id} doesn't exist, creating it instead of updating`);
+              return docRef.set(registro);
+            } else {
+              // Document exists, update it
+              return docRef.update(registro);
+            }
+          }).then(() => {
+            resolve();
+          }).catch((error) => {
+            console.error('Error in updateRegistro:', error);
+            reject(error);
+          });
         });
       } catch (error) {
         console.error('Error creating document reference in updateRegistro:', error);
@@ -100,13 +105,15 @@ export class FirestoreService<T extends { id?: string }> {
   upsertRegistro(collectionPath: string, id: string, registro: T): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        const docRef = this.firestore.collection(collectionPath).doc(id);
-        docRef.set(registro, { merge: true })
-          .then(() => resolve())
-          .catch((error) => {
-            console.error('Error in upsertRegistro:', error);
-            reject(error);
-          });
+        runInInjectionContext(this.injector, () => {
+          const docRef = this.firestore.collection(collectionPath).doc(id);
+          docRef.set(registro, { merge: true })
+            .then(() => resolve())
+            .catch((error) => {
+              console.error('Error in upsertRegistro:', error);
+              reject(error);
+            });
+        });
       } catch (error) {
         console.error('Error creating document reference in upsertRegistro:', error);
         reject(error);
@@ -118,13 +125,15 @@ export class FirestoreService<T extends { id?: string }> {
   deleteRegistro(collectionPath: string, id: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        const docRef = this.firestore.collection(collectionPath).doc(id);
-        docRef.delete()
-          .then(() => resolve())
-          .catch((error) => {
-            console.error('Error in deleteRegistro:', error);
-            reject(error);
-          });
+        runInInjectionContext(this.injector, () => {
+          const docRef = this.firestore.collection(collectionPath).doc(id);
+          docRef.delete()
+            .then(() => resolve())
+            .catch((error) => {
+              console.error('Error in deleteRegistro:', error);
+              reject(error);
+            });
+        });
       } catch (error) {
         console.error('Error creating document reference in deleteRegistro:', error);
         reject(error);
@@ -134,7 +143,9 @@ export class FirestoreService<T extends { id?: string }> {
 
   // Método para gerar um ID único
   createId(): string {
-    return this.firestore.createId();
+    return runInInjectionContext(this.injector, () => 
+      this.firestore.createId()
+    );
   }
 
   // Método para criar um timestamp
@@ -268,7 +279,9 @@ export class FirestoreService<T extends { id?: string }> {
 
   // Set document by full path (including subdocuments)
   setDocumentByPath(path: string, data: Record<string, unknown>): Promise<void> {
-    return this.firestore.doc(path).set(data);
+    return runInInjectionContext(this.injector, () => 
+      this.firestore.doc(path).set(data)
+    );
   }
 
   // Batch add multiple records
