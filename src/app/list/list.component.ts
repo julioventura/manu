@@ -20,7 +20,7 @@
  * 15. voltar: Navega de volta à listagem de registros ou fichas internas.
  */
 
-import { Component, OnInit, runInInjectionContext, Injector, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from '../shared/services/firestore.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -32,7 +32,7 @@ import { SubcolecaoService } from '../shared/services/subcolecao.service';
 import { CAMPOS_FICHAS_EXAMES, CAMPOS_FICHAS_DOCUMENTOS, CAMPOS_FICHAS_PLANOS, CAMPOS_FICHAS_ATENDIMENTOS, CAMPOS_FICHAS_TRATAMENTOS, CAMPOS_FICHAS_PAGAMENTOS } from '../shared/constants/campos-ficha.constants';
 import { SUBCOLLECTION_FIELDS } from '../shared/constants/subcollection-fields.config';
 import { Registro } from '../shared/constants/registro.model';
-import { NgIf, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FirestoreOptimizedService } from '../shared/services/firestore-optimized-simple.service';
@@ -42,11 +42,11 @@ import { SkeletonLoaderComponent } from '../shared/components/skeleton-loader/sk
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush, // OTIMIZAÇÃO: OnPush para melhor performance
   imports: [
-    NgIf,
+    CommonModule,
     FormsModule,
-    NgFor,
     SkeletonLoaderComponent // NOVO: Skeleton loader
   ],
 })
@@ -130,10 +130,8 @@ export class ListComponent implements OnInit {
         this.userId = user.uid;
         this.userEmail = user.email;
         
-        runInInjectionContext(this.injector, () => {
-          this.verificarOuCriarConfiguracao();
-          this.setupOptimizedDataFlow(); // NOVO: Setup otimizado
-        });
+        this.verificarOuCriarConfiguracao();
+        this.setupOptimizedDataFlow(); // NOVO: Setup otimizado
       }
     });
 

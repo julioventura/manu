@@ -13,6 +13,7 @@ import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.componen
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [

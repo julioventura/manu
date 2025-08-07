@@ -1,27 +1,26 @@
 // Alteração: remoção de logs de depuração (console.log)
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import * as Papa from 'papaparse';
 
 import { UtilService } from '../util.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-importar-cadastro',
-    templateUrl: './importar-cadastro.component.html',
-    styleUrls: ['./importar-cadastro.component.scss'],
-    imports: [FormsModule, NgIf]
+  selector: 'app-importar-cadastro',
+  templateUrl: './importar-cadastro.component.html',
+  styleUrls: ['./importar-cadastro.component.scss'],
+  imports: [FormsModule, NgIf]
 })
 export class ImportarCadastroComponent {
   userId: string | null = null;
-  csvData: any[] = [];
+  csvData: Record<string, unknown>[] = [];
   importStatus: string = '';
   selectedCollection: string = 'pacientes'; // Coleção padrão selecionada
 
   constructor(
-    private firestore: AngularFirestore,
+    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>,
     private afAuth: AngularFireAuth,
     public util: UtilService,
   ) {
@@ -32,16 +31,17 @@ export class ImportarCadastroComponent {
     });
   }
 
-  async onFileSelect(event: any) {
+  async onFileSelect(event: Event) {
     const Papa = (await import('papaparse')).default;
-    const file = event.target.files[0];
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
     if (file) {
       Papa.parse(file, {
         header: true,
-        complete: (result: { data: any[] }) => {
+        complete: (result: { data: Record<string, unknown>[] }) => {
           this.importData(result.data);
         },
-        error: (error: any) => {
+        error: (error: unknown) => {
           console.error('Erro ao processar o arquivo:', error);
         }
       });
@@ -50,26 +50,17 @@ export class ImportarCadastroComponent {
   
 
   // Novo método importData para processar e armazenar dados CSV no Firestore
-  async importData(data: any[]) {
+  async importData(data: Record<string, unknown>[]) {
     if (!this.userId || data.length === 0) {
       this.importStatus = 'Por favor, selecione um arquivo CSV válido.';
       return;
     }
   
     this.importStatus = 'Importando dados...';
-  
-    const batch = this.firestore.firestore.batch();
-    const collectionPath = `/users/${this.userId}/${this.selectedCollection}`;
-    const collectionRef = this.firestore.collection(collectionPath).ref;
-  
-    data.forEach(record => {
-      const docRef = collectionRef.doc(); // Cria um novo documento com ID automático
-      const recordWithId = { ...record, id: docRef.id }; // Adiciona o campo `id` ao registro
-      batch.set(docRef, recordWithId); // Adiciona o registro ao batch
-    });
+    const collectionPath = `users/${this.userId}/${this.selectedCollection}`;
   
     try {
-      await batch.commit();
+      await this.firestoreService.batchAddRegistros(collectionPath, data);
       this.importStatus = 'Importação concluída com sucesso!';
     } catch (error) {
       console.error('Erro ao importar dados:', error);
@@ -86,23 +77,15 @@ export class ImportarCadastroComponent {
     }
 
     this.importStatus = 'Importando dados...';
+    const collectionPath = `users/${this.userId}/${this.selectedCollection}`;
 
-    const batch = this.firestore.firestore.batch();
-    const collectionPath = `/users/${this.userId}/${this.selectedCollection}`;
-    const selectedCollectionRef = this.firestore.collection(collectionPath).ref;
-
-    for (const registro of this.csvData) {
-      const docRef = selectedCollectionRef.doc(); // Gera um novo documento com um ID automático
-      const registroComId = { ...registro, id: docRef.id }; // Adiciona o campo `id` ao registro
-      batch.set(docRef, registroComId); // Adiciona o registro ao batch com o ID incluído
-    }
-
-    batch.commit().then(() => {
+    try {
+      await this.firestoreService.batchAddRegistros(collectionPath, this.csvData);
       this.importStatus = `Importação concluída com sucesso para o cadastro: ${this.selectedCollection}!`;
-    }).catch((error) => {
+    } catch (error) {
       console.error('Erro ao importar dados:', error);
       this.importStatus = 'Erro ao importar os dados.';
-    });
+    }
   }
 
 }

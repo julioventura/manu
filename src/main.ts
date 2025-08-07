@@ -1,14 +1,11 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
+import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding, withNavigationErrorHandler, withPreloading, PreloadAllModules } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi, HttpClientModule } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+
+// Configurações de console para desenvolvimento
+import './console-config';
 
 import { environment } from './environments/environment';
 import { routes } from './app/app.routes';
@@ -17,29 +14,37 @@ import { AppComponent } from './app/app.component';
 import { FirestoreService } from './app/shared/services/firestore.service';
 import { LoggingService } from './app/shared/services/logging.service';
 
-// Se o ambiente estiver em produção, ativa o modo de produção do Angular
-// para desabilitar verificações extras e melhorar a performance.
-if (environment.production) {
-  enableProdMode();
+import { importProvidersFrom } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+// Configurações para reduzir logs desnecessários do zone.js
+if (!environment.production) {
+  // Em desenvolvimento, reduzir logs verbosos
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).__Zone_disable_timers = true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).__Zone_disable_requestAnimationFrame = true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).__Zone_disable_on_property = true;
 }
 
 // Inicializa o módulo principal da aplicação
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      BrowserModule,
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      HttpClientModule,
       AngularFireModule.initializeApp(environment.firebase),
-      AngularFirestoreModule,
       AngularFireAuthModule,
-      AngularFireStorageModule
+      AngularFirestoreModule
     ),
     provideRouter(routes, 
       withComponentInputBinding(), 
-      withNavigationErrorHandler(error => console.error(error)),
+      withNavigationErrorHandler(error => {
+        if (!environment.production) {
+          console.error('Navigation error:', error);
+        }
+      }),
       withPreloading(PreloadAllModules)
     ),
     provideHttpClient(withInterceptorsFromDi()),
@@ -49,4 +54,8 @@ bootstrapApplication(AppComponent, {
     provideAnimations()
   ]
 })
-  .catch(err => console.error(err));
+  .catch(err => {
+    if (!environment.production) {
+      console.error('Bootstrap error:', err);
+    }
+  });

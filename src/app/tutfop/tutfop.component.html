@@ -14,22 +14,27 @@
     </div>
 
     <!-- Loading state -->
-    <div *ngIf="!isUserAuthenticated" class="loading-container">
+    @if (!isUserAuthenticated) {
+    <div class="loading-container">
         <p>Carregando...</p>
     </div>
+    }
 
     <!-- Aviso quando não autenticado -->
-    <div *ngIf="isUserAuthenticated === false" class="aviso">
+    @if (isUserAuthenticated === false) {
+    <div class="aviso">
         <p>Você precisa estar autenticado para usar o TutFOP.</p>
     </div>
+    }
 
     <!-- Container principal do TutFOP -->
-    <div *ngIf="isUserAuthenticated" class="tutfop-main-content">
+    @if (isUserAuthenticated) {
+    <div class="tutfop-main-content">
         
         <!-- Container do Chat -->
         <div class="tutfop-chat-section">
             
-            <div class="tutfop-chat-log">
+            <div id="tutfop-chat-log" class="tutfop-chat-log">
                 <div class="bot-message">
                     <strong>Tutor Virtual:</strong> 
                     Olá! Eu sou o <b>TutFOP</b>, seu tutor virtual da <i>Clínica Integral 3</i>.<br />&nbsp;<br />
@@ -56,5 +61,6 @@
         </div>
 
     </div>
+    }
 
 </div>

@@ -12,9 +12,9 @@
 */
 
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
 import { Campo } from '../models/campo.model';
+import { FirestoreService } from './firestore.service';
 import {
   DEFAULT_CAMPOS_PADRAO,
   DEFAULT_CAMPOS_PADRAO_FICHAS,
@@ -36,7 +36,7 @@ import {
 })
 export class CamposFichaService {
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>) { }
 
   // Retorna os campos fixos conforme a coleção (subcollection) selecionada
   getCamposFichaRegistro(userId: string, subcollection: string): Observable<Campo[]> {
@@ -72,8 +72,8 @@ export class CamposFichaService {
 
   // A função de setCamposFichaRegistro pode ser mantida para uso futuro ou removida, se não houver necessidade
   setCamposFichaRegistro(userId: string, collection: string, campos: Campo[]): Promise<void> {
-    const path = `users/${userId}/configuracoesFichas`;
-    return this.firestore.collection(path).doc(collection).set({ campos });
+    const path = `users/${userId}/configuracoesFichas/${collection}`;
+    return this.firestoreService.setDocumentByPath(path, { campos });
   }
 
 }

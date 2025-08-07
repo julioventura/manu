@@ -1,34 +1,27 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth'; // Altere para AngularFireAuth
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
-  ],
+  imports: [FormsModule],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent {
   email: string = '';
 
-  constructor(private afAuth: AngularFireAuth, private router: Router) { } // Usando AngularFireAuth aqui
+  constructor(private afAuth: AngularFireAuth, private router: Router) { }
 
   onSubmit() {
-    this.afAuth.sendPasswordResetEmail(this.email) // Altere para afAuth.sendPasswordResetEmail
+    if (!this.email) {
+      alert('Por favor, insira um email válido.');
+      return;
+    }
+
+    this.afAuth.sendPasswordResetEmail(this.email)
       .then(() => {
         alert('Um email para redefinição de senha foi enviado.');
         this.router.navigate(['/login']);

@@ -117,10 +117,13 @@ export class TutfopComponent implements OnInit, OnDestroy {
   // sendTutfopMessage(): Envia mensagem do usuário para o tutor virtual
   async sendTutfopMessage(): Promise<void> {
     const userInput = document.getElementById("tutfop-user-input") as HTMLTextAreaElement;
-    const chatLog = document.getElementById("tutfop-chat-log");
+    const chatLog = document.getElementById("tutfop-chat-log") as HTMLElement;
     const sendButton = document.getElementById("tutfop-send-button") as HTMLButtonElement;
 
-    if (!userInput || !chatLog) return;
+    if (!userInput || !chatLog) {
+      console.error('[TutFOP] Elementos do chat não encontrados');
+      return;
+    }
 
     const message = userInput.value.trim();
     if (!message) {
@@ -129,16 +132,30 @@ export class TutfopComponent implements OnInit, OnDestroy {
     }
 
     // Adicionar mensagem do usuário
-    const userMessage = `<div class="user-message"><strong>Você:</strong> ${message}</div>`;
-    chatLog.innerHTML += userMessage;
+    const userMessage = document.createElement('div');
+    userMessage.className = 'user-message';
+    userMessage.innerHTML = `<strong>Você:</strong> ${message}`;
+    chatLog.appendChild(userMessage);
+    
+    // Limpar campo de entrada
     userInput.value = '';
+    
+    // Scroll para o final
     chatLog.scrollTop = chatLog.scrollHeight;
 
     // Desabilitar botão durante envio
     if (sendButton) {
       sendButton.disabled = true;
+      sendButton.textContent = 'Enviando...';
       sendButton.style.backgroundColor = "#bbb";
     }
+
+    // Adicionar indicador de carregamento
+    const loadingMessage = document.createElement('div');
+    loadingMessage.className = 'bot-message loading-message';
+    loadingMessage.innerHTML = '<strong>Tutor Virtual:</strong> <em>Digitando...</em>';
+    chatLog.appendChild(loadingMessage);
+    chatLog.scrollTop = chatLog.scrollHeight;
 
     // Dados a serem enviados ao webhook
     const data = {
@@ -151,7 +168,7 @@ export class TutfopComponent implements OnInit, OnDestroy {
       uid: this.userUid
     };
 
-    console.log('const data = ', data);
+    console.log('[TutFOP] Enviando dados:', data);
 
     try {
       const response = await fetch(this.webhookURL, {
@@ -162,7 +179,15 @@ export class TutfopComponent implements OnInit, OnDestroy {
         body: JSON.stringify(data)
       });
 
-      // CORRIGIR LINHA 171 - tipo any
+      // Remover mensagem de carregamento
+      if (loadingMessage.parentNode) {
+        loadingMessage.parentNode.removeChild(loadingMessage);
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       let responseData: { response?: string } | null = null;
       const contentType = response.headers.get('content-type');
       const responseText = await response.text();
@@ -171,29 +196,50 @@ export class TutfopComponent implements OnInit, OnDestroy {
         try {
           responseData = JSON.parse(responseText) as { response?: string };
         } catch (e) {
-          console.error('[TutFOP][Webhook][FASE 3][ERRO] Falha ao fazer parse do JSON:', e, responseText);
+          console.error('[TutFOP][Webhook][ERRO] Falha ao fazer parse do JSON:', e, responseText);
+          throw new Error('Resposta inválida do servidor');
         }
       } else {
-        console.warn('[TutFOP][Webhook][FASE 3][AVISO] Resposta não é JSON ou está vazia.', { contentType, responseText });
+        console.warn('[TutFOP][Webhook][AVISO] Resposta não é JSON ou está vazia.', { contentType, responseText });
+        throw new Error('Resposta vazia do servidor');
       }
 
       if (responseData && responseData.response) {
+        // Formatar resposta
         let formattedResponse = responseData.response.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
         formattedResponse = formattedResponse.replace(/\n/g, '<br>');
-        const botResponse = `<div class="bot-message"><strong>Tutor Virtual:</strong> ${formattedResponse}</div>`;
-        chatLog.innerHTML += botResponse;
+        
+        // Adicionar resposta do bot
+        const botMessage = document.createElement('div');
+        botMessage.className = 'bot-message';
+        botMessage.innerHTML = `<strong>Tutor Virtual:</strong> ${formattedResponse}`;
+        chatLog.appendChild(botMessage);
+        
+        // Scroll para o final
         chatLog.scrollTop = chatLog.scrollHeight;
       } else {
-        alert('Erro ao processar mensagem. Tente novamente.');
-        console.error('[TutFOP][Webhook][FASE 4][ERRO] Campo "response" não recebido do webhook.', responseData);
+        throw new Error('Resposta vazia do tutor virtual');
       }
     } catch (error) {
-      console.error('[TutFOP][Webhook][FASE 5][ERRO] Falha na conexão ou processamento do webhook:', error);
-      alert('Erro ao enviar mensagem. Tente novamente.');
+      console.error('[TutFOP][Webhook][ERRO] Falha na comunicação:', error);
+      
+      // Remover mensagem de carregamento se ainda estiver lá
+      if (loadingMessage.parentNode) {
+        loadingMessage.parentNode.removeChild(loadingMessage);
+      }
+      
+      // Adicionar mensagem de erro
+      const errorMessage = document.createElement('div');
+      errorMessage.className = 'bot-message error-message';
+      errorMessage.innerHTML = '<strong>Tutor Virtual:</strong> <em>Desculpe, houve um problema na comunicação. Tente novamente.</em>';
+      chatLog.appendChild(errorMessage);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      
     } finally {
       // Reabilitar botão
       if (sendButton) {
         sendButton.disabled = false;
+        sendButton.textContent = 'Enviar';
         sendButton.style.backgroundColor = "#4CAF50";
       }
     }
@@ -203,8 +249,27 @@ export class TutfopComponent implements OnInit, OnDestroy {
   logoutTutfop(): void {
     const confirmation = confirm("Confirma limpar a conversa?");
     if (confirmation) {
-      const chatLog = document.getElementById("tutfop-chat-log");
-      if (chatLog) chatLog.innerHTML = "";
+      const chatLog = document.getElementById("tutfop-chat-log") as HTMLElement;
+      if (chatLog) {
+        // Limpar todas as mensagens exceto a mensagem inicial
+        const initialMessage = chatLog.querySelector('.bot-message:first-child');
+        chatLog.innerHTML = '';
+        if (initialMessage) {
+          chatLog.appendChild(initialMessage);
+        } else {
+          // Recriar mensagem inicial se não existir
+          const botMessage = document.createElement('div');
+          botMessage.className = 'bot-message';
+          botMessage.innerHTML = `
+            <strong>Tutor Virtual:</strong> 
+            Olá! Eu sou o <b>TutFOP</b>, seu tutor virtual da <i>Clínica Integral 3</i>.<br />&nbsp;<br />
+            A equipe de professores da <i>CI3</i> me chamou para te ajudar na construção de um plano de urgência seguro, ético e baseado em evidências para a paciente gestante que procurou nossa clínica-escola por meio da Teleodontologia.<br />
+            Estou aqui para apoiar você, esclarecendo dúvidas, explorando condutas e estimulando seu raciocínio clínico.<br />&nbsp;<br />
+            Vamos juntos nessa missão?
+          `;
+          chatLog.appendChild(botMessage);
+        }
+      }
     }
   }
 
@@ -218,12 +283,23 @@ export class TutfopComponent implements OnInit, OnDestroy {
     const userInput = document.getElementById("tutfop-user-input") as HTMLTextAreaElement;
     if (userInput) {
       userInput.addEventListener("keypress", (event: KeyboardEvent) => {
-        // Alteração: tipagem explícita do parâmetro event
         if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
           this.sendTutfopMessage();
         }
       });
+
+      // Adicionar também listener para input para auto-resize
+      userInput.addEventListener("input", () => {
+        userInput.style.height = "auto";
+        userInput.style.height = Math.min(userInput.scrollHeight, 120) + "px";
+      });
+    }
+
+    // Garantir que o chat log tenha foco inicial
+    const chatLog = document.getElementById("tutfop-chat-log");
+    if (chatLog) {
+      chatLog.scrollTop = chatLog.scrollHeight;
     }
   }
 }

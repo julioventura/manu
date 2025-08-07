@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { FirestoreService } from './firestore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ConfigService {
   ambiente: string = '';
 
   constructor(
-    private firestore: AngularFirestore
+    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>
   ) {
     // Implementar lógica de configuração se necessário
   }
@@ -26,7 +26,7 @@ export class ConfigService {
 
   // ADICIONAR: método para buscar documento específico
   getDocumento(collectionPath: string, documentId: string): Observable<unknown> {
-    return this.firestore.doc(`${collectionPath}/${documentId}`).valueChanges().pipe(
+    return this.firestoreService.getRegistroById(collectionPath, documentId).pipe(
       map(data => data || null),
       catchError(error => {
         console.error('Error getting document:', error);

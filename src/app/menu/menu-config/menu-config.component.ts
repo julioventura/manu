@@ -1,7 +1,6 @@
-import { Component, OnInit, Injector, runInInjectionContext } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-
+import { FirestoreService } from '../../shared/services/firestore.service';
 import { UtilService } from '../../shared/utils/util.service';
 import { NavegacaoService } from '../../shared/services/navegacao.service';
 import { NgFor } from '@angular/common';
@@ -54,11 +53,10 @@ export class MenuConfigComponent implements OnInit {
   userId: string = '';
 
   constructor(
-    private firestore: AngularFirestore,
+    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>,
     public util: UtilService,
     private navegacaoService: NavegacaoService,
-    private afAuth: AngularFireAuth,
-    private injector: Injector
+    private afAuth: AngularFireAuth
   ) { }
 
   ngOnInit(): void {
@@ -91,29 +89,26 @@ export class MenuConfigComponent implements OnInit {
   carregarConfiguracoes() {
     console.log('carregarConfiguracoes() called with colecaoSelecionada:', this.colecaoSelecionada);
     if (this.colecaoSelecionada) {
-      runInInjectionContext(this.injector, () => {
-        this.firestore.collection('users').doc(this.userId)
-          .collection('configuracoesMenu').doc(this.colecaoSelecionada).get()
-          .subscribe(doc => {
-            console.log('Firestore doc.exists:', doc.exists);
-            if (doc.exists) {
-              const dados = doc.data() as { subcolecoes: string[] } | undefined;
-              console.log('Dados carregados do Firestore:', dados);
-              // Recria a lista utilizando todasSubcolecoes como base
-              this.subcolecoesDisponiveis = this.todasSubcolecoes.map(nome => ({
-                nome,
-                selecionado: dados?.subcolecoes.includes(nome) || false
-              }));
-              console.log('subcolecoesDisponiveis after loading:', this.subcolecoesDisponiveis);
-            } else {
-              // Se não houver configuração, define como todas não selecionadas
-              this.subcolecoesDisponiveis = this.todasSubcolecoes.map(nome => ({
-                nome,
-                selecionado: false
-              }));
-            }
-          });
-      });
+      this.firestoreService.getDocumentByPath(`users/${this.userId}/configuracoesMenu/${this.colecaoSelecionada}`)
+        .subscribe(doc => {
+          console.log('Firestore doc.exists:', doc.exists);
+          if (doc.exists) {
+            const dados = doc.data() as { subcolecoes: string[] } | undefined;
+            console.log('Dados carregados do Firestore:', dados);
+            // Recria a lista utilizando todasSubcolecoes como base
+            this.subcolecoesDisponiveis = this.todasSubcolecoes.map(nome => ({
+              nome,
+              selecionado: dados?.subcolecoes.includes(nome) || false
+            }));
+            console.log('subcolecoesDisponiveis after loading:', this.subcolecoesDisponiveis);
+          } else {
+            // Se não houver configuração, define como todas não selecionadas
+            this.subcolecoesDisponiveis = this.todasSubcolecoes.map(nome => ({
+              nome,
+              selecionado: false
+            }));
+          }
+        });
     } else {
       // Se nenhuma coleção estiver selecionada, reinicia a lista padrão
       this.subcolecoesDisponiveis = this.todasSubcolecoes.map(nome => ({
@@ -145,16 +140,14 @@ export class MenuConfigComponent implements OnInit {
 
     console.log('subcolecoesSelecionadas:', subcolecoesSelecionadas);
 
-    runInInjectionContext(this.injector, () => {
-      this.firestore.collection('users').doc(this.userId).collection('configuracoesMenu').doc(this.colecaoSelecionada).set({
-        subcolecoes: subcolecoesSelecionadas
-      }).then(() => {
-        console.log('Configurações salvas com sucesso no Firestore');
-        alert('Configurações salvas com sucesso!');
-      }).catch(error => {
-        console.error('Erro ao salvar configurações:', error);
-        alert('Erro ao salvar configurações: ' + error.message);
-      });
+    this.firestoreService.setDocumentByPath(`users/${this.userId}/configuracoesMenu/${this.colecaoSelecionada}`, {
+      subcolecoes: subcolecoesSelecionadas
+    }).then(() => {
+      console.log('Configurações salvas com sucesso no Firestore');
+      alert('Configurações salvas com sucesso!');
+    }).catch(error => {
+      console.error('Erro ao salvar configurações:', error);
+      alert('Erro ao salvar configurações: ' + error.message);
     });
   }
 
@@ -184,26 +177,18 @@ export class MenuConfigComponent implements OnInit {
       subcolecoes: subcolecoesSelecionadas
     });
 
-    runInInjectionContext(this.injector, () => {
-      // Usando uma abordagem mais direta com o Firestore
-      const docRef = this.firestore
-        .collection('users')
-        .doc(this.userId)
-        .collection('configuracoesMenu')
-        .doc(this.colecaoSelecionada);
-
-      docRef.set({
-        subcolecoes: subcolecoesSelecionadas
+    // Usando uma abordagem mais direta com o FirestoreService
+    this.firestoreService.setDocumentByPath(`users/${this.userId}/configuracoesMenu/${this.colecaoSelecionada}`, {
+      subcolecoes: subcolecoesSelecionadas
+    })
+      .then(() => {
+        console.log('Configurações salvas com sucesso!');
+        alert('Configurações salvas com sucesso!');
       })
-        .then(() => {
-          console.log('Configurações salvas com sucesso!');
-          alert('Configurações salvas com sucesso!');
-        })
-        .catch(error => {
-          console.error('Erro detalhado ao salvar:', error);
-          alert('Erro ao salvar configurações: ' + JSON.stringify(error));
-        });
-    });
+      .catch(error => {
+        console.error('Erro detalhado ao salvar:', error);
+        alert('Erro ao salvar configurações: ' + JSON.stringify(error));
+      });
   }
 
   selecionarColecao(colecao: string) {
@@ -216,8 +201,8 @@ export class MenuConfigComponent implements OnInit {
 
   carregarSubcolecoes() {
     if (this.collection) {
-      runInInjectionContext(this.injector, () => {
-        this.firestore.collection('users').doc(this.userId).collection('configuracoesMenu').doc(this.collection).get().subscribe(doc => {
+      this.firestoreService.getDocumentByPath(`users/${this.userId}/configuracoesMenu/${this.collection}`)
+        .subscribe(doc => {
           if (doc.exists) {
             const dados = doc.data() as { subcolecoes: string[] } | undefined;
             if (dados && dados.subcolecoes) {
@@ -234,15 +219,14 @@ export class MenuConfigComponent implements OnInit {
         }, error => {
           console.error('Erro ao carregar subcoleções:', error);
         });
-      });
     }
   }
 
   salvar() {
     const configPath = `menu-config/${this.colecaoSelecionada}`;
-    this.firestore
-      .doc(configPath)
-      .set({ subcolecoes: this.subcolecoesDisponiveis.filter(sub => sub.selecionado).map(sub => sub.nome) })
+    this.firestoreService.setDocumentByPath(configPath, { 
+      subcolecoes: this.subcolecoesDisponiveis.filter(sub => sub.selecionado).map(sub => sub.nome) 
+    })
       .then(() => {
         alert('Configuração salva com sucesso!');
       })
@@ -260,18 +244,16 @@ export class MenuConfigComponent implements OnInit {
   testarFirestore() {
     console.log('Testando conectividade com Firestore...');
     
-    runInInjectionContext(this.injector, () => {
-      this.firestore.collection('users').doc(this.userId).get()
-        .subscribe(
-          doc => {
-            console.log('Teste de conectividade bem-sucedido. Documento existe:', doc.exists);
-            console.log('Dados do documento:', doc.data());
-          },
-          error => {
-            console.error('Erro de conectividade com Firestore:', error);
-          }
-        );
-    });
+    this.firestoreService.getDocumentByPath(`users/${this.userId}`)
+      .subscribe(
+        doc => {
+          console.log('Teste de conectividade bem-sucedido. Documento existe:', doc.exists);
+          console.log('Dados do documento:', doc.data());
+        },
+        error => {
+          console.error('Erro de conectividade com Firestore:', error);
+        }
+      );
   }
 
   // Teste específico para a coleção configuracoesMenu
@@ -283,31 +265,17 @@ export class MenuConfigComponent implements OnInit {
       timestamp: new Date().toISOString()
     };
     
-    runInInjectionContext(this.injector, () => {
-      this.firestore
-        .collection('users')
-        .doc(this.userId)
-        .collection('configuracoesMenu')
-        .doc('teste')
-        .set(testData)
-        .then(() => {
-          console.log('Teste de escrita bem-sucedido!');
-          // Limpa o documento de teste
-          runInInjectionContext(this.injector, () => {
-            this.firestore
-              .collection('users')
-              .doc(this.userId)
-              .collection('configuracoesMenu')
-              .doc('teste')
-              .delete()
-              .then(() => console.log('Documento de teste removido'))
-              .catch(error => console.error('Erro ao remover documento de teste:', error));
-          });
-        })
-        .catch(error => {
-          console.error('Erro no teste de escrita:', error);
-          alert('Erro de permissão: ' + error.message);
-        });
-    });
+    this.firestoreService.setDocumentByPath(`users/${this.userId}/configuracoesMenu/teste`, testData)
+      .then(() => {
+        console.log('Teste de escrita bem-sucedido!');
+        // Limpa o documento de teste
+        this.firestoreService.deleteRegistro(`users/${this.userId}/configuracoesMenu`, 'teste')
+          .then(() => console.log('Documento de teste removido'))
+          .catch(error => console.error('Erro ao remover documento de teste:', error));
+      })
+      .catch(error => {
+        console.error('Erro no teste de escrita:', error);
+        alert('Erro de permissão: ' + error.message);
+      });
   }
 }

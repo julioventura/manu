@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UtilService } from '../shared/utils/util.service';
+import { FirestoreService } from '../shared/services/firestore.service';
 import { NgFor } from '@angular/common';
 
 interface Subcolecao {
@@ -26,7 +26,7 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private firestore: AngularFirestore,
+    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>,
     private afAuth: AngularFireAuth,
     public util: UtilService
   ) { }
@@ -59,8 +59,8 @@ export class MenuComponent implements OnInit {
 
     if (subcolecoesPadrao.length > 0) {
       // Cria o documento no Firestore para futuras configurações
-      const configPath = `users/${this.userId}/configuracoesMenu`;
-      this.firestore.collection(configPath).doc(this.collection).set({ subcolecoes: subcolecoesPadrao })
+      const configPath = `users/${this.userId}/configuracoesMenu/${this.collection}`;
+      this.firestoreService.setDocumentByPath(configPath, { subcolecoes: subcolecoesPadrao })
         .then(() => {
           // Configuração padrão criada
         })

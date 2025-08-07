@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of, from, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { FirestoreService } from './firestore.service';
@@ -104,13 +103,12 @@ export class UserService {
     patientName?: string;
   } = {};
 
-  // Adicionar propriedades que estão sendo acessadas
   public userProfile: UserProfile | null = null;
-  
+
   constructor(
-    private afAuth: AngularFireAuth,
-    private firestore: AngularFirestore,
-    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>
+    private firestoreService: FirestoreService<Record<string, unknown> & { id?: string }>,
+    public afAuth: AngularFireAuth,
+    private firestore: AngularFirestore
   ) {}
 
   // Método getCurrentUser
