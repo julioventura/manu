@@ -37,8 +37,7 @@
         <p>EQUIPE</p>
       </div>
 
-
-  <!--           
+        
         <div class="icon-item" *ngIf="visibleIcons['associados']" (click)="go('list/associados')">
           <img src="https://dentistas.com.br/assets/associados.png" alt="Associados">
           <p>ASSOCIADOS</p>
@@ -54,6 +53,12 @@
         <p>DENTAIS</p>
       </div>
 
+      <div class="icon-item" *ngIf="visibleIcons['tutfop']" (click)="go('tutfop')">
+        <img src="https://dentistas.com.br/assets/chatbot.png" alt="TUTFOP">
+        <p>TUTFOP</p>
+      </div>
+
+  <!--   
       <div class="icon-item" *ngIf="visibleIcons['empresas']" (click)="go('list/empresas')">
         <img src="https://dentistas.com.br/assets/empresas.png" alt="Empresas">
         <p>EMPRESAS</p>
