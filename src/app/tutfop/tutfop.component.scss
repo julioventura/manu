@@ -12,7 +12,7 @@
 .container_principal {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 90vh;
   max-height: 100vh;
   overflow: hidden;
   background-color: #f5f5f5;
@@ -249,14 +249,14 @@
 
 .tutfop-textarea {
   flex: 1;
-  padding: 12px 16px;
+  padding: 8px 10px 7px 10px;
   border: 1px solid #0ec00e;
   border-radius: 10px;
   font-size: 1rem;
   resize: none;
   min-height: 40px;
   max-height: 80px;
-  height: 40px;
+  height: 46px;
   background-color: #f8fff8;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -276,6 +276,8 @@
   &::placeholder {
     color: #888;
     font-style: italic;
+    font-size: small;
+    padding-top: 5px;
   }
 
   &::-webkit-scrollbar {
