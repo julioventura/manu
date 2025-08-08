@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isChatbotExpanded = false;
   isHomepageRoute = false;
   isHomepagePage = false;
-  isAuthorizedUser = false; // Nova propriedade para controlar usuários autorizados
+  isAuthorizedUser = true; // Nova propriedade para controlar usuários autorizados
   isUserLoggedIn = false; // Nova propriedade para controlar se o usuário está logado
   private routerSubscription: Subscription = new Subscription();
 
@@ -183,6 +183,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // OPÇÃO 1: Ativar para emails específicos (atual)
     const authorizedEmails = [
       'julio@dentistas.com.br', 
+      'julioventura@gmail.com', 
       'admin@dentistas.com.br'
     ];
     return email ? authorizedEmails.includes(email) : false;
