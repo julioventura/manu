@@ -1,105 +1,96 @@
 // Alteração: remoção de logs de depuração (console.log)
-import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DateUtils } from '../shared/utils/date-utils';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { ErupcoesPopupComponent } from './erupcoes-popup/erupcoes-popup.component';
 import { UtilService } from '../shared/utils/util.service';
 import { dentesTabela, Dente, dentesTabelaHTML } from './dentes-tabela'; // Importa a tabela e a interface
 import { TabelaReferenciaDialogComponent } from './tabela-referencia-dialog.component';
 import { NgIf, NgFor } from '@angular/common';
+import { FirestoreOptimizedService } from '../shared/services/firestore-optimized.service';
 
 @Component({
-    selector: 'app-erupcoes',
-    templateUrl: './erupcoes.component.html',
-    styleUrls: ['./erupcoes.component.scss'],
-    imports: [NgIf, NgFor]
+  selector: 'app-erupcoes',
+  templateUrl: './erupcoes.component.html',
+  styleUrls: ['./erupcoes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgFor]
 }) 
 
 export class ErupcoesComponent implements OnInit {
   userId: string | null = null;
-  pacientes: any[] = [];
-  pacientesComErupcao: any[] = [];
+  pacientes: Record<string, unknown>[] = [];
+  pacientesComErupcao: Record<string, unknown>[] = [];
   faixaDeMeses: number = 1;  // Define faixaDeMeses com um valor inicial
   public DateUtils = DateUtils;
   isLoading: boolean = false;
 
+  // OTIMIZAÇÃO: Usar Observable
+  pacientes$!: Observable<Record<string, unknown>[]>;
 
   // Usar a tabela de dentes importada
   private dentesTabela: Dente[] = dentesTabela;
   private dentesTabelaHTML: string = dentesTabelaHTML;
 
   constructor(
-    private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router,
     public util: UtilService,
-    public dialog: MatDialog 
+    public dialog: MatDialog,
+    private firestoreOptimized: FirestoreOptimizedService,
+    private cdr: ChangeDetectorRef
   ) {}
 
 
   ngOnInit(): void {
-
     // Obtém o ID do usuário autenticado e carrega os dados dos pacientes
     this.afAuth.authState.subscribe(user => {
       if (user && user.uid) {
         this.userId = user.uid;
-        this.carregarPacientes();
+        this.setupOptimizedDataFlow();
       } else {
         console.error('Usuário não autenticado.');
       }
     });
-
   }
 
+  /**
+   * OTIMIZAÇÃO: Setup do fluxo de dados otimizado com Observables
+   */
+  private setupOptimizedDataFlow(): void {
+    if (!this.userId) {
+      console.error('setupOptimizedDataFlow: Missing userId', { userId: this.userId });
+      return;
+    }
 
-  // Getter para o texto formatado
-  get faixaDeMesesTexto(): string {
-    return `em ${this.faixaDeMeses} ${this.faixaDeMeses === 1 ? 'mês' : 'meses'}`;
-  }
+    const collectionPath = `users/${this.userId}/pacientes`;
 
-
-  
-  abrirPopup(paciente: any): void {
-    const dialogRef = this.dialog.open(ErupcoesPopupComponent);
-    // Configura os dados manualmente usando `componentInstance`
-    dialogRef.componentInstance.data = {
-      nome: paciente.nome,
-      nascimento: paciente.nascimento,
-      telefone: paciente.telefone,
-      idade: paciente.idade,
-      dataChamadaInicial: '21/10/2024',
-      dataUltimaChamada: '28/10/2024',
-      dataResposta: '29/10/2024',
-      dataComparecimento: '31/10/2024'
-    };
-  }
-  
-  
-
-  carregarPacientes(): void {
-
-    if (!this.userId) return;
-    this.isLoading = true;
-
-    this.firestore
-      .collection(`/users/${this.userId}/pacientes`)
-      .valueChanges()
-      .subscribe((pacientes: any[]) => {
+    this.pacientes$ = this.firestoreOptimized.getOptimizedCollection<Record<string, unknown>>(
+      collectionPath,
+      {
+        limit: 100,
+        orderBy: 'nome',
+        orderDirection: 'asc'
+      }
+    ).pipe(
+      map(pacientes => {
+        this.isLoading = false;
         this.pacientes = pacientes.map(paciente => {
           // Normaliza o formato da data para dd/mm/yyyy
-          const nascimentoNormalizado = this.util.normalizarFormatoData(paciente.nascimento);
+          const nascimentoNormalizado = this.util.normalizarFormatoData(paciente['nascimento'] as string);
           
           // Calcular idade em meses atual baseada na data de nascimento
           const idadeEmMeses = this.util.calcularIdadeEmMeses(nascimentoNormalizado);
           
           return {
-            nome: paciente.nome,
+            nome: paciente['nome'],
             nascimento: nascimentoNormalizado,
-            telefone: paciente.telefone,
+            telefone: paciente['telefone'],
             meses: idadeEmMeses, // Usa o valor calculado em vez do armazenado
             dentesExaminados: {
               "11": paciente["11"], "12": paciente["12"], "13": paciente["13"], "14": paciente["14"],
@@ -119,50 +110,77 @@ export class ErupcoesComponent implements OnInit {
           };
         });
         this.verificarErupcoes();
+        this.cdr.markForCheck();
+        return pacientes;
+      }),
+      catchError(error => {
+        console.error('Error loading pacientes:', error);
         this.isLoading = false;
-      }, error => {
-        console.error("Erro ao carregar pacientes:", error);
-        this.isLoading = false;
-      });
+        this.cdr.markForCheck();
+        return of([]);
+      })
+    );
+
+    // Subscribe to actually trigger the data loading
+    this.pacientes$.subscribe();
   }
 
 
+  // Getter para o texto formatado
+  get faixaDeMesesTexto(): string {
+    return `em ${this.faixaDeMeses} ${this.faixaDeMeses === 1 ? 'mês' : 'meses'}`;
+  }
 
+
+  
+  abrirPopup(paciente: Record<string, unknown>): void {
+    const dialogRef = this.dialog.open(ErupcoesPopupComponent);
+    // Configura os dados manualmente usando `componentInstance`
+    dialogRef.componentInstance.data = {
+      nome: String(paciente['nome'] || ''),
+      nascimento: String(paciente['nascimento'] || ''),
+      telefone: String(paciente['telefone'] || ''),
+      idade: String(paciente['idade'] || ''),
+      dataChamadaInicial: '21/10/2024',
+      dataUltimaChamada: '28/10/2024',
+      dataResposta: '29/10/2024',
+      dataComparecimento: '31/10/2024'
+    };
+  }
+  
   verificarErupcoes(): void {
 
     this.pacientesComErupcao = this.pacientes
       .map(paciente => {
         // Converte para número e arredonda para baixo
-        const pacienteMeses = Math.floor(Number(paciente.meses));
+        const pacienteMeses = Math.floor(Number(paciente['meses']));
         const faixaMaxima = pacienteMeses + this.faixaDeMeses;
 
         const dentesEmErupcao = this.dentesTabela
           .filter(dente => {
             const inicioErupcao = Math.floor(Number(dente.Erupcao));
-            const denteJaErupcionado = paciente.dentesExaminados[dente.Dente] === "E";
+            const dentesExaminados = paciente['dentesExaminados'] as Record<string, unknown>;
+            const denteJaErupcionado = dentesExaminados && dentesExaminados[dente.Dente] === "E";
             
             const denteDentroFaixa =
               inicioErupcao >= pacienteMeses &&
               inicioErupcao <= faixaMaxima &&
               !denteJaErupcionado;
-
-            if (denteDentroFaixa) {
-            }
             
             return denteDentroFaixa;
           })
           .map(dente => dente.Dente);
 
         return {
-          nome: paciente.nome,
-          nascimento: paciente.nascimento,
-          telefone: paciente.telefone,
+          nome: String(paciente['nome'] || ''),
+          nascimento: String(paciente['nascimento'] || ''),
+          telefone: String(paciente['telefone'] || ''),
           meses: pacienteMeses,
           dentesEmErupcao: dentesEmErupcao || []
         };
       })
       .filter(paciente => paciente.dentesEmErupcao.length > 0)
-      .sort((a, b) => a.nome.localeCompare(b.nome));  // Ordena alfabeticamente pelo nome
+      .sort((a, b) => String(a.nome).localeCompare(String(b.nome)));  // Ordena alfabeticamente pelo nome
 
     this.isLoading = false;
   }
@@ -231,6 +249,17 @@ export class ErupcoesComponent implements OnInit {
     
     // Configurar a tabela HTML
     dialogRef.componentInstance.tabelaHTML = this.dentesTabelaHTML;
+  }
+
+  /**
+   * OTIMIZAÇÃO: Métodos auxiliares para conversão de tipos
+   */
+  getSafeString(value: unknown): string {
+    return String(value || '');
+  }
+
+  getSafeArray(value: unknown): string[] {
+    return Array.isArray(value) ? value : [];
   }
 
 }

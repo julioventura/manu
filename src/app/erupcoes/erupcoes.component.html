@@ -44,12 +44,12 @@
             <tbody>
                 <tr *ngFor="let paciente of pacientesComErupcao; index as i" (click)="abrirPopup(paciente)">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ paciente.nome }}</td>
-                    <td>{{ paciente.nascimento }}</td>
-                    <td>{{ DateUtils.idade(paciente.nascimento) }}</td>
-                    <td>{{ paciente.dentesEmErupcao?.join(', ') || 'Nenhum dente erupcionando' }}</td>
+                    <td>{{ getSafeString(paciente.nome) }}</td>
+                    <td>{{ getSafeString(paciente.nascimento) }}</td>
+                    <td>{{ DateUtils.idade(getSafeString(paciente.nascimento)) }}</td>
+                    <td>{{ getSafeArray(paciente.dentesEmErupcao).join(', ') || 'Nenhum dente erupcionando' }}</td>
                     <td>
-                        <img src="https://dentistas.com.br/assets/whatsapp.png" alt="WhatsApp" class="enviar_zap" (click)="enviar_whatsapp(paciente.nome,paciente.telefone)">
+                        <img src="https://dentistas.com.br/assets/whatsapp.png" alt="WhatsApp" class="enviar_zap" (click)="enviar_whatsapp(getSafeString(paciente.nome), getSafeString(paciente.telefone))">
                     </td>
                 </tr>
             </tbody>
