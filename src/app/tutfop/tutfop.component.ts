@@ -58,22 +58,33 @@ export class TutfopComponent implements OnInit, OnDestroy {
 
   // ngOnInit(): Inicializa componente e subscreve dados do usuário
   ngOnInit(): void {
+    console.log('[TutFOP] Inicializando componente...');
+    
     // Subscrever aos dados do usuário
     this.userService.getUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
+        console.log('[TutFOP] Estado do usuário:', user);
+        
         if (user) {
           this.userUid = user.uid;
           this.userEmail = user.email || '';
           // CORRIGIDO: garantir que o retorno seja string
           this.userNome = user.displayName || 
                          (this.userService.userProfile?.['nome'] as string) || 
-                         '';
+                         'Usuário';
           this.isUserAuthenticated = true;
+          
+          console.log('[TutFOP] Usuário autenticado:', {
+            uid: this.userUid,
+            email: this.userEmail,
+            nome: this.userNome
+          });
           
           // Inicializar o TutFOP após obter os dados do usuário
           this.initializeTutfop();
         } else {
+          console.log('[TutFOP] Usuário não autenticado');
           this.isUserAuthenticated = false;
         }
       });
