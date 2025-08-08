@@ -28,7 +28,11 @@
 
     <!-- Mensagem de erro -->
     <div *ngIf="!isLoading && errorMessage" class="error-message">
-      {{ errorMessage }}
+      <p>{{ errorMessage }}</p>
+      <div class="error-actions">
+        <button class="retry-button" (click)="reloadProfile()">Tentar Novamente</button>
+        <button class="force-button" (click)="forceLoad()">Forçar Carregamento</button>
+      </div>
     </div>
 
     <!-- Formulário principal com design melhorado -->

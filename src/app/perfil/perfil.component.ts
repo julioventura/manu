@@ -109,43 +109,95 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
   }
 
   ngOnInit(): void {
-    this.auth.authState.subscribe(user => {
-      if (user && user.email) {
-        this.userEmail = user.email;
-        this.loadUserProfile();
-      } else {
-        console.error('No authenticated user found');
-        this.errorMessage = 'Usuário não autenticado';
-        this.isLoading = false;
-      }
-    }, error => {
-      console.error('Error getting auth state:', error);
-      this.errorMessage = 'Erro ao verificar autenticação';
-      this.isLoading = false;
-    });
-
-    // CORRIGIDO: Verificação se userProfileData não é null
-    if (this.userProfileData && this.userProfileData.horarios) {
-      try {
-        // Tenta converter se estiver em formato de string
-        if (typeof this.userProfileData.horarios === 'string') {
-          this.horarios = JSON.parse(this.userProfileData.horarios);
-        } else if (Array.isArray(this.userProfileData.horarios)) {
-          this.horarios = this.userProfileData.horarios || [];
-        }
-      } catch (e) {
-        console.error('Erro ao converter horários:', e);
-        this.horarios = [];
-      }
-    }
+    // Garantir que a página inicie no topo
+    window.scrollTo(0, 0);
+    
+    // Verificar usuário autenticado com múltiplas estratégias
+    this.loadUserWithStrategies();
 
     // Se desejar também prevenir o fechamento/reload da página com alterações não salvas:
     this.boundBeforeUnloadHandler = this.beforeUnloadHandler.bind(this);
     window.addEventListener('beforeunload', this.boundBeforeUnloadHandler);
   }
 
+  private async loadUserWithStrategies(): Promise<void> {
+    let userLoaded = false;
+    
+    // Estratégia 1: currentUser (mais rápida)
+    try {
+      const currentUser = await this.auth.currentUser;
+      if (currentUser && currentUser.email && !userLoaded) {
+        console.log('Strategy 1: currentUser success');
+        this.userEmail = currentUser.email;
+        this.loadUserProfile();
+        userLoaded = true;
+        return;
+      }
+    } catch (error) {
+      console.warn('Strategy 1 failed:', error);
+    }
+
+    // Estratégia 2: authState observable com timeout
+    if (!userLoaded) {
+      const authStatePromise = new Promise<void>((resolve, reject) => {
+        const subscription = this.auth.authState.subscribe({
+          next: (user) => {
+            if (user && user.email && !userLoaded) {
+              console.log('Strategy 2: authState success');
+              this.userEmail = user.email;
+              this.loadUserProfile();
+              userLoaded = true;
+              subscription.unsubscribe();
+              resolve();
+            } else if (!user) {
+              subscription.unsubscribe();
+              reject(new Error('No user authenticated'));
+            }
+          },
+          error: (error) => {
+            subscription.unsubscribe();
+            reject(error);
+          }
+        });
+
+        // Timeout de 3 segundos para authState
+        setTimeout(() => {
+          if (!userLoaded) {
+            subscription.unsubscribe();
+            reject(new Error('AuthState timeout'));
+          }
+        }, 3000);
+      });
+
+      try {
+        await authStatePromise;
+        return;
+      } catch (error) {
+        console.warn('Strategy 2 failed:', error);
+      }
+    }
+
+    // Estratégia 3: Última tentativa - aguardar mais tempo
+    if (!userLoaded) {
+      console.log('Strategy 3: extended wait');
+      setTimeout(() => {
+        this.auth.currentUser.then(user => {
+          if (user && user.email) {
+            this.userEmail = user.email;
+            this.loadUserProfile();
+          } else {
+            this.errorMessage = 'Usuário não autenticado. Redirecionando...';
+            this.isLoading = false;
+            setTimeout(() => this.router.navigate(['/login']), 2000);
+          }
+        });
+      }, 1000);
+    }
+  }
+
   loadUserProfile(): void {
     this.isLoading = true;
+    this.errorMessage = '';
 
     if (!this.userEmail) {
       console.error('Cannot load profile: userEmail is not set');
@@ -154,16 +206,38 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
       return;
     }
 
-    this.firestoreService.getRegistroById('usuarios/dentistascombr/users', this.userEmail).subscribe(
-      (userData: FirestoreUserProfile | undefined) => {        
+    // Salvar email para uso futuro
+    localStorage.setItem('userEmail', this.userEmail);
+    
+    console.log('Loading profile for:', this.userEmail);
+
+    // Timeout reduzido para 5 segundos
+    const loadTimeout = setTimeout(() => {
+      console.warn('Profile loading timeout after 5 seconds');
+      this.errorMessage = 'Tempo limite para carregar perfil. Verifique sua conexão.';
+      this.isLoading = false;
+    }, 5000);
+
+    this.firestoreService.getRegistroById('usuarios/dentistascombr/users', this.userEmail).subscribe({
+      next: (userData: FirestoreUserProfile | undefined) => {
+        clearTimeout(loadTimeout);
+        console.log('Profile data received:', userData);
+        
         if (userData) {
           this.userProfileData = userData;
           this.originalUsername = userData.username || '';
 
-          localStorage.setItem('userData', JSON.stringify(userData));
+          // Atualizar cache com timestamp
+          const cacheData = {
+            ...userData,
+            _cached: true,
+            _timestamp: Date.now()
+          };
+          localStorage.setItem('userData', JSON.stringify(cacheData));
+          
           this.updateFormWithProfileData();
         } else {
-          // CORRIGIDO: Criar objeto compatível com FirestoreUserProfile
+          console.log('No existing profile found, creating new one');
           this.userProfileData = {
             id: this.userEmail || '',
             uid: this.userEmail || '',
@@ -171,15 +245,17 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
             createdAt: new Date(),
             updatedAt: new Date()
           } as FirestoreUserProfile;
+          this.updateFormWithProfileData();
         }
         this.isLoading = false;
       },
-      error => {
+      error: (error) => {
+        clearTimeout(loadTimeout);
         console.error('Error loading profile from Firestore:', error);
-        this.errorMessage = 'Erro ao carregar perfil';
+        this.errorMessage = 'Erro ao carregar perfil do servidor. Verifique sua conexão e tente novamente.';
         this.isLoading = false;
       }
-    );
+    });
   }
 
   updateFormWithProfileData(): void {
@@ -610,6 +686,58 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
         convenios: this.convenios
       });
     }
+  }
+
+  // Método para recarregar o perfil em caso de erro
+  reloadProfile(): void {
+    this.errorMessage = '';
+    this.isLoading = true;
+    
+    // Verificar se ainda temos usuário autenticado
+    this.auth.currentUser.then(user => {
+      if (user && user.email) {
+        this.userEmail = user.email;
+        this.loadUserProfile();
+      } else {
+        this.errorMessage = 'Usuário não está mais autenticado. Redirecionando...';
+        this.isLoading = false;
+        setTimeout(() => this.router.navigate(['/login']), 2000);
+      }
+    }).catch(() => {
+      this.errorMessage = 'Erro de autenticação. Redirecionando para login...';
+      this.isLoading = false;
+      setTimeout(() => this.router.navigate(['/login']), 2000);
+    });
+  }
+
+  // Método de emergência para forçar carregamento
+  forceLoad(): void {
+    console.log('Force loading profile...');
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    // Se temos email, forçar carregamento direto
+    if (this.userEmail) {
+      this.loadUserProfile();
+      return;
+    }
+    
+    // Última tentativa de recuperar o usuário autenticado
+    this.auth.currentUser.then(user => {
+      if (user && user.email) {
+        this.userEmail = user.email;
+        this.loadUserProfile();
+      } else {
+        this.errorMessage = 'Usuário não autenticado. Redirecionando para login...';
+        this.isLoading = false;
+        setTimeout(() => this.router.navigate(['/login']), 2000);
+      }
+    }).catch((error) => {
+      console.error('Force load failed:', error);
+      this.errorMessage = 'Falha na autenticação. Redirecionando para login...';
+      this.isLoading = false;
+      setTimeout(() => this.router.navigate(['/login']), 2000);
+    });
   }
 
   // Método para identificar alterações não salvas
