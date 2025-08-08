@@ -121,9 +121,10 @@ section { text-align: center; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 1rem;
-  border: 1px solid #8099be;
+  border: 1pt solid #8fa5c5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 // Configuration
@@ -153,44 +154,8 @@ section { text-align: center; }
 app-header {
   display: block;
   width: 100%;
-  text-align: center;
-  
-  .app-main-header {
-    width: 100%;
-    margin: 0;
-    padding: 40px 20px;
-    @include flex-center;
-    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
-    border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(21, 61, 117, 0.2);
-    backdrop-filter: blur(15px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: scale(1.02);
-      box-shadow: 0 16px 50px rgba(21, 61, 117, 0.25);
-    }
-  }
 }
 
-.logo-text {
-  text-align: center;
-  width: 90%;
-  @include flex-center;
-}
-
-.main-logo-text {
-  font-family: 'Orbitron', Arial, sans-serif;
-  font-size: 4rem;
-  font-weight: 800;
-  color: styles.$primary-color;
-  letter-spacing: 2px;
-  line-height: 1.0;
-  text-align: center;
-  text-shadow: 0 6px 12px rgba(21, 61, 117, 0.3);
-  text-transform: uppercase;
-}
 
 // Responsive design
 @media (max-width: 768px) {
@@ -199,7 +164,6 @@ app-header {
     img { width: 60px; height: 60px; margin: 0 10px; }
     p { font-size: 12px; }
   }
-  .main-logo-text { font-size: 3rem; }
 }
 
 @media (max-width: 549px) {
@@ -213,7 +177,6 @@ app-header {
   }
   .column-left, .column-right { width: 100%; }
   .container { flex-direction: column; }
-  .main-logo-text { font-size: 2.2rem; letter-spacing: 1px; }
 }
 
 @media (max-width: 400px) {
@@ -226,7 +189,3 @@ app-header {
     }
   }
 }
-
-@media (min-width: 1200px) { .main-logo-text { font-size: 5rem; } }
-@media (min-width: 1400px) { .main-logo-text { font-size: 6rem; } }
-@media (min-width: 1600px) { .main-logo-text { font-size: 7rem; } }

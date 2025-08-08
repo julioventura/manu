@@ -1,21 +1,5 @@
 <footer class="app-footer">
-  
-  <!-- Seção com nome do usuário -->
-  <div class="footer-left">
-    <span class="user-name">{{ this.config.getAdminStatus() ? 'ADMIN: ' : 'Logado: '}} {{ userName$ | async }}</span> 
+  <div class="footer-content">
+    <span class="app-version">Dentistas.com.br / Clínica - v5.0.1</span>
   </div>
-
-  <!-- Seção com botão Sair -->
-  <div class="footer-center">
-    <button mat-button (click)="logout()" class="logout-btn">
-      SAIR
-    </button>
-  </div>
-
-<!-- Seção com versão do app -->
-  <div class="footer-right">
-    <span class="app-version">Dentistas.com.br Clínica - v5.0.1</span>
-  </div>
-
- 
 </footer>
