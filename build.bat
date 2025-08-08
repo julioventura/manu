@@ -1,2 +1,2 @@
-rmdir /s dist
+rmdir /s /q dist
 ng build
