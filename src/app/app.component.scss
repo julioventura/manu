@@ -1,21 +1,24 @@
-@use '../_variables.scss' as styles;
+@use "../_variables.scss" as styles;
 
 // Variáveis de cores
 // styles.$text-color: #2f5489;
 
-
 // Estilo Geral
 body {
-    font-family: styles.$font-family;
-    margin: 0;
-    padding: 0;
-    padding-top: 20px;
-    color: styles.$text-color;
-    width: 100%;
-    max-width: styles.$max-width;
-    text-align: center;
-    // background-color: #839DAC;
-  }
+  font-family: styles.$font-family;
+  margin: 0;
+  padding: 0;
+  padding-top: 20px;
+  color: styles.$text-color;
+  width: 100%;
+  max-width: styles.$max-width;
+  text-align: center;
+  // background-color: #839DAC;
+}
+
+app-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
 
 body.no-scroll {
   overflow: hidden;
@@ -43,7 +46,9 @@ body.no-scroll {
   z-index: 9999;
   transition: all 0.3s ease;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-  max-height: calc(100vh - 60px); /* Limita a altura máxima para não ultrapassar a tela */
+  max-height: calc(
+    100vh - 60px
+  ); /* Limita a altura máxima para não ultrapassar a tela */
   overflow: visible; /* Permite que o ícone minimizado seja visível */
 }
 
