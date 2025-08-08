@@ -1,2 +1,2 @@
-rmdir /s dist
+@REM rmdir /s dist
 npm start

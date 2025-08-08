@@ -1,4 +1,4 @@
-@use '../../styles.scss' as styles;
+@use '../../_variables.scss' as vars;
 
 
 
@@ -11,8 +11,8 @@
 
   .back-btn,
   .add-btn {
-    background-color: styles.$primary-color;
-    color: styles.$white;
+    background-color: vars.$primary-color;
+    color: vars.$white;
     border: none;
     padding: 0px;
     border-radius: 50%;
@@ -25,11 +25,11 @@
 
   .back-btn:hover,
   .add-btn:hover {
-    background-color: styles.$primary-hover;
+    background-color: vars.$primary-hover;
   }
 
   .title {
-    color: styles.$red-dark;
+    color: vars.$red-dark;
   }
 }
 // ==================================
@@ -38,12 +38,12 @@
 
 // Linha com o nome do registro
 .record-header {
-  background-color: styles.$white;
-  color: styles.$red-dark;
+  background-color: vars.$white;
+  color: vars.$red-dark;
 }
 
 .record-details-top {
-  border-bottom: 1px solid styles.$red;
+  border-bottom: 1px solid vars.$red;
   height: 2px;
 }
 
@@ -57,19 +57,19 @@
     border-bottom: 0;
 
     .detail-label {
-      color: styles.$red-dark;
+      color: vars.$red-dark;
     }
 
     .detail-value {
-      color: styles.$red-dark;
-      border: 1px solid styles.$red-light;
+      color: vars.$red-dark;
+      border: 1px solid vars.$red-light;
       width: 100%;
       box-sizing: border-box;
 
       &:focus {
         outline: none;
-        background-color: styles.$red-light;
-        border: 2px solid styles.$red;
+        background-color: vars.$red-light;
+        border: 2px solid vars.$red;
       }
     }
 
@@ -79,34 +79,34 @@
       background-color: white;
 
       &:focus {
-        background-color: styles.$red-light;
-        border: 2px solid styles.$red;
+        background-color: vars.$red-light;
+        border: 2px solid vars.$red;
       }
     }
 
     textarea {
       background-color: #fff6ed;
-      border: 1px solid styles.$red;
+      border: 1px solid vars.$red;
       font-size: 16px;
 
       &:focus {
         outline: none;
-        background-color: styles.$red-light;
-        border: 2px solid styles.$red;
+        background-color: vars.$red-light;
+        border: 2px solid vars.$red;
       }
     }
 
     .url {
-      color: styles.$red-dark;
+      color: vars.$red-dark;
       background-color: white;
-      border: 2px solid styles.$red;
+      border: 2px solid vars.$red;
       text-align: left;
 
       &:focus {
-        background-color: styles.$red-light;
+        background-color: vars.$red-light;
         outline: none;
-        color: styles.$red-dark;
-        border: 2px solid styles.$red;
+        color: vars.$red-dark;
+        border: 2px solid vars.$red;
         font-weight: bold;
       }
     }
@@ -121,7 +121,7 @@
   margin: 0;
 
   &:focus {
-    background-color: styles.$white;
+    background-color: vars.$white;
     border: 2pt solid red;
   }
 }
@@ -169,7 +169,7 @@ input {
 // Novo estilo para o container do slider
 .width-control {
   display: inline-block;
-  border: 1px solid styles.$red; // Borda de 1px
+  border: 1px solid vars.$red; // Borda de 1px
   border-radius: 6px; // Border-radius de 6px
   background-color: #fff; // Fundo branco opaco
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
@@ -192,7 +192,7 @@ input {
   z-index: 100;
   background: #fff;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  border: styles.$red solid 1px;
+  border: vars.$red solid 1px;
   border-radius: 8px;
   margin-top: 14px;
   padding: 0px 10px;
@@ -231,10 +231,10 @@ input {
 
     .group-title {
       font-weight: bold;
-      color: styles.$red-dark;
+      color: vars.$red-dark;
       margin-bottom: 10px;
       padding-bottom: 5px;
-      border-bottom: 1px solid styles.$red-light;
+      border-bottom: 1px solid vars.$red-light;
     }
 
     .field-row {
@@ -245,7 +245,7 @@ input {
       label {
         min-width: var(--label-width, 150px);
         padding-right: 10px;
-        color: styles.$red-dark;
+        color: vars.$red-dark;
       }
 
       .field-input {
@@ -254,15 +254,15 @@ input {
         input,
         textarea {
           width: 100%;
-          border: 1px solid styles.$red;
+          border: 1px solid vars.$red;
           padding: 8px;
           border-radius: 4px;
 
           &:focus {
-            border-color: styles.$red;
+            border-color: vars.$red;
             outline: none;
             box-shadow: 0 0 3px rgba(255, 0, 0, 0.3);
-            background-color: styles.$white;
+            background-color: vars.$white;
           }
 
           &:disabled {
@@ -296,11 +296,11 @@ input {
       cursor: pointer;
 
       &.primary {
-        background-color: styles.$primary-color;
+        background-color: vars.$primary-color;
         color: white;
 
         &:hover {
-          background-color: styles.$primary-hover;
+          background-color: vars.$primary-hover;
         }
       }
 
@@ -353,12 +353,12 @@ input {
 // Adicionar ao final do arquivo
 .grupo-section {
   margin-bottom: 15px;
-  border: 1px solid styles.$red-light;
+  border: 1px solid vars.$red-light;
   border-radius: 8px 0;
   overflow: hidden;
 
   margin-bottom: 15px;
-  border: 1px solid styles.$red-light;
+  border: 1px solid vars.$red-light;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -388,8 +388,8 @@ input {
   font-size: 1em;
   font-weight: 600;
   line-height: 1.5em;
-  color: styles.$white;
-  background-color: styles.$red-titulo;
+  color: vars.$white;
+  background-color: vars.$red-titulo;
 
   cursor: pointer;
   display: flex;
@@ -411,7 +411,7 @@ input {
   }
 
   &:hover {
-    background-color: styles.$red-dark;
+    background-color: vars.$red-dark;
     color: white;
   }
 
@@ -423,8 +423,8 @@ input {
 // Estilos para os subgrupos
 .subgrupo-titulo {
 
-  color: styles.$red-dark;
-  background-color: styles.$red-light;
+  color: vars.$red-dark;
+  background-color: vars.$red-light;
   border-radius: 5px;
 
   font-size: 1em;
@@ -452,8 +452,8 @@ input {
   }
 
   &:hover {
-    background-color: styles.$red-subtitulo-hover;
-    color: styles.$red-dark;
+    background-color: vars.$red-subtitulo-hover;
+    color: vars.$red-dark;
   }
 
 
@@ -465,7 +465,7 @@ input {
   transition: max-height 0.2s ease, padding 0.2s ease;
   padding: 0;
   background: #feeaea;
-  border: 1px solid styles.$red-light;
+  border: 1px solid vars.$red-light;
   border-bottom: 0;
 
   .detail-container {
@@ -485,18 +485,18 @@ input {
 
 .record-details .detail-container .detail-value,
 .dynamic-form-container .detail-container .detail-value {
-  border: 1px solid styles.$red;
+  border: 1px solid vars.$red;
 
   &.focus {
     outline: none;
-    border: 1px solid styles.$red-dark;
+    border: 1px solid vars.$red-dark;
   }
 }
 
 .record-details .detail-container {
 
-  border-bottom: 1px solid styles.$red-light;
-  background: styles.$red-lighter;
+  border-bottom: 1px solid vars.$red-light;
+  background: vars.$red-lighter;
 
   .detail-label {
     padding-left: 10px;
@@ -504,29 +504,29 @@ input {
 
   .detail-value {
     margin: 5px;
-    border: 1px solid styles.$red;
-    color: styles.$red-dark;
+    border: 1px solid vars.$red;
+    color: vars.$red-dark;
     font-size: 16px;
     font-weight: 600;
     text-align: left;
-    background-color: styles.$white;
+    background-color: vars.$white;
   }
 
   textarea :focus {
-    color: styles.$red-dark;
+    color: vars.$red-dark;
     font-size: 16px;
     font-weight: 600;
     text-align: left;
     background-color: #fff6ed;
     outline: none;
-    border: 1px solid styles.$red;
+    border: 1px solid vars.$red;
   }
 
   input {
     &:focus {
       outline: none;
-      border: 2px solid styles.$red;
-      background: styles.$white;
+      border: 2px solid vars.$red;
+      background: vars.$white;
     }
 
   }
