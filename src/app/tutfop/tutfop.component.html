@@ -46,8 +46,11 @@
             </div>
 
             <div class="tutfop-chat-input-container">
-                <textarea id="tutfop-user-input" placeholder="" rows="3"
-                    class="tutfop-textarea"></textarea>
+                <textarea id="tutfop-user-input" 
+                    placeholder="Digite sua mensagem... (Ctrl+Enter para enviar)" 
+                    rows="3"
+                    class="tutfop-textarea"
+                    (keydown)="onTextareaKeydown($event)"></textarea>
                 <div class="tutfop-button-container">
                     <button id="tutfop-send-button" (click)="sendTutfopMessage()" class="tutfop-btn-primary">
                         Enviar

@@ -125,6 +125,16 @@ export class TutfopComponent implements OnInit, OnDestroy {
     }
   }
 
+  // onTextareaKeydown(): Captura eventos de teclado no textarea
+  onTextareaKeydown(event: KeyboardEvent): void {
+    // Ctrl+Enter ou Cmd+Enter (Mac) para enviar mensagem
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      event.preventDefault();
+      this.sendTutfopMessage();
+    }
+    // Enter simples apenas quebra linha (comportamento padrão)
+  }
+
   // sendTutfopMessage(): Envia mensagem do usuário para o tutor virtual
   async sendTutfopMessage(): Promise<void> {
     const userInput = document.getElementById("tutfop-user-input") as HTMLTextAreaElement;
@@ -293,14 +303,7 @@ export class TutfopComponent implements OnInit, OnDestroy {
   private setupEventListeners(): void {
     const userInput = document.getElementById("tutfop-user-input") as HTMLTextAreaElement;
     if (userInput) {
-      userInput.addEventListener("keypress", (event: KeyboardEvent) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          this.sendTutfopMessage();
-        }
-      });
-
-      // Adicionar também listener para input para auto-resize com limites
+      // Apenas listener para auto-resize
       userInput.addEventListener("input", () => {
         userInput.style.height = "50px"; // Reset para altura inicial
         const newHeight = Math.min(userInput.scrollHeight, 100); // Máximo de 100px
