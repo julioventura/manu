@@ -1,4 +1,4 @@
-﻿@use '../../_variables.scss' as styles;
+﻿@use "../../_variables.scss" as styles;
 
 header.app-main-header {
   max-width: styles.$max-width;
@@ -6,10 +6,10 @@ header.app-main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  // width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  padding: 0;
+  padding: 0 10px;
 }
 
 .logo-text {
@@ -22,11 +22,11 @@ header.app-main-header {
 }
 
 .main-logo-text {
-  font-family: 'Orbitron', Arial, sans-serif;
-  font-size: clamp(0.4rem, 2vw, 1.3rem);
+  font-family: "Orbitron", Arial, sans-serif;
+  font-size: clamp(0.5rem, 2vw, 1rem);
   font-weight: 900;
   color: #2a7ac3;
-  letter-spacing: clamp(0.1px, 0.1vw, 1px);
+  letter-spacing: clamp(1px, 0.12vw, 2px);
   line-height: 1;
   white-space: nowrap;
   text-align: left;
@@ -47,7 +47,7 @@ header.app-main-header {
   display: flex;
   align-items: center;
   gap: 15px;
-  
+
   @media (max-width: 768px) {
     gap: 10px;
   }
@@ -60,11 +60,12 @@ header.app-main-header {
 .header-user-info {
   display: flex;
   align-items: center;
-  
+
   .user-name {
-    font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-    color: #4A90E2;
-    font-weight: 500;
+    font-family: "Orbitron", Arial, sans-serif;
+    font-size: clamp(0.5rem, 2vw, 1rem);
+    font-weight: 900;
+    color: #2a7ac3;
     white-space: nowrap;
 
     @media (max-width: 768px) {
@@ -80,7 +81,7 @@ header.app-main-header {
 .header-logout {
   display: flex;
   align-items: center;
-  
+
   .logout-btn {
     display: flex;
     align-items: center;
@@ -114,7 +115,7 @@ header.app-main-header {
     &:hover {
       background-color: rgb(247, 199, 199);
       border: #a71111 solid 1pt;
-      
+
       svg,
       span {
         color: #a71111;
@@ -149,8 +150,6 @@ header.app-main-header {
   }
 }
 
-
-
 // @media (max-width: styles.$medium-width) {
 //   header.app-main-header {
 //     margin: 0 10px;
@@ -158,11 +157,9 @@ header.app-main-header {
 // }
 
 @media (max-width: 400px) {
-  
   .header-right {
     flex-direction: column;
     gap: 5px;
     align-items: flex-end;
   }
 }
-

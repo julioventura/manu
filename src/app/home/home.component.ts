@@ -36,6 +36,7 @@ interface UserData {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: true,
   imports: [CommonModule, HeaderComponent]
 })
 export class HomeComponent implements OnInit {

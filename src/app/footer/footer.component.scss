@@ -2,8 +2,8 @@
 
 footer.app-footer {
   max-width: styles.$max-width;
-  margin: 0 auto;
-  padding: 15px;
+  margin: 0 auto 20px;
+  padding: 0;
   color: white;
   display: flex;
   justify-content: center;
@@ -17,6 +17,7 @@ footer.app-footer {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .app-version {
