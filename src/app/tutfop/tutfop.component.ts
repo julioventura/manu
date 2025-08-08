@@ -289,10 +289,11 @@ export class TutfopComponent implements OnInit, OnDestroy {
         }
       });
 
-      // Adicionar também listener para input para auto-resize
+      // Adicionar também listener para input para auto-resize com limites
       userInput.addEventListener("input", () => {
-        userInput.style.height = "auto";
-        userInput.style.height = Math.min(userInput.scrollHeight, 120) + "px";
+        userInput.style.height = "50px"; // Reset para altura inicial
+        const newHeight = Math.min(userInput.scrollHeight, 100); // Máximo de 100px
+        userInput.style.height = newHeight + "px";
       });
     }
 

@@ -1,51 +1,92 @@
 /* TutFOP Integrado - Estilos adaptados */
 
+/* Container principal que ocupa toda a altura disponível sem extrapolação */
+.container_principal {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Header fixo */
+.header {
+  flex-shrink: 0;
+  padding-bottom: 10px;
+  // height: auto;
+  // min-height: 80px;
+  // max-height: 100px;
+}
+
 .tutfop-container {
-  padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .tutfop-container-main {
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
-}
-
-/* Main content */
-.tutfop-main-content {
-  padding: 20px;
-  height: calc(100vh - 120px); /* Altura fixa para evitar scroll */
+  height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* Main content que ocupa o espaço restante sem extrapolação */
+.tutfop-main-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  // max-height: calc(100vh - 170px);
+  min-height: 0;
+  // overflow: hidden;
+  border: 1pt #2A7AC3 solid;
+  border-radius: 16px;
+  box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.4);
+  padding-bottom: 30px; /* Adicionar espaçamento inferior */
 }
 
 .tutfop-chat-section {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 15px;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  flex: 1; /* Ocupar todo o espaço disponível */
 }
 
 .tutfop-container-section {
   padding: 1rem;
 }
 
-/* Chat */
+/* Chat log que se expande para ocupar todo o espaço disponível */
 .tutfop-chat-log {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Espaço vertical entre balões */
-  background: #d7e8ff;
-  border-radius: 15px;
-  padding: 1.5rem;
-  border: 1px solid #6b86a5;
-  height: calc(100vh - 300px); /* Altura fixa baseada na viewport */
-  max-height: 500px;
-  min-height: 300px;
+  // gap: 12px;
+  background: transparent;
+  border-radius: 0px;
+  // padding: 1.5rem;
+  border: 0;
   overflow-y: auto;
-  flex: 1;
+  overflow-x: hidden;
+  flex: 1; /* Expandir para ocupar todo o espaço disponível */
+  min-height: 0; /* Permitir que o flex funcione corretamente */
+  margin-bottom: 12px; /* Espaçamento para o container de input */
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -159,12 +200,19 @@
   display: flex;
   gap: 12px;
   align-items: flex-end;
-  margin-top: 10px;
-  flex-shrink: 0; /* Impede que a área de input seja comprimida */
+  flex-shrink: 0; /* Não comprimir este elemento */
+  padding: 10px;
+  max-height: 150px;
+  overflow: hidden;
+  border: #2A7AC3 1pt solid;
+  border-radius: 8pt;
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
+    max-height: 200px;
+    padding-top: 10px;
+    padding-bottom: 5px;
   }
 }
 
@@ -176,12 +224,14 @@
   font-size: 1.1rem;
   resize: none;
   min-height: 50px;
-  max-height: 120px;
-  background-color: #f8fff8; /* Verde muito claro */
+  max-height: 100px; /* Reduzir altura máxima */
+  height: 50px; /* Altura inicial fixa */
+  background-color: #f8fff8;
   font-family: inherit;
   transition: all 0.3s ease;
   line-height: 1.5;
   overflow-y: auto;
+  box-sizing: border-box; /* Incluir padding e border no cálculo da altura */
 
   &:focus {
     outline: none;
@@ -299,15 +349,41 @@
 
 /* Responsividade */
 @media (max-width: 768px) {
+  .container_principal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
   .tutfop-main-content {
-    height: calc(100vh - 100px);
-    padding: 15px;
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    padding: 10px;
+    padding-bottom: 20px;
+    border: #2A7AC3 1pt solid;
+    border-radius: 16px;
   }
 
   .tutfop-chat-log {
-    height: calc(100vh - 250px);
-    min-height: 250px;
+    margin-bottom: 10px; /* Reduzir margem em mobile */
     padding: 1rem;
+  }
+
+  .tutfop-chat-input-container {
+    max-height: 120px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+
+  .tutfop-textarea {
+    max-height: 80px;
+    min-height: 40px;
+    height: 40px;
   }
 
   :host ::ng-deep .user-message {
@@ -316,6 +392,29 @@
 
   :host ::ng-deep .bot-message {
     max-width: 90% !important;
+  }
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 480px) {
+  .tutfop-main-content {
+    padding: 5px;
+    padding-bottom: 15px;
+  }
+
+  .tutfop-chat-log {
+    padding: 0.5rem;
+    margin-bottom: 5px; /* Margem ainda menor para telas pequenas */
+  }
+
+  .tutfop-button-container {
+    gap: 5px;
+  }
+
+  .tutfop-btn-primary,
+  .tutfop-btn-secondary {
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }
 
