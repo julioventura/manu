@@ -36,11 +36,17 @@ export class FirestoreOptimizedService {
     }
 
     console.log('🌐 FirestoreOptimized: Querying Firestore for', cacheKey);
-    const query$ = runInInjectionContext(this.injector, () => 
-      this.firestore.collection<T>(collectionPath, ref => 
-        ref.orderBy(orderBy, orderDirection).limit(limit)
-      ).valueChanges({ idField: 'id' })
-    ).pipe(
+    const query$ = runInInjectionContext(this.injector, () => {
+      const query = this.firestore.collection<T>(collectionPath, ref => {
+        let queryRef = ref.orderBy(orderBy, orderDirection);
+        // Only apply limit if it's a reasonable number (not trying to get all records)
+        if (limit > 0 && limit < 1000) {
+          queryRef = queryRef.limit(limit);
+        }
+        return queryRef;
+      });
+      return query.valueChanges({ idField: 'id' });
+    }).pipe(
       map(data => {
         console.log('✅ FirestoreOptimized: Data received', { path: collectionPath, count: data.length });
         return data;

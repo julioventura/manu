@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 interface Horario {
   dia: string;
   horario: string;
+  endereco?: string; // Novo campo para associar ao endereço
 }
 
 interface Endereco {
@@ -71,6 +72,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
   horarios: Horario[] = [];
   novoDia: string = '';
   novoHorario: string = '';
+  novoEnderecoSelecionado: string = ''; // Novo campo para selecionar endereço
   nomeConvenio: string = '';
 
   // Arrays para gerenciar os endereços
@@ -602,7 +604,8 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
     if (this.novoDia && this.novoHorario) {
       this.horarios.push({
         dia: this.novoDia.trim(),
-        horario: this.novoHorario.trim()
+        horario: this.novoHorario.trim(),
+        endereco: this.novoEnderecoSelecionado || '' // Inclui o endereço selecionado
       });
 
       // Atualiza o valor no formulário
@@ -613,6 +616,7 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
       // Limpa os campos
       this.novoDia = '';
       this.novoHorario = '';
+      this.novoEnderecoSelecionado = '';
     }
   }
 
@@ -763,5 +767,27 @@ export class PerfilComponent implements OnInit, OnDestroy, CanComponentDeactivat
   
   ngOnDestroy(): void {
     window.removeEventListener('beforeunload', this.boundBeforeUnloadHandler);
+  }
+
+  /**
+   * Obtém a descrição de um endereço pelo índice ou rua
+   */
+  getEnderecoDescricao(endereco: string): string {
+    if (!endereco) return '';
+    
+    // Busca pelo índice primeiro
+    const index = parseInt(endereco);
+    if (!isNaN(index) && this.enderecos[index]) {
+      const end = this.enderecos[index];
+      return `${end.rua}, ${end.bairro ? end.bairro + ', ' : ''}${end.cidade}/${end.estado}`;
+    }
+    
+    // Se não for índice, busca pela rua
+    const enderecoEncontrado = this.enderecos.find(end => end.rua === endereco);
+    if (enderecoEncontrado) {
+      return `${enderecoEncontrado.rua}, ${enderecoEncontrado.bairro ? enderecoEncontrado.bairro + ', ' : ''}${enderecoEncontrado.cidade}/${enderecoEncontrado.estado}`;
+    }
+    
+    return endereco; // Retorna o valor original se não encontrar
   }
 }

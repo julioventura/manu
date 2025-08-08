@@ -168,10 +168,13 @@ export class ListComponent implements OnInit {
 
     console.log('Setting up data flow for path:', collectionPath);
 
+    // Clear cache to ensure fresh data
+    this.firestoreOptimized.clearCache();
+
     // SIMPLIFICADO: Usar apenas o método que funciona
     this.registros$ = this.firestoreOptimized.getOptimizedCollection<Record<string, unknown>>(
       collectionPath,
-      50, // Fixed page size
+      1000, // Increased limit to show all records
       'nome',
       'asc'
     ).pipe(

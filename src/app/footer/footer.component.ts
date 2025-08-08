@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../shared/services/user.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-footer',
@@ -11,5 +14,19 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class FooterComponent {
-  // Footer simplificado - apenas exibe a versão da aplicação
+  userName$: Observable<string>;
+
+  constructor(private userService: UserService) {
+    // Inicializar o Observable do nome do usuário
+    this.userName$ = this.userService.getCurrentUserProfile().pipe(
+      map(user => {
+        if (user) {
+          const rawName = user.nome || user.displayName || user.username || user.email?.split('@')[0] || 'Usuário';
+          return rawName;
+        }
+        return 'Usuário';
+      })
+    );
+  }
+
 }
