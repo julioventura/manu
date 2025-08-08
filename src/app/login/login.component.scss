@@ -5,7 +5,7 @@
 $error-color: #f44336;
 $hover-error-color: #a9001c;
 $input-border-color: #bbb;
-$input-focus-color: rgba(33, 150, 243, 0.5);
+$input-focus-color: rgba(168, 215, 253, 0.5);
 $background-color: #e5eff4; // Mesma cor de fundo da imagem 1
 
 // Local font family override for this component
@@ -21,70 +21,241 @@ body {
   color: styles.$text-color;
 }
 
+.login-tabs-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
+
 .login-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem;
   background-color: styles.$white;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+              0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-family: $local-font-family;
+  backdrop-filter: blur(10px);
 
   h2 {
     color: styles.$primary-color;
     margin-bottom: 2rem;
-    font-size: x-large;
-    font-weight: bold;
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
   }
 
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
   }
 }
 
+// Garantir que os ícones do Material Design funcionem corretamente
+.mat-icon {
+  font-family: 'Material Icons' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
 mat-form-field {
-  width: 100%; // Faz com que os campos ocupem toda a largura disponível
-  margin-bottom: 1.5rem;
+  width: 100%;
+  margin-bottom: 1.25rem;
 
-  .mat-input-element {
-    font-size: 1rem;
-    padding: 12px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
+  // Ajustes para Angular Material (MDC) campos "fill"
+  // Usamos CSS vars expostas para customização leve sem hacks profundos.
+  --mdc-filled-text-field-container-color: #f5f6f7;
+  --mdc-filled-text-field-focus-active-indicator-color: #{styles.$primary-color};
+  --mdc-filled-text-field-active-indicator-color: #c3ccd2;
+  --mdc-filled-text-field-hover-active-indicator-color: #{styles.$primary-color};
+  --mdc-filled-text-field-disabled-container-color: #eceff1;
+  --mdc-filled-text-field-error-focus-active-indicator-color: #{$error-color};
+  --mdc-filled-text-field-error-active-indicator-color: #{$error-color};
+  --mdc-filled-text-field-input-text-placeholder-color: #8a969e;
+
+  // Profundidade seletiva (evita :host ::ng-deep na maioria dos casos) – estiliza wrapper principal
+  :hover .mat-mdc-text-field-wrapper:not(.mdc-text-field--disabled) {
+    background-color: #eef1f3;
+  }
+
+  .mat-mdc-text-field-wrapper {
     border: 1px solid $input-border-color;
+    border-radius: 6px !important;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+    padding: 0 12px; // padding horizontal ajustado
+    overflow: visible; // garante que o conteúdo não seja cortado
+    display: flex;
+    align-items: center;
+  }
 
-    &:focus {
-      border-color: styles.$primary-color;
-      box-shadow: 0 0 5px $input-focus-color;
+  .mdc-text-field {
+    // Remove ripple sublinhado padrão (indicador) para um visual mais "card".
+    --mdc-filled-text-field-active-indicator-height: 0;
+    --mdc-filled-text-field-focus-active-indicator-height: 0;
+    background: transparent; // já temos cor no wrapper
+  }
+
+  .mat-mdc-form-field-infix {
+    min-height: 56px; // altura aumentada para acomodar melhor o conteúdo
+    padding: 12px 0 8px 0; // padding ajustado
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-mdc-input-element {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: .3px;
+    padding: 10px 6px;
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  // Estado Focus
+  // .mdc-text-field--focused .mat-mdc-text-field-wrapper {
+  //   border: 1pt solid styles.$primary-color;
+  //   background-color: #c77474;
+  // }
+
+  // Estado Erro
+  .mdc-text-field--invalid .mat-mdc-text-field-wrapper {
+    border-color: $error-color;
+    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.25);
+  }
+
+  // Ícones prefix (email, lock, person)
+  .mat-mdc-form-field-icon-prefix {
+    color: #647178;
+    margin-right: 12px;
+    margin-left: 0;
+    transition: color .18s ease;
+    flex-shrink: 0; // evita que o ícone seja comprimido
+    
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  // Quando campo está em foco, destacar ícone prefix
+  .mdc-text-field--focused .mat-mdc-form-field-icon-prefix {
+    color: styles.$primary-color;
+  }
+
+  // Ícone / botão de alternar visibilidade (suffix)
+  .mat-mdc-icon-button.mat-mdc-button-base {
+    width: 40px;
+    height: 40px;
+    color: #647178;
+    transition: color .18s ease, transform .18s ease;
+    margin-left: 8px;
+    margin-right: 0;
+    flex-shrink: 0; // evita que o botão seja comprimido
+
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:hover {
+      color: styles.$primary-color;
+      transform: scale(1.08);
+    }
+    &:active { transform: scale(0.94); }
+    &:focus-visible {
+      outline: 2px solid styles.$primary-color;
+      outline-offset: 2px;
+      border-radius: 50%;
     }
   }
 
-  .mat-icon-button {
-    color: #666;
+  // Mensagem de erro (subscript)
+  .mat-mdc-form-field-subscript-wrapper {
+    padding: 0 4px;
   }
 }
 
 button[mat-raised-button] {
-  width: 100%; // O botão de login ocupa 100% da largura do container
-  padding: 12px;
-  background-color: styles.$secondary-color;
+  width: 100%;
+  height: 48px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, styles.$secondary-color 0%, color.adjust(styles.$secondary-color, $lightness: -5%) 100%);
   color: styles.$white;
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 4px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  border: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
 
   &:hover {
-    background-color: color.adjust(styles.$secondary-color, $lightness: -10%);
+    background: linear-gradient(135deg, color.adjust(styles.$secondary-color, $lightness: -8%) 0%, color.adjust(styles.$secondary-color, $lightness: -15%) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(styles.$secondary-color, 0.4);
+    
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(styles.$secondary-color, 0.3);
   }
 
   &:disabled {
-    background-color: #bbb;
+    background: #bbb;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    
+    &::before {
+      display: none;
+    }
   }
 }
 
@@ -93,15 +264,60 @@ button[mat-raised-button] {
   color: styles.$primary-color;
   font-size: 0.875rem;
   text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 50%;
+    background-color: styles.$primary-color;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
 
   &:hover {
-    text-decoration: underline;
+    color: color.adjust(styles.$primary-color, $lightness: -10%);
+    
+    &::after {
+      width: 100%;
+    }
   }
 }
 
 .novaconta {
   margin-top: 1rem;
-  color: styles.$primary-color;
-  font-size: 0.875rem;
-  text-decoration: none;
+  
+  a {
+    color: styles.$primary-color;
+    font-size: 0.875rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 50%;
+      background-color: styles.$primary-color;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    &:hover {
+      color: color.adjust(styles.$primary-color, $lightness: -10%);
+      
+      &::after {
+        width: 100%;
+      }
+    }
+  }
 }

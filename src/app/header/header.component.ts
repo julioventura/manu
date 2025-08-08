@@ -27,7 +27,8 @@ export class HeaderComponent {
     this.userName$ = this.userService.getCurrentUserProfile().pipe(
       map(user => {
         if (user) {
-          return user.nome || user.displayName || user.username || user.email?.split('@')[0] || 'Usuário';
+          const rawName = user.nome || user.displayName || user.username || user.email?.split('@')[0] || 'Usuário';
+          return this.limitName(rawName, 12);
         }
         return 'Usuário';
       })
@@ -41,5 +42,32 @@ export class HeaderComponent {
       },
       error: (err) => console.error('Logout error from header', err)
     });
+  }
+
+  /**
+   * limitName
+   * Limita a exibição a até `maxLen` caracteres SOMENTE adicionando palavras inteiras.
+   * - Não trunca no meio de uma palavra (exceto se a primeira palavra sozinha ultrapassar o limite; nesse caso ela é cortada).
+   */
+  private limitName(name: string, maxLen: number): string {
+    if (!name) return '';
+    const words = name.trim().split(/\s+/);
+    let result = '';
+    for (const w of words) {
+      if (!result) {
+        if (w.length > maxLen) {
+          // Primeira palavra maior que o limite: corta (único caso de truncamento controlado)
+          return w.slice(0, maxLen);
+        }
+        result = w;
+      } else {
+        if ((result + ' ' + w).length <= maxLen) {
+          result += ' ' + w;
+        } else {
+          break;
+        }
+      }
+    }
+    return result;
   }
 }

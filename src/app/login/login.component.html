@@ -4,7 +4,7 @@
     <h2>Login</h2>
     <form (ngSubmit)="onLogin()" #loginForm="ngForm">
       <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
         <input matInput type="email" id="email" name="email" [(ngModel)]="email" required #emailInput="ngModel" />
         <mat-error *ngIf="emailInput.invalid && emailInput.touched">
           O email é obrigatório.
@@ -12,10 +12,11 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Senha</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
         <input matInput [type]="hidePassword ? 'password' : 'text'" id="password" name="password" [(ngModel)]="password"
           required #passwordInput="ngModel" />
-        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button" 
+                [attr.aria-label]="hidePassword ? 'Mostrar senha' : 'Ocultar senha'">
           <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
         <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
@@ -42,6 +43,7 @@
     <form (ngSubmit)="onSignup()" #signupForm="ngForm">
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
         <input matInput type="email" id="signup-email" name="signupEmail" [(ngModel)]="signupEmail" required
           #signupEmailInput="ngModel" />
         <mat-error *ngIf="signupEmailInput.invalid && signupEmailInput.touched">
@@ -51,9 +53,11 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Senha</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
         <input matInput [type]="hideSignupPassword ? 'password' : 'text'" id="signup-password" name="signupPassword"
           [(ngModel)]="signupPassword" required #signupPasswordInput="ngModel" />
-        <button mat-icon-button matSuffix (click)="hideSignupPassword = !hideSignupPassword" type="button">
+        <button mat-icon-button matSuffix (click)="hideSignupPassword = !hideSignupPassword" type="button"
+                [attr.aria-label]="hideSignupPassword ? 'Mostrar senha' : 'Ocultar senha'">
           <mat-icon>{{ hideSignupPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
         <mat-error *ngIf="signupPasswordInput.invalid && signupPasswordInput.touched">
@@ -63,6 +67,7 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Nome</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
         <input matInput type="text" id="signup-name" name="signupName" [(ngModel)]="signupName" required
           #signupNameInput="ngModel" />
         <mat-error *ngIf="signupNameInput.invalid && signupNameInput.touched">
@@ -85,6 +90,7 @@
     <form (ngSubmit)="onResetPassword()" #resetForm="ngForm">
       <mat-form-field appearance="fill">
         <mat-label>Digite seu email:</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
         <input matInput type="email" id="reset-email" name="resetEmail" [(ngModel)]="resetEmail" required
           #resetEmailInput="ngModel" />
         <mat-error *ngIf="resetEmailInput.invalid && resetEmailInput.touched">
