@@ -86,8 +86,12 @@ export class HomeComponent implements OnInit {
    *  - Se o usuário estiver autenticado, capitaliza o nome e carrega seus dados (username) e configuração de ícones.
    *  - Configura a propriedade is_admin se o email corresponder ao do administrador.
    *  - Caso nenhum usuário esteja logado, redireciona para a página de login.
+   *  - Garante que a página inicie no topo.
    */
   ngOnInit(): void {
+    // Garantir que a página inicie no topo
+    window.scrollTo(0, 0);
+    
     try {
       // Clear chat context
       this.aiChatService.resetContext();
@@ -117,6 +121,11 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       console.error('Error in HomeComponent ngOnInit:', error);
     }
+    
+    // Garantir scroll para o topo após a inicialização completa
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, 100);
   }
 
 
