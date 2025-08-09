@@ -108,4 +108,61 @@
     height: 30px;
 }
 
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  width: 100%;
+  opacity: 1;
+  transition: opacity 0.4s ease-in;
+}
+
+.fade-in {
+  animation: fadeInListSpinner 0.4s ease-in;
+}
+
+@keyframes fadeInListSpinner {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #2a7ac3;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spinList 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spinList {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #2a7ac3;
+  font-size: 1.1em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+}
+
+// Transição fade para a lista real
+.registros-table, .aviso, .search-bar, .pagination, .pagination_total, .record-header {
+  transition: opacity 0.4s ease-out;
+}
+
+[ng-reflect-ng-if="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+[ng-reflect-ng-if="true"] {
+  opacity: 1;
+}
+
 

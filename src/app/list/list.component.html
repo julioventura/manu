@@ -18,9 +18,10 @@
   </div> -->
 
 
-  <!-- OTIMIZAÇÃO: Skeleton loader melhor UX -->
-  <div *ngIf="isLoading" class="loading-container">
-    <app-skeleton-loader [itemCount]="10"></app-skeleton-loader>
+  <!-- Carregando Spinner com transição -->
+  <div *ngIf="isLoading" class="loading-container fade-in">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando...</div>
   </div>
 
   <div *ngIf="!isLoading && registros.length === 0" class="aviso">
