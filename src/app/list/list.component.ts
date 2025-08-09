@@ -36,7 +36,6 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FirestoreOptimizedService } from '../shared/services/firestore-optimized-simple.service';
-import { SkeletonLoaderComponent } from '../shared/components/skeleton-loader/skeleton-loader.component';
 
 @Component({
   selector: 'app-list',
@@ -46,8 +45,7 @@ import { SkeletonLoaderComponent } from '../shared/components/skeleton-loader/sk
   changeDetection: ChangeDetectionStrategy.OnPush, // OTIMIZAÇÃO: OnPush para melhor performance
   imports: [
     CommonModule,
-    FormsModule,
-    SkeletonLoaderComponent // NOVO: Skeleton loader
+    FormsModule
   ],
 })
 export class ListComponent implements OnInit {
