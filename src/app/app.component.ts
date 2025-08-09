@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
           // Usuário está logado
           this.isUserLoggedIn = true;
           // Verificar se o usuário é autorizado para ver o chatbot
-          this.isAuthorizedUser = this.checkAuthorizedUser(user.email);
+          this.isAuthorizedUser = this.userService.isAuthorizedForChatbot(user.email);
         } else {
           // Usuário não logado
           this.isUserLoggedIn = false;
@@ -178,17 +178,4 @@ export class AppComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  // Método para verificar se o usuário é autorizado a ver o chatbot
-  private checkAuthorizedUser(email: string | null): boolean {
-    // OPÇÃO 1: Ativar para emails específicos (atual)
-    const authorizedEmails = [
-      'julio@dentistas.com.br', 
-      'julioventura@gmail.com', 
-      'admin@dentistas.com.br'
-    ];
-    return email ? authorizedEmails.includes(email) : false;
-    
-    // OPÇÃO 2: Ativar para todos os usuários logados
-    // return !!email; // Descomente esta linha e comente o código acima
-  }
 }

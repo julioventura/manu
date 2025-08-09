@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
@@ -85,6 +86,32 @@ export interface NavigationContext {
   providedIn: 'root'
 })
 export class UserService {
+  /**
+   * Verifica se o usuário é administrador
+   */
+  isAdmin(email: string | null): boolean {
+    const adminEmails = [
+      'julio@dentistas.com.br',
+      'julioventura@gmail.com',
+      'admin@dentistas.com.br'
+    ];
+    return email ? adminEmails.includes(email) : false;
+  }
+  /**
+   * Verifica se o usuário é autorizado a visualizar o chatbot
+   * Pode ser facilmente ajustado para liberar para todos os logados ou só para alguns.
+   */
+  isAuthorizedForChatbot(email: string | null): boolean {
+    // OPÇÃO 1: Ativar para emails específicos (atual)
+    const authorizedEmails = [
+      'julio@dentistas.com.br',
+      'julioventura@gmail.com',
+      'admin@dentistas.com.br'
+    ];
+    return email ? authorizedEmails.includes(email) : false;
+    // OPÇÃO 2: Ativar para todos os usuários logados
+    // return !!email;
+  }
   // ADICIONAR: Observables faltando
   private chatbotExpandedSubject = new BehaviorSubject<boolean>(false);
   public chatbotExpanded$ = this.chatbotExpandedSubject.asObservable();
