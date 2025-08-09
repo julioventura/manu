@@ -52,6 +52,8 @@ export class ConfigComponent implements OnInit {
   // A array agora será carregada dinamicamente pelo serviço
   subcolecoesDisponiveis: SubcolecaoItem[] = [];
 
+  selectedTab: 'chatbot' | 'homepage' | 'preferencias' = 'chatbot';
+
   constructor(
     private router: Router,
     public util: UtilService,

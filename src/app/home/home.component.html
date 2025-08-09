@@ -37,11 +37,11 @@
         <p>EQUIPE</p>
       </div>
 
-        
-        <div class="icon-item" *ngIf="visibleIcons['associados']" (click)="go('list/associados')">
-          <img src="https://dentistas.com.br/assets/associados.png" alt="Associados">
-          <p>ASSOCIADOS</p>
-        </div>
+
+      <div class="icon-item" *ngIf="visibleIcons['associados']" (click)="go('list/associados')">
+        <img src="https://dentistas.com.br/assets/associados.png" alt="Associados">
+        <p>ASSOCIADOS</p>
+      </div>
 
       <!-- <div class="icon-item" *ngIf="visibleIcons['indicador']" (click)="go('list/indicador')">
         <img src="https://dentistas.com.br/assets/indicador.png" alt="Indicador">
@@ -58,7 +58,7 @@
         <p>TUTFOP</p>
       </div>
 
-  <!--   
+      <!--   
       <div class="icon-item" *ngIf="visibleIcons['empresas']" (click)="go('list/empresas')">
         <img src="https://dentistas.com.br/assets/empresas.png" alt="Empresas">
         <p>EMPRESAS</p>
@@ -92,12 +92,17 @@
       </div> -->
 
 
+      <div class="icon-item" (click)="go('config')">
+        <img src="https://dentistas.com.br/assets/config.png" alt="Configurar">
+        <p>CONFIGURAR </p>
+      </div>
+
+
       <!-- <div class="icon-item" (click)="go('backup')"> -->
       <div class="icon-item" (click)="go('home')">
         <img src="https://dentistas.com.br/assets/backup.png" alt="Backup">
         <p>BACKUP </p>
       </div>
-
 
     </section>
 
@@ -132,10 +137,7 @@
         <p>IMPORTAR CADASTRO </p>
       </div>
 
-      <div class="icon-item" (click)="go('config')">
-        <img src="https://dentistas.com.br/assets/config.png" alt="Configurar">
-        <p>CONFIGURAR </p>
-      </div>
+
 
       <div class="icon-item" (click)="go('tutfop')">
         <img src="https://dentistas.com.br/assets/chatbot.png" alt="TUTFOP">

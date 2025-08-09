@@ -54,14 +54,14 @@ export class HomeComponent implements OnInit {
     dentistas: true,
     equipe: true,
     proteticos: true,
-    associados: false,
+    associados: true,
     indicador: true,
     dentais: true,
     tutfop: true,
     empresas: false,
     fornecedores: false,
     perfil: true,
-    homepage: true
+    homepage: false
   };
 
   private userId: string | null = null;

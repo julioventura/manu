@@ -17,13 +17,31 @@
         <div id="Services" class="container margin0">
             <section class="services-section icon-grid largo">
 
-                <div class="icon-item" (click)="go('camposRegistro')">
-                    <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
-                    <p>PERSONALIZAR CAMPOS DOS CADASTROS</p>
-                </div>
-
 
             </section>
+
+            <div class="tabs-config">
+                <button class="tab-btn" [class.active]="selectedTab === 'chatbot'" (click)="selectedTab = 'chatbot'">Chatbot</button>
+                <button class="tab-btn" [class.active]="selectedTab === 'homepage'" (click)="selectedTab = 'homepage'">Sua Homepage</button>
+                <button class="tab-btn" [class.active]="selectedTab === 'preferencias'" (click)="selectedTab = 'preferencias'">Preferências</button>
+            </div>
+
+            <div class="tab-content-config">
+                <div *ngIf="selectedTab === 'chatbot'">
+                    <!-- Conteúdo do Chatbot (a definir) -->
+                </div>
+                <div *ngIf="selectedTab === 'homepage'">
+                    <!-- Conteúdo da Homepage (a definir) -->
+                </div>
+                <div *ngIf="selectedTab === 'preferencias'">
+                    <div class="preferences-card">
+                        <div class="icon-item pref-link" (click)="go('camposRegistro')">
+                            <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
+                            <p>PERSONALIZAR CAMPOS DOS CADASTROS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
