@@ -1,3 +1,4 @@
+import { UserService } from '../shared/services/user.service';
 // ------------------- IMPORTS -------------------
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -104,7 +105,8 @@ export class ConfigComponent implements OnInit {
     private navegacaoService: NavegacaoService,
     private firestore: AngularFirestore,
     private subcolecaoService: SubcolecaoService,
-    public fb: FormBuilder
+  public fb: FormBuilder,
+  public userService: UserService
   ) { }
 
   ngOnInit(): void {

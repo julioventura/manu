@@ -197,12 +197,17 @@
                 </div>
                 <div *ngIf="selectedTab === 'preferencias'">
                     <div id="preferencias-card" class="tab-card">
-
-                        <div class="icon-item pref-link" (click)="go('camposRegistro')">
-                            <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
-                            <p>PERSONALIZAR CAMPOS DOS CADASTROS</p>
-                        </div>
-
+                        <ng-container *ngIf="userService.isAdmin; else acessoNegado">
+                            <div class="icon-item pref-link" (click)="go('camposRegistro')">
+                                <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
+                                <p>PERSONALIZAR CAMPOS DOS CADASTROS</p>
+                            </div>
+                        </ng-container>
+                        <ng-template #acessoNegado>
+                            <div class="validation-message" style="margin-top: 12px;">
+                                Acesso restrito: apenas administradores podem personalizar os campos dos cadastros.
+                            </div>
+                        </ng-template>
                     </div>
                 </div>
             </div>
