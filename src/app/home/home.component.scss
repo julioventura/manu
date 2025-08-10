@@ -15,7 +15,9 @@
   align-items: center;
 }
 
-section { text-align: center; }
+section {
+  text-align: center;
+}
 
 .container {
   margin: 0 auto 20px;
@@ -25,7 +27,9 @@ section { text-align: center; }
   padding: 20px;
   gap: 20px;
 
-  .margin-bottom-8 { padding-bottom: 8px; }
+  .margin-bottom-8 {
+    padding-bottom: 8px;
+  }
 }
 
 .boxvazio {
@@ -48,7 +52,8 @@ section { text-align: center; }
   gap: 0;
 }
 
-.column-left, .column-right {
+.column-left,
+.column-right {
   @include card-base;
   width: 100%;
   min-width: 300px;
@@ -71,7 +76,9 @@ section { text-align: center; }
     margin: 8px 0px;
     transition: transform 0.2s ease;
 
-    &:hover { transform: translateY(-3px); }
+    &:hover {
+      transform: translateY(-3px);
+    }
 
     img {
       width: 82px;
@@ -112,7 +119,9 @@ section { text-align: center; }
       padding: 8px;
       transition: background-color 0.3s;
 
-      &:hover { background-color: color.adjust(styles.$primary-color, $lightness: -10%); }
+      &:hover {
+        background-color: color.adjust(styles.$primary-color, $lightness: -10%);
+      }
     }
   }
 }
@@ -122,10 +131,83 @@ section { text-align: center; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 12px;
   border: 1pt solid #8fa5c5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+// Variante desktop
+.services-section-desktop {
+  @include flex-center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 26px;
+  border-radius: 15.6px;
+  padding: 26px 52px;
+  border: 2pt solid #6a8bbd;
+  box-shadow: 0 7.8px 20.8px rgba(0, 0, 0, 0.18);
+}
+
+// Variante mobile
+ .services-section-mobile {
+  @include flex-center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 26px;
+  border-radius: 15.6px;
+  padding: 0;
+  border: 2pt solid #6a8bbd;
+  box-shadow: 0 7.8px 20.8px rgba(0, 0, 0, 0.18);
+}
+
+// Aplica automaticamente a variante mobile em telas pequenas
+@media (max-width: 768px) {
+  .services-section-desktop {
+    display: none !important;
+  }
+
+  .services-section-mobile {
+    display: flex !important;
+    gap: 12px;
+  }
+
+  .services-section {
+    padding: 0px;
+  }
+
+  .container {
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 auto 20px;
+    padding-bottom: 14px;
+  }
+
+  .navegacao,
+  .navegacao_direita {
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+  }
+}
+
+// Aplica automaticamente a variante desktop em telas grandes
+@media (min-width: 769px) {
+  .services-section-mobile {
+    display: none !important;
+  }
+
+  .services-section-desktop {
+    display: flex !important;
+  }
+
+  .navegacao,
+  .navegacao_direita {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
 }
 
 // Configuration
@@ -146,9 +228,21 @@ section { text-align: center; }
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
-  h3 { margin-top: 0; font-size: 1.1em; font-weight: bold; }
-  label { display: flex; align-items: center; margin-bottom: 8px; }
-  input[type="checkbox"] { margin-right: 8px; }
+  h3 {
+    margin-top: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 8px;
+  }
 }
 
 // Header component specific styles
@@ -162,31 +256,64 @@ app-header {
 @media (max-width: 768px) {
   .icon-grid .icon-item {
     width: 90px;
-    img { width: 60px; height: 60px; margin: 0 10px; }
-    p { font-size: 12px; }
+
+    img {
+      width: 60px;
+      height: 60px;
+      margin: 0 10px;
+    }
+
+    p {
+      font-size: 12px;
+    }
   }
 }
 
 @media (max-width: 549px) {
   .icon-grid {
     grid-template-columns: repeat(3, 1fr);
+
     .icon-item {
       width: 80px;
-      img { width: 50px; height: 50px; }
-      p { font-size: 11px; line-height: 1.1; }
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+
+      p {
+        font-size: 11px;
+        line-height: 1.1;
+      }
     }
   }
-  .column-left, .column-right { width: 100%; }
-  .container { flex-direction: column; }
+
+  .column-left,
+  .column-right {
+    width: 100%;
+  }
+
+  .container {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 400px) {
   .icon-grid {
     grid-template-columns: repeat(2, 1fr);
+
     .icon-item {
       width: 70px;
-      img { width: 40px; height: 40px; margin: 0 3px; }
-      p { font-size: 10px; }
+
+      img {
+        width: 40px;
+        height: 40px;
+        margin: 0 3px;
+      }
+
+      p {
+        font-size: 10px;
+      }
     }
   }
 }

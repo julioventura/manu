@@ -273,6 +273,20 @@ h4 {
     margin-bottom: 40px;
 }
 
+
+// Aplica automaticamente a variante mobile em telas pequenas
+@media (max-width: 768px) {
+
+.container_principal {
+    max-width: min(var(--max-width), calc(100% - 20px));
+    padding-top: 0px;
+    padding: 8px;
+    margin-bottom: 14px;
+}
+}
+
+
+
 // ====================================
 // INPUTS E FORMULÁRIOS
 // ====================================
@@ -390,6 +404,17 @@ button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
     margin-left: 50px;
     cursor: pointer;
 }
+
+
+// Aplica automaticamente a variante mobile em telas pequenas
+@media (max-width: 768px) {
+  .navegacao,
+  .navegacao_direita {
+    width: 42px;
+    height: 42px;
+  }
+}
+
 
 // ====================================
 // UTILITÁRIAS
