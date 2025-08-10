@@ -33,7 +33,7 @@
                     <div id="chatbot-card">
                         <form class="profile-form chatbot-profile-form" [formGroup]="chatbotForm" (ngSubmit)="salvarChatbotConfig()">
                             <div class="field-group chatbot-group">
-                                <h3 class="grupo-titulo">01. Configuração do Chatbot</h3>
+                                <h3 class="grupo-titulo">Configuração do Chatbot</h3>
                                 <div class="field-container">
                                     <label for="webhookProd" class="field-label">Webhook de produção do chatbot *</label>
                                     <input type="url" id="webhookProd" class="field-input" formControlName="webhookProd" placeholder="https://..." required>
@@ -134,7 +134,7 @@
                             </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn-save" [disabled]="chatbotForm.invalid || loading">
-                                    <span *ngIf="loading">Salvando...</span>
+                                    <span *ngIf="loading">Salvar</span>
                                     <span *ngIf="!loading">Salvar configurações</span>
                                 </button>
                             </div>
@@ -142,11 +142,10 @@
                     </div>
                 </div>
                 <div *ngIf="selectedTab === 'homepage'">
-                    <div id="homepage-card" class="tab-card">
-                        <form class="profile-form homepage-profile-form" [formGroup]="homepageForm" (ngSubmit)="salvarHomepageConfig()">
-
-                            <div class="field-group homepage-group">
-
+                    <div id="homepage-card" >
+                        <form class="profile-form chatbot-profile-form" [formGroup]="homepageForm" (ngSubmit)="salvarHomepageConfig()">
+                            <div class="field-group chatbot-group">
+                                <h3 class="grupo-titulo">Seu perfil</h3>
                                 <div class="field-container">
                                     <label for="nomeProfissional" class="field-label">Nome profissional:</label>
                                     <input type="text" id="nomeProfissional" class="field-input" formControlName="nomeProfissional">
@@ -167,12 +166,9 @@
                                     <label for="imagemCapa" class="field-label">Imagem de capa:</label>
                                     <input type="text" id="imagemCapa" class="field-input" formControlName="imagemCapa" placeholder="URL da imagem ou nome do arquivo">
                                 </div>
-
                             </div>
-
-                            <div class="field-group homepage-group">
-
-                                <!-- <h3 class="grupo-titulo">03. Cartão de visitas digital</h3> -->
+                            <div class="field-group chatbot-group">
+                                <h3 class="grupo-titulo">Cartão de Visitas Digital</h3>
                                 <div class="field-container">
                                     <label for="whatsapp" class="field-label">WhatsApp:</label>
                                     <input type="text" id="whatsapp" class="field-input" formControlName="whatsapp">
@@ -189,9 +185,7 @@
                                     <label for="site" class="field-label">Site:</label>
                                     <input type="text" id="site" class="field-input" formControlName="site">
                                 </div>
-
                             </div>
-                            
                             <div class="form-actions">
                                 <button type="submit" class="btn-save" [disabled]="homepageForm.invalid || homepageLoading">
                                     <span *ngIf="homepageLoading">Salvando...</span>
