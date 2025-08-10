@@ -1,7 +1,7 @@
-﻿@use "../../_variables.scss" as styles;
+﻿@use "../../_variables.scss" as variables;
 
 header.app-main-header {
-  max-width: styles.$max-width;
+  max-width: variables.$max-width;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -9,7 +9,13 @@ header.app-main-header {
   box-sizing: border-box;
   overflow: hidden;
   padding: 8px 10px;
+  border-radius: 12px;
 }
+// @media (max-width: variables.$medium-width) {
+//   header.app-main-header {
+//     margin: 0 10px;
+//   }
+// }
 
 .logo-text {
   text-align: left;
@@ -89,7 +95,6 @@ header.app-main-header {
     color: #9ca3af;
     border: none;
     padding: 6px 8px;
-    border-radius: 7px;
     font-size: clamp(0.7rem, 1vw, 0.85rem);
     font-weight: 400;
     cursor: pointer;
@@ -148,12 +153,6 @@ header.app-main-header {
     }
   }
 }
-
-// @media (max-width: styles.$medium-width) {
-//   header.app-main-header {
-//     margin: 0 10px;
-//   }
-// }
 
 @media (max-width: 400px) {
   .header-right {
