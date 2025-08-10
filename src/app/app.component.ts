@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
 import { NgIf } from '@angular/common';
 import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.component';
+import { BubblesBgComponent } from './bubbles-bg.component';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.componen
       ])
     ])
   ],
-  imports: [RouterOutlet, FooterComponent, NgIf, ChatbotWidgetComponent]
+  imports: [RouterOutlet, FooterComponent, NgIf, ChatbotWidgetComponent, BubblesBgComponent]
 })
 export class AppComponent implements OnInit, OnDestroy {
 

@@ -1,13 +1,10 @@
-<div>
-  <div class="app-container">
-    <div class="main-content-area"> <!-- Adicione uma div para o conteúdo principal se não existir -->
+<div style="position:relative; min-height:100vh;">
+  <app-bubbles-bg></app-bubbles-bg>
+  <div class="app-container" style="position:relative; z-index:2;">
+    <div class="main-content-area">
       <router-outlet></router-outlet>
     </div>
-
-    <!-- Footer visível apenas quando o usuário estiver logado -->
     <app-footer *ngIf="isUserLoggedIn"></app-footer>
   </div>
-
-  <!-- Chatbot Widget Global Flutuante - Apenas quando não estamos em uma rota de homepage e usuário é autorizado -->
   <app-chatbot-widget *ngIf="!isHomepageRoute && isAuthorizedUser"></app-chatbot-widget>
 </div>

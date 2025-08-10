@@ -1,17 +1,48 @@
-@use "../_variables.scss" as styles;
+@use '../_variables.scss' as *;
+.bubble-bg-anim {
+  position: fixed;
+  border-radius: 50%;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 1002;
+  box-shadow: 0 2px 16px 2px rgba(120, 180, 255, 0.12);
+  mix-blend-mode: lighten;
+  filter: blur(1.2px);
+  transition: opacity 0.3s;
+}
 
-// Variáveis de cores
-// styles.$text-color: #2f5489;
+@keyframes bubbleMove {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-30px) translateX(10px) scale(1.08) rotate(8deg);
+  }
+  40% {
+    transform: translateY(-60px) translateX(-20px) scale(0.95) rotate(-6deg);
+  }
+  60% {
+    transform: translateY(-90px) translateX(30px) scale(1.12) rotate(12deg);
+  }
+  80% {
+    transform: translateY(-120px) translateX(-15px) scale(0.9) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(-160px) scale(1.15) rotate(0deg);
+  }
+}
 
-// Estilo Geral
+
+
+
 body {
-  font-family: styles.$font-family;
+  font-family: $font-family;
   margin: 0;
   padding: 0;
   padding-top: 20px;
-  color: styles.$text-color;
+  color: $text-color;
   width: 100%;
-  max-width: styles.$max-width;
+  max-width: $max-width;
   text-align: center;
   // background-color: #839DAC;
 }
@@ -32,10 +63,10 @@ body.no-scroll {
 
   padding-top: 40px;
   padding-bottom: 20px;
-  max-width: styles.$max-width;
+  max-width: $max-width;
   background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: styles.$box-shadow;
+  box-shadow: $box-shadow;
 }
 
 /* Estilos para o chatbot flutuante global */
@@ -66,3 +97,4 @@ body.no-scroll {
     bottom: 80px; /* Espaço para evitar conflito com menu móvel */
   }
 }
+
