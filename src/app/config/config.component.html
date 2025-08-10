@@ -143,7 +143,62 @@
                 </div>
                 <div *ngIf="selectedTab === 'homepage'">
                     <div id="homepage-card" class="tab-card">
-                        <!-- Conteúdo da Homepage (a definir) -->
+                        <form class="profile-form homepage-profile-form" [formGroup]="homepageForm" (ngSubmit)="salvarHomepageConfig()">
+
+                            <div class="field-group homepage-group">
+
+                                <div class="field-container">
+                                    <label for="nomeProfissional" class="field-label">Nome profissional:</label>
+                                    <input type="text" id="nomeProfissional" class="field-input" formControlName="nomeProfissional">
+                                </div>
+                                <div class="field-container">
+                                    <label for="tituloProfissional" class="field-label">Título Profissional Simplificado:</label>
+                                    <input type="text" id="tituloProfissional" class="field-input" formControlName="tituloProfissional">
+                                </div>
+                                <div class="field-container">
+                                    <label for="especialidadePrincipal" class="field-label">Especialidade principal:</label>
+                                    <input type="text" id="especialidadePrincipal" class="field-input" formControlName="especialidadePrincipal">
+                                </div>
+                                <div class="field-container">
+                                    <label for="fotoPessoal" class="field-label">Foto pessoal:</label>
+                                    <input type="text" id="fotoPessoal" class="field-input" formControlName="fotoPessoal" placeholder="URL da foto ou nome do arquivo">
+                                </div>
+                                <div class="field-container">
+                                    <label for="imagemCapa" class="field-label">Imagem de capa:</label>
+                                    <input type="text" id="imagemCapa" class="field-input" formControlName="imagemCapa" placeholder="URL da imagem ou nome do arquivo">
+                                </div>
+
+                            </div>
+
+                            <div class="field-group homepage-group">
+
+                                <!-- <h3 class="grupo-titulo">03. Cartão de visitas digital</h3> -->
+                                <div class="field-container">
+                                    <label for="whatsapp" class="field-label">WhatsApp:</label>
+                                    <input type="text" id="whatsapp" class="field-input" formControlName="whatsapp">
+                                </div>
+                                <div class="field-container">
+                                    <label for="telefones" class="field-label">Telefone(s):</label>
+                                    <input type="text" id="telefones" class="field-input" formControlName="telefones">
+                                </div>
+                                <div class="field-container">
+                                    <label for="email" class="field-label">Email:</label>
+                                    <input type="email" id="email" class="field-input" formControlName="email">
+                                </div>
+                                <div class="field-container">
+                                    <label for="site" class="field-label">Site:</label>
+                                    <input type="text" id="site" class="field-input" formControlName="site">
+                                </div>
+
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save" [disabled]="homepageForm.invalid || homepageLoading">
+                                    <span *ngIf="homepageLoading">Salvando...</span>
+                                    <span *ngIf="!homepageLoading">Salvar configurações</span>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div *ngIf="selectedTab === 'preferencias'">

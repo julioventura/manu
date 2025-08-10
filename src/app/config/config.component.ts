@@ -1,3 +1,40 @@
+// ------------------- IMPORTS -------------------
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatIconModule } from '@angular/material/icon';
+import { NavegacaoService } from '../shared/services/navegacao.service';
+import { ConfigService } from '../shared/services/config.service';
+import { UtilService } from '../shared/utils/util.service';
+import { SubcolecaoService } from '../shared/services/subcolecao.service';
+
+// ------------------- INTERFACES -------------------
+interface HomepageConfigData {
+  nomeProfissional?: string;
+  tituloProfissional?: string;
+  especialidadePrincipal?: string;
+  fotoPessoal?: string;
+  imagemCapa?: string;
+  whatsapp?: string;
+  telefones?: string;
+  email?: string;
+  site?: string;
+}
+interface SubcolecaoItem {
+  nome: string;
+  selecionado: boolean;
+}
+interface ConfigMenuData {
+  subcolecoes?: string[];
+}
 interface ChatbotConfigData {
   webhookProd?: string;
   webhookTest?: string;
@@ -14,36 +51,8 @@ interface ChatbotConfigData {
   rodape?: string;
   anexos?: { nome: string; url: string }[];
 }
-// Alteração: remoção de logs de depuração (console.log)
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatIconModule } from '@angular/material/icon';
-// import { MatIconModule } from '@angular/material/icon';
-// import { MatButtonModule } from '@angular/material/button';
 
-import { NavegacaoService } from '../shared/services/navegacao.service';
-import { ConfigService } from '../shared/services/config.service';
-import { UtilService } from '../shared/utils/util.service';
-import { SubcolecaoService } from '../shared/services/subcolecao.service';
-
-// ADICIONAR interfaces para tipagem
-interface SubcolecaoItem {
-  nome: string;
-  selecionado: boolean;
-}
-
-interface ConfigMenuData {
-  subcolecoes?: string[];
-}
-
+// ------------------- COMPONENT -------------------
 @Component({
   selector: 'app-config',
   templateUrl: './config.component.html',
@@ -62,6 +71,32 @@ interface ConfigMenuData {
   ]
 })
 export class ConfigComponent implements OnInit {
+  // --------- HOMEPAGE ---------
+  homepageForm!: FormGroup;
+  homepageLoading = false;
+
+  // --------- CHATBOT ---------
+  chatbotForm!: FormGroup;
+  loading = false;
+  chatbotConfig = {
+    anexos: [] as { nome: string; url: string }[],
+    anexosSelecionados: [] as File[],
+  };
+
+  // --------- OUTROS ---------
+  ambiente: string = '';
+  new_window: boolean = false;
+  colecaoSelecionada: string = '';
+  colecoesDisponiveis = [
+    'Campos das coleções',
+    'Campos das fichas sub-coleções',
+    'Menu das fichas',
+    'Seu perfil',
+    'Sua homepage',
+  ];
+  subcolecoesDisponiveis: SubcolecaoItem[] = [];
+  selectedTab: 'chatbot' | 'homepage' | 'preferencias' = 'chatbot';
+
   constructor(
     private router: Router,
     public util: UtilService,
@@ -71,13 +106,71 @@ export class ConfigComponent implements OnInit {
     private subcolecaoService: SubcolecaoService,
     public fb: FormBuilder
   ) { }
-  chatbotForm!: FormGroup;
-  loading = false;
-  chatbotConfig = {
-    anexos: [] as { nome: string; url: string }[],
-    anexosSelecionados: [] as File[],
-  };
 
+  ngOnInit(): void {
+    this.ambiente = this.configuracoes.ambiente;
+    this.carregarSubcolecoesDisponiveis();
+    this.initChatbotForm();
+    this.carregarChatbotConfig();
+    this.initHomepageForm();
+    this.carregarHomepageConfig();
+  }
+
+  // --------- HOMEPAGE ---------
+  initHomepageForm() {
+    this.homepageForm = this.fb.group({
+      nomeProfissional: [''],
+      tituloProfissional: [''],
+      especialidadePrincipal: [''],
+      fotoPessoal: [''],
+      imagemCapa: [''],
+      whatsapp: [''],
+      telefones: [''],
+      email: [''],
+      site: ['']
+    });
+  }
+
+  carregarHomepageConfig() {
+    this.homepageLoading = true;
+    this.firestore.collection('homepage').doc('config').get().subscribe({
+      next: doc => {
+        const data = doc.data() as HomepageConfigData;
+        if (data) {
+          this.homepageForm.patchValue({
+            nomeProfissional: data.nomeProfissional || '',
+            tituloProfissional: data.tituloProfissional || '',
+            especialidadePrincipal: data.especialidadePrincipal || '',
+            fotoPessoal: data.fotoPessoal || '',
+            imagemCapa: data.imagemCapa || '',
+            whatsapp: data.whatsapp || '',
+            telefones: data.telefones || '',
+            email: data.email || '',
+            site: data.site || ''
+          });
+        }
+        this.homepageLoading = false;
+      },
+      error: () => {
+        this.homepageLoading = false;
+      }
+    });
+  }
+
+  salvarHomepageConfig() {
+    if (this.homepageForm.invalid) return;
+    this.homepageLoading = true;
+    const formValue = this.homepageForm.value;
+    this.firestore.collection('homepage').doc('config').set(formValue).then(() => {
+      this.homepageLoading = false;
+      alert('Configurações da homepage salvas!');
+    }).catch(() => {
+      this.homepageLoading = false;
+      alert('Erro ao salvar configurações da homepage!');
+    });
+  }
+
+  // --------- CHATBOT ---------
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const files: FileList | null = input.files;
@@ -89,7 +182,6 @@ export class ConfigComponent implements OnInit {
   }
 
   uploadAnexos() {
-    // Simulação de upload: adiciona os arquivos selecionados à lista de anexos
     for (const file of this.chatbotConfig.anexosSelecionados) {
       const fakeUrl = URL.createObjectURL(file);
       this.chatbotConfig.anexos.push({ nome: file.name, url: fakeUrl });
@@ -99,13 +191,6 @@ export class ConfigComponent implements OnInit {
 
   removerAnexo(anexo: { nome: string; url: string }) {
     this.chatbotConfig.anexos = this.chatbotConfig.anexos.filter(a => a !== anexo);
-  }
-
-  ngOnInit(): void {
-    this.ambiente = this.configuracoes.ambiente;
-    this.carregarSubcolecoesDisponiveis();
-    this.initChatbotForm();
-    this.carregarChatbotConfig();
   }
 
   initChatbotForm() {
@@ -189,43 +274,20 @@ export class ConfigComponent implements OnInit {
       alert('Erro ao salvar configurações!');
     });
   }
-  ambiente: string = '';
-  new_window: boolean = false;
-  colecaoSelecionada: string = '';
 
-  colecoesDisponiveis = [
-    'Campos das coleções',
-    'Campos das fichas sub-coleções',
-    'Menu das fichas',
-    'Seu perfil',
-    'Sua homepage',
-  ];
-
-  // FIX: corrigir indentação (2 spaces)
-  // A array agora será carregada dinamicamente pelo serviço
-  subcolecoesDisponiveis: SubcolecaoItem[] = [];
-
-  selectedTab: 'chatbot' | 'homepage' | 'preferencias' = 'chatbot';
-
-
-  // ngOnInit antigo removido (duplicado)
-
+  // --------- OUTROS MÉTODOS ---------
   carregarSubcolecoesDisponiveis(): void {
-    // Obter as subcoleções definidas no serviço e mapear para incluir o campo "selecionado"
     this.subcolecoesDisponiveis = this.subcolecaoService.getSubcolecoesDisponiveis().map(sub => ({
       nome: sub.nome,
-      // Definir true para 'exames' ou como padrão false
       selecionado: sub.nome === 'exames' ? true : false
     }));
   }
 
   selecionarColecao(colecao: string): void {
-    // Toggle entre a coleção e uma string vazia para "desselecionar"
     this.colecaoSelecionada = this.colecaoSelecionada === colecao ? '' : colecao;
     this.carregarConfiguracoes();
   }
 
-  // Método para navegação dinâmica
   go(route: string): void {
     this.router.navigate(['/' + route]);
   }
@@ -244,9 +306,6 @@ export class ConfigComponent implements OnInit {
     }
   }
 
-  // salvar() {
-  // }
-
   salvarConfiguracoes(): void {
     const subcolecoesSelecionadas = this.subcolecoesDisponiveis
       .filter(sub => sub.selecionado)
@@ -262,6 +321,6 @@ export class ConfigComponent implements OnInit {
   }
 
   voltar(): void {
-    this.navegacaoService.goBack(); 
+    this.navegacaoService.goBack();
   }
 }
