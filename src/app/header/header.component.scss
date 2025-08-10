@@ -6,10 +6,9 @@ header.app-main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  padding: 0 10px;
+  padding: 8px 10px;
 }
 
 .logo-text {
@@ -158,8 +157,8 @@ header.app-main-header {
 
 @media (max-width: 400px) {
   .header-right {
-    flex-direction: column;
-    gap: 5px;
-    align-items: flex-end;
+    flex-direction: row;
+    // gap: 5px;
+    // align-items: flex-end;
   }
 }
