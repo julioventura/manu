@@ -37,47 +37,6 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
     group: '01. Dados Pessoais'
   },
 
-  // Capa da homepage e cartão de visitas digital
-  {
-    controlName: 'nome_capa',
-    defaultValue: '',
-    label: 'Nome profissional',
-    type: 'text',
-    placeholder: 'Como deve ser chamado(a). Inclua Dr(a) se desejar',
-    group: '02. Capa da Homepage e Cartão de Visitas Digital'
-  },
-  {
-    controlName: 'titulo_profissional',
-    defaultValue: '',
-    label: 'Titulo Profissional Simplificado',
-    type: 'text',
-    placeholder: 'Titulo profissional para a homepage e cartão',
-    group: '02. Capa da Homepage e Cartão de Visitas Digital'
-  },
-  {
-    controlName: 'especialidade_principal',
-    defaultValue: '',
-    label: 'Especialidade principal',
-    type: 'text',
-    placeholder: 'Em uma linha, para a homepage e cartão',
-    group: '02. Capa da Homepage e Cartão de Visitas Digital'
-  },
-  {
-    controlName: 'foto',
-    defaultValue: '',
-    label: 'Foto pessoal',
-    type: 'url',
-    placeholder: 'URL da sua foto',
-    group: '02. Capa da Homepage e Cartão de Visitas Digital'
-  },
-  {
-    controlName: 'fotoCapa',
-    defaultValue: '',
-    label: 'Imagem de capa',
-    type: 'url',
-    placeholder: 'Pode ser a sua foto ou outra imagem',
-    group: '02. Capa da Homepage e Cartão de Visitas Digital'
-  },
 
   // Cartão de visitas digital
   { 
@@ -86,7 +45,7 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
     label: 'WhatsApp',
     type: 'tel',
     placeholder: '(99) 99999-9999',
-    group: '03. Cartão de visitas digital'
+    group: '02. Contatos'
   },
   { 
     controlName: 'telefone', 
@@ -94,7 +53,7 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
     label: 'Telefone(s)',
     type: 'tel',
     placeholder: '(99) 9999-9999',
-    group: '03. Cartão de visitas digital'
+    group: '02. Contatos'
   },
   {
     controlName: 'email',
@@ -103,7 +62,7 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
     label: 'Email',
     type: 'email',
     placeholder: 'Seu email',
-    group: '03. Cartão de visitas digital'
+    group: '02. Contatos'
   },
   {
     controlName: 'site',
@@ -111,7 +70,7 @@ export const PROFILE_FORM_FIELDS: ProfileField[] = [
     label: 'Site',
     type: 'url',
     placeholder: '',
-    group: '03. Cartão de visitas digital'
+    group: '02. Contatos'
   },
   
   // Informações Profissionais

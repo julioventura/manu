@@ -39,7 +39,7 @@ interface FieldChangeEvent {
 }
 
 // CORRIGIDO: Interface estendida com compatibilidade correta
-interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos' | 'convenios'> {
+interface FirestoreUserProfile extends Omit<UserProfile, 'horarios' | 'enderecos' | 'convenios' | 'nome_capa' | 'titulo_profissional' | 'especialidade_principal' | 'foto' | 'fotoCapa'> {
   id?: string; // Para compatibilidade com Firestore
   username?: string; // Adicionado para corrigir erro de tipagem
   horarios?: Horario[] | string | UserProfile['horarios']; // CORRIGIDO: compatível com UserProfile

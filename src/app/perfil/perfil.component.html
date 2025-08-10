@@ -41,7 +41,10 @@
 
         <!-- Percorre os grupos de campos -->
         <div *ngFor="let group of groupedFields | keyvalue" class="field-group" [ngClass]="{'view-mode': !isEditing, 'edit-mode': isEditing}">
-          <h3 class="grupo-titulo" [ngClass]="{'view-mode': !isEditing, 'edit-mode': isEditing}">{{ group.key }}</h3>
+          <ng-container *ngIf="group.key !== '03. Cartão de visitas digital'; else noTitleGroup">
+            <h3 class="grupo-titulo" [ngClass]="{'view-mode': !isEditing, 'edit-mode': isEditing}">{{ group.key }}</h3>
+          </ng-container>
+          <ng-template #noTitleGroup></ng-template>
 
           <!-- Percorre os campos de cada grupo -->
           <div *ngFor="let field of group.value" class="field-container">
@@ -106,9 +109,9 @@
                     <span *ngIf="endereco.telefone">, Tel: {{ endereco.telefone }}</span>
                   </div>
                 </div>
-                <button *ngIf="isEditing" type="button" class="btn-remove" (click)="removeEndereco(i)">
-                  ×
-                </button>
+                  <button *ngIf="isEditing" type="button" class="btn-remove" (click)="removeEndereco(i)">
+                    x
+                  </button>
               </div>
             </div>
 
@@ -172,9 +175,9 @@
                     <strong>Local:</strong> {{ getEnderecoDescricao(horario.endereco) }}
                   </div>
                 </div>
-                <button *ngIf="isEditing" type="button" class="btn-remove" (click)="removeHorario(i)">
-                  ×
-                </button>
+                  <button *ngIf="isEditing" type="button" class="btn-remove" (click)="removeHorario(i)">
+                    x
+                  </button>
               </div>
             </div>
 
@@ -224,9 +227,9 @@
                 <div class="perfil-content">
                   <strong>{{ convenio.nomeConvenio }}</strong>
                 </div>
-                <button *ngIf="isEditing" type="button" class="btn-remove" (click)="removeConvenio(i)">
-                  ×
-                </button>
+                  <button *ngIf="isEditing" type="button" class="btn-remove" (click)="removeConvenio(i)">
+                    x
+                  </button>
               </div>
             </div>
 

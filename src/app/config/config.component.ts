@@ -1,4 +1,3 @@
-import { UserService } from '../shared/services/user.service';
 // ------------------- IMPORTS -------------------
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,6 +15,7 @@ import { NavegacaoService } from '../shared/services/navegacao.service';
 import { ConfigService } from '../shared/services/config.service';
 import { UtilService } from '../shared/utils/util.service';
 import { SubcolecaoService } from '../shared/services/subcolecao.service';
+import { UserService } from '../shared/services/user.service';
 
 // ------------------- INTERFACES -------------------
 interface HomepageConfigData {
