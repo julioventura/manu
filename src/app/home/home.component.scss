@@ -39,7 +39,7 @@ body, .home-bg-animated {
 
 
 .container {
-  width: min(98vw, 1400px);
+  max-width: min(98vw, 780px);
   // min-height: min(80vh, 700px);
   margin: 36px auto 28px auto;
   display: flex;
@@ -77,55 +77,18 @@ body, .home-bg-animated {
   gap: 0;
 }
 
-.column-left,
-.column-right {
-  @include card-base;
-  width: 100%;
-  min-width: 300px;
-}
+// .column-left,
+// .column-right {
+//   @include card-base;
+//   width: 100%;
+//   min-width: 300px;
+// }
 
 // Icon grid
 .icon-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  justify-items: center;
-  text-align: center;
-  gap: 15px;
 
-  .icon-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    width: 132px;
-    margin: 8px 0px;
-    transition: transform 0.2s ease;
-
-    &:hover {
-      transform: translateY(-3px);
-    }
-
-    img {
-      width: 82px;
-      height: 82px;
-      margin: 0 20px;
-    }
-
-    p {
-      font-weight: 500;
-      color: styles.$primary-color;
-      font-size: 11px;
-      margin: 4px 0 0 0;
-    }
-  }
-}
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  justify-items: center;
-  text-align: center;
-  gap: clamp(12px, 2vw, 32px);
-
+  margin: 0;
+  
   .icon-item {
     display: flex;
     flex-direction: column;
@@ -159,37 +122,14 @@ body, .home-bg-animated {
 .chatbots-section {
   @include card-base;
   color: styles.$primary-color;
-
-  .pill-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-
-    .pill {
-      display: block;
-      background-color: styles.$primary-color;
-      color: white;
-      font-size: 12px;
-      text-align: center;
-      border-radius: 6px;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 8px;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: color.adjust(styles.$primary-color, $lightness: -10%);
-      }
-    }
-  }
 }
 
 .services-section {
   @include flex-center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 16px;
+  width: 100%;
   border-radius: 8px;
   padding: 8px;
   border: 1pt solid #8fa5c5;
@@ -198,10 +138,6 @@ body, .home-bg-animated {
 
 // Variante desktop
 .services-section-desktop {
-  @include flex-center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 26px;
   border-radius: 15.6px;
   padding: 26px 52px;
   border: 2pt solid #6a8bbd;
@@ -213,9 +149,7 @@ body, .home-bg-animated {
   @include flex-center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 26px;
-  border-radius: 15.6px;
-  padding: 0;
+  // padding: 0;
   border: 2pt solid #6a8bbd;
   box-shadow: 0 7.8px 20.8px rgba(0, 0, 0, 0.18);
 }
@@ -332,64 +266,5 @@ app-header {
 @media (max-width: 768px) {
   .icon-grid .icon-item {
     width: 90px;
-
-    img {
-      width: 60px;
-      height: 60px;
-      margin: 0 10px;
-    }
-
-    p {
-      font-size: 12px;
-    }
-  }
-}
-
-@media (max-width: 549px) {
-  .icon-grid {
-    grid-template-columns: repeat(3, 1fr);
-
-    .icon-item {
-      width: 80px;
-
-      img {
-        width: 50px;
-        height: 50px;
-      }
-
-      p {
-        font-size: 11px;
-        line-height: 1.1;
-      }
-    }
-  }
-
-  .column-left,
-  .column-right {
-    width: 100%;
-  }
-
-  .container {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 400px) {
-  .icon-grid {
-    grid-template-columns: repeat(2, 1fr);
-
-    .icon-item {
-      width: 70px;
-
-      img {
-        width: 40px;
-        height: 40px;
-        margin: 0 3px;
-      }
-
-      p {
-        font-size: 10px;
-      }
-    }
   }
 }
