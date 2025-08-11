@@ -21,12 +21,12 @@ export class FooterComponent {
     this.userName$ = this.userService.getCurrentUserProfile().pipe(
       map(user => {
         if (user) {
+          const isAdmin = this.userService.isAdmin(user.email || null);
           const rawName = user.nome || user.displayName || user.username || user.email?.split('@')[0] || 'Usuário';
-          return rawName;
+          return isAdmin ? `ADMIN ${rawName}` : rawName;
         }
         return 'Usuário';
       })
     );
   }
-
 }
