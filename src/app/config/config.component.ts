@@ -1,6 +1,5 @@
-
 // ------------------- IMPORTS -------------------
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EnvironmentInjector, runInInjectionContext } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -112,7 +111,8 @@ export class ConfigComponent implements OnInit {
     private storage: AngularFireStorage,
     private subcolecaoService: SubcolecaoService,
     public fb: FormBuilder,
-    public userService: UserService
+    public userService: UserService,
+    private injector: EnvironmentInjector
   ) {
     // Observable que indica se o usuário é admin
     this.isAdmin$ = this.userService.getCurrentUserProfile().pipe(
@@ -121,16 +121,12 @@ export class ConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ambiente = this.configuracoes.ambiente;
     this.carregarSubcolecoesDisponiveis();
     this.initChatbotForm();
     this.initHomepageForm();
     
-    // Aguardar um momento para o Firestore estar completamente inicializado
-    setTimeout(() => {
-      this.carregarChatbotConfig();
-      this.carregarHomepageConfig();
-    }, 100);
+    this.carregarChatbotConfig();
+    this.carregarHomepageConfig();
   }
 
   /**
@@ -328,29 +324,31 @@ export class ConfigComponent implements OnInit {
     this.homepageLoading = true;
     
     try {
-      this.firestore.collection('homepage').doc('config').get().subscribe({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        next: (doc: any) => {
-          const data = doc.data() as HomepageConfigData;
-          if (data) {
-            this.homepageForm.patchValue({
-              nomeProfissional: data.nomeProfissional || '',
-              tituloProfissional: data.tituloProfissional || '',
-              especialidadePrincipal: data.especialidadePrincipal || '',
-              fotoPessoal: data.fotoPessoal || '',
-              imagemCapa: data.imagemCapa || '',
-              whatsapp: data.whatsapp || '',
-              telefones: data.telefones || '',
-              email: data.email || '',
-              site: data.site || ''
-            });
+      runInInjectionContext(this.injector, () => {
+        this.firestore.collection('homepage').doc('config').get().subscribe({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          next: (doc: any) => {
+            const data = doc.data() as HomepageConfigData;
+            if (data) {
+              this.homepageForm.patchValue({
+                nomeProfissional: data.nomeProfissional || '',
+                tituloProfissional: data.tituloProfissional || '',
+                especialidadePrincipal: data.especialidadePrincipal || '',
+                fotoPessoal: data.fotoPessoal || '',
+                imagemCapa: data.imagemCapa || '',
+                whatsapp: data.whatsapp || '',
+                telefones: data.telefones || '',
+                email: data.email || '',
+                site: data.site || ''
+              });
+            }
+            this.homepageLoading = false;
+          },
+          error: (error) => {
+            console.error('Erro ao carregar configurações da homepage:', error);
+            this.homepageLoading = false;
           }
-          this.homepageLoading = false;
-        },
-        error: (error) => {
-          console.error('Erro ao carregar configurações da homepage:', error);
-          this.homepageLoading = false;
-        }
+        });
       });
     } catch (error) {
       console.error('Erro ao inicializar carregamento da homepage:', error);
@@ -427,34 +425,36 @@ export class ConfigComponent implements OnInit {
     this.loading = true;
     
     try {
-      this.firestore.collection('configuracoes').doc('chatbot').get().subscribe({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        next: (doc: any) => {
-          const data = doc.data() as ChatbotConfigData;
-          if (data) {
-            this.chatbotForm.patchValue({
-              webhookProd: data['webhookProd'] || '',
-              webhookTest: data['webhookTest'] || '',
-              nome: data['nome'] || '',
-              saudacaoNovo: data['saudacaoNovo'] || '',
-              saudacaoRetorno: data['saudacaoRetorno'] || '',
-              instrucoesGerais: data['instrucoesGerais'] || '',
-              temaPrincipal: data['temaPrincipal'] || '',
-              temasPermitidos: data['temasPermitidos'] || '',
-              acaoNaoSabeGroup: { acaoNaoSabe: data['acaoNaoSabe'] || 'humano' },
-              prazoRetorno: data['prazoRetorno'] || '',
-              estiloListaGroup: { estiloLista: data['estiloLista'] || 'numerada' },
-              maxItensLista: data['maxItensLista'] || 10,
-              rodape: data['rodape'] || ''
-            });
-            this.chatbotConfig.anexos = data['anexos'] || [];
+      runInInjectionContext(this.injector, () => {
+        this.firestore.collection('configuracoes').doc('chatbot').get().subscribe({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          next: (doc: any) => {
+            const data = doc.data() as ChatbotConfigData;
+            if (data) {
+              this.chatbotForm.patchValue({
+                webhookProd: data['webhookProd'] || '',
+                webhookTest: data['webhookTest'] || '',
+                nome: data['nome'] || '',
+                saudacaoNovo: data['saudacaoNovo'] || '',
+                saudacaoRetorno: data['saudacaoRetorno'] || '',
+                instrucoesGerais: data['instrucoesGerais'] || '',
+                temaPrincipal: data['temaPrincipal'] || '',
+                temasPermitidos: data['temasPermitidos'] || '',
+                acaoNaoSabeGroup: { acaoNaoSabe: data['acaoNaoSabe'] || 'humano' },
+                prazoRetorno: data['prazoRetorno'] || '',
+                estiloListaGroup: { estiloLista: data['estiloLista'] || 'numerada' },
+                maxItensLista: data['maxItensLista'] || 10,
+                rodape: data['rodape'] || ''
+              });
+              this.chatbotConfig.anexos = data['anexos'] || [];
+            }
+            this.loading = false;
+          },
+          error: (error) => {
+            console.error('Erro ao carregar configurações do chatbot:', error);
+            this.loading = false;
           }
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Erro ao carregar configurações do chatbot:', error);
-          this.loading = false;
-        }
+        });
       });
     } catch (error) {
       console.error('Erro ao inicializar carregamento do chatbot:', error);
