@@ -1,0 +1,18 @@
+/* Estilos para navegação suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Otimizações para carregamento rápido */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Estilos adicionais para melhorar a responsividade */
+@media (max-width: 768px) {
+  .glass {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
