@@ -1,0 +1,233 @@
+@use '../../styles.scss' as styles;
+
+// Base mixins
+@mixin card-base {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section { text-align: center; }
+
+.container {
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
+
+  .margin-bottom-8 { padding-bottom: 8px; }
+}
+
+.boxvazio {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.column-left, .column-right {
+  @include card-base;
+  width: 100%;
+  min-width: 300px;
+}
+
+// Icon grid
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  text-align: center;
+  gap: 15px;
+
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 132px;
+    transition: transform 0.2s ease;
+
+    &:hover { transform: translateY(-3px); }
+
+    img {
+      width: 82px;
+      height: 82px;
+      margin: 0 20px;
+      object-fit: contain;
+    }
+
+    p {
+      font-weight: 500;
+      color: styles.$primary-color;
+      font-size: 13px;
+      margin: 8px 0 0 0;
+    }
+  }
+}
+
+// Services sections
+.chatbots-section {
+  @include card-base;
+  color: styles.$primary-color;
+
+  .pill-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    .pill {
+      display: block;
+      background-color: styles.$primary-color;
+      color: white;
+      font-size: 12px;
+      text-align: center;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 8px;
+      transition: background-color 0.3s;
+
+      &:hover { background-color: darken(styles.$primary-color, 10%); }
+    }
+  }
+}
+
+.services-section {
+  @include flex-center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-radius: 6px;
+  padding: 1rem;
+  border: 1px solid #8099be;
+}
+
+// Configuration
+.config-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.config-panel {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  h3 { margin-top: 0; font-size: 1.1em; font-weight: bold; }
+  label { display: flex; align-items: center; margin-bottom: 8px; }
+  input[type="checkbox"] { margin-right: 8px; }
+}
+
+// Header component specific styles
+app-header {
+  display: block;
+  width: 100%;
+  text-align: center;
+//   padding: 10px;
+//   margin-bottom: 20px;
+  
+  .app-main-header {
+    width: 100%;
+    margin: 0;
+    padding: 40px 20px;
+    @include flex-center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(21, 61, 117, 0.2);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 50px rgba(21, 61, 117, 0.25);
+    }
+  }
+}
+
+.logo-text {
+  text-align: center;
+  width: 90%;
+  @include flex-center;
+}
+
+.main-logo-text {
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  color: styles.$primary-color;
+  letter-spacing: 2px;
+  line-height: 1.0;
+  text-align: center;
+  text-shadow: 0 6px 12px rgba(21, 61, 117, 0.3);
+  text-transform: uppercase;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .icon-grid .icon-item {
+    width: 90px;
+    img { width: 60px; height: 60px; margin: 0 10px; }
+    p { font-size: 12px; }
+  }
+  .main-logo-text { font-size: 3rem; }
+}
+
+@media (max-width: 549px) {
+  .icon-grid {
+    grid-template-columns: repeat(3, 1fr);
+    .icon-item {
+      width: 80px;
+      img { width: 50px; height: 50px; }
+      p { font-size: 11px; line-height: 1.1; }
+    }
+  }
+  .column-left, .column-right { width: 100%; }
+  .container { flex-direction: column; }
+  .main-logo-text { font-size: 2.2rem; letter-spacing: 1px; }
+}
+
+@media (max-width: 400px) {
+  .icon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    .icon-item {
+      width: 70px;
+      img { width: 40px; height: 40px; margin: 0 3px; }
+      p { font-size: 10px; }
+    }
+  }
+}
+
+@media (min-width: 1200px) { .main-logo-text { font-size: 5rem; } }
+@media (min-width: 1400px) { .main-logo-text { font-size: 6rem; } }
+@media (min-width: 1600px) { .main-logo-text { font-size: 7rem; } }

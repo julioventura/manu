@@ -1,0 +1,173 @@
+// =================
+// padding.scss - Examples of Usage
+// =================
+//   <div class="p-20">This has 20px padding on all sides</div>
+// <div class="pt-10 pb-15">This has 10px top padding and 15px bottom padding </div>
+//   <div class="p" style="--p: 18px;">This has 18px padding on all sides</div>
+//   <div class="pt pl" style="--pt: 12px; --pl: 24px;">This has 12px top padding and 24px left padding</div>
+
+// Define the common padding values
+$padding-values: (
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    40,
+    50
+);
+$directions: (
+    't': 'top',
+    'r': 'right',
+    'b': 'bottom',
+    'l': 'left'
+);
+
+// Generate predefined utility classes
+@each $value in $padding-values {
+
+    // All sides padding
+    .p-#{$value} {
+        padding: #{$value}px;
+    }
+
+    // Individual directions
+    @each $abbr, $dir in $directions {
+        .p#{$abbr}-#{$value} {
+            padding-#{$dir}: #{$value}px;
+        }
+    }
+
+    // Horizontal padding (left and right)
+    .px-#{$value} {
+        padding-left: #{$value}px;
+        padding-right: #{$value}px;
+    }
+
+    // Vertical padding (top and bottom)
+    .py-#{$value} {
+        padding-top: #{$value}px;
+        padding-bottom: #{$value}px;
+    }
+}
+
+// CSS variables for arbitrary values
+.p {
+    padding: var(--p);
+}
+
+.pt {
+    padding-top: var(--pt);
+}
+
+.pr {
+    padding-right: var(--pr);
+}
+
+.pb {
+    padding-bottom: var(--pb);
+}
+
+.pl {
+    padding-left: var(--pl);
+}
+
+.px {
+    padding-left: var(--px);
+    padding-right: var(--px);
+}
+
+.py {
+    padding-top: var(--py);
+    padding-bottom: var(--py);
+}
+
+
+
+// =================
+// margin
+// =================
+//   <div class="m-20">This has 20px margin on all sides</div>
+//   <div class="mt-10 mb-15">This has 10px top margin and 15px bottom margin </div>
+//   <div class="m" style="--m: 18px;">This has 18px margin on all sides</div>
+//   <div class="mt ml" style="--mt: 12px; --ml: 24px;">This has 12px top margin and 24px left margin</div>
+
+// Define the common margin values
+$margin-values: (
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    40,
+    50
+);
+$directions: (
+    't': 'top',
+    'r': 'right',
+    'b': 'bottom',
+    'l': 'left'
+);
+
+// Generate predefined utility classes
+@each $value in $margin-values {
+
+    // All sides margin
+    .m-#{$value} {
+        margin: #{$value}px;
+    }
+
+    // Individual directions
+    @each $abbr, $dir in $directions {
+        .m#{$abbr}-#{$value} {
+            margin-#{$dir}: #{$value}px;
+        }
+    }
+
+    // Horizontal margin (left and right)
+    .mx-#{$value} {
+        margin-left: #{$value}px;
+        margin-right: #{$value}px;
+    }
+
+    // Vertical margin (top and bottom)
+    .my-#{$value} {
+        margin-top: #{$value}px;
+        margin-bottom: #{$value}px;
+    }
+}
+
+// CSS variables for arbitrary values
+.m {
+    margin: var(--m);
+}
+
+.mt {
+    margin-top: var(--mt);
+}
+
+.mr {
+    margin-right: var(--mr);
+}
+
+.mb {
+    margin-bottom: var(--mb);
+}
+
+.ml {
+    margin-left: var(--ml);
+}
+
+.mx {
+    margin-left: var(--mx);
+    margin-right: var(--mx);
+}
+
+.my {
+    margin-top: var(--my);
+    margin-bottom: var(--my);
+}

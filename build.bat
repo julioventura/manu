@@ -1,1 +1,2 @@
-npm run build
+rmdir /s /q dist
+ng build

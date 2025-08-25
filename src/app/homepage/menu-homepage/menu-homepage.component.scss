@@ -1,0 +1,175 @@
+/* filepath: /c:/contexto/dentistas/src/app/homepage/cabecalho-homepage/cabecalho-homepage.component.scss */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  
+  &.scrolled {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 0;
+    
+    .logo-text {
+      color: #333;
+    }
+    
+    .main-nav a {
+      color: #444;
+      
+      &.active {
+        color: #3498db;
+      }
+      
+      &:hover {
+        color: #3498db;
+      }
+    }
+    
+    .mobile-toggle span {
+      background-color: #333;
+    }
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    z-index: 1001;
+    
+    a {
+      text-decoration: none;
+    }
+    
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      transition: color 0.3s ease;
+    }
+    
+    .logo-dot {
+      color: #3498db;
+    }
+  }
+  
+  .main-nav {
+    ul {
+      display: flex;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    
+    li {
+      margin-left: 1.5rem;
+      
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+    
+    a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      padding: 0.5rem 0;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #3498db;
+        transition: width 0.3s ease;
+      }
+      
+      &:hover::after, &.active::after {
+        width: 100%;
+      }
+      
+      &:hover {
+        color: #3498db;
+      }
+      
+      &.active {
+        color: #3498db;
+      }
+    }
+  }
+  
+  .mobile-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 1001;
+    
+    span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: white;
+      transition: all 0.3s ease;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .mobile-toggle {
+      display: flex;
+    }
+    
+    .main-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 270px;
+      height: 100vh;
+      background-color: white;
+      padding: 80px 20px 30px;
+      transition: right 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      
+      &.mobile-open {
+        right: 0;
+      }
+      
+      ul {
+        flex-direction: column;
+      }
+      
+      li {
+        margin-left: 0;
+        margin-bottom: 1rem;
+      }
+      
+      a {
+        color: #333;
+        display: block;
+        padding: 0.75rem 0;
+        
+        &::after {
+          bottom: 0.5rem;
+        }
+      }
+    }
+    
+    &.scrolled .main-nav a {
+      color: #333;
+    }
+  }
+}

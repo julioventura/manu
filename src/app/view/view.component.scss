@@ -1,0 +1,62 @@
+@use '../../_variables.scss';
+
+input {
+  border: 0;
+}
+
+.detail-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-label {
+  flex: 0 0 var(--label-width);
+  /* opcional: adicione padding/margem se desejar separar do conteúdo */
+  padding-right: 5px;
+}
+
+.detail-value {
+  flex: 1;
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center; /* alinha todos os filhos ao centro verticalmente */
+  gap: 10px; /* espaço entre slider e texto */
+
+  /* Caso o texto esteja "baixo" em relação ao knob do slider, você pode:
+     1) aumentar o line-height do texto
+     2) ajustar a font-size ou 
+     3) usar um pequeno transform para subir o texto */
+
+  .small {
+    line-height: 1.2; 
+    /* ou */
+    /* transform: translateY(-1px); */
+  }
+}
+
+.record-details .detail-container .detail-value, .dynamic-form-container .detail-container .detail-value {
+  border: 0px;
+  padding: 10px 0px;
+}
+
+.record-header {
+  margin: 8px 0px 12px 0px;
+}
+
+.menu-container {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.menu-container h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}

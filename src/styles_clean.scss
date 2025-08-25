@@ -1,0 +1,965 @@
+/* Estilos globais da aplicação dentistas.com.br/clinica */
+
+@use './padding-margin.scss';
+
+// ====================================
+// VARIÁVEIS CSS CUSTOMIZADAS - TEMAS
+// ====================================
+
+:root {
+  // ====================================
+  // TEMA PADRÃO
+  // ====================================
+
+  // Cores de fundo e base
+  --cor-de-fundo: #8493a9;
+  --transparente: #ffffff00;
+  --white: #ffffff;
+  --gray: #bdbdbd;
+  --gray-light: #eee;
+  --gray-dark: #333;
+
+  // Cores vermelhas
+  --red: #ff0000;
+  --red-light: #ffdfdf;
+  --red-lighter: #fff5f5;
+  --red-dark: #a80000;
+  --red-medio: #cfaeae;
+  --red-medio-dark: #8c6b6b;
+  --red-titulo: #b46868;
+  --red-subtitulo: #ffcdcd;
+  --red-subtitulo-hover: #ffb3b3;
+
+  // Cores primárias
+  --primary-color: #2A7AC3;
+  --primary-color-light: #badbff;
+  --primary-color-dark: #153d75;
+  --primary-hover: var(--primary-color-dark);
+  --primary-color-medio: #7b9ebf;
+
+  // Cores secundárias e especiais
+  --chatbot-blue: #4a67de;
+  --secondary-color: #0d9113;
+  --secondary-color-light: #ddffde;
+  --secondary-color-dark: #105d14;
+  --success-color: #0d9113;
+
+  // Cores de texto
+  --text-color: var(--primary-color);
+  --text-color-dark: var(--primary-color-dark);
+  --text-color-claro: white;
+  --error-color: #f44336;
+  --hover-error-color: #a80000;
+
+  // Cores de interface
+  --input-border-color: #bbb;
+  --input-focus-color: rgba(33, 150, 243, 0.5);
+  --background-color: white;
+  --background-cinza: #e6e6e6;
+  --background-light: #efefef;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --box-shadow: 0px 0px 6px var(--shadow-color);
+  --border-color: #ccc;
+
+  // Cores de tabela
+  --tr_even_rows: #E9F1FB;
+  --tr_odd_rows: #D6E6FC;
+  --linhas_de_campos_do_view: #93c6f4;
+
+  // Tipografia e dimensões
+  --font-family: Roboto, "Helvetica Neue", sans-serif;
+  --font-size: 12px;
+  --max-width: 800px;
+  --medium-width: 500px;
+  --border-radius: 6px;
+
+  // Container
+  --container-bg-color: #ffffff;
+  --container-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+
+  // Header
+  --header-background-color: transparent;
+  --header-shadow: none;
+  --header-bar-bg-color: transparent;
+  --header-bar-text-color: var(--text-color);
+  --header-bar-icon-color: var(--primary-color-dark);
+
+  // Footer e menu
+  --footer-bg-color: transparent;
+  --footer-text-color: #64748b;
+  --footer-icon-color: #64748b;
+  --menu-bg-color: white;
+  --menu-text-color: #333;
+  --menu-hover-bg-color: #f5f5f5;
+
+  // Logo
+  --logo-font-family: 'Orbitron', sans-serif;
+  --logo-main-text-color: var(--primary-color-dark);
+  --logo-ai-text-color: var(--text-color);
+}
+
+// ====================================
+// TEMA FUTURISTA
+// ====================================
+body.theme-futurista {
+  --cor-de-fundo: #0A192F;
+  --transparente: #ffffff00;
+  --white: #E6F1FF;
+  --gray: #5A677D;
+  --gray-light: #2A3B52;
+  --gray-dark: #0E1525;
+
+  --red: #FF4171;
+  --red-light: #ff79a3;
+  --red-lighter: #ffb3d4;
+  --red-dark: #d1004e;
+  --red-medio: #c46c87;
+  --red-medio-dark: #8f4358;
+  --red-titulo: #ff6699;
+  --red-subtitulo: #ff99bb;
+  --red-subtitulo-hover: #ff80aa;
+
+  --primary-color: #64FFDA;
+  --primary-color-light: #A7FFF0;
+  --primary-color-dark: #00BFA5;
+  --primary-hover: var(--primary-color-dark);
+  --primary-color-medio: #33C9B3;
+
+  --chatbot-blue: #3D5AFE;
+
+  --secondary-color: #FFEA00;
+  --secondary-color-light: #FFF59D;
+  --secondary-color-dark: #FFD600;
+
+  --success-color: var(--primary-color);
+
+  --text-color: #CCD6F6;
+  --text-color-dark: #8892B0;
+  --text-color-claro: var(--white);
+  --error-color: var(--red);
+  --hover-error-color: var(--red-dark);
+  --input-border-color: #2A3B52;
+  --input-focus-color: rgba(100, 255, 218, 0.5);
+  --background-color: #112240;
+  --background-cinza: #1E2D48;
+  --background-light: #1A2A3A;
+  --shadow-color: rgba(100, 255, 218, 0.2);
+  --box-shadow: 0px 0px 10px var(--shadow-color);
+
+  --tr_even_rows: #1A2A3A;
+  --tr_odd_rows: #112240;
+
+  --logo-font-family: 'Orbitron', sans-serif;
+  --logo-main-text-color: #64FFDA;
+  --logo-ai-text-color: #CCD6F6;
+  --header-background-color: transparent;
+  --header-shadow: none;
+
+  --linhas_de_campos_do_view: var(--primary-color-dark);
+
+  --footer-bg-color: transparent;
+  --footer-text-color: #8892B0;
+  --footer-icon-color: var(--primary-color);
+  --menu-bg-color: #112240;
+  --menu-text-color: #CCD6F6;
+  --menu-hover-bg-color: #1E2D48;
+  --border-color: #2A3B52;
+
+  --container-bg-color: transparent;
+  --container-shadow: none;
+
+  --header-bar-bg-color: #0A192F;
+  --header-bar-text-color: #CCD6F6;
+  --header-bar-icon-color: var(--primary-color);
+}
+
+// ====================================
+// CORES ESPECIAIS E UTILITÁRIAS
+// ====================================
+
+.transparente {
+    color: var(--transparente);
+}
+
+// ====================================
+// ESTILOS GLOBAIS
+// ====================================
+
+html {
+    height: 100%;
+}
+
+body {
+  background-color: var(--cor-de-fundo);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  margin: 0;
+  padding: 0.5em;
+  padding-top: 1.5em;
+  padding-bottom: 40px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color-dark);
+}
+
+h1 {
+    font-size: 1.4rem;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+h2 {
+    font-size: 1.3rem;
+}
+
+h3 {
+    font-size: 1.2em;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-weight: bold;
+    text-align: center;
+}
+
+h4 {
+    font-size: 1em;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: var(--primary-color);
+    font-weight: bold;
+    text-align: center;
+}
+
+// ====================================
+// ELEMENTOS BÁSICOS
+// ====================================
+
+.red {
+    color: var(--red-dark);
+}
+
+.box {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--container-bg-color);
+  border-radius: 16px;
+  box-shadow: var(--container-shadow);
+  padding: 20px 20px 20px 20px;
+}
+
+.container_principal {
+    max-width: min(var(--max-width), calc(100% - 60px));
+    padding-top: 20px;
+    margin-bottom: 40px;
+}
+
+// ====================================
+// INPUTS E FORMULÁRIOS
+// ====================================
+
+input,
+select,
+textarea {
+  background-color: var(--background-light);
+  color: var(--text-color);
+  border: 1px solid var(--input-border-color);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--input-focus-color);
+}
+
+input,
+select {
+    padding: 3px;
+    margin: 2px 0;
+    margin-right: 2pt;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--primary-color-dark);
+    font-size: 12px;
+    background-color: #fff;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border: 2px solid var(--primary-color);
+    background-color: #ffdcb6;
+    border-color: #ff7373;
+}
+
+label {
+    font-size: 10px;
+    margin-right: 2pt;
+}
+
+// ====================================
+// BOTÕES
+// ====================================
+
+button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  &.theme-futurista {
+    .mat-primary {
+      background-color: var(--primary-color);
+      color: var(--cor-de-fundo);
+    }
+  }
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .btn {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+
+        &:hover {
+            background-color: var(--primary-hover);
+        }
+    }
+
+    .btn-secondary {
+        background-color: var(--gray);
+        color: var(--white);
+
+        &:hover {
+            background-color: var(--gray-dark);
+        }
+    }
+}
+
+// ====================================
+// NAVEGAÇÃO
+// ====================================
+
+.navegacao,
+.navegacao_direita {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.navegacao_direita {
+    text-align: right;
+}
+
+.navegacao_dupla_largura_left {
+    width: 50px;
+    height: 50px;
+    margin-right: 50px;
+    cursor: pointer;
+}
+
+.navegacao_dupla_largura_right {
+    width: 50px;
+    height: 50px;
+    margin-left: 50px;
+    cursor: pointer;
+}
+
+// ====================================
+// UTILITÁRIAS
+// ====================================
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.largo {
+    width: 100%;
+}
+
+.width_reset {
+    width: unset;
+}
+
+.margin0 {
+    margin: 0px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.semitransparent {
+    opacity: 0.5;
+}
+
+.normal {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    color: var(--text-color);
+    font-weight: normal;
+    background-color: var(--white);
+}
+
+.title {
+    font-size: 20px;
+}
+
+.small {
+    font-size: 8px;
+}
+
+// ====================================
+// ESPACADORES
+// ====================================
+
+.espacador {
+    height: 5pt;
+    width: 5pt;
+}
+
+.espacador_vertical {
+    height: 1em;
+}
+
+.espacador_horizontal {
+    width: 5em;
+}
+
+.espacador_vertical_metade {
+    height: 0.5em;
+}
+
+.espacador_vertical_duplo {
+    height: 2em;
+}
+
+.espacador_vertical_home {
+    height: 2em;
+}
+
+// ====================================
+// GRID SYSTEM
+// ====================================
+
+.ui-grid-col-2 {
+    width: 12.5%;
+}
+
+.ui-grid-col-3 {
+    width: 18.75%;
+}
+
+.ui-grid-col-4 {
+    width: 25%;
+}
+
+// ====================================
+// FICHAS E REGISTROS
+// ====================================
+
+.record-details {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+    border: 0px solid #fff;
+    margin: 1px 1px 1px 1px;
+
+    .detail-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0px;
+        border-bottom: 1px solid var(--linhas_de_campos_do_view);
+
+        .detail-label {
+            font-weight: normal;
+            color: var(--primary-color);
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .detail-value,
+        .detail-value-semborda {
+            color: var(--text-color-dark);
+            font-size: 14px;
+            font-weight: 600;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .detail-value-semborda {
+            color: var(--red-dark);
+        }
+
+        .detail-id {
+            margin-left: auto;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .whatsapp-btn {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+
+            &:hover {
+                background-color: var(--secondary-color-dark);
+            }
+        }
+
+        .url {
+            background-color: var(--primary-color);
+            border: 0;
+            border-radius: 14px;
+            box-sizing: border-box;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 1em;
+            margin-top: 1em;
+            max-width: 100%;
+            min-width: 0;
+            padding: 0.5em;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        textarea {
+            background-color: #e2f2ff;
+            border: 1px solid #76b3ff;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0px;
+            color: #333;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 1pt 1pt 4pt 1pt #ccc;
+            transition: background-color 0.3s ease;
+
+            &:focus {
+                background-color: #ffdcb6;
+                outline: none;
+                border-color: #66afe9;
+            }
+        }
+    }
+}
+
+// ====================================
+// HEADER E NAVEGAÇÃO
+// ====================================
+
+.header {
+    font-family: var(--font-family);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+        font-family: var(--font-family);
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--primary-color);
+        text-align: center;
+        flex-grow: 1;
+    }
+
+    .back-btn,
+    .add-btn {
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bolder;
+        width: 40px;
+        height: 40px;
+
+        &:hover {
+            background-color: var(--primary-hover);
+        }
+    }
+}
+
+.record-header {
+    background-color: #2A7AC3;
+    color: #ffffff;
+    font-size: small;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid white;
+    margin: 8px 0px 0px 0px;
+    padding: 8px;
+    border-radius: 8px 8px 8px 8px;
+
+    h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+// ====================================
+// MENU E BOTÕES
+// ====================================
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+    gap: 1px;
+    background-color: var(--white);
+    color: var(--white);
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.menu-button {
+    flex: 1 1 auto;
+    min-width: 100px;
+    background-color: #2A7AC3;
+    color: #ffffff;
+    margin: 2px 0 4px 0;
+    border-radius: 8px;
+    border: 1px white solid;
+    font-size: 8pt;
+    font-weight: bold;
+    padding: 6px 2px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: var(--primary-color-dark);
+    }
+}
+
+.section-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+
+    .section-btn {
+        background-color: var(--primary-color);
+        border: 2pt solid #fff;
+        border-radius: 6pt;
+        padding-top: 5pt;
+        padding-bottom: 4pt;
+        color: var(--white);
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+        font-size: 8pt;
+        font-weight: 700;
+
+        &:hover {
+            background-color: var(--primary-color-light);
+        }
+    }
+}
+
+// ====================================
+// TABELAS
+// ====================================
+
+.registros-table {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: var(--white) 1px solid;
+        border-radius: 10px;
+        background-color: var(--white);
+
+        thead {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: left;
+
+            th {
+                padding: 4px 10px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+        }
+
+        tbody {
+            tr {
+                background-color: var(--tr_odd_rows);
+
+                &:nth-child(even) {
+                    background-color: var(--tr_even_rows);
+                }
+
+                &:hover {
+                    background-color: var(--primary-color-light);
+                }
+            }
+
+            td {
+                padding: 8px 10px;
+                border-top: 3px solid var(--white);
+                color: var(--primary-color);
+                font-weight: 600;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+// ====================================
+// IMAGENS E MÍDIA
+// ====================================
+
+.image-preview {
+    margin-top: 10px;
+
+    img {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 100px;
+    }
+}
+
+// ====================================
+// AVISOS E NOTIFICAÇÕES
+// ====================================
+
+.aviso {
+    margin-top: 30px;
+    background-color: var(--primary-color-light);
+    color: var(--primary-color-dark);
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    padding: 40px 20px 30px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+}
+
+// ====================================
+// COMPONENTES ESPECIAIS
+// ====================================
+
+.subtitulo_puro {
+    background-color: #ffffff;
+    color: #2a7ac3;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 6px;
+    margin-left: 0;
+    margin-right: 0;
+    border: 0;
+    border-radius: 6px;
+    padding: 0px;
+}
+
+.social-label {
+    font-size: 8px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: normal;
+}
+
+.social-section {
+    display: flex;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    gap: 10px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+// ====================================
+// RESPONSIVIDADE
+// ====================================
+
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: var(--medium-width)) {
+    .navegacao,
+    .navegacao_direita {
+        width: 35px;
+        height: 35px;
+    }
+
+    .header {
+        .title {
+            font-size: 14px;
+        }
+    }
+
+    .field-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-label {
+        width: 80px;
+        font-size: 9px;
+    }
+
+    .detail-value,
+    detail-value-semborda {
+        font-size: 11px;
+    }
+}
+
+// ====================================
+// DIÁLOGOS E MODAIS
+// ====================================
+
+.modern-dialog .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+body.dragging-chatbot {
+  cursor: grabbing !important;
+  user-select: none;
+}
+
+.lead-details-dialog .mat-mdc-dialog-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.lead-details-dialog .mat-mdc-dialog-title {
+  margin-bottom: 16px !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+}
+
+.page-with-margin {
+  margin-bottom: 40px;
+}
+
+// ====================================
+// CLASSES UTILITÁRIAS - PADDING
+// ====================================
+
+$padding-values: (0, 5, 10, 15, 20, 25, 30, 40, 50);
+$directions: ('t': 'top', 'r': 'right', 'b': 'bottom', 'l': 'left');
+
+@each $value in $padding-values {
+    .p-#{$value} {
+        padding: #{$value}px;
+    }
+
+    @each $abbr, $dir in $directions {
+        .p#{$abbr}-#{$value} {
+            padding-#{$dir}: #{$value}px;
+        }
+    }
+
+    .px-#{$value} {
+        padding-left: #{$value}px;
+        padding-right: #{$value}px;
+    }
+
+    .py-#{$value} {
+        padding-top: #{$value}px;
+        padding-bottom: #{$value}px;
+    }
+}
+
+.p { padding: var(--p); }
+.pt { padding-top: var(--pt); }
+.pr { padding-right: var(--pr); }
+.pb { padding-bottom: var(--pb); }
+.pl { padding-left: var(--pl); }
+.px { padding-left: var(--px); padding-right: var(--px); }
+.py { padding-top: var(--py); padding-bottom: var(--py); }
+
+// ====================================
+// CLASSES UTILITÁRIAS - MARGIN
+// ====================================
+
+$margin-values: (0, 5, 10, 15, 20, 25, 30, 40, 50);
+
+@each $value in $margin-values {
+    .m-#{$value} {
+        margin: #{$value}px;
+    }
+
+    @each $abbr, $dir in $directions {
+        .m#{$abbr}-#{$value} {
+            margin-#{$dir}: #{$value}px;
+        }
+    }
+
+    .mx-#{$value} {
+        margin-left: #{$value}px;
+        margin-right: #{$value}px;
+    }
+
+    .my-#{$value} {
+        margin-top: #{$value}px;
+        margin-bottom: #{$value}px;
+    }
+}
+
+.m { margin: var(--m); }
+.mt { margin-top: var(--mt); }
+.mr { margin-right: var(--mr); }
+.mb { margin-bottom: var(--mb); }
+.ml { margin-left: var(--ml); }
+.mx { margin-left: var(--mx); margin-right: var(--mx); }
+.my { margin-top: var(--my); margin-bottom: var(--my); }

@@ -1,0 +1,12 @@
+<footer class="footer">
+  <div>
+
+      <div style="text-align: center;">
+          <span *ngFor="let link of politicaLinks">
+            <a [routerLink]="link.route">{{ link.text }}</a>
+          </span>
+      </div>
+
+
+  </div>
+</footer>

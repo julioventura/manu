@@ -1,0 +1,29 @@
+<div class="capa-container">
+  <div class="capa-background" [style.backgroundImage]="getBackgroundImage()">
+    <div class="capa-content">
+      <!-- Seção da foto do perfil -->
+      <div class="profile-section">
+        <div class="profile-image" *ngIf="userProfile?.foto">
+          <img [src]="getProfileImage()" [alt]="getNome()">
+        </div>
+      </div>
+      
+      <!-- Seção de informações -->
+      <div class="info-section">
+        <div class="title-area">
+          <h1>{{ getNome() }}</h1>
+          <h2>{{ getTituloProfissional() }}</h2>
+        </div>
+        
+        <div class="badges-row" *ngIf="userProfile?.especialidades?.length">
+          <span class="badge" *ngFor="let esp of getEspecialidades()?.slice(0,3)">
+            {{ esp }}
+          </span>
+        </div>
+        
+        <!-- Resto do template sem alterações -->
+        
+      </div>
+    </div>
+  </div>
+</div>

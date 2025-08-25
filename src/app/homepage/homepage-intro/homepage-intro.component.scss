@@ -1,0 +1,224 @@
+@use '../../../_variables.scss' as styles;
+@use 'sass:color';
+
+// Estilo Geral
+body {
+    font-family: styles.$font-family;
+    margin: 0;
+    padding: 0;
+    color: styles.$text-color;
+    font-size: styles.$font-size;
+    background-color: styles.$background-cinza;
+}
+
+// Linha com o nome do registro
+.record-header {
+    background-color: styles.$primary-color;
+    color: styles.$white;
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    border: 0;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 20px;
+    min-height: 24px;
+
+    h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+// Header com título e botões
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+    font-family: styles.$font-family;
+
+    .title {
+        font-family: styles.$font-family;
+        font-size: 24px;
+        font-weight: bold;
+        color: styles.$primary-color;
+    }
+
+    .back-btn,
+    .add-btn {
+        background-color: styles.$primary-color;
+        color: styles.$white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bolder;
+        width: 40px;
+        height: 40px;
+    }
+
+    .back-btn:hover,
+    .add-btn:hover {
+        background-color: styles.$primary-hover;
+    }
+}
+
+// Barra de pesquisa
+.search-bar {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+
+    input {
+        width: 100%;
+        max-width: 300px;
+        padding: 4px 10px;
+        border: 2px solid styles.$primary-color;
+        border-radius: 8px;
+        font-size: 14px;
+        color: styles.$primary-color;
+
+        &:focus {
+            outline: none;
+            border-color: styles.$primary-hover;
+        }
+    }
+}
+
+.perfil-link {
+    color: styles.$primary-color;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: styles.$red;
+        text-decoration: none;
+    }
+}
+
+// Estilo da tabela
+.registros-table {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: styles.$white 1px solid;
+        border-radius: 10px;
+        background-color: styles.$background-cinza;
+
+        thead {
+            background-color: styles.$primary-color;
+            color: styles.$white;
+            text-align: left;
+
+            th {
+                padding: 0 10px;
+                height: 1.7rem;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+
+        tbody {
+
+            tr {
+                background-color: styles.$tr_odd_rows;
+
+                &:nth-child(even) {
+                    background-color: styles.$tr_even_rows;
+                }
+
+                &:hover {
+                    background-color: color.adjust(styles.$primary-color, $lightness: 40%);
+                }
+            }
+
+            td {
+                padding: 4px 10px;
+                border-bottom: 3px solid styles.$white;
+                color: styles.$primary-color;
+                font-weight: 500;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+// Paginação com botões
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: styles.$font-family;
+    font-size: styles.$font-size;
+    color: styles.$white;
+    background-color: styles.$primary-color;
+    border-radius: 0 0 10px 10px;
+    height: 1.7rem;
+
+
+    button {
+        background-color: styles.$primary-color;
+        color: styles.$white;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        height: 1.7rem;
+
+        &:hover {
+            background-color: styles.$primary-hover;
+        }
+
+        &:disabled {
+            background-color: styles.$gray;
+            cursor: not-allowed;
+        }
+    }
+
+    span {
+        color: styles.$white;
+        // font-weight: 500;
+    }
+}
+
+.intro-container {
+    text-align: center;
+    padding: 50px;
+
+    h1 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 40px;
+    }
+
+    .open-homepage-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #0056b3;
+        }
+    }
+}
+

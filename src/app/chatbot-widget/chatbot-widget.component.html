@@ -1,0 +1,116 @@
+<!-- Adicionar à parte superior do template, fora da div chatbot-container -->
+<!-- Popup de Detalhes -->
+<div class="details-popup" 
+     [ngClass]="{'visible': showDetailsPopup, 'maximized': isDetailsMaximized}" 
+     *ngIf="showDetailsPopup && configuracoes.is_admin">
+  <div class="details-header">
+    <!-- Botão de maximizar à esquerda -->
+    <div class="details-maximize">
+      <button class="maximize-button" (click)="toggleDetailsMaximize()">
+        <i class="fas" [ngClass]="isDetailsMaximized ? 'fa-compress' : 'fa-expand'"></i>
+      </button>
+    </div>
+    
+    <!-- Título centralizado -->
+    <div class="details-title">
+      <span>{{detailsTitle}}</span>
+    </div>
+    
+    <!-- Botão de fechar à direita -->
+    <div class="details-controls">
+      <button class="close-button" (click)="showDetailsPopup = false">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="details-body">
+    <div class="details-content" *ngIf="detailsData">
+      <div class="detail-item" *ngFor="let item of formatRecordDetailsForDisplay(detailsData)">
+        <div class="detail-label">{{item.key}}:</div>
+        <div class="detail-value">{{item.value}}</div>
+      </div>
+    </div>
+    <div class="no-details" *ngIf="!detailsData">
+      <p>Nenhum detalhe disponível para exibição.</p>
+    </div>
+  </div>
+</div>
+
+<div class="chatbot-container" 
+     [ngClass]="{'minimized': isMinimized, 'maximized': isMaximized, 'dragging': isDragging}" 
+     [ngStyle]="!isMinimized ? {'right.px': chatPosition.right, 'bottom.px': chatPosition.bottom} : {}"
+     (click)="isMinimized ? toggleChat() : null">
+  
+  <!-- Ícone para reabrir o chat quando minimizado -->
+  <img *ngIf="isMinimized" src="assets/chatbot.png" alt="Abrir Chatbot" class="chatbot-icon" style="width: 50px; height: 50px; cursor: pointer;"/>
+
+  <!-- Cabeçalho visível apenas quando não está minimizado -->
+  <div class="chatbot-header" *ngIf="!isMinimized"
+       (mousedown)="!isMaximized ? startDrag($event) : null"
+       [ngClass]="{'draggable': !isMaximized}">
+    
+    <!-- Botão de maximizar (no lado esquerdo) -->
+    <div class="chatbot-maximize" *ngIf="!isMinimized">
+      <button class="maximize-button" (click)="$event.stopPropagation(); toggleMaximize()">
+        <i class="material-icons" style="color: white;">{{ isMaximized ? 'fullscreen_exit' : 'fullscreen' }}</i>
+      </button>
+    </div>
+
+    <!-- Título (centralizado) com botão de contexto integrado -->
+    <div class="chatbot-title">
+      <span>Chatbot de I.A.</span>
+    </div>
+    
+    <!-- Controles (lado direito) -->
+    <div class="chatbot-controls">
+      <button class="minimize-button" (click)="$event.stopPropagation(); toggleChat()">
+        <i class="material-icons" style="color: white;">{{ isMinimized ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="chatbot-body" *ngIf="!isMinimized">
+   
+    <!-- Área de mensagens com estrutura correta -->
+    <div class="messages-container" #messagesContainer (scroll)="onMessagesScroll()">
+      <!-- Mensagem de boas-vindas quando não há histórico -->
+      <div *ngIf="conversation.length === 0" class="welcome-message">
+        <div class="message bot-message">
+          <p>Olá! Como posso ajudar?</p>
+        </div>
+      </div>
+      
+      <!-- Mensagens da conversa -->
+      <div *ngFor="let message of conversation" class="message-group">
+        <div class="message" [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
+          <p>{{ message.content }}</p>
+        </div>
+      </div>
+      
+      <!-- Indicador de digitação -->
+      <div *ngIf="isLoading" class="message-group">
+        <div class="message bot-message typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="input-container">
+    <input 
+      type="text"
+      placeholder="Digite sua mensagem..."
+      [(ngModel)]="userInput"
+      (keyup.enter)="sendMessage()"
+      class="message-input"
+    >
+    <button class="send-button" (click)="sendMessage()">
+      <i class="material-icons">send</i>
+    </button>
+  </div>
+  
+</div>

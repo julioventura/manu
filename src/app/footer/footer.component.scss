@@ -1,0 +1,50 @@
+﻿@use '../../_variables.scss' as styles;
+
+footer.app-footer {
+  max-width: styles.$max-width;
+  margin: 0 auto 20px;
+  padding: 0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.app-version {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  color: white;
+  letter-spacing: 0.5px;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+@media (max-width: styles.$medium-width) {
+  footer.app-footer {
+    padding: 12px;
+  }
+
+  .app-version { 
+    font-size: 0.8em; 
+  }
+}
+
+@media (max-width: 400px) {
+  footer.app-footer {
+    padding: 10px;
+  }
+
+  .app-version { 
+    font-size: 0.7em; 
+  }
+}

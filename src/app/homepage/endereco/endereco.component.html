@@ -1,0 +1,46 @@
+<div class="profile-card component-card">
+  <div class="card-header">
+    <h3>Endereços</h3>
+  </div>
+  
+  <div class="card-body component-content">
+    <!-- Lista de endereços -->
+    <div class="enderecos-lista" *ngIf="hasEnderecos(); else semEnderecos">
+      
+      <!-- REMOVIDO: bloco duplicado -->
+      <!-- Manter apenas este bloco: -->
+      <div *ngFor="let endereco of getEnderecos()" class="enderecos-item">
+        <!-- Rua -->
+        <div *ngIf="endereco.rua" class="info-line">
+          <strong>{{ endereco.rua }}</strong>
+        </div>
+        
+        <!-- Bairro, Cidade e Estado -->
+        <div *ngIf="endereco.bairro || endereco.cidade || endereco.estado" class="info-line">
+          {{ endereco.bairro }}
+          <span *ngIf="(endereco.bairro && endereco.cidade) || (endereco.bairro && endereco.estado)">, </span>
+          {{ endereco.cidade }}
+          <span *ngIf="endereco.estado">/{{ endereco.estado }}</span>
+        </div>
+        
+        <!-- CEP -->
+        <div *ngIf="endereco.cep" class="info-line">
+          CEP: {{ endereco.cep }}
+        </div>
+        
+        <!-- Telefone -->
+        <div *ngIf="endereco.telefone" class="info-line">
+          Tel: {{ endereco.telefone }}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Template para quando não há endereços -->
+    <ng-template #semEnderecos>
+      <div class="empty-message">
+        <i class="fas fa-info-circle"></i>
+        <p>Nenhum endereço cadastrado</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

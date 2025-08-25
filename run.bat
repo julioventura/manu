@@ -1,1 +1,2 @@
-npm run dev
+@REM rmdir /s dist
+npm start

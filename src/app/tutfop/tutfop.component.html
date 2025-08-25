@@ -1,0 +1,69 @@
+<div class="container container_principal ">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="goHome()">
+            <img src="https://dentistas.com.br/assets/home.png" class="navegacao" (click)="goHome()">
+        </div>
+        <h1 class="title">TutFOP - Tutor Virtual de Casos Clínicos</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+            <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+        </div>
+    </div>
+
+    <!-- Loading state -->
+    @if (!isUserAuthenticated) {
+    <div class="loading-container">
+        <p>Carregando...</p>
+    </div>
+    }
+
+    <!-- Aviso quando não autenticado -->
+    @if (isUserAuthenticated === false) {
+    <div class="aviso">
+        <p>Você precisa estar autenticado para usar o TutFOP.</p>
+    </div>
+    }
+
+    <!-- Container principal do TutFOP -->
+    @if (isUserAuthenticated) {
+    <div class="tutfop-main-content">
+        
+        <!-- Container do Chat -->
+        <div class="tutfop-chat-section">
+            
+            <div id="tutfop-chat-log" class="tutfop-chat-log">
+                <div class="bot-message">
+                    <strong>Tutor Virtual:</strong> 
+                    Olá! Eu sou o <b>TutFOP</b>, seu tutor virtual da <i>Clínica Integral 3</i>.<br />&nbsp;<br />
+                    A equipe de professores da <i>CI3</i> me chamou para te ajudar na construção de um plano de urgência seguro, ético e baseado em evidências para a paciente gestante que procurou nossa clínica-escola por meio da Teleodontologia.<br />
+                    Estou aqui para apoiar você, esclarecendo dúvidas, explorando condutas e estimulando seu raciocínio clínico.<br />&nbsp;<br />
+                    Vamos juntos nessa missão?
+                </div>
+                <!-- Aqui entra a conversa do chat -->
+            </div>
+
+            <div class="tutfop-chat-input-container">
+                <textarea id="tutfop-user-input" 
+                    placeholder="Digite sua mensagem... (Ctrl+Enter para enviar)" 
+                    rows="3"
+                    class="tutfop-textarea"
+                    (keydown)="onTextareaKeydown($event)"></textarea>
+                <div class="tutfop-button-container">
+                    <button id="tutfop-send-button" (click)="sendTutfopMessage()" class="tutfop-btn-primary">
+                        Enviar
+                    </button>
+                    <button (click)="logoutTutfop()" class="tutfop-btn-secondary">
+                        Limpar
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    }
+
+</div>

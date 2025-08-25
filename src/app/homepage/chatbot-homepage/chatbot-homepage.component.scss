@@ -1,0 +1,35 @@
+// Chatbot Homepage - Otimizado
+@use '../../shared/styles/optimized' as opt;
+
+.chatbot-container { @include opt.container-base; padding: 2rem; max-width: 600px; margin: 0 auto; background: white; }
+.chatbot-header { text-align: center; margin-bottom: 2rem; 
+  h2 { color: var(--primary-color); margin-bottom: 0.5rem; }
+  p { color: #666; } 
+}
+.chat-messages { 
+  height: 400px; 
+  overflow-y: auto; 
+  border: 1px solid #eee; 
+  border-radius: 8px; 
+  padding: 1rem; 
+  margin-bottom: 1rem; 
+  background: #fafafa;
+  .message { 
+    margin-bottom: 1rem; 
+    padding: 0.75rem; 
+    border-radius: 8px; 
+    max-width: 80%;
+    &.user { background: var(--primary-color); color: white; margin-left: auto; }
+    &.bot { background: white; color: var(--text-dark); margin-right: auto; }
+  }
+}
+.chat-input { 
+  display: flex; 
+  gap: 0.5rem;
+  input { flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; &:focus { outline: none; border-color: var(--primary-color); } }
+  button { @include opt.button-base; background: var(--primary-color); color: white; &:hover { background: #1976d2; } }
+}
+@include opt.mobile { 
+  .chatbot-container { padding: 1rem; }
+  .chat-messages { height: 300px; }
+}

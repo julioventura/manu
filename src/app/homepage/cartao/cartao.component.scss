@@ -1,0 +1,68 @@
+// Cartao Component - Otimizado
+@use '../../shared/styles/optimized' as opt;
+
+.cartao-container { padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; }
+.cartoes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.cartao { 
+  @include opt.container-base; 
+  background: white; 
+  transition: all 0.3s ease;
+  &:hover { transform: translateY(-4px); box-shadow: 0 8px 25px var(--shadow-light); }
+  .cartao-header { 
+    padding: 1.5rem; 
+    background: linear-gradient(135deg, var(--primary-color), #64b5f6); 
+    color: white;
+    .cartao-title { font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0; }
+    .cartao-subtitle { font-size: 0.9rem; opacity: 0.9; margin: 0; }
+  }
+  .cartao-content { padding: 1.5rem; }
+  .cartao-description { color: var(--text-dark); line-height: 1.6; margin-bottom: 1rem; }
+  .cartao-features { 
+    list-style: none; 
+    padding: 0; 
+    margin: 1rem 0;
+    li { 
+      padding: 0.5rem 0; 
+      border-bottom: 1px solid #eee; 
+      display: flex; 
+      align-items: center; 
+      &:last-child { border-bottom: none; }
+      .feature-icon { margin-right: 0.5rem; color: var(--success-color); }
+    }
+  }
+  .cartao-footer { 
+    padding: 1rem 1.5rem; 
+    background: var(--background-light); 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    .cartao-price { 
+      font-size: 1.5rem; 
+      font-weight: 700; 
+      color: var(--primary-color);
+      .price-period { font-size: 0.8rem; color: #666; font-weight: 400; }
+    }
+    .cartao-action { @include opt.button-base; background: var(--primary-color); color: white; &:hover { background: #1976d2; } }
+  }
+}
+.cartao-especial { 
+  position: relative; 
+  border: 2px solid var(--secondary-color);
+  &::before { 
+    content: 'Mais Popular'; 
+    position: absolute; 
+    top: -10px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    background: var(--secondary-color); 
+    color: white; 
+    padding: 0.25rem 1rem; 
+    border-radius: 20px; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+  }
+}
+@include opt.mobile { 
+  .cartoes-grid { grid-template-columns: 1fr; gap: 1rem; } 
+  .cartao-container { padding: 1rem; }
+}

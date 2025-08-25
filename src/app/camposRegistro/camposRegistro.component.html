@@ -1,0 +1,71 @@
+<div class="container container_principal">
+
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+            <img src="https://dentistas.com.br/assets/home.png" class="navegacao" (click)="util.goHome()">
+        </div>
+        <h1 class="title">CAMPOS DOS CADASTROS</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/salvar.png" class="navegacao_dupla_largura_right" (click)="salvar()">
+        </div>
+    </div>
+
+    <div class="record-header">
+        Editando a coleção: {{ colecaoSelecionada === 'padrao' ? 'Padrão' : colecaoSelecionada }}
+    </div>
+
+    <div class="container">
+        <!-- Seletor de Coleções -->
+        <div class="section">
+            <label for="colecao">Selecionar Cadastro:</label>
+            <select id="colecao" [(ngModel)]="colecaoSelecionada" (change)="carregarCampos()">
+                <option *ngFor="let colecao of colecoes" [value]="colecao">{{ colecao === 'padrao' ? 'Padrão' : colecao
+                    }}
+                </option>
+            </select>
+        </div>
+
+        <!-- Edição de Campos -->
+        <div class="fields-section">
+            <div *ngFor="let campo of campos; let i = index" class="field-row">
+                <label>Campo:</label>
+                <input [(ngModel)]="campo.nome" placeholder="Nome do Campo" />
+                <label>Tipo:</label>
+                <select [(ngModel)]="campo.tipo">
+                    <option value="text">Texto (uma linha)</option>
+                    <option value="textarea">Texto (múltiplas linhas)</option>
+                    <option value="number">Número</option>
+                    <option value="boolean">Booleano</option>
+                    <option value="email">Email</option>
+                    <option value="date">Data</option>
+                    <option value="password">Senha</option>
+                    <option value="file">Arquivo</option>
+                    <option value="color">Cor</option>
+                    <option value="tel">Telefone</option>
+                    <option value="url">URL</option>
+                    <option value="range">Intervalo (slider)</option>
+                    <option value="time">Hora</option>
+                    <option value="month">Mês</option>
+                    <option value="week">Semana</option>
+                    <option value="datetime-local">Data e Hora</option>
+                    <option value="hidden">Oculto</option>
+                    <option value="image">Imagem (com submit)</option>
+                </select>
+
+                <label>Etiqueta:</label>
+                <input [(ngModel)]="campo.label" placeholder="Label" />
+
+                <!-- Agrupar os botões dentro do div button-group -->
+                <div class="button-group">
+                    <button (click)="moverCampoParaCima(i)" [disabled]="i === 0">↑</button>
+                    <button (click)="moverCampoParaBaixo(i)" [disabled]="i === campos.length - 1">↓</button>
+                    <button class="remove-button" (click)="removerCampo(i)">X</button>
+                </div>
+
+
+            </div>
+        </div>
+        <button (click)="adicionarCampo()">Adicionar Campo</button>
+    </div>
+</div>

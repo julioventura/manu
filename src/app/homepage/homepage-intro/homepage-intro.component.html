@@ -1,0 +1,30 @@
+
+<div class="container container_principal">
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="voltar()">
+        </div>
+        <h1 class="title">Configuração da Homepage</h1>
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/global.png" class="navegacao" (click)="openHomepage()">
+        </div>
+    </div>
+
+    <div class="record-header">
+        Sua homepage
+    </div>
+
+    <div class="record-details">
+        <div class="intro-container">
+            <p>Olá!<br />
+                Para configurar sua homepage profissional
+  <br />
+            acesse seu <a href="/perfil" class="perfil-link">Perfil Profissional</a> na página inicial.
+        </p>
+
+            <!-- Botão para abrir a homepage em uma nova janela -->
+            <button (click)="openHomepage()" class="open-homepage-btn">
+                Abrir Homepage em uma Nova Janela
+            </button>
+        </div>
+</div>

@@ -1,0 +1,44 @@
+// Convenios Component - Otimizado
+@use '../../shared/styles/optimized' as opt;
+
+.convenios-container { @include opt.container-base; padding: 2rem; max-width: 900px; margin: 0 auto; background: white; }
+.convenios-header { text-align: center; margin-bottom: 2rem; 
+  h2 { color: var(--primary-color); margin-bottom: 0.5rem; }
+  p { color: #666; } 
+}
+.convenios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+.convenio-item { 
+  @include opt.container-base; 
+  padding: 1.5rem; 
+  background: white; 
+  text-align: center; 
+  transition: transform 0.3s ease;
+  &:hover { transform: translateY(-5px); box-shadow: 0 8px 25px var(--shadow-light); }
+  .convenio-logo { 
+    width: 80px; 
+    height: 80px; 
+    margin: 0 auto 1rem; 
+    background: var(--background-light); 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 2rem; 
+    color: var(--primary-color); 
+  }
+  .convenio-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-dark); }
+  .convenio-description { font-size: 0.9rem; color: #666; }
+}
+.convenios-info { 
+  margin-top: 2rem; 
+  padding: 1.5rem; 
+  background: var(--background-light); 
+  border-radius: 8px; 
+  text-align: center;
+  h3 { margin: 0 0 1rem 0; color: var(--primary-color); }
+  p { margin: 0; color: #666; }
+}
+@include opt.mobile { 
+  .convenios-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } 
+  .convenios-container { padding: 1rem; }
+}

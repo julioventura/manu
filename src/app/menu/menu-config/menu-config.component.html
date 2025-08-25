@@ -1,0 +1,41 @@
+<!-- Layout refatorado para uma interface mais moderna e user-friendly -->
+<div class="container container_principal">
+  <div class="header">
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" alt="Voltar" (click)="voltar()">
+    </div>
+    <h1 class="title">MENU INTERNO DAS FICHAS</h1>
+    <div class="actions">
+      <img src="https://dentistas.com.br/assets/salvar.png" class="navegacao" alt="Salvar" (click)="salvarConfiguracoes()">
+    </div>
+  </div>
+
+  <div class="container" style="display: flex; gap: 40px; padding: 20px 40px;">
+    <!-- Coluna 1: Coleções -->
+    <div style="flex: 1;">
+      <div class="subtitle">Coleções</div>
+      <div class="colecao-buttons" style="display: flex; flex-direction: column; gap: 10px;">
+        <button *ngFor="let colecao of colecoesDisponiveis"
+                (click)="selecionarColecao(colecao)"
+                [class.selected]="colecao === colecaoSelecionada"
+                class="menu-button">
+          {{ colecao }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Coluna 2: Subcoleções -->
+    <div style="flex: 1;">
+      <div class="subtitle">Subcoleções</div>
+      <div class="subcolecoes-list">
+        <div *ngFor="let subcolecao of subcolecoesDisponiveis" class="subcolecao-item">
+          <input type="checkbox" 
+                 id="{{ subcolecao.nome }}" 
+                 [(ngModel)]="subcolecao.selecionado"
+                 (change)="onSubcolecaoChange(subcolecao)" />
+          <label for="{{ subcolecao.nome }}">{{ subcolecao.nome }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+/* Estilos Otimizados Compartilhados */
+
+/* ===== MIXINS ESSENCIAIS ===== */
+@mixin glassmorphism($opacity: 0.1) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
+@mixin text-shadow($color: rgba(0, 0, 0, 0.5)) {
+  text-shadow: 2px 2px 4px $color;
+}
+
+@mixin button-base {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+@mixin container-base {
+  border-radius: 12px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== CLASSES UTILITÁRIAS ===== */
+.text-center { text-align: center; }
+.text-shadow { @include text-shadow; }
+.glass { @include glassmorphism; }
+.container-base { @include container-base; }
+.btn-base { @include button-base; }
+
+/* ===== CORES ===== */
+:root {
+  --primary-color: #2196f3;
+  --secondary-color: #ff9800;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --background-light: #f5f5f5;
+  --text-dark: #333;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+}
+
+/* ===== RESPONSIVE HELPERS ===== */
+@mixin mobile {
+  @media (max-width: 768px) { @content; }
+}
+
+@mixin tablet {
+  @media (min-width: 769px) and (max-width: 1024px) { @content; }
+}
+
+@mixin desktop {
+  @media (min-width: 1025px) { @content; }
+}

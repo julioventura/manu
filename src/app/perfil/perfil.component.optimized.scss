@@ -1,0 +1,330 @@
+/* Perfil Component - Versão Otimizada */
+@use '../../styles.scss' as styles;
+
+/* ===== HEADER STICKY ===== */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid styles.$gray;
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 0 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  
+  &.view-mode { border-color: styles.$primary-color; }
+  &.edit-mode { border-color: styles.$red; }
+}
+
+/* ===== TÍTULOS ===== */
+h1, h2, .title {
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  
+  &.view-mode { color: styles.$primary-color; }
+  &.edit-mode { color: styles.$red-dark; }
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  
+  .title {
+    color: styles.$gray;
+    font-size: 20px;
+  }
+}
+
+/* ===== BOTÕES ===== */
+.button-group {
+  display: flex;
+  gap: 8px;
+  
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    
+    &.primary {
+      background: styles.$primary-color;
+      color: white;
+      
+      &:hover { background: color.adjust(styles.$primary-color, $lightness: -10%); }
+    }
+    
+    &.secondary {
+      background: styles.$gray;
+      color: white;
+      
+      &:hover { background: color.adjust(styles.$gray, $lightness: -10%); }
+    }
+    
+    &.danger {
+      background: styles.$red;
+      color: white;
+      
+      &:hover { background: color.adjust(styles.$red, $lightness: -10%); }
+    }
+  }
+}
+
+/* ===== FORMULÁRIO ===== */
+.form-container {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  
+  label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: styles.$gray-dark;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    
+    &:focus {
+      outline: none;
+      border-color: styles.$primary-color;
+    }
+    
+    &:disabled {
+      background: #f5f5f5;
+      cursor: not-allowed;
+    }
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+/* ===== CARDS ===== */
+.info-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  .card-header {
+    font-weight: 600;
+    color: styles.$primary-color;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .card-content {
+    line-height: 1.5;
+  }
+}
+
+/* ===== LISTA DE INFORMAÇÕES ===== */
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    
+    &:last-child { border-bottom: none; }
+    
+    .label {
+      font-weight: 500;
+      color: styles.$gray-dark;
+    }
+    
+    .value {
+      color: styles.$gray;
+      text-align: right;
+    }
+  }
+}
+
+/* ===== IMAGEM DE PERFIL ===== */
+.profile-image-container {
+  text-align: center;
+  margin: 20px 0;
+  
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid styles.$primary-color;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .upload-button {
+    margin-top: 12px;
+    background: styles.$primary-color;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    
+    &:hover { background: color.adjust(styles.$primary-color, $lightness: -10%); }
+  }
+}
+
+/* ===== STATUS ===== */
+.status-indicator {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  
+  &.active {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  &.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  &.pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+}
+
+/* ===== SEÇÕES COLAPSÁVEIS ===== */
+.collapsible-section {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  
+  .section-header {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    &:hover { background: #e9ecef; }
+    
+    .section-title {
+      font-weight: 500;
+      color: styles.$gray-dark;
+    }
+    
+    .toggle-icon {
+      transition: transform 0.2s;
+      
+      &.expanded { transform: rotate(180deg); }
+    }
+  }
+  
+  .section-content {
+    padding: 16px;
+    border-top: 1px solid #e9ecef;
+    
+    &.collapsed { display: none; }
+  }
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    
+    .button-group {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  .form-container {
+    margin: 10px 0;
+    padding: 16px;
+  }
+  
+  .info-list li {
+    flex-direction: column;
+    gap: 4px;
+    
+    .value { text-align: left; }
+  }
+  
+  .profile-image-container .profile-image {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-group, .info-card, .collapsible-section {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ===== UTILITÁRIOS ===== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-16 { margin-top: 16px; }
+.mb-16 { margin-bottom: 16px; }
+.p-16 { padding: 16px; }
+
+.error-text {
+  color: styles.$red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.success-text {
+  color: #28a745;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid styles.$primary-color;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

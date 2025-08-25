@@ -1,0 +1,28 @@
+<header class="header" [ngClass]="{'scrolled': isScrolled}">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <a routerLink="/">
+          <span class="logo-text">
+            {{ userProfile?.nome?.split(' ')[0] || 'Dentista' }}
+            <span class="logo-dot">.</span>
+          </span>
+        </a>
+      </div>
+      
+      <nav class="main-nav" [ngClass]="{'mobile-open': isMobileMenuOpen}">
+        <ul>
+          <li *ngFor="let item of menuItems">
+            <a [routerLink]="item.route" routerLinkActive="active">{{ item.label }}</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="mobile-toggle" (click)="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>

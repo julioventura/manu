@@ -1,0 +1,17 @@
+<div class="titulacoes-container">
+  <div class="titulacao-item">
+    <h3>Titulações</h3>
+    <!-- ALTERNATIVA MAIS SIMPLES: -->
+    <p>{{ userService.userProfile?.['titulacoes'] || 'Titulações não informadas' }}</p>
+  </div>
+  
+  <div class="formacao-item">
+    <h3>Formação</h3>
+    <p>{{ userService.userProfile?.['formacao'] || 'Formação não informada' }}</p>
+  </div>
+  
+  <div class="especialidades-item">
+    <h3>Especialidades</h3>
+    <p>{{ userService.userProfile?.['especialidades'] || 'Especialidades não informadas' }}</p>
+  </div>
+</div>

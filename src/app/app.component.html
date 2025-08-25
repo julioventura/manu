@@ -1,0 +1,10 @@
+<div style="position:relative; min-height:100vh;">
+  <app-bubbles-bg></app-bubbles-bg>
+  <div class="app-container" style="position:relative; z-index:2;">
+    <div class="main-content-area">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer *ngIf="isUserLoggedIn"></app-footer>
+  </div>
+  <app-chatbot-widget *ngIf="!isHomepageRoute && isAuthorizedUser"></app-chatbot-widget>
+</div>

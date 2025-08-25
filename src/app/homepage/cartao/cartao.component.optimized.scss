@@ -1,0 +1,405 @@
+/* Cartao Component - Versão Otimizada */
+@use '../../../styles.scss' as styles;
+@use 'sass:color';
+
+/* ===== MIXINS ===== */
+@mixin card-base {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+@mixin card-hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.cartao-container {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cartoes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* ===== CARTÃO BASE ===== */
+.cartao {
+  @include card-base;
+  
+  &:hover {
+    @include card-hover;
+  }
+  
+  .cartao-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, styles.$primary-color, color.adjust(styles.$primary-color, $lightness: 10%));
+    color: white;
+    
+    .cartao-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .cartao-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin: 0;
+    }
+  }
+  
+  .cartao-body {
+    padding: 1.5rem;
+    
+    .cartao-description {
+      color: styles.$gray-dark;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .cartao-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.5rem 0;
+      
+      li {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0;
+        color: styles.$gray-dark;
+        
+        &::before {
+          content: "✓";
+          color: #28a745;
+          font-weight: bold;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+  
+  .cartao-footer {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    
+    .cartao-actions {
+      display: flex;
+      gap: 0.5rem;
+      
+      .btn {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        text-decoration: none;
+        
+        &.btn-primary {
+          background-color: styles.$primary-color;
+          color: white;
+          
+          &:hover {
+            background-color: color.adjust(styles.$primary-color, $lightness: -10%);
+          }
+        }
+        
+        &.btn-outline {
+          background-color: transparent;
+          color: styles.$primary-color;
+          border: 1px solid styles.$primary-color;
+          
+          &:hover {
+            background-color: styles.$primary-color;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ===== CARTÃO DESTACADO ===== */
+.cartao.featured {
+  position: relative;
+  border: 2px solid styles.$primary-color;
+  
+  &::before {
+    content: "Destaque";
+    position: absolute;
+    top: -1px;
+    right: 1rem;
+    background: styles.$primary-color;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 0 0 6px 6px;
+  }
+  
+  .cartao-header {
+    background: linear-gradient(135deg, #28a745, color.adjust(#28a745, $lightness: 10%));
+  }
+}
+
+/* ===== CARTÃO COMPACTO ===== */
+.cartao.compact {
+  .cartao-header {
+    padding: 1rem;
+    
+    .cartao-title {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .cartao-body,
+  .cartao-footer {
+    padding: 1rem;
+  }
+}
+
+/* ===== CARTÃO HORIZONTAL ===== */
+.cartao.horizontal {
+  display: flex;
+  
+  .cartao-image {
+    flex: 0 0 200px;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .cartao-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    .cartao-body {
+      flex: 1;
+    }
+  }
+}
+
+/* ===== ESTADOS ESPECIAIS ===== */
+.cartao.loading {
+  .cartao-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid styles.$primary-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+.cartao.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  
+  &:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn {
+    pointer-events: none;
+  }
+}
+
+/* ===== SEÇÃO DE TÍTULO ===== */
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: styles.$gray-dark;
+    margin: 0 0 1rem 0;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: styles.$gray;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+}
+
+/* ===== FILTROS ===== */
+.cartoes-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background: white;
+    color: styles.$gray-dark;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &:hover,
+    &.active {
+      background: styles.$primary-color;
+      color: white;
+      border-color: styles.$primary-color;
+    }
+  }
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .cartao-container {
+    padding: 1rem;
+  }
+  
+  .cartoes-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .cartao.horizontal {
+    flex-direction: column;
+    
+    .cartao-image {
+      flex: none;
+      height: 200px;
+    }
+  }
+  
+  .cartao-footer .cartao-actions {
+    flex-direction: column;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+  
+  .section-title h2 {
+    font-size: 2rem;
+  }
+  
+  .cartoes-filters {
+    justify-content: stretch;
+    
+    .filter-btn {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .cartao {
+    .cartao-header,
+    .cartao-body,
+    .cartao-footer {
+      padding: 1rem;
+    }
+  }
+  
+  .section-title h2 {
+    font-size: 1.75rem;
+  }
+  
+  .cartoes-filters {
+    flex-direction: column;
+  }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ===== SKELETON LOADING ===== */
+.cartao-skeleton {
+  @include card-base;
+  
+  .skeleton-header {
+    height: 100px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  .skeleton-body {
+    padding: 1.5rem;
+    
+    .skeleton-line {
+      height: 16px;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      
+      &:last-child {
+        width: 60%;
+      }
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ===== UTILITÁRIOS ===== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-flex { display: flex; }

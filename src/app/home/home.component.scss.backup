@@ -1,0 +1,369 @@
+﻿@use '../../styles.scss' as styles;
+
+/* Estilos jÃ¡ existentes */
+section {
+  text-align: center;
+}
+
+
+.container {
+  margin: 0 auto;
+  /* Centraliza o container horizontalmente */
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .margin-bottom-8 {
+    padding-bottom: 8px;
+  }
+}
+
+.boxvazio {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0px;
+  border: 0;
+  box-shadow: unset;
+  margin: 0px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  /* Adiciona espaÃ§amento entre os itens da coluna */
+}
+
+.column-left,
+.column-right {
+  background-color: #ffffff;
+  width: 100%;
+  min-width: 300px;
+  // margin: 0px;
+}
+
+
+/* SeÃ§ao de Ãcones (Novo Estilo) */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  text-align: center;
+  justify-content: space-between;
+
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 132px; // Desktop padrao
+
+    img {
+      width: 82px;
+      height: 82px;
+      margin: 0px 20px;
+    }
+
+    p {
+      font-weight: 500;
+      color: var(--primary-color); // DEPOIS: Usando variÃ¡vel CSS
+      font-size: 13px;
+    }
+  }
+}
+
+/* ADICIONAR: Media queries para telas pequenas */
+@media screen and (max-width: 768px) {
+  .icon-grid {
+    .icon-item {
+      width: 90px; // Telas mÃ©dias
+
+      img {
+        width: 60px;
+        height: 60px;
+        margin: 0px 10px;
+      }
+
+      p {
+        font-size: 7px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 549px) {
+  .icon-grid {
+    grid-template-columns: repeat(3, 1fr); // 3 colunas em mobile
+    
+    .icon-item {
+      width: 80px; // MUDANÃ‡A: telas pequenas 40px
+
+      img {
+        width: 50px;
+        height: 50px;
+        margin: 0px 10px;
+      }
+
+      p {
+        font-size: 6px;
+        line-height: 1.1;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .icon-grid {
+    grid-template-columns: repeat(2, 1fr); // 2 colunas em telas muito pequenas
+    
+    .icon-item {
+      width: 40px; // MantÃ©m 40px
+
+      img {
+        width: 30px;
+        height: 30px;
+        margin: 0px 3px;
+      }
+
+      p {
+        font-size: 5px;
+      }
+    }
+  }
+}
+
+/* SeÃ§ao de Chatbots */
+.chatbots-section {
+  background: white;
+  border-radius: 6px;
+  padding: 1rem 1rem;
+  font-size: medium;
+  font-weight: 500;
+  color: styles.$primary-color;
+
+  .pills-section {
+    background-color: unset;
+  }
+
+  .pill-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+
+    .pill {
+      display: block;
+      // padding: 1px;
+      background-color: styles.$primary-color;
+      color: white;
+      font-size: 10px;
+      text-align: center;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.6s;
+
+      &:hover {
+        background-color: styles.$primary-color-dark;
+      }
+    }
+  }
+}
+
+/* Secao de Servicos */
+.services-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  /* Adiciona espaÃ§amento entre os serviÃ§os */
+  border-radius: 6px;
+  padding: 1rem 1rem;
+  border: 1px solid var(--border-color, #8099be); // Adicionando borda temÃ¡tica
+}
+
+.pad_header {
+  padding: 2px;
+}
+
+/* Ajuste responsivo */
+@media screen and (max-width: 549px) {
+
+  .column-left,
+  .column-right {
+    width: 100%;
+  }
+
+  .chatbots-section {
+    .pill-group {
+      gap: 10px;
+    }
+  }
+}
+
+/* Nova regra de media query para colapsar a coluna apenas abaixo de 550px */
+@media screen and (min-width: 550px) {
+  .container {
+    flex-direction: row;
+    // flex-direction: column;
+    width: 100%;
+    // margin-left: 40px;
+    // margin-right: 40px;
+  }
+}
+
+/* Estilos para o container do cabeÃ§alho - REMOVIDO (agora no HeaderComponent) */
+
+// ================================
+// Configuracao dos icones do home
+// ================================
+
+.config-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.config-panel {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.config-panel h3 {
+  margin-top: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.config-panel label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.config-panel input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* Exemplo para o container principal da home, se ele tiver um fundo prÃ³prio */
+.container_principal {
+  background-color: var(--background-light, #f8f9fa); // Use uma variÃ¡vel apropriada
+                                                      // --background-light pode ser o fundo geral de pÃ¡ginas
+  padding: 20px;
+  border-radius: 8px;
+}
+
+// Estilos do logo centralizado
+// Estilos específicos para o header no componente Home
+app-header {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0px 10px; // Aumentado o padding
+  margin-bottom: 0px; // Mais espaço abaixo
+  
+  .app-main-header {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 40px 20px; // Muito mais padding interno
+    // min-height: 120px; // Altura mínima garantida
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
+    border-radius: 20px; // Bordas mais arredondadas
+    box-shadow: 0 12px 40px rgba(21, 61, 117, 0.2), 
+                0 8px 20px rgba(21, 61, 117, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transform: scale(1); // Preparação para hover
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.02); // Leve efeito de hover
+      box-shadow: 0 16px 50px rgba(21, 61, 117, 0.25);
+    }
+  }
+  
+  .logo-text {
+    text-align: center;
+    width: 90%; // Aumentado para 90% da largura
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5%;
+  }
+  
+  .main-logo-text {
+    font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
+    font-size: 4rem; // Tamanho fixo muito maior para desktop
+    font-weight: 800; // Peso ainda mais pesado
+    color: var(--primary-color-dark, #153d75);
+    letter-spacing: 2px; // Espaçamento maior entre letras
+    line-height: 1.0;
+    text-align: center;
+    width: 100%;
+    max-width: 95%; // Quase toda a largura
+    text-shadow: 0 6px 12px rgba(21, 61, 117, 0.3),
+                 0 3px 6px rgba(21, 61, 117, 0.2),
+                 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase; // Letras maiúsculas para mais impacto
+    
+    // Responsividade para diferentes tamanhos de tela
+    @media (max-width: 768px) {
+      font-size: 3rem; // Muito maior para tablet
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 2.2rem; // Maior para mobile
+      letter-spacing: 1px;
+    }
+    
+    @media (min-width: 1200px) {
+      font-size: 5rem; // Gigante para desktop
+    }
+    
+    @media (min-width: 1400px) {
+      font-size: 6rem; // Ainda maior para telas grandes
+    }
+    
+    @media (min-width: 1600px) {
+      font-size: 7rem; // Máximo para telas muito grandes
+    }
+  }
+}
+
+.logo-text {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-logo-text {
+  font-family: 'Orbitron', var(--logo-font-family, 'Arial', sans-serif);
+  font-size: 1.5em; // Tamanho ideal para estÃ©tica
+  font-weight: 600;
+  color: var(--primary-color-dark, #153d75);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}

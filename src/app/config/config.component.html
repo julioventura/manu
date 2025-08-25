@@ -1,0 +1,270 @@
+<div class="container container_principal">
+
+    <div class="header">
+        <div class="actions">
+            <img src="https://dentistas.com.br/assets/voltar.png" class="navegacao" (click)="util.goHome()">
+        </div>
+        <h1 class="title">Configurações</h1>
+        <div class="actions">
+            <!-- <img src="https://dentistas.com.br/assets/editar.png" class="navegacao" (click)="editar()"> -->
+            <img src="https://dentistas.com.br/assets/vazio.png" class="navegacao">
+        </div>
+    </div>
+
+    <!-- PARA TODOS USUARIOS -->
+    <div style="margin-top: 12px;">
+
+        <div id="Services" class="container margin0">
+
+            <!-- <section class="services-section icon-grid largo">
+            </section> -->
+
+            <div class="tabs-config">
+                <button class="tab-btn" [class.active]="selectedTab === 'chatbot'"
+                    (click)="selectedTab = 'chatbot'">Chatbot</button>
+                <button class="tab-btn" [class.active]="selectedTab === 'homepage'"
+                    (click)="selectedTab = 'homepage'">Sua Homepage</button>
+                <button class="tab-btn" [class.active]="selectedTab === 'preferencias'"
+                    (click)="selectedTab = 'preferencias'">Preferências</button>
+                <button class="tab-btn" [class.active]="selectedTab === 'backup'"
+                    (click)="selectedTab = 'backup'">Backup</button>
+            </div>
+
+            <div class="tab-content-config">
+                <div *ngIf="selectedTab === 'chatbot'">
+                    <div id="chatbot-card">
+                        <form class="profile-form chatbot-profile-form" [formGroup]="chatbotForm"
+                            (ngSubmit)="salvarChatbotConfig()">
+                            <div class="field-group chatbot-group">
+                                <h3 class="grupo-titulo">Configuração do Chatbot</h3>
+                                <div class="field-container">
+                                    <label for="webhookProd" class="field-label">Webhook de produção do chatbot
+                                        *</label>
+                                    <input type="url" id="webhookProd" class="field-input" formControlName="webhookProd"
+                                        placeholder="https://..." required>
+                                    <div class="validation-message"
+                                        *ngIf="chatbotForm.get('webhookProd')?.invalid && (chatbotForm.get('webhookProd')?.dirty || chatbotForm.get('webhookProd')?.touched)">
+                                        <span
+                                            *ngIf="chatbotForm.get('webhookProd')?.hasError('required')">Obrigatório</span>
+                                        <span *ngIf="chatbotForm.get('webhookProd')?.hasError('pattern')">URL
+                                            inválida</span>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="webhookTest" class="field-label">Webhook de teste do chatbot *</label>
+                                    <input type="url" id="webhookTest" class="field-input" formControlName="webhookTest"
+                                        placeholder="https://..." required>
+                                    <div class="validation-message"
+                                        *ngIf="chatbotForm.get('webhookTest')?.invalid && (chatbotForm.get('webhookTest')?.dirty || chatbotForm.get('webhookTest')?.touched)">
+                                        <span
+                                            *ngIf="chatbotForm.get('webhookTest')?.hasError('required')">Obrigatório</span>
+                                        <span *ngIf="chatbotForm.get('webhookTest')?.hasError('pattern')">URL
+                                            inválida</span>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="nome" class="field-label">Nome do chatbot (header) *</label>
+                                    <input type="text" id="nome" class="field-input" formControlName="nome"
+                                        placeholder="Nome do chatbot" required>
+                                    <div class="validation-message"
+                                        *ngIf="chatbotForm.get('nome')?.invalid && (chatbotForm.get('nome')?.dirty || chatbotForm.get('nome')?.touched)">
+                                        <span *ngIf="chatbotForm.get('nome')?.hasError('required')">Obrigatório</span>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="saudacaoNovo" class="field-label">Saudação para novos usuários *</label>
+                                    <input type="text" id="saudacaoNovo" class="field-input"
+                                        formControlName="saudacaoNovo" placeholder="Olá, seja bem-vindo!" required>
+                                    <div class="validation-message"
+                                        *ngIf="chatbotForm.get('saudacaoNovo')?.invalid && (chatbotForm.get('saudacaoNovo')?.dirty || chatbotForm.get('saudacaoNovo')?.touched)">
+                                        <span
+                                            *ngIf="chatbotForm.get('saudacaoNovo')?.hasError('required')">Obrigatório</span>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="saudacaoRetorno" class="field-label">Saudação para usuários
+                                        pre-existentes (retorno) *</label>
+                                    <input type="text" id="saudacaoRetorno" class="field-input"
+                                        formControlName="saudacaoRetorno" placeholder="Bem-vindo de volta!" required>
+                                    <div class="validation-message"
+                                        *ngIf="chatbotForm.get('saudacaoRetorno')?.invalid && (chatbotForm.get('saudacaoRetorno')?.dirty || chatbotForm.get('saudacaoRetorno')?.touched)">
+                                        <span
+                                            *ngIf="chatbotForm.get('saudacaoRetorno')?.hasError('required')">Obrigatório</span>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="instrucoesGerais" class="field-label">Instruções gerais</label>
+                                    <textarea id="instrucoesGerais" class="field-input"
+                                        formControlName="instrucoesGerais" rows="2"></textarea>
+                                </div>
+                                <div class="field-container">
+                                    <label for="temaPrincipal" class="field-label">Tema principal das conversas</label>
+                                    <input type="text" id="temaPrincipal" class="field-input"
+                                        formControlName="temaPrincipal">
+                                </div>
+                                <div class="field-container">
+                                    <label for="temasPermitidos" class="field-label">Temas permitidos</label>
+                                    <input type="text" id="temasPermitidos" class="field-input"
+                                        formControlName="temasPermitidos" placeholder="Separe por vírgula">
+                                </div>
+                                <div class="field-container" formGroupName="acaoNaoSabeGroup">
+                                    <label class="field-label">Ação quando não souber responder:</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" formControlName="acaoNaoSabe" value="humano">
+                                            Encaminhar para humano</label>
+                                        <label><input type="radio" formControlName="acaoNaoSabe" value="link">
+                                            Direcionar para link oficial</label>
+                                        <label><input type="radio" formControlName="acaoNaoSabe" value="busca"> Sugerir
+                                            busca manual</label>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="prazoRetorno" class="field-label">Prazo de retorno humano</label>
+                                    <input type="text" id="prazoRetorno" class="field-input"
+                                        formControlName="prazoRetorno" placeholder="Ex: 24h">
+                                </div>
+                                <div class="field-container" formGroupName="estiloListaGroup">
+                                    <label class="field-label">Estilo de Listas:</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" formControlName="estiloLista" value="numerada">
+                                            Numerada (1, 2, 3 ...)</label>
+                                        <label><input type="radio" formControlName="estiloLista" value="letras"> Letras
+                                            (a, b, c ...)</label>
+                                        <label><input type="radio" formControlName="estiloLista" value="bullets">
+                                            Bullets</label>
+                                        <label><input type="radio" formControlName="estiloLista" value="simples">
+                                            Simples (sem marcadores)</label>
+                                    </div>
+                                </div>
+                                <div class="field-container">
+                                    <label for="maxItensLista" class="field-label">Máximo de itens por lista</label>
+                                    <input type="number" id="maxItensLista" class="field-input"
+                                        formControlName="maxItensLista" min="1" max="50" placeholder="10">
+                                </div>
+                                <div class="field-container">
+                                    <label for="rodape" class="field-label">Rodapé das mensagens</label>
+                                    <input type="text" id="rodape" class="field-input" formControlName="rodape">
+                                </div>
+                                <div class="field-container">
+                                    <label class="field-label">Anexos para a base de dados</label>
+                                    <div class="anexos-upload">
+                                        <input type="file" (change)="onFileSelected($event)" multiple>
+                                    </div>
+                                    <div class="anexos-preview" *ngIf="chatbotConfig.anexosSelecionados.length > 0">
+                                        <p>Pré-visualização dos anexos:</p>
+                                        <ul>
+                                            <li *ngFor="let file of chatbotConfig.anexosSelecionados">{{ file.name }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <ul class="anexos-list">
+                                        <li *ngFor="let anexo of chatbotConfig.anexos">
+                                            <a [href]="anexo.url" target="_blank">{{ anexo.nome }}</a>
+                                            <button type="button" class="btn-remove"
+                                                (click)="removerAnexo(anexo)">×</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save" [disabled]="chatbotForm.invalid || loading">
+                                    <span *ngIf="loading">Salvar</span>
+                                    <span *ngIf="!loading">Salvar configurações</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div *ngIf="selectedTab === 'homepage'">
+                    <form class="profile-form chatbot-profile-form" [formGroup]="homepageForm"
+                        (ngSubmit)="salvarHomepageConfig()">
+                        <div class="field-group chatbot-group">
+                            <h3 class="grupo-titulo">Seu perfil</h3>
+                            <div class="field-container">
+                                <label for="nomeProfissional" class="field-label">Nome profissional:</label>
+                                <input type="text" id="nomeProfissional" class="field-input"
+                                    formControlName="nomeProfissional">
+                            </div>
+                            <div class="field-container">
+                                <label for="tituloProfissional" class="field-label">Título Profissional
+                                    Simplificado:</label>
+                                <input type="text" id="tituloProfissional" class="field-input"
+                                    formControlName="tituloProfissional">
+                            </div>
+                            <div class="field-container">
+                                <label for="especialidadePrincipal" class="field-label">Especialidade
+                                    principal:</label>
+                                <input type="text" id="especialidadePrincipal" class="field-input"
+                                    formControlName="especialidadePrincipal">
+                            </div>
+                            <div class="field-container">
+                                <label for="fotoPessoal" class="field-label">Foto pessoal:</label>
+                                <input type="text" id="fotoPessoal" class="field-input" formControlName="fotoPessoal"
+                                    placeholder="URL da foto ou nome do arquivo">
+                            </div>
+                            <div class="field-container">
+                                <label for="imagemCapa" class="field-label">Imagem de capa:</label>
+                                <input type="text" id="imagemCapa" class="field-input" formControlName="imagemCapa"
+                                    placeholder="URL da imagem ou nome do arquivo">
+                            </div>
+                        </div>
+                        <div class="field-group chatbot-group">
+                            <h3 class="grupo-titulo">Cartão de Visitas Digital</h3>
+                            <div class="field-container">
+                                <label for="whatsapp" class="field-label">WhatsApp:</label>
+                                <input type="text" id="whatsapp" class="field-input" formControlName="whatsapp">
+                            </div>
+                            <div class="field-container">
+                                <label for="telefones" class="field-label">Telefone(s):</label>
+                                <input type="text" id="telefones" class="field-input" formControlName="telefones">
+                            </div>
+                            <div class="field-container">
+                                <label for="email" class="field-label">Email:</label>
+                                <input type="email" id="email" class="field-input" formControlName="email">
+                            </div>
+                            <div class="field-container">
+                                <label for="site" class="field-label">Site:</label>
+                                <input type="text" id="site" class="field-input" formControlName="site">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save" [disabled]="homepageForm.invalid || homepageLoading">
+                                <span *ngIf="homepageLoading">Salvando...</span>
+                                <span *ngIf="!homepageLoading">Salvar configurações</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="selectedTab === 'preferencias'">
+                    <div id="preferencias-card" class="tab-card">
+                        <ng-container *ngIf="userService.isAdmin; else acessoNegado">
+                            <div class="icon-item pref-link" (click)="go('camposRegistro')">
+                                <img src="https://dentistas.com.br/assets/ficha_campos.png" alt="Configurar">
+                                <p>PERSONALIZAR CAMPOS DOS CADASTROS</p>
+                            </div>
+                        </ng-container>
+                        <ng-template #acessoNegado>
+                            <div class="validation-message" style="margin-top: 12px;">
+                                Acesso restrito: apenas administradores podem personalizar os campos dos cadastros.
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedTab === 'backup'">
+                <div id="backup-card" class="tab-card">
+                    <h3 class="grupo-titulo">Backup dos Dados</h3>
+                    <div class="backup-actions">
+                        <button class="btn-backup" (click)="backupUsuario()" [disabled]="backupStatus">BACKUP</button>
+                        <button class="btn-backup" *ngIf="isAdmin$ | async" (click)="backupTotal()"
+                            [disabled]="backupStatus">BACKUP TOTAL</button>
+                    </div>
+                    <div class="validation-message" *ngIf="backupStatus">{{ backupStatus }}</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

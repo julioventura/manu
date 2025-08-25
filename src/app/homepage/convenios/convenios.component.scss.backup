@@ -1,0 +1,119 @@
+@use '../../../styles.scss' as styles;
+@use '../homepage.component.scss';
+
+// Color variables
+$primary-blue: #3498db;
+$light-blue: rgba(52, 152, 219, 0.1);
+$green: #27ae60;
+$orange: #f39c12;
+$border-light: rgba(0, 0, 0, 0.06);
+$border-dark: rgba(0, 0, 0, 0.08);
+$background-light: rgba(0, 0, 0, 0.04);
+$text-color: #555;
+
+// Common mixins
+@mixin info-section {
+  display: flex;
+  align-items: center;
+  
+  i { margin-right: 10px; }
+  span { font-weight: 500; }
+}
+
+@mixin info-message {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  background-color: $background-light;
+  border-radius: 4px;
+  
+  i {
+    margin-right: 10px;
+    margin-top: 2px;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: $text-color;
+  }
+}
+
+.convenios-card {
+  color: $primary-blue;
+
+  .convenios-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    
+    .convenio-item {
+      display: flex;
+      align-items: center;
+      background-color: $light-blue;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      
+      i {
+        color: $primary-blue;
+        margin-right: 8px;
+        font-size: 0.85rem;
+      }
+    }
+  }
+  
+  .info-particular {
+    @include info-section;
+    padding-top: 1rem;
+    border-top: 1px solid $border-dark;
+    
+    i {
+      color: $green;
+      font-size: 1.1rem;
+    }
+  }
+  
+  .no-convenios {
+    @include info-section;
+    color: red;
+    
+    i {
+      font-size: 1.25rem;
+      color: $orange;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: styles.$primary-color;
+    }
+  }
+  
+  .sem-convenios {
+    @include info-message;
+    
+    i { color: red; }
+  }
+  
+  .observacao {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid $border-light;
+    display: flex;
+    align-items: flex-start;
+    
+    i {
+      color: $primary-blue;
+      margin-right: 10px;
+      margin-top: 2px;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: $text-color;
+    }
+  }
+}
