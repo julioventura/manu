@@ -87,7 +87,7 @@ npm run build
 npx webpack-bundle-analyzer dist/
 
 # 3. Lighthouse audit
-npx lighthouse http://localhost:4200/clinica/list/pacientes
+npx lighthouse http://localhost:4200/manu/list/pacientes
 
 # 4. Core Web Vitals
 # - LCP (Largest Contentful Paint): < 2.5s

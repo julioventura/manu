@@ -1,4 +1,4 @@
-# Dentistas.com.br/clinica ### **Ferramentas de Desenvolvimento**
+# Dentistas.com.br/manu ### **Ferramentas de Desenvolvimento**
 
 - **Build System**: Angular CLI 20.0.5 + Custom Webpack 18.0.0
 - **Linting**: ESLint 8.57.1 + Angular ESLint 20.0.0
@@ -60,7 +60,7 @@
 
 ## 📋 Resumo Técnico
 
-**O sistema Dentistas.com.br/clinica é uma plataforma SaaS moderna construída em Angular 20 com arquitetura baseada em standalone components.** Utiliza Firebase como backend-as-a-service, oferecendo autenticação robusta, banco de dados em tempo real e armazenamento em nuvem. A aplicação implementa lazy loading, guards de rota avançados e um sistema de gerenciamento de estado otimizado para performance máxima.
+**O sistema Dentistas.com.br/manu é uma plataforma SaaS moderna construída em Angular 20 com arquitetura baseada em standalone components.** Utiliza Firebase como backend-as-a-service, oferecendo autenticação robusta, banco de dados em tempo real e armazenamento em nuvem. A aplicação implementa lazy loading, guards de rota avançados e um sistema de gerenciamento de estado otimizado para performance máxima.
 
 **A integração com OpenAI GPT-4o-mini através de um chatbot contextual representa um diferencial significativo, oferecendo assistência inteligente tanto para dentistas quanto para pacientes.** O sistema possui uma arquitetura bem estruturada com TypeScript strict mode, ESLint para qualidade de código, e um sistema de build customizado com Webpack para otimização de bundle size.
 
@@ -343,7 +343,7 @@ O sistema está tecnicamente avançado e bem posicionado, mas há pontos crític
 
 ## 📈 Conclusão Estratégica
 
-O sistema Dentistas.com.br/clinica possui uma base técnica sólida construída com Angular 19 e tecnologias modernas. A arquitetura baseada em standalone components, integração com Firebase e sistema de IA contextual fornecem uma fundação robusta para crescimento. A implementação das funcionalidades de IA propostas pode transformar a plataforma de um gerenciador clínico em um **ecossistema inteligente de saúde odontológica**.
+O sistema Dentistas.com.br/manu possui uma base técnica sólida construída com Angular 19 e tecnologias modernas. A arquitetura baseada em standalone components, integração com Firebase e sistema de IA contextual fornecem uma fundação robusta para crescimento. A implementação das funcionalidades de IA propostas pode transformar a plataforma de um gerenciador clínico em um **ecossistema inteligente de saúde odontológica**.
 
 **Estado Atual da Tecnologia:**
 
@@ -371,7 +371,7 @@ O sistema está bem posicionado para se tornar líder de mercado no segmento de 
 - **Target**: ES2022 com módulos ES2022 para compatibilidade moderna
 - **Bundler**: Angular CLI 20.0.5 com custom webpack configuration
 - **Bundle Strategy**: Application builder com lazy loading e tree shaking
-- **Base Path**: /clinica/ configurado para deploy em subdiretório
+- **Base Path**: /manu/ configurado para deploy em subdiretório
 - **Assets**: Configuração automática para favicon.ico e pasta assets/
 - **Polyfills**: Zone.js otimizado para Angular 20
 - **Node.js**: v22.17.0 LTS (requisito oficial do Angular 20)

@@ -34,7 +34,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "baseHref": "/clinica/",
+            "baseHref": "/manu/",
             "allowedCommonJsDependencies": [
               "canvg",
               "jspdf-autotable",
@@ -59,7 +59,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/clinica/",
+              "baseHref": "/manu/",
               "optimization": {
                 "scripts": true,
                 "styles": {
@@ -76,7 +76,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "baseHref": "/clinica/"
+              "baseHref": "/manu/"
             }
           },
           "defaultConfiguration": "production"
@@ -93,7 +93,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "servePath": "/clinica/"
+            "servePath": "/manu/"
           }
         },
         "extract-i18n": {

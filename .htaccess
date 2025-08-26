@@ -1,12 +1,12 @@
 RewriteOptions inherit
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /clinica/
+  RewriteBase /manu/
 
   # Handle Angular Router - CORRIGIDO para evitar 404 no refresh
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} !^/clinica/assets/
+  RewriteCond %{REQUEST_URI} !^/manu/assets/
   RewriteRule . index.html [L]
 
   # Handle direct access to index.html

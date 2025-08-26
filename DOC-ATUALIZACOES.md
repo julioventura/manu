@@ -2,7 +2,7 @@
 
 ## 📋 Resumo Executivo
 
-Este documento descreve as práticas essenciais para implementação correta de operações CRUD (Create, Read, Update, Delete) com Firebase/Firestore em aplicações Angular 20+, baseado nas correções realizadas no sistema Dentistas.com.br/clinica em agosto de 2025.
+Este documento descreve as práticas essenciais para implementação correta de operações CRUD (Create, Read, Update, Delete) com Firebase/Firestore em aplicações Angular 20+, baseado nas correções realizadas no sistema Dentistas.com.br/manu em agosto de 2025.
 
 ---
 
@@ -430,7 +430,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 
 ## 🎯 Conclusão
 
-Este documento serve como guia definitivo para implementação de operações CRUD com Firestore em Angular 20+. As práticas aqui descritas são resultado de correções reais aplicadas no sistema Dentistas.com.br/clinica e devem ser seguidas rigorosamente para evitar erros de injeção de dependências e garantir performance otimizada.
+Este documento serve como guia definitivo para implementação de operações CRUD com Firestore em Angular 20+. As práticas aqui descritas são resultado de correções reais aplicadas no sistema Dentistas.com.br/manu e devem ser seguidas rigorosamente para evitar erros de injeção de dependências e garantir performance otimizada.
 
 **Regra de Ouro:** Todo acesso ao AngularFirestore deve ser envolvido com `runInInjectionContext(this.injector, () => ...)` no Angular 20+.
 

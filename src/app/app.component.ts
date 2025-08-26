@@ -157,8 +157,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // ADICIONAR: método auxiliar no app.component.ts
   private isUsernameRoute(url: string): boolean {
-    // Rotas do tipo /clinica/<apelido>
-    if (url.includes('/clinica/')) {
+    // Rotas do tipo /manu/<apelido>
+    if (url.includes('/manu/')) {
       return true;
     }
     
